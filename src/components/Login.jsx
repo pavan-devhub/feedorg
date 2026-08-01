@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import bgImage from '../assets/login.png';
+import bgImage from '../assets/Login.png';
 import logoImage from '../assets/logo.webp';
 import { Mail, Lock, EyeOff, Eye, ArrowRight, UserPlus, Leaf, ArrowLeft } from 'lucide-react';
 
