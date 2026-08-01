@@ -27,7 +27,7 @@ function App() {
       if (event.state && event.state.page) {
         setCurrentPage(event.state.page);
       } else {
-        setCurrentPage('home');
+        setCurrentPage('home'); 
       }
     };
     
