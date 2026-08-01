@@ -6,7 +6,9 @@ import NextActionCard from './components/NextActionCard';
 import DashboardSection from './components/DashboardSection';
 import ServiceCard from './components/ServiceCard';
 import BottomNav from './components/BottomNav';
-import ActionGrid from './components/ActionGrid';
+import Home from './components/Home';
+import Login from './components/Login';
+import Register from './components/Register';
 import { dashboardSections } from './data/exportServices';
 
 const exportHeroStats = [
@@ -17,7 +19,7 @@ const exportHeroStats = [
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState('home'); // 'home' or 'exports'
+  const [currentPage, setCurrentPage] = useState('home'); // 'login', 'home' or 'exports'
 
   // Sync state with browser history for back button support
   React.useEffect(() => {
@@ -55,11 +57,21 @@ function App() {
     return { ...section, tiles: filteredTiles };
   }).filter(section => section.tiles.length > 0);
 
+  if (currentPage === 'login') {
+    return <Login onLogin={() => handleNavigate('home')} onRegisterClick={() => handleNavigate('register')} onBack={() => handleNavigate('home')} />;
+  }
+
+  if (currentPage === 'register') {
+    return <Register onBackToLogin={() => handleNavigate('login')} />;
+  }
+
   return (
-    <div className="app-container">
-      <div className="header-wrapper">
-        <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      </div>
+    <div className={`app-container ${currentPage === 'home' ? 'is-home' : ''}`}>
+      {currentPage !== 'home' && (
+        <div className="header-wrapper">
+          <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        </div>
+      )}
       
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
@@ -67,9 +79,7 @@ function App() {
       <div className={`main-content-bg ${searchQuery ? 'content-blurred' : ''}`}>
         
         {currentPage === 'home' ? (
-          <div className="main-content-inner">
-            <ActionGrid onNavigate={handleNavigate} searchQuery={searchQuery} />
-          </div>
+          <Home onNavigate={handleNavigate} searchQuery={searchQuery} />
         ) : (
           <div className="exports-page">
             {!searchQuery && (
@@ -144,11 +154,13 @@ function App() {
         )}
       </div>
 
-      <div className={`bottom-nav ${searchQuery ? 'content-blurred' : ''}`}>
-        <div className="bottom-nav-inner">
-          <BottomNav currentPage={currentPage} onNavigate={handleNavigate} />
+      {currentPage !== 'home' && (
+        <div className={`bottom-nav ${searchQuery ? 'content-blurred' : ''}`}>
+          <div className="bottom-nav-inner">
+            <BottomNav currentPage={currentPage} onNavigate={handleNavigate} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
