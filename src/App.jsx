@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Globe2, Route, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
-import Header from './components/Header';
 import ProfileSummary from './components/ProfileSummary';
 import NextActionCard from './components/NextActionCard';
 import DashboardSection from './components/DashboardSection';
@@ -9,6 +8,7 @@ import BottomNav from './components/BottomNav';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
+import ContactUs from './components/ContactUs';
 import { dashboardSections } from './data/exportServices';
 
 const exportHeroStats = [
@@ -65,14 +65,12 @@ function App() {
     return <Register onBackToLogin={() => handleNavigate('login')} />;
   }
 
+  if (currentPage === 'contact') {
+    return <ContactUs onNavigate={handleNavigate} />;
+  }
+
   return (
     <div className={`app-container ${currentPage === 'home' ? 'is-home' : ''}`}>
-      {currentPage !== 'home' && (
-        <div className="header-wrapper">
-          <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        </div>
-      )}
-      
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 

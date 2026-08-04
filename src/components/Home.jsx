@@ -1,16 +1,95 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, Users, Settings, Calendar, Map, Activity, Users2, Globe2, PhoneCall, Trophy, BadgeCheck, ShieldCheck, Star, User, UserPlus, ChevronDown, Sprout, Building2, Ship, Coins, Package, TrendingUp, GraduationCap, ClipboardList, Store, HeartHandshake, Wrench, Lightbulb, ShoppingBag, CreditCard, Target, Eye, Rocket, Search } from 'lucide-react';
+import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, Users, Settings, Calendar, Map, Activity, Users2, Globe2, PhoneCall, Trophy, BadgeCheck, ShieldCheck, Star, User, UserPlus, ChevronDown, ChevronRight, ChevronLeft, ArrowRight, Sprout, Building2, Ship, Coins, Package, TrendingUp, GraduationCap, ClipboardList, Store, HeartHandshake, Wrench, Lightbulb, ShoppingBag, CreditCard, Target, Eye, Rocket, Search, Leaf, Landmark, PieChart, BarChart3, MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import logoImage from '../assets/logo.webp';
 import Footer from './Footer';
+import AboutUs from './AboutUs';
+import Navbar, { servicesMegaMenu } from './Navbar';
+// --- Events & Updates Static Data ---
+const centralStateUpdates = [
+  { id: 1, source: 'FIEO', title: 'FIEO MUMBAI : WEB CONFERENCE ON AWARENESS OF CYBER SECURITY ON SEPTEMBER 30, 202', color: '#0ea5e9' },
+  { id: 2, source: 'Apeda', title: 'Report on Development of suitable package & formulation of packaging specification for fresh kiwi from north eastern states.', color: '#16a34a' },
+  { id: 3, source: 'IBEF', title: 'PM dedicates to the Nation 35 crop varieties with special traits.', color: '#eab308' },
+  { id: 4, source: 'Nabard', title: 'WRONG COVERAGE REGARDING NABARD IN VARIOUS PRINT MEDIA ON KISAN CREDIT CARD.', color: '#22c55e' },
+  { id: 5, source: 'Other Updates', title: 'Latest notifications, circulars and announcements from various departments.', color: '#ef4444' }
+];
+
+const keyHighlights = [
+  { id: 1, title: 'Export Opportunities', desc: 'Explore new markets and export opportunities across the globe.', icon: Package, color: '#16a34a', bg: '#f0fdf4' },
+  { id: 2, title: 'Farmer Empowerment', desc: 'Initiatives and schemes for the upliftment of farmers.', icon: Users, color: '#ea580c', bg: '#fff7ed' },
+  { id: 3, title: 'Business Growth', desc: 'Resources and support for MSMEs and new entrepreneurs.', icon: TrendingUp, color: '#8b5cf6', bg: '#faf5ff' }
+];
+
+const feedServicesList = [
+  { id: 1, title: 'FPC', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Users2, color: '#0ea5e9', bg: '#f0f9ff' },
+  { id: 2, title: 'Farm', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Sprout, color: '#84cc16', bg: '#f7fee7' },
+  { id: 3, title: 'My Business', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: HeartHandshake, color: '#3b82f6', bg: '#eff6ff' },
+  { id: 4, title: 'My Exports', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Ship, color: '#6366f1', bg: '#eef2ff' },
+  { id: 5, title: 'MY Products', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Package, color: '#f59e0b', bg: '#fffbeb' },
+  { id: 6, title: 'My Market', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Store, color: '#ef4444', bg: '#fef2f2' },
+];
+
+const featureTags = [
+  { id: 1, title: 'Pan India Presence', desc: 'Multiple states, one mission', icon: Globe2, color: '#8b5cf6' },
+  { id: 2, title: 'Farmer First Approach', desc: 'Empowering rural communities', icon: Users, color: '#22c55e' },
+  { id: 3, title: 'Cooperative Strength', desc: 'Stronger together', icon: HeartHandshake, color: '#f97316' },
+  { id: 4, title: 'Export Focused', desc: 'Global opportunities', icon: TrendingUp, color: '#0ea5e9' },
+  { id: 5, title: 'Transparent & Trusted', desc: 'Building lasting partnerships', icon: ShieldCheck, color: '#6366f1' },
+];
+
+const eventsSliderImages = [
+  '/1.jpg',
+  '/2.jpg',
+  '/3.jpg',
+  '/5.jpg'
+];
 
 const Home = ({ onNavigate }) => {
   const { t, i18n } = useTranslation();
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const servicesDropdownRef = useRef(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRef = useRef(null);
+  const [eventsSlide, setEventsSlide] = useState(0);
+
+  const servicesBlockRef = useRef(null);
+  const [isServicesVisible, setIsServicesVisible] = useState(false);
+  
+  const aboutUsBlockRef = useRef(null);
+  const [isAboutUsVisible, setIsAboutUsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsServicesVisible(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    if (servicesBlockRef.current) {
+      observer.observe(servicesBlockRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAboutUsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    if (aboutUsBlockRef.current) {
+      observer.observe(aboutUsBlockRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const eventsTimer = setInterval(() => {
+      setEventsSlide(prev => (prev + 1) % eventsSliderImages.length);
+    }, 5000);
+    return () => clearInterval(eventsTimer);
+  }, []);
 
   useEffect(() => {
     let timer;
@@ -31,33 +110,7 @@ const Home = ({ onNavigate }) => {
   const handleVideoEnded = () => {
     setCurrentSlide(0);
   };
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target)) {
-        setIsServicesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
-  const servicesMegaMenu = [
-    { name: 'PROJECT KRUSHI\nYEVA JAYATE', icon: Sprout, gradient: 'linear-gradient(135deg, #14532d, #064e3b)', borderColor: '#166534', iconColor: '#4ade80' },
-    { name: 'MY ORG', icon: Building2, gradient: 'linear-gradient(135deg, #1e3a8a, #172554)', borderColor: '#1d4ed8', iconColor: '#60a5fa' },
-    { name: 'MY EXPORTS', icon: Ship, gradient: 'linear-gradient(135deg, #0c4a6e, #082f49)', borderColor: '#0369a1', iconColor: '#38bdf8' },
-    { name: 'LOANS & FINANCE', icon: Coins, gradient: 'linear-gradient(135deg, #78350f, #451a03)', borderColor: '#9a3412', iconColor: '#fbbf24' },
-    { name: 'PRODUCT 360', icon: Package, gradient: 'linear-gradient(135deg, #581c87, #3b0764)', borderColor: '#7e22ce', iconColor: '#c084fc' },
-    { name: 'MY BUSINESS', icon: TrendingUp, gradient: 'linear-gradient(135deg, #064e3b, #022c22)', borderColor: '#047857', iconColor: '#34d399' },
-    { name: 'MY EDUCATION', icon: GraduationCap, gradient: 'linear-gradient(135deg, #312e81, #1e1b4b)', borderColor: '#4338ca', iconColor: '#818cf8' },
-    { name: 'FEED WORLD', icon: Globe2, gradient: 'linear-gradient(135deg, #1e40af, #1e3a8a)', borderColor: '#2563eb', iconColor: '#93c5fd' },
-    { name: 'EPM', icon: ClipboardList, gradient: 'linear-gradient(135deg, #334155, #1e293b)', borderColor: '#475569', iconColor: '#cbd5e1' },
-    { name: 'TRADE FAIRS', icon: Store, gradient: 'linear-gradient(135deg, #7c2d12, #431407)', borderColor: '#c2410c', iconColor: '#fb923c' },
-    { name: 'SAFE MISSION', icon: ShieldCheck, gradient: 'linear-gradient(135deg, #166534, #14532d)', borderColor: '#15803d', iconColor: '#4ade80' },
-    { name: 'MY TOOLS', icon: Wrench, gradient: 'linear-gradient(135deg, #0f766e, #134e4a)', borderColor: '#0d9488', iconColor: '#5eead4' },
-    { name: 'KNOW YOUR\nSCHEMES', icon: Lightbulb, gradient: 'linear-gradient(135deg, #854d0e, #713f12)', borderColor: '#a16207', iconColor: '#facc15' },
-    { name: 'MY MARKET', icon: ShoppingBag, gradient: 'linear-gradient(135deg, #831843, #4c0519)', borderColor: '#be185d', iconColor: '#f472b6' },
-    { name: 'FEED CARD', icon: CreditCard, gradient: 'linear-gradient(135deg, #155e75, #164e63)', borderColor: '#0e7490', iconColor: '#22d3ee' }
-  ];
 
   const aboutPillars = [
     {
@@ -98,7 +151,7 @@ const Home = ({ onNavigate }) => {
   const aboutStats = [
     { value: '15+', label: 'Govt. & export bodies connected', Icon: Building2 },
     { value: '10', label: 'Priority products per district', Icon: Package },
-    { value: '360°', label: 'Export support ecosystem', Icon: Globe2 },
+    { value: '360Â°', label: 'Export support ecosystem', Icon: Globe2 },
     { value: 'MSCS', label: 'Registered cooperative society', Icon: ShieldCheck }
   ];
   
@@ -109,251 +162,7 @@ const Home = ({ onNavigate }) => {
   return (
     <div className="home-landing-page" style={{ fontFamily: 'Inter, sans-serif', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
      
-      {/* Background Blur Overlay for Services Menu */}
-      {isServicesOpen && (
-        <div 
-          onClick={() => setIsServicesOpen(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'rgba(255, 255, 255, 0.3)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            zIndex: 40,
-            transition: 'all 0.3s ease'
-          }} 
-        />
-      )}
-
-      {/* 3. Navigation Bar (Redesigned) */}
-      <div style={{ width: '100%', position: 'absolute', top: '10px', left: 0, zIndex: 50, display: 'flex', justifyContent: 'center' }}>
-        <div style={{
-          position: 'relative',
-          width: '96%',
-          maxWidth: '1400px',
-          height: '76px',
-          backgroundColor: 'white',
-          borderRadius: '40px',
-          display: 'flex',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-          overflow: 'hidden'
-        }}>
-          
-          {/* Left Orange Shape */}
-          <svg width="260" height="100%" viewBox="0 0 260 76" preserveAspectRatio="none" style={{ position: 'absolute', left: 0, top: 0, zIndex: 0 }}>
-            <defs>
-              <linearGradient id="navOrangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#f97316" />
-                <stop offset="100%" stopColor="#ea580c" />
-              </linearGradient>
-            </defs>
-            <path d="M0,0 L160,0 C210,0 190,76 260,76 L0,76 Z" fill="url(#navOrangeGrad)" />
-          </svg>
-
-          {/* Right Orange Shape */}
-          <svg width="250" height="100%" viewBox="0 0 250 76" preserveAspectRatio="none" style={{ position: 'absolute', right: 0, top: 0, zIndex: 0 }}>
-            <path d="M50,0 C120,0 90,76 200,76 L250,76 L250,0 Z" fill="#ffedd5" opacity="0.8" />
-          </svg>
-
-          {/* Content Container */}
-          <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          
-          {/* Left Home Button (Replacing Logo) */}
-          <div 
-            onClick={() => onNavigate('home')}
-            style={{ width: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingLeft: '10px', cursor: 'pointer', position: 'relative' }}
-          >
-            <HomeIcon size={24} color="white" strokeWidth={1.5} />
-            <span style={{ fontSize: '13px', fontWeight: '800', color: 'white', marginTop: '2px', letterSpacing: '0.5px' }}>Home</span>
-            <div style={{ position: 'absolute', bottom: '-4px', width: '30px', height: '3px', backgroundColor: 'white', borderRadius: '2px' }}></div>
-          </div>
-
-          {/* Center Links Section */}
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '28px', height: '100%' }}>
-            {[
-              { id: 'about', icon: Users, label: 'About Us', hasDropdown: true },
-              { id: 'services', icon: Settings, label: 'Services', hasDropdown: true },
-              { id: 'events', icon: Calendar, label: 'Events & Updates' },
-              { id: 'roadmap', icon: Map, label: 'Export Road Map' },
-              { id: 'how', icon: Activity, label: 'How Feed Works' },
-              { id: 'fpo', icon: Users, label: 'FPO' },
-              { id: 'exports', icon: Package, label: 'Exports' },
-              { id: 'contact', icon: PhoneCall, label: 'Contact Us' }
-            ].map((item) => {
-              const isActive = item.id === 'home';
-              return (
-                <div 
-                  key={item.id}
-                  ref={item.id === 'services' ? servicesDropdownRef : null}
-                  style={{ 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    gap: '4px',
-                    cursor: 'pointer',
-                    position: 'relative'
-                  }}
-                  onClick={() => {
-                    if (item.id === 'home') onNavigate('home');
-                    if (item.id === 'services') setIsServicesOpen(!isServicesOpen);
-                    if (item.id === 'about') {
-                      const el = document.getElementById('about-us');
-                      if (el) {
-                        const y = el.getBoundingClientRect().top + window.scrollY - 100;
-                        window.scrollTo({ top: y, behavior: 'smooth' });
-                      }
-                    }
-                  }}
-                >
-                  <item.icon size={20} color="#ea580c" strokeWidth={1.5} />
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-                    <span style={{ 
-                      fontSize: '11px', 
-                      fontWeight: '800', 
-                      color: '#1e293b',
-                      whiteSpace: 'nowrap'
-                    }}>
-                      {item.label}
-                    </span>
-                    {item.hasDropdown && <ChevronDown size={12} color="#1e293b" strokeWidth={3} />}
-                  </div>
-                  {isActive && (
-                    <div style={{ position: 'absolute', bottom: '-8px', width: '30px', height: '3px', backgroundColor: '#ea580c', borderRadius: '2px' }}></div>
-                  )}
-
-                  {/* Stunning Services Dropdown */}
-                  {item.id === 'services' && isServicesOpen && (
-                    <div style={{
-                      position: 'fixed',
-                      top: '100px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '940px',
-                      height: '620px', 
-                      backgroundImage: 'url(/services-bg.png)',
-                      backgroundSize: '100% 100%',
-                      backgroundRepeat: 'no-repeat',
-                      borderRadius: '24px',
-                      boxShadow: '0 30px 60px -15px rgba(0,0,0,0.6)',
-                      zIndex: 9999,
-                      cursor: 'default',
-                      display: 'flex',
-                      flexDirection: 'column'
-                    }} onClick={(e) => e.stopPropagation()}>
-                      
-                      {/* Spacer to push grid down into the white block (approx 32% from top) */}
-                      <div style={{ height: '32%', width: '100%' }}></div>
-
-                      {/* Buttons Grid container positioned tightly in the white space */}
-                      <div style={{ 
-                        flex: 1,
-                        padding: '0 5% 5% 5%', // Left, right, bottom padding to align with white boundaries
-                        display: 'grid', 
-                        gridTemplateColumns: 'repeat(4, 1fr)', 
-                        gridAutoRows: 'min-content',
-                        gap: '12px',
-                      }}>
-                        {servicesMegaMenu.map((service, sIdx) => (
-                          <div key={sIdx} style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '10px', 
-                            padding: '10px 12px', 
-                            borderRadius: '12px', 
-                            background: service.gradient,
-                            border: `1px solid ${service.borderColor}`,
-                            transition: 'all 0.2s', 
-                            cursor: 'pointer',
-                            height: '72px',
-                            boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
-                          }} 
-                          onMouseEnter={(e) => { 
-                            e.currentTarget.style.transform = 'translateY(-2px)'; 
-                            e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3)'; 
-                            e.currentTarget.style.borderColor = '#475569';
-                          }} 
-                          onMouseLeave={(e) => { 
-                            e.currentTarget.style.transform = 'none'; 
-                            e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.2)'; 
-                            e.currentTarget.style.borderColor = service.borderColor;
-                          }}>
-                            <div style={{ 
-                              width: '42px', 
-                              height: '42px', 
-                              borderRadius: '10px', 
-                              backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                              display: 'flex', 
-                              justifyContent: 'center', 
-                              alignItems: 'center', 
-                              color: service.iconColor, 
-                              flexShrink: 0,
-                              boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.05)'
-                            }}>
-                              <service.icon size={24} />
-                            </div>
-                            <span style={{ 
-                              fontSize: '12px', 
-                              fontWeight: '800', 
-                              color: '#f8fafc', // White text for dark background
-                              textTransform: 'uppercase', 
-                              letterSpacing: '0.2px',
-                              lineHeight: '1.2',
-                              whiteSpace: 'pre-line'
-                            }}>
-                              {service.name}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Right Action Section */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', paddingRight: '20px' }}>
-            <button style={{ 
-              width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'white', 
-              border: '1.5px solid #ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer'
-            }}>
-              <Search size={16} color="#ea580c" strokeWidth={2.5} />
-            </button>
-
-            <div style={{ width: '1.5px', height: '24px', backgroundColor: '#ea580c', opacity: 0.5 }}></div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button 
-                onClick={() => onNavigate('login')}
-                style={{ 
-                  display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'white', 
-                  border: '1.5px solid #ea580c', color: '#1e293b', padding: '0 16px', height: '36px', borderRadius: '18px', 
-                  fontWeight: '700', fontSize: '13px', cursor: 'pointer'
-                }}>
-                <User size={14} color="#ea580c" strokeWidth={2.5} />
-                Login
-              </button>
-
-              <button 
-                onClick={() => onNavigate('register')}
-                style={{ 
-                  display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#ea580c', 
-                  border: 'none', color: 'white', padding: '0 16px', height: '36px', borderRadius: '18px', 
-                  fontWeight: '700', fontSize: '13px', cursor: 'pointer'
-                }}>
-                <UserPlus size={14} color="white" strokeWidth={2.5} />
-                Register
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
+      <Navbar onNavigate={onNavigate} />
 
       {/* 2. Hero Slider (Image & Video) */}
       <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
@@ -402,8 +211,8 @@ const Home = ({ onNavigate }) => {
               style={{ background: 'transparent', color: '#111827', border: 'none', outline: 'none', fontSize: '14px', fontWeight: '700', appearance: 'none', paddingRight: '16px', cursor: 'pointer' }}
             >
               <option value="en">English</option>
-              <option value="hi">हिंदी</option>
-              <option value="te">తెలుగు</option>
+              <option value="hi">à¤¹à¤¿à¤‚à¤¦à¥€</option>
+              <option value="te">à°¤à±†à°²à±à°—à±</option>
             </select>
             <ChevronDown size={16} color="#111827" style={{ position: 'absolute', right: '12px', pointerEvents: 'none' }} />
           </div>
@@ -500,148 +309,280 @@ const Home = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* 6. Cartoonish About Us Section */}
-      <div id="about-us" style={{ padding: '60px 20px', backgroundColor: '#fffbe9', position: 'relative', overflow: 'hidden', borderTop: '3px solid #111' }}>
-        
-        {/* Playful Header */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 16px', borderRadius: '50px', backgroundColor: '#bbf7d0', border: '2px solid #111', boxShadow: '3px 3px 0px #111', color: '#166534', fontSize: '13px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '16px', transform: 'rotate(-2deg)' }}>
-            <Sprout size={16} />
-            Who We Are
+      {/* 6. About Us Section */}
+      <AboutUs />
+
+      {/* Services Block (Extracted from Dropdown) */}
+      <div id="services-block" ref={servicesBlockRef} style={{ width: '100%', padding: '60px 20px', backgroundColor: '#e2e8f0', display: 'flex', justifyContent: 'center' }}>
+        <div style={{
+          width: '100%',
+          maxWidth: '1300px',
+          minHeight: '750px',
+          backgroundImage: 'url(/services-bg.png)',
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
+          borderRadius: '32px',
+          boxShadow: '0 30px 60px -15px rgba(0,0,0,0.4)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          
+          {/* Spacer to push grid down into the white block */}
+          <div style={{ height: '35%', minHeight: '260px', width: '100%' }}></div>
+
+          <style>{`
+            @keyframes flyInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+            @keyframes flyInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+            @keyframes flyInTop { from { opacity: 0; transform: translateY(-80px); } to { opacity: 1; transform: translateY(0); } }
+            @keyframes flyInBottom { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: translateY(0); } }
+            
+            .service-btn-animated {
+              opacity: 0;
+            }
+          `}</style>
+
+          {/* Buttons Grid container positioned tightly in the white space */}
+          <div style={{ 
+            flex: 1,
+            padding: '0 4% 4% 4%', 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(4, 1fr)', 
+            gridAutoRows: 'min-content',
+            gap: '16px',
+          }}>
+            {servicesMegaMenu.map((service, sIdx) => {
+              const animations = ['flyInLeft', 'flyInTop', 'flyInBottom', 'flyInRight'];
+              const animName = animations[sIdx % 4];
+              return (
+              <div key={sIdx} 
+              className="service-btn-animated"
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '12px', 
+                padding: '16px', 
+                borderRadius: '16px', 
+                background: service.gradient,
+                border: `2px solid ${service.borderColor}`,
+                transition: 'all 0.2s ease', 
+                cursor: 'pointer',
+                height: '90px',
+                boxShadow: '0 6px 12px rgba(0,0,0,0.15)',
+                animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none'
+              }} 
+              onMouseEnter={(e) => { 
+                e.currentTarget.style.transform = 'translateY(-4px)'; 
+                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)'; 
+                e.currentTarget.style.borderColor = '#475569';
+              }} 
+              onMouseLeave={(e) => { 
+                e.currentTarget.style.transform = 'none'; 
+                e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)'; 
+                e.currentTarget.style.borderColor = service.borderColor;
+              }}>
+                <div style={{ 
+                  width: '54px', 
+                  height: '54px', 
+                  borderRadius: '14px', 
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)', 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  color: service.iconColor, 
+                  flexShrink: 0,
+                  boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.1)'
+                }}>
+                  <service.icon size={28} />
+                </div>
+                <span style={{ 
+                  fontSize: '14px', 
+                  fontWeight: '800', 
+                  color: '#f8fafc', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.5px',
+                  lineHeight: '1.3',
+                  whiteSpace: 'pre-line'
+                }}>
+                  {service.name}
+                </span>
+              </div>
+              );
+            })}
           </div>
-          <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: '900', color: '#111', margin: 0, letterSpacing: '-1.5px', textShadow: '3px 3px 0px rgba(0,0,0,0.1)' }}>
-            About FEED
+        </div>
+        
+        <style>{`
+          .events-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1400px; width: 100%; margin-bottom: 32px; }
+          @media (min-width: 1024px) {
+            .events-grid { grid-template-columns: 3.5fr 5.5fr 3.5fr; gap: 32px; }
+          }
+          
+          .marquee-vertical {
+            animation: marquee 20s linear infinite;
+          }
+          .marquee-vertical:hover {
+            animation-play-state: paused;
+          }
+          @keyframes marquee {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+          }
+          .marquee-container {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+          }
+          
+          .slider-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            color: #1e3a8a;
+          }
+          .slider-btn:hover {
+            background: #fff;
+            transform: scale(1.05);
+          }
+        `}</style>
+      </div>
+
+      {/* Events & Updates Section */}
+      <div id="events-updates" style={{ width: '100%', padding: '60px 20px', backgroundColor: '#fafafa', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '42px', fontWeight: '900', color: '#1e3a8a', margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>
+            EVENTS <span style={{ color: '#ea580c' }}>&</span> UPDATES
           </h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginTop: '12px' }}>
+            <div style={{ width: '120px', height: '2px', backgroundColor: '#ea580c' }}></div>
+            <Leaf size={32} color="#16a34a" fill="#16a34a" />
+            <div style={{ width: '120px', height: '2px', backgroundColor: '#ea580c' }}></div>
+          </div>
         </div>
 
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        {/* 3-Column Layout */}
+        <div className="events-grid">
           
-          {/* Main Objectives (2 Cards) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-            <div style={{ backgroundColor: '#fed7aa', padding: '24px 20px', borderRadius: '24px', border: '3px solid #111', boxShadow: '5px 5px 0px #111', transition: 'all 0.2s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.03) translateY(-4px)'; e.currentTarget.style.boxShadow = '8px 8px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }}>
-              <div style={{ width: '50px', height: '50px', borderRadius: '16px', backgroundColor: '#fff', border: '3px solid #111', boxShadow: '3px 3px 0px #111', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-                <Users2 size={28} color="#ea580c" />
+          {/* Left Column: Central/State Updates */}
+          <div style={{ backgroundColor: '#fff', borderRadius: '24px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '600px' }}>
+            <div style={{ backgroundColor: '#1e3a8a', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Landmark size={20} color="#1e3a8a" />
+                </div>
+                <h3 style={{ color: '#fff', fontSize: '18px', fontWeight: '700', margin: 0 }}>Central / State Updates</h3>
               </div>
-              <h3 style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 8px', color: '#111' }}>Farmers & MSMEs</h3>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#431407', margin: 0, lineHeight: '1.5' }}>
-                Uplifting farmers, traders, MSME industries & new entrepreneurs in Rural and Semi Urban areas.
-              </p>
+              <MoreHorizontal color="#fff" />
             </div>
-
-            <div style={{ backgroundColor: '#bae6fd', padding: '24px 20px', borderRadius: '24px', border: '3px solid #111', boxShadow: '5px 5px 0px #111', transition: 'all 0.2s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.03) translateY(-4px)'; e.currentTarget.style.boxShadow = '8px 8px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }}>
-              <div style={{ width: '50px', height: '50px', borderRadius: '16px', backgroundColor: '#fff', border: '3px solid #111', boxShadow: '3px 3px 0px #111', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-                <Globe2 size={28} color="#0284c7" />
+            <div className="marquee-container" style={{ padding: '0 24px', position: 'relative' }}>
+              <div className="marquee-vertical">
+                {/* Render the list twice for seamless loop */}
+                {[...centralStateUpdates, ...centralStateUpdates].map((item, idx) => (
+                  <div key={idx} style={{ padding: '24px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                    <div style={{ width: '56px', height: '56px', borderRadius: '50%', border: `2px solid ${item.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: '800', color: item.color, fontSize: '12px' }}>
+                      {item.source.substring(0, 4)}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <h4 style={{ color: item.color, fontSize: '15px', fontWeight: '800', margin: '0 0 6px 0' }}>{item.source}</h4>
+                      <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: '0 0 10px 0', fontWeight: '600' }}>{item.title}</p>
+                      <a href="#" style={{ fontSize: '12px', color: '#2563eb', fontWeight: '800', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        Click Here <ChevronRight size={14} color="#2563eb" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <h3 style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 8px', color: '#111' }}>Global Markets</h3>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#082f49', margin: 0, lineHeight: '1.5' }}>
-                Connecting to International markets, Export Promotional councils, Central/State govts, Banks & ports.
-              </p>
-            </div>
-          </div>
-
-          {/* Vision and Mission (Bubble Cards) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-            <div style={{ backgroundColor: '#e9d5ff', padding: '24px 20px', borderRadius: '40px 40px 40px 10px', border: '3px solid #111', boxShadow: '5px 5px 0px #111', position: 'relative', transition: 'all 0.2s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.03) translateY(-4px)'; e.currentTarget.style.boxShadow = '8px 8px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }}>
-              <div style={{ position: 'absolute', top: '-18px', right: '20px', backgroundColor: '#fff', border: '3px solid #111', borderRadius: '50%', padding: '8px', boxShadow: '3px 3px 0px #111' }}>
-                <Eye size={24} color="#9333ea" />
-              </div>
-              <h3 style={{ fontSize: '22px', fontWeight: '900', margin: '0 0 12px', color: '#111' }}>Our Vision</h3>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#3b0764', margin: 0, lineHeight: '1.5' }}>
-                To spread to all corners of India and emerge as a one-stop solution to farmers, small traders, MSMEs, new entrepreneurs from rural and semi-urban areas for marketing their agricultural commodities in domestic and International markets by means of effective technical interface.
-              </p>
-            </div>
-
-            <div style={{ backgroundColor: '#fef08a', padding: '24px 20px', borderRadius: '40px 40px 10px 40px', border: '3px solid #111', boxShadow: '5px 5px 0px #111', position: 'relative', transition: 'all 0.2s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.03) translateY(-4px)'; e.currentTarget.style.boxShadow = '8px 8px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }}>
-              <div style={{ position: 'absolute', top: '-18px', left: '20px', backgroundColor: '#fff', border: '3px solid #111', borderRadius: '50%', padding: '8px', boxShadow: '3px 3px 0px #111' }}>
-                <Target size={24} color="#ca8a04" />
-              </div>
-              <h3 style={{ fontSize: '22px', fontWeight: '900', margin: '0 0 12px', color: '#111', textAlign: 'right' }}>Our Mission</h3>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#713f12', margin: 0, lineHeight: '1.5' }}>
-                To form product based cooperative societies (FPOs), impart capacity building to export in the form of training sessions, provide information on global marketing opportunities through "FEED STARTUP", and render end-to-end support in real-time export processes.
-              </p>
             </div>
           </div>
 
-          {/* About FEED - 8 Point Grid */}
-          <div style={{ marginTop: '16px' }}>
-            <h3 style={{ fontSize: '26px', fontWeight: '900', textAlign: 'center', marginBottom: '20px', color: '#111' }}>Why Choose FEED?</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
-              
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#bbf7d0', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ShieldCheck size={18} color="#166534" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Registered under MSCS Act, 2002 (Regd.No. 1295/2020) in AP & Telangana.
-                </p>
-              </div>
+          {/* Middle Column: Image Carousel */}
+          <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', height: '600px', boxShadow: '0 15px 35px -5px rgba(0,0,0,0.1)' }}>
+            {eventsSliderImages.map((src, idx) => (
+              <div key={idx} style={{
+                position: 'absolute',
+                top: 0, left: 0, width: '100%', height: '100%',
+                backgroundImage: `url(${src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                opacity: eventsSlide === idx ? 1 : 0,
+                transition: 'opacity 0.8s ease-in-out',
+                zIndex: eventsSlide === idx ? 1 : 0
+              }}></div>
+            ))}
+            
+            {/* Arrows */}
+            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '20px', zIndex: 10 }}>
+              <button className="slider-btn" onClick={() => setEventsSlide((prev) => (prev === 0 ? eventsSliderImages.length - 1 : prev - 1))}>
+                <ChevronLeft size={24} />
+              </button>
+            </div>
+            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '20px', zIndex: 10 }}>
+              <button className="slider-btn" onClick={() => setEventsSlide((prev) => (prev + 1) % eventsSliderImages.length)}>
+                <ChevronRight size={24} />
+              </button>
+            </div>
 
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fbcfe8', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Star size={18} color="#be185d" />
+            {/* Dots */}
+            <div style={{ position: 'absolute', bottom: '24px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '8px', zIndex: 10 }}>
+              {eventsSliderImages.map((_, idx) => (
+                <div key={idx} 
+                  onClick={() => setEventsSlide(idx)}
+                  style={{ 
+                    width: eventsSlide === idx ? '24px' : '8px', 
+                    height: '8px', 
+                    borderRadius: '4px', 
+                    backgroundColor: eventsSlide === idx ? '#fff' : 'rgba(255,255,255,0.5)', 
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}>
                 </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  First-of-its-kind export based cooperative working for the uplift of farmers.
-                </p>
-              </div>
-
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#bfdbfe', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Building2 size={18} color="#1d4ed8" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Connects with 15+ Central Govt departments, Banks, Ports, and Councils.
-                </p>
-              </div>
-
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fed7aa', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <HeartHandshake size={18} color="#c2410c" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Signs MoUs with State Governments to develop export entrepreneurship.
-                </p>
-              </div>
-
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#e9d5ff', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users size={18} color="#7e22ce" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Conducts EXPORT PROMOTIONAL MEETINGS in all districts.
-                </p>
-              </div>
-
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fef08a', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Package size={18} color="#a16207" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Forms PRODUCT-BASED EXPORT ORIENTED FPOs for top 10 products.
-                </p>
-              </div>
-
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fecdd3', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Wrench size={18} color="#be123c" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Assists FPOs in establishing processing units for International standards.
-                </p>
-              </div>
-
-              <div style={{ backgroundColor: '#fff', border: '2px solid #111', borderRadius: '16px', padding: '14px', boxShadow: '3px 3px 0px #111', display: 'flex', gap: '12px', transition: 'all 0.15s ease', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)'; e.currentTarget.style.boxShadow = '5px 5px 0px #111'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px #111'; }}>
-                <div style={{ minWidth: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#c7d2fe', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Globe2 size={18} color="#4338ca" />
-                </div>
-                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', margin: 0, lineHeight: '1.4' }}>
-                  Provides end-to-end support in capturing domestic & international markets.
-                </p>
-              </div>
-
+              ))}
             </div>
           </div>
 
+          {/* Right Column: FEED Services */}
+          <div style={{ backgroundColor: '#fff', borderRadius: '24px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '600px' }}>
+            <div style={{ backgroundColor: '#16a34a', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Leaf size={20} color="#16a34a" />
+                </div>
+                <h3 style={{ color: '#fff', fontSize: '18px', fontWeight: '700', margin: 0 }}>FEED Services</h3>
+              </div>
+              <MoreHorizontal color="#fff" />
+            </div>
+            <div className="marquee-container" style={{ padding: '0 24px', position: 'relative' }}>
+              <div className="marquee-vertical">
+                {/* Render the list twice for seamless loop */}
+                {[...feedServicesList, ...feedServicesList].map((item, idx) => (
+                  <div key={idx} style={{ padding: '20px 0', borderBottom: '1px solid #f1f5f9', display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <item.icon size={26} color={item.color} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <h4 style={{ color: '#166534', fontSize: '15px', fontWeight: '800', margin: '0 0 6px 0' }}>{item.title}</h4>
+                      <p style={{ fontSize: '12.5px', color: '#475569', lineHeight: '1.4', margin: 0, fontWeight: '600' }}>{item.desc}</p>
+                    </div>
+                    <button style={{ width: '28px', height: '28px', borderRadius: '50%', border: '2px solid #cbd5e1', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <ChevronRight size={14} color="#166534" strokeWidth={3} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

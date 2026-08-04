@@ -1,135 +1,197 @@
 import React from 'react';
 import './Footer.css';
-import { ArrowRight } from 'lucide-react';
+import { 
+  ChevronRight, 
+  Link as LinkIcon, 
+  Briefcase, 
+  BarChart2, 
+  Headphones, 
+  Users,
+  ShieldCheck,
+  FileText,
+  Lock,
+  ArrowUp,
+  Mail,
+  Send
+} from 'lucide-react';
+import logo from '../assets/logo.webp';
+
+const FacebookIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+  </svg>
+);
+
+const TwitterIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+  </svg>
+);
+
+const LinkedinIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const YoutubeIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
+);
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="modern-footer">
-      {/* Decorative Top Border */}
+    <footer className="new-footer">
       <div className="footer-gradient-bar"></div>
-      
       <div className="footer-container">
         
-        {/* Main Footer Content */}
-        <div className="footer-grid">
-          
-          {/* Column 1: Quick Links */}
-          <div className="footer-col">
-            <h4 className="footer-heading">Quick Links</h4>
-            <div className="heading-underline"></div>
-            <ul className="footer-links">
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Sitemap</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Pricing</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Join us</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Contact us</a></li>
-            </ul>
-          </div>
-
-          {/* Column 2: Services */}
-          <div className="footer-col">
-            <h4 className="footer-heading">Services</h4>
-            <div className="heading-underline"></div>
-            <ul className="footer-links">
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Fpo</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Farm</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Business</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Products</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Exports</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Market</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Education</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> My Tools</a></li>
-            </ul>
-          </div>
-
-          {/* Column 3: FEED Insights */}
-          <div className="footer-col">
-            <h4 className="footer-heading">FEED Insights</h4>
-            <div className="heading-underline"></div>
-            <ul className="footer-links">
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Suggestions</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Sample works</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Queries</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Compliants</a></li>
-            </ul>
-          </div>
-
-          {/* Column 4: Help */}
-          <div className="footer-col">
-            <h4 className="footer-heading">Help</h4>
-            <div className="heading-underline"></div>
-            <ul className="footer-links">
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> FAQs</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Reporting</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Documentation</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Support Policy</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Terms & conditions</a></li>
-              <li><a href="#" className="highlight-link"><ArrowRight className="link-icon" size={14} /> Privacy Policy</a></li>
-              <li><a href="#"><ArrowRight className="link-icon" size={14} /> Disclaimer</a></li>
-            </ul>
-          </div>
-          
-          {/* Column 5: Connect with us (Newsletter & Social) */}
-          <div className="footer-col connect-col">
-            <h4 className="footer-heading">Connect with us</h4>
-            <div className="heading-underline"></div>
-            
-            <p className="footer-desc">Stay updated with our latest insights, services, and opportunities.</p>
-            
-            <div className="newsletter-box">
-              <input type="email" placeholder="Enter email address" className="newsletter-input" />
-              <button className="newsletter-btn">Subscribe</button>
+        {/* Top Banner */}
+        <div className="footer-top-banner">
+          <div className="banner-left">
+            <div className="banner-logo-placeholder">
+              <img src={logo} alt="FEED Logo" className="banner-logo" />
             </div>
-            
-            <div className="social-icons">
-              <a href="#" className="social-icon facebook" aria-label="Facebook">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                </svg>
-              </a>
-              <a href="#" className="social-icon twitter" aria-label="Twitter">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-                </svg>
-              </a>
-              <a href="#" className="social-icon linkedin" aria-label="LinkedIn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                  <rect x="2" y="9" width="4" height="12"/>
-                  <circle cx="4" cy="4" r="2"/>
-                </svg>
-              </a>
-              <a href="#" className="social-icon pinterest" aria-label="Pinterest">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M8 20a3.6 3.6 0 0 1-2-3c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5-2 0-3.5-1M12 12v12"/>
-                  <circle cx="12" cy="12" r="10"/>
-                </svg>
-              </a>
+            <div className="banner-text-content">
+              <h2>Together We Empower.<br/><span className="text-green">Together We Grow.</span></h2>
+              <p>FEED is a multi-state cooperative society working for the uplift of exports from all corners of <span className="text-green">India</span>.</p>
             </div>
           </div>
-          
-        </div>
-
-        {/* Footer Bottom */}
-        <div className="footer-bottom">
-          <div className="footer-bottom-content">
-            <div className="copyright">
-              © {new Date().getFullYear()} FEED Organization. All rights reserved.
-            </div>
-            <div className="footer-bottom-links">
-              <a href="#">Privacy</a>
-              <span className="dot-separator">•</span>
-              <a href="#">Terms</a>
-              <span className="dot-separator">•</span>
-              <a href="#">Cookies</a>
+          <div className="banner-right">
+            <div className="subscribe-card">
+              <h3>Stay updated with<br/><span className="text-green">latest insights</span> & opportunities</h3>
+              <div className="subscribe-input-group">
+                <Mail className="input-icon" size={16} />
+                <input type="email" placeholder="Enter your email address" />
+                <button className="subscribe-btn">Subscribe <Send size={12} /></button>
+              </div>
+              <p className="privacy-note"><Lock size={10} /> We respect your privacy. Unsubscribe at any time.</p>
             </div>
           </div>
         </div>
-        
+
+        {/* Main Footer Links */}
+        <div className="footer-links-section">
+          {/* Quick Links */}
+          <div className="footer-column">
+            <h4 className="column-title"><div className="icon-bg green-bg"><LinkIcon size={14} /></div> Quick Links</h4>
+            <ul className="footer-list">
+              <li><a href="#"><ChevronRight size={12} /> Sitemap</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Pricing</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Join us</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Contact us</a></li>
+            </ul>
+            <div className="info-card light-green-card">
+              <p>Empowering<br/>Communities.<br/>Strengthening<br/>Exports.</p>
+              <div className="card-icon-placeholder globe-sprout"></div>
+            </div>
+          </div>
+
+          {/* Services */}
+          <div className="footer-column">
+            <h4 className="column-title"><div className="icon-bg purple-bg"><Briefcase size={14} /></div> Services</h4>
+            <ul className="footer-list">
+              <li><a href="#"><ChevronRight size={12} /> My Fpo</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Farm</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Business</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Products</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Exports</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Market</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Education</a></li>
+              <li><a href="#"><ChevronRight size={12} /> My Tools</a></li>
+            </ul>
+          </div>
+
+          {/* FEED Insights */}
+          <div className="footer-column">
+            <h4 className="column-title"><div className="icon-bg blue-bg"><BarChart2 size={14} /></div> FEED Insights</h4>
+            <ul className="footer-list">
+              <li><a href="#"><ChevronRight size={12} /> Suggestions</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Sample works</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Queries</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Complaints</a></li>
+            </ul>
+            <div className="info-card light-blue-card">
+              <div className="card-content-flex">
+                 <div className="doc-icon-wrapper"><FileText size={18} /></div>
+                 <div>
+                   <p>Insights that inspire.<br/>Knowledge that<br/>creates impact.</p>
+                 </div>
+              </div>
+              <a href="#" className="explore-link">Explore Insights &rarr;</a>
+            </div>
+          </div>
+
+          {/* Help */}
+          <div className="footer-column">
+            <h4 className="column-title"><div className="icon-bg orange-bg"><Headphones size={14} /></div> Help</h4>
+            <ul className="footer-list">
+              <li><a href="#"><ChevronRight size={12} /> FAQs</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Reporting</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Documentation</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Support Policy</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Terms & conditions</a></li>
+              <li><a href="#" className="text-orange"><ChevronRight size={12} /> Privacy Policy</a></li>
+              <li><a href="#"><ChevronRight size={12} /> Disclaimer</a></li>
+            </ul>
+          </div>
+
+          {/* Connect with us */}
+          <div className="footer-column">
+            <h4 className="column-title"><div className="icon-bg pink-bg"><Users size={14} /></div> Connect with us</h4>
+            <p className="connect-text">Stay connected with our latest insights, services, and opportunities.</p>
+            <div className="social-icons-row">
+              <a href="#" className="social-circle fb"><FacebookIcon /></a>
+              <a href="#" className="social-circle tw"><TwitterIcon /></a>
+              <a href="#" className="social-circle li"><LinkedinIcon /></a>
+              <a href="#" className="social-circle ig"><InstagramIcon /></a>
+              <a href="#" className="social-circle yt"><YoutubeIcon /></a>
+            </div>
+            <div className="info-card green-gradient-card">
+              <p><strong>Let's build a<br/>stronger tomorrow,<br/>together.</strong></p>
+              <button className="join-btn">Join FEED Community &rarr;</button>
+              <div className="card-bg-image"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      {/* Decorative Background Elements */}
-      <div className="footer-bg-glow-1"></div>
-      <div className="footer-bg-glow-2"></div>
+
+      {/* Bottom Bar */}
+      <div className="footer-bottom-bar">
+        <div className="footer-bottom-container">
+          <div className="bottom-left">
+            <img src={logo} alt="Company Logo" className="bottom-logo" />
+            <div className="copyright-text">
+              <p>&copy; 2026 FEED Organization.</p>
+              <p>All rights reserved.</p>
+            </div>
+          </div>
+          
+          <div className="bottom-right">
+            <a href="#" className="bottom-link"><ShieldCheck size={14} /> Privacy Policy</a>
+            <span className="divider">|</span>
+            <a href="#" className="bottom-link"><FileText size={14} /> Terms & Conditions</a>
+            <span className="divider">|</span>
+            <a href="#" className="bottom-link"><Lock size={14} /> Disclaimer</a>
+            
+            <button className="scroll-top-btn" onClick={scrollToTop}>
+              <ArrowUp size={16} color="#0f2b3e" />
+            </button>
+          </div>
+        </div>
+      </div>
     </footer>
   );
 };
