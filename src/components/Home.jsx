@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Footer from './Footer';
 import AboutUs from './AboutUs';
 import Navbar, { servicesMegaMenu } from './Navbar';
+import './Navbar.css';
 // --- Events & Updates Static Data ---
 const centralStateUpdates = [
   { id: 1, source: 'FIEO', title: 'FIEO MUMBAI : WEB CONFERENCE ON AWARENESS OF CYBER SECURITY ON SEPTEMBER 30, 202', color: '#0ea5e9' },
@@ -357,56 +358,20 @@ const Home = ({ onNavigate }) => {
               const animName = animations[sIdx % 4];
               return (
               <div key={sIdx} 
-              className="service-btn-animated"
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '12px', 
-                padding: '16px', 
-                borderRadius: '16px', 
-                background: service.gradient,
-                border: `2px solid ${service.borderColor}`,
-                transition: 'all 0.2s ease', 
-                cursor: 'pointer',
-                height: '90px',
-                boxShadow: '0 6px 12px rgba(0,0,0,0.15)',
-                animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none'
-              }} 
-              onMouseEnter={(e) => { 
-                e.currentTarget.style.transform = 'translateY(-4px)'; 
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)'; 
-                e.currentTarget.style.borderColor = '#475569';
-              }} 
-              onMouseLeave={(e) => { 
-                e.currentTarget.style.transform = 'none'; 
-                e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)'; 
-                e.currentTarget.style.borderColor = service.borderColor;
-              }}>
-                <div style={{ 
-                  width: '54px', 
-                  height: '54px', 
-                  borderRadius: '14px', 
-                  backgroundColor: 'rgba(255, 255, 255, 0.15)', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center', 
-                  color: service.iconColor, 
-                  flexShrink: 0,
-                  boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.1)'
-                }}>
-                  <service.icon size={28} />
+                className="srv-card service-btn-animated"
+                style={{ 
+                  animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none'
+                }}
+              >
+                <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>
+                <div className="srv-card-content">
+                  <div className={`srv-icon-circle color-${service.color}`}>
+                    <img src={service.img} alt={service.name} className="srv-card-image" />
+                  </div>
+                  <div className="srv-card-text-area">
+                    <h3>{service.name}</h3>
+                  </div>
                 </div>
-                <span style={{ 
-                  fontSize: '14px', 
-                  fontWeight: '800', 
-                  color: '#f8fafc', 
-                  textTransform: 'uppercase', 
-                  letterSpacing: '0.5px',
-                  lineHeight: '1.3',
-                  whiteSpace: 'pre-line'
-                }}>
-                  {service.name}
-                </span>
               </div>
               );
             })}

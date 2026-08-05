@@ -16,7 +16,7 @@ import {
   HeartHandshake,
   Users,
 } from 'lucide-react';
-import logoImage from '../assets/logo.webp';
+
 import './ContactUs.css';
 import Footer from './Footer';
 import Navbar from './Navbar';
@@ -59,6 +59,77 @@ const YoutubeIcon = () => (
   <SocialIcon>
     <path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.5 12 4.5 12 4.5s-7.5 0-9.4.6A3 3 0 0 0 .5 7.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-4.8zM9.8 15.5v-7l6.3 3.5-6.3 3.5z" />
   </SocialIcon>
+);
+
+const ContactBackground = () => (
+  <div className="contact-background" aria-hidden="true">
+    <div className="bg-radial-glow" />
+
+    <div className="bg-dots bg-dots-left" />
+    <div className="bg-dots bg-dots-right" />
+
+    <svg className="bg-waves" viewBox="0 0 1440 600" preserveAspectRatio="none">
+      <path fill="rgba(56, 189, 248, 0.04)" d="M0,256L48,229.3C96,203,192,149,288,149.3C384,149,480,203,576,234.7C672,267,768,277,864,245.3C960,213,1056,139,1152,117.3C1248,96,1344,128,1392,144L1440,160L1440,600L1392,600C1344,600,1248,600,1152,600C1056,600,960,600,864,600C768,600,672,600,576,600C480,600,384,600,288,600C192,600,96,600,48,600L0,600Z"></path>
+      <path fill="rgba(187, 247, 208, 0.08)" d="M0,96L60,117.3C120,139,240,181,360,186.7C480,192,600,160,720,149.3C840,139,960,149,1080,160C1200,171,1320,181,1380,186.7L1440,192L1440,600L1380,600C1320,600,1200,600,1080,600C960,600,840,600,720,600C600,600,480,600,360,600C240,600,120,600,60,600L0,600Z"></path>
+    </svg>
+
+    <svg className="bg-ribbons" viewBox="0 0 1440 400" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="ribbon-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0" />
+          <stop offset="50%" stopColor="#4ade80" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#16a34a" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M-100,250 C300,-50 900,450 1540,100" fill="none" stroke="url(#ribbon-grad)" strokeWidth="8" />
+      <path d="M-100,150 C400,-150 800,550 1540,50" fill="none" stroke="url(#ribbon-grad)" strokeWidth="4" opacity="0.6"/>
+    </svg>
+
+    <svg className="bg-globe" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="95" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeOpacity="0.2"/>
+      <ellipse cx="100" cy="100" rx="40" ry="95" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeOpacity="0.2"/>
+      <ellipse cx="100" cy="100" rx="75" ry="95" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeOpacity="0.2"/>
+      <path d="M5,100 L195,100 M100,5 L100,195" stroke="#38bdf8" strokeWidth="1.5" strokeOpacity="0.2" />
+      <path d="M25,160 Q100,120 175,160 M25,40 Q100,80 175,40" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeOpacity="0.2" />
+    </svg>
+
+    <svg className="bg-leaves" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="leaf1" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#16a34a" stopOpacity="0.3"/>
+          <stop offset="100%" stopColor="#bbf7d0" stopOpacity="0"/>
+        </linearGradient>
+        <linearGradient id="leaf2" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#4ade80" stopOpacity="0.25"/>
+          <stop offset="100%" stopColor="#38bdf8" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="M180,200 C180,100 100,80 20,120 C70,180 130,200 180,200 Z" fill="url(#leaf1)" />
+      <path d="M200,170 C150,110 80,110 40,160 C90,190 140,190 200,170 Z" fill="url(#leaf2)" />
+    </svg>
+
+    <div className="bg-plane-container">
+      <svg className="bg-plane-trail" viewBox="0 0 400 150" preserveAspectRatio="none">
+        <path d="M0,130 Q150,150 250,80 T400,20" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeDasharray="6,6" opacity="0.5"/>
+      </svg>
+      <div className="bg-plane">
+        <Send size={22} color="#f97316" />
+      </div>
+    </div>
+
+    <div className="bg-icon bg-envelope"><Mail size={24} color="#38bdf8" /></div>
+    <div className="bg-icon bg-bubble"><MessageSquare size={24} color="#4ade80" /></div>
+
+    <div className="bg-bokeh bokeh-1" />
+    <div className="bg-bokeh bokeh-2" />
+    <div className="bg-bokeh bokeh-3" />
+    <div className="bg-sparkle sparkle-1" />
+    <div className="bg-sparkle sparkle-2" />
+    <div className="bg-sparkle sparkle-3" />
+
+    <div className="bg-card-glow glow-1" />
+    <div className="bg-card-glow glow-2" />
+  </div>
 );
 
 const ContactUs = ({ onNavigate }) => {
@@ -105,20 +176,11 @@ const ContactUs = ({ onNavigate }) => {
 
   return (
     <div className="contact-page">
+      <ContactBackground />
       <section className="contact-hero">
         <Navbar onNavigate={onNavigate} />
-        <div className="contact-hero-grid" aria-hidden="true" />
-        <button type="button" className="contact-back" onClick={() => onNavigate('home')}>
-          <ArrowLeft size={16} />
-          Home
-        </button>
-
-        <div className="contact-hero-logo">
-          <img src={logoImage} alt="FEED logo" />
-        </div>
 
         <div className="contact-hero-copy">
-          <div className="contact-hero-underline" />
           <h1>
             Let&apos;s Connect, Let&apos;s <span className="accent">Grow Together</span>
           </h1>
@@ -127,50 +189,7 @@ const ContactUs = ({ onNavigate }) => {
           </p>
         </div>
 
-        <div className="contact-plane-trail" aria-hidden="true" />
-        <div className="contact-plane" aria-hidden="true">
-          <Send size={28} fill="currentColor" />
-        </div>
 
-        <div className="contact-hero-art" aria-hidden="true">
-          <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="hillA" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#4ade80" />
-                <stop offset="100%" stopColor="#16a34a" />
-              </linearGradient>
-              <linearGradient id="hillB" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#86efac" />
-                <stop offset="100%" stopColor="#22c55e" />
-              </linearGradient>
-            </defs>
-            <path d="M0 110 C180 70 280 130 420 95 C560 60 640 120 780 90 C920 60 1040 110 1180 80 C1280 60 1360 90 1440 70 L1440 160 L0 160 Z" fill="url(#hillB)" />
-            <path d="M0 130 C220 100 340 145 520 120 C700 95 820 140 980 115 C1120 95 1260 130 1440 110 L1440 160 L0 160 Z" fill="url(#hillA)" />
-            <g fill="#cbd5e1">
-              <rect x="980" y="48" width="10" height="55" rx="2" />
-              <polygon points="985,30 970,55 1000,55" fill="#94a3b8" />
-              <rect x="1020" y="40" width="10" height="63" rx="2" />
-              <polygon points="1025,22 1010,48 1040,48" fill="#94a3b8" />
-              <rect x="1060" y="52" width="10" height="51" rx="2" />
-              <polygon points="1065,34 1050,58 1080,58" fill="#94a3b8" />
-            </g>
-            <g>
-              <rect x="1120" y="78" width="18" height="55" fill="#2563eb" />
-              <rect x="1150" y="68" width="18" height="65" fill="#1d4ed8" />
-              <rect x="1180" y="88" width="18" height="45" fill="#3b82f6" />
-              <rect x="1210" y="74" width="22" height="18" fill="#f97316" />
-              <rect x="1240" y="74" width="22" height="18" fill="#2563eb" />
-              <rect x="1270" y="74" width="22" height="18" fill="#ea580c" />
-              <rect x="1305" y="95" width="90" height="28" rx="8" fill="#1e40af" />
-            </g>
-            <g>
-              <rect x="180" y="118" width="110" height="14" rx="4" fill="#64748b" />
-              <rect x="200" y="104" width="70" height="18" rx="4" fill="#ffffff" />
-              <circle cx="215" cy="132" r="8" fill="#1e293b" />
-              <circle cx="255" cy="132" r="8" fill="#1e293b" />
-            </g>
-          </svg>
-        </div>
       </section>
 
       <div className="contact-main">

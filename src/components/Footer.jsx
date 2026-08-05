@@ -47,7 +47,60 @@ const YoutubeIcon = () => (
     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
   </svg>
 );
+const FooterBackground = () => (
+  <div className="footer-premium-bg" aria-hidden="true">
+    <div className="f-mesh-1" />
+    <div className="f-mesh-2" />
+    <div className="f-mesh-3" />
 
+    <div className="f-ambient-glow" />
+    <div className="f-newsletter-glow" />
+
+    <div className="f-world-map" />
+
+    <div className="f-planet-green">
+      <div className="f-planet-core" />
+      <div className="f-planet-ring f-planet-ring-1" />
+      <div className="f-planet-ring f-planet-ring-2" />
+    </div>
+
+    <div className="f-planet-orange" />
+
+    <svg className="f-leaf-tl" viewBox="0 0 100 100">
+      <path d="M0,0 C50,0 100,50 100,100 C50,100 0,50 0,0 Z" fill="rgba(34,197,94,0.04)" />
+    </svg>
+    <svg className="f-leaf-br" viewBox="0 0 100 100">
+      <path d="M100,100 C50,100 0,50 0,0 C50,0 100,50 100,100 Z" fill="rgba(34,197,94,0.04)" />
+    </svg>
+
+    <div className="f-stars">
+      <div className="f-star f-star-1" />
+      <div className="f-star f-star-2" />
+      <div className="f-star f-star-3" />
+      <div className="f-star f-star-4" />
+      <div className="f-star f-star-5" />
+      <div className="f-star f-star-6" />
+      <div className="f-star f-star-7" />
+      <div className="f-star f-star-8" />
+    </div>
+
+    <div className="f-vignette" />
+    
+    <svg width="0" height="0">
+      <defs>
+        <linearGradient id="f-wave-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#2563eb" />
+          <stop offset="100%" stopColor="#16a34a" />
+        </linearGradient>
+        <linearGradient id="f-line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="transparent" />
+          <stop offset="50%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="transparent" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+);
 const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -55,7 +108,7 @@ const Footer = () => {
 
   return (
     <footer className="new-footer">
-      <div className="footer-gradient-bar"></div>
+      <FooterBackground />
       <div className="footer-container">
         
         {/* Top Banner */}

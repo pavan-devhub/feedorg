@@ -7,23 +7,24 @@ import {
   Globe2, ClipboardList, Store, ShieldCheck, Wrench, Lightbulb, 
   ShoppingBag, CreditCard 
 } from 'lucide-react';
+import './Navbar.css';
 
 export const servicesMegaMenu = [
-  { name: 'PROJECT KRUSHI\nYEVA JAYATE', icon: Sprout, gradient: 'linear-gradient(135deg, #14532d, #064e3b)', borderColor: '#166534', iconColor: '#4ade80' },
-  { name: 'MY ORG', icon: Building2, gradient: 'linear-gradient(135deg, #1e3a8a, #172554)', borderColor: '#1d4ed8', iconColor: '#60a5fa' },
-  { name: 'MY EXPORTS', icon: Ship, gradient: 'linear-gradient(135deg, #0c4a6e, #082f49)', borderColor: '#0369a1', iconColor: '#38bdf8' },
-  { name: 'LOANS & FINANCE', icon: Coins, gradient: 'linear-gradient(135deg, #78350f, #451a03)', borderColor: '#9a3412', iconColor: '#fbbf24' },
-  { name: 'PRODUCT 360', icon: Package, gradient: 'linear-gradient(135deg, #581c87, #3b0764)', borderColor: '#7e22ce', iconColor: '#c084fc' },
-  { name: 'MY BUSINESS', icon: TrendingUp, gradient: 'linear-gradient(135deg, #064e3b, #022c22)', borderColor: '#047857', iconColor: '#34d399' },
-  { name: 'MY EDUCATION', icon: GraduationCap, gradient: 'linear-gradient(135deg, #312e81, #1e1b4b)', borderColor: '#4338ca', iconColor: '#818cf8' },
-  { name: 'FEED WORLD', icon: Globe2, gradient: 'linear-gradient(135deg, #1e40af, #1e3a8a)', borderColor: '#2563eb', iconColor: '#93c5fd' },
-  { name: 'EPM', icon: ClipboardList, gradient: 'linear-gradient(135deg, #334155, #1e293b)', borderColor: '#475569', iconColor: '#cbd5e1' },
-  { name: 'TRADE FAIRS', icon: Store, gradient: 'linear-gradient(135deg, #7c2d12, #431407)', borderColor: '#c2410c', iconColor: '#fb923c' },
-  { name: 'SAFE MISSION', icon: ShieldCheck, gradient: 'linear-gradient(135deg, #166534, #14532d)', borderColor: '#15803d', iconColor: '#4ade80' },
-  { name: 'MY TOOLS', icon: Wrench, gradient: 'linear-gradient(135deg, #0f766e, #134e4a)', borderColor: '#0d9488', iconColor: '#5eead4' },
-  { name: 'KNOW YOUR\nSCHEMES', icon: Lightbulb, gradient: 'linear-gradient(135deg, #854d0e, #713f12)', borderColor: '#a16207', iconColor: '#facc15' },
-  { name: 'MY MARKET', icon: ShoppingBag, gradient: 'linear-gradient(135deg, #831843, #4c0519)', borderColor: '#be185d', iconColor: '#f472b6' },
-  { name: 'FEED CARD', icon: CreditCard, gradient: 'linear-gradient(135deg, #155e75, #164e63)', borderColor: '#0e7490', iconColor: '#22d3ee' }
+  { name: 'PROJECT KRUSHI', num: '01', color: 'green', img: '/icons/icon_srv_krushi_1785921685926.jpg' },
+  { name: 'MY ORG', num: '02', color: 'blue', img: '/icons/icon_buyers_connection_1785919564348.jpg' },
+  { name: 'MY EXPORTS', num: '03', color: 'teal', img: '/icons/icon_country_selection_1785919634748.jpg' },
+  { name: 'LOANS & FINANCE', num: '04', color: 'yellow', img: '/icons/icon_finance_1785919584808.jpg' },
+  { name: 'PRODUCT 360', num: '05', color: 'orange', img: '/icons/icon_product_selection_1785919553355.jpg' },
+  { name: 'MY BUSINESS', num: '06', color: 'purple', img: '/icons/icon_process_order_1785919603239.jpg' },
+  { name: 'MY EDUCATION', num: '07', color: 'pink', img: '/icons/icon_documentation_1785919613435.jpg' },
+  { name: 'FEED WORLD', num: '08', color: 'blue-light', img: '/icons/icon_why_exports_1785919534482.jpg' },
+  { name: 'EPM', num: '09', color: 'green-light', img: '/icons/icon_start_exports_1785919544424.jpg' },
+  { name: 'TRADE FAIRS', num: '10', color: 'orange-light', img: '/icons/icon_trade_updates_1785919624005.jpg' },
+  { name: 'SAFE MISSION', num: '11', color: 'teal', img: '/icons/icon_policies_1785919575221.jpg' },
+  { name: 'MY TOOLS', num: '12', color: 'purple-light', img: '/icons/icon_tools_services_1785919653740.jpg' },
+  { name: 'KNOW SCHEMES', num: '13', color: 'yellow', img: '/icons/icon_policies_1785919575221.jpg' },
+  { name: 'MY MARKET', num: '14', color: 'orange', img: '/icons/icon_product_selection_1785919553355.jpg' },
+  { name: 'FEED CARD', num: '15', color: 'blue', img: '/icons/icon_tariffs_1785919643320.jpg' }
 ];
 
 const Navbar = ({ onNavigate }) => {
@@ -119,6 +120,7 @@ const Navbar = ({ onNavigate }) => {
               { id: 'how', icon: Activity, label: 'How Feed Works' },
               { id: 'fpo', icon: Users, label: 'FPO' },
               { id: 'exports', icon: Package, label: 'Exports' },
+
               { id: 'contact', icon: PhoneCall, label: 'Contact Us' }
             ].map((item) => {
               const isActive = item.id === 'home';
@@ -137,6 +139,8 @@ const Navbar = ({ onNavigate }) => {
                   onClick={() => {
                     if (item.id === 'home') onNavigate('home');
                     if (item.id === 'contact') onNavigate('contact');
+                    if (item.id === 'exports') onNavigate('exports');
+
                     if (item.id === 'services') setIsServicesOpen(!isServicesOpen);
                     if (item.id === 'about') {
                       // Only scroll if we are on the home page, else navigate to home?
@@ -203,69 +207,29 @@ const Navbar = ({ onNavigate }) => {
                       <div style={{ height: '32%', width: '100%' }}></div>
 
                       {/* Buttons Grid container positioned tightly in the white space */}
-                      <div style={{ 
+                      <div className="srv-cards-grid" style={{ 
                         flex: 1,
-                        padding: '0 5% 5% 5%', // Left, right, bottom padding to align with white boundaries
-                        display: 'grid', 
-                        gridTemplateColumns: 'repeat(4, 1fr)', 
-                        gridAutoRows: 'min-content',
-                        gap: '12px',
+                        padding: '0 5% 4% 5%', // Left, right, bottom padding to align with white boundaries
                       }}>
                         {servicesMegaMenu.map((service, sIdx) => {
                           const animations = ['flyInLeft', 'flyInTop', 'flyInBottom', 'flyInRight'];
                           const animName = animations[sIdx % 4];
                           return (
                           <div key={sIdx} 
-                          className="service-btn-animated"
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '10px', 
-                            padding: '10px 12px', 
-                            borderRadius: '12px', 
-                            background: service.gradient,
-                            border: `1px solid ${service.borderColor}`,
-                            transition: 'all 0.2s', 
-                            cursor: 'pointer',
-                            height: '72px',
-                            boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
-                            animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`
-                          }} 
-                          onMouseEnter={(e) => { 
-                            e.currentTarget.style.transform = 'translateY(-2px)'; 
-                            e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3)'; 
-                            e.currentTarget.style.borderColor = '#475569';
-                          }} 
-                          onMouseLeave={(e) => { 
-                            e.currentTarget.style.transform = 'none'; 
-                            e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.2)'; 
-                            e.currentTarget.style.borderColor = service.borderColor;
-                          }}>
-                            <div style={{ 
-                              width: '42px', 
-                              height: '42px', 
-                              borderRadius: '10px', 
-                              backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                              display: 'flex', 
-                              justifyContent: 'center', 
-                              alignItems: 'center', 
-                              color: service.iconColor, 
-                              flexShrink: 0,
-                              boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.05)'
-                            }}>
-                              <service.icon size={24} />
+                            className="srv-card service-btn-animated"
+                            style={{ 
+                              animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`
+                            }}
+                          >
+                            <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>
+                            <div className="srv-card-content">
+                              <div className={`srv-icon-circle color-${service.color}`}>
+                                <img src={service.img} alt={service.name} className="srv-card-image" />
+                              </div>
+                              <div className="srv-card-text-area">
+                                <h3>{service.name}</h3>
+                              </div>
                             </div>
-                            <span style={{ 
-                              fontSize: '12px', 
-                              fontWeight: '800', 
-                              color: '#f8fafc', // White text for dark background
-                              textTransform: 'uppercase', 
-                              letterSpacing: '0.2px',
-                              lineHeight: '1.2',
-                              whiteSpace: 'pre-line'
-                            }}>
-                              {service.name}
-                            </span>
                           </div>
                           );
                         })}

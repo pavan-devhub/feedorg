@@ -8,62 +8,32 @@
   --cu-card-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
   min-height: 100vh;
   width: 100%;
-  background: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 40%, #e0f2fe 65%, #f0fdf4 100%);
+  position: relative;
+  overflow: hidden;
   color: var(--cu-navy);
   font-family: 'Outfit', 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
-.contact-back {
-  position: absolute;
-  top: 18px;
-  left: 24px;
-  z-index: 5;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--cu-navy);
-  font-weight: 700;
-  font-size: 13px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
-}
 
-.contact-back:hover {
-  transform: translateY(-1px);
-}
 
 /* Hero */
 .contact-hero {
   position: relative;
   min-height: 280px;
   padding: 56px 48px 120px;
-  background:
-    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.12), transparent 40%),
-    linear-gradient(180deg, #dbeafe 0%, #eff6ff 45%, #f8fafc 100%);
+  background: transparent;
   overflow: hidden;
 }
 
-.contact-hero-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.18) 1px, transparent 1px);
-  background-size: 36px 36px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 85%);
-  pointer-events: none;
-}
+
 
 .contact-hero-copy {
   position: relative;
   z-index: 2;
   max-width: 560px;
-  padding-top: 12px;
+  padding-top: 72px; /* Increased padding to prevent overlap with navbar */
 }
 
 .contact-hero-copy h1 {
@@ -78,13 +48,7 @@
   color: var(--cu-green-dark);
 }
 
-.contact-hero-underline {
-  width: 54px;
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--cu-green), var(--cu-blue));
-  margin-bottom: 14px;
-}
+
 
 .contact-hero-copy p {
   color: var(--cu-muted);
@@ -93,66 +57,8 @@
   max-width: 420px;
 }
 
-.contact-hero-logo {
-  position: absolute;
-  top: 28px;
-  right: 48px;
-  z-index: 2;
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
 
-.contact-hero-logo img {
-  width: 58px;
-  height: 58px;
-  object-fit: contain;
-}
 
-.contact-plane {
-  position: absolute;
-  top: 42%;
-  left: 46%;
-  z-index: 2;
-  color: var(--cu-blue);
-  animation: plane-float 4s ease-in-out infinite;
-}
-
-.contact-plane-trail {
-  position: absolute;
-  top: 48%;
-  left: 28%;
-  width: 18%;
-  border-top: 2px dashed rgba(59, 130, 246, 0.55);
-  transform: rotate(-8deg);
-  z-index: 1;
-}
-
-.contact-hero-art {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 150px;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.contact-hero-art svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-@keyframes plane-float {
-  0%, 100% { transform: translateY(0) rotate(-12deg); }
-  50% { transform: translateY(-10px) rotate(-8deg); }
-}
 
 /* Main layout */
 .contact-main {
@@ -622,17 +528,7 @@
     padding: 64px 24px 100px;
   }
 
-  .contact-hero-logo {
-    right: 20px;
-    top: 20px;
-    width: 64px;
-    height: 64px;
-  }
 
-  .contact-hero-logo img {
-    width: 46px;
-    height: 46px;
-  }
 }
 
 @media (max-width: 560px) {
@@ -643,4 +539,222 @@
   .branch-map {
     height: 160px;
   }
+}
+
+/* --- Premium Background Overrides --- */
+
+.contact-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Elevate main content above background */
+.contact-hero, .contact-main, .contact-info-bar {
+  position: relative;
+  z-index: 2;
+}
+
+/* Subtle mesh gradients */
+.contact-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 10% 60%, rgba(22, 163, 74, 0.06) 0%, transparent 40%);
+}
+
+/* Radial Glow Behind Title */
+.bg-radial-glow {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* Organic Waves */
+.bg-waves {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+/* Abstract Flowing Ribbons */
+.bg-ribbons {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  width: 100%;
+  height: 500px;
+  opacity: 0.7;
+}
+
+/* World Globe */
+.bg-globe {
+  position: absolute;
+  top: -20px;
+  right: -50px;
+  width: 500px;
+  height: 500px;
+  opacity: 0.8;
+  animation: slow-spin 60s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Translucent Leaves */
+.bg-leaves {
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 450px;
+  height: 450px;
+  transform: rotate(-15deg);
+}
+
+/* Paper Airplane & Trail */
+.bg-plane-container {
+  position: absolute;
+  top: 25%;
+  left: 15%;
+  width: 600px;
+  height: 250px;
+}
+.bg-plane-trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bg-plane {
+  position: absolute;
+  top: 12px;
+  right: -10px;
+  transform: rotate(25deg);
+  animation: plane-hover 6s ease-in-out infinite;
+}
+
+@keyframes plane-hover {
+  0%, 100% { transform: rotate(25deg) translate(0, 0); }
+  50% { transform: rotate(28deg) translate(5px, -15px); }
+}
+
+/* Floating Icons */
+.bg-icon {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  padding: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+}
+.bg-envelope {
+  top: 15%;
+  right: 25%;
+  animation: float-icon 7s ease-in-out infinite 1s;
+}
+.bg-bubble {
+  top: 45%;
+  left: 5%;
+  animation: float-icon 8s ease-in-out infinite;
+}
+
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+/* Bokeh Effects */
+.bg-bokeh {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.4;
+  animation: bokeh-pulse 10s ease-in-out infinite;
+}
+.bokeh-1 { width: 150px; height: 150px; background: #bbf7d0; top: 20%; left: 30%; animation-delay: 0s; }
+.bokeh-2 { width: 200px; height: 200px; background: #bae6fd; bottom: 30%; right: 10%; animation-delay: -3s; }
+.bokeh-3 { width: 180px; height: 180px; background: #fed7aa; top: 60%; left: 20%; animation-delay: -6s; }
+
+@keyframes bokeh-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+/* Sparkle Particles */
+.bg-sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+  animation: sparkle-twinkle 4s ease-in-out infinite;
+}
+.sparkle-1 { top: 18%; left: 45%; animation-delay: 0.5s; }
+.sparkle-2 { top: 35%; right: 28%; animation-delay: 1.5s; width: 4px; height: 4px; }
+.sparkle-3 { top: 55%; left: 15%; animation-delay: 2.5s; }
+
+@keyframes sparkle-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Dotted Patterns */
+.bg-dots {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.4) 2px, transparent 2px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.bg-dots-left {
+  bottom: 0;
+  left: 0;
+  -webkit-mask-image: radial-gradient(circle at bottom left, black, transparent 70%);
+  mask-image: radial-gradient(circle at bottom left, black, transparent 70%);
+}
+.bg-dots-right {
+  bottom: 0;
+  right: 0;
+  -webkit-mask-image: radial-gradient(circle at bottom right, black, transparent 70%);
+  mask-image: radial-gradient(circle at bottom right, black, transparent 70%);
+}
+
+/* Soft glassmorphism lighting behind cards */
+.bg-card-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+}
+.glow-1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(187, 247, 208, 0.3);
+  top: 40%;
+  left: 20%;
+}
+.glow-2 {
+  width: 500px;
+  height: 500px;
+  background: rgba(56, 189, 248, 0.2);
+  top: 50%;
+  right: 20%;
 }
