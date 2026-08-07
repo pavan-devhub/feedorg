@@ -356,7 +356,11 @@ const Home = ({ onNavigate }) => {
               <div key={sIdx} 
                 className="srv-card service-btn-animated"
                 style={{ 
-                  animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none'
+                  animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none',
+                  cursor: service.name === 'PRODUCT 360' ? 'pointer' : undefined
+                }}
+                onClick={() => {
+                  if (service.name === 'PRODUCT 360') onNavigate('product360');
                 }}
               >
                 <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>

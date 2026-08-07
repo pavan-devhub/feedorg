@@ -30,7 +30,9 @@ export const servicesMegaMenu = [
 const Navbar = ({ onNavigate }) => {
   const { i18n } = useTranslation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
   const servicesDropdownRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -40,6 +42,27 @@ const Navbar = ({ onNavigate }) => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Auto-hide navbar on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      // Only react to meaningful scrolls (>10px) to avoid jitter
+      if (delta > 10 && currentY > 80) {
+        setNavHidden(true);
+        setIsServicesOpen(false);
+      } else if (delta < -10) {
+        setNavHidden(false);
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleLanguageChange = (e) => {
@@ -68,7 +91,18 @@ const Navbar = ({ onNavigate }) => {
       )}
 
       {/* 3. Navigation Bar (Redesigned) */}
-      <div style={{ width: '100%', position: 'absolute', top: '10px', left: 0, zIndex: 50, display: 'flex', justifyContent: 'center' }}>
+      <div style={{
+        width: '100%',
+        position: 'fixed',
+        top: '10px',
+        left: 0,
+        zIndex: 1000,
+        display: 'flex',
+        justifyContent: 'center',
+        transform: navHidden ? 'translateY(-120px)' : 'translateY(0)',
+        transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+        pointerEvents: navHidden ? 'none' : 'auto',
+      }}>
         <div style={{
           position: 'relative',
           width: '96%',
@@ -140,6 +174,7 @@ const Navbar = ({ onNavigate }) => {
                     if (item.id === 'home') onNavigate('home');
                     if (item.id === 'contact') onNavigate('contact');
                     if (item.id === 'exports') onNavigate('exports');
+                    if (item.id === 'fpo') onNavigate('fpo');
 
                     if (item.id === 'services') setIsServicesOpen(!isServicesOpen);
                     if (item.id === 'about') {
@@ -218,7 +253,14 @@ const Navbar = ({ onNavigate }) => {
                           <div key={sIdx} 
                             className="srv-card service-btn-animated"
                             style={{ 
-                              animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`
+                              animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`,
+                              cursor: service.name === 'PRODUCT 360' ? 'pointer' : undefined
+                            }}
+                            onClick={() => {
+                              if (service.name === 'PRODUCT 360') {
+                                setIsServicesOpen(false);
+                                onNavigate('product360');
+                              }
                             }}
                           >
                             <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>

@@ -176,10 +176,9 @@ const ContactUs = ({ onNavigate }) => {
 
   return (
     <div className="contact-page">
+      <Navbar onNavigate={onNavigate} />
       <ContactBackground />
       <section className="contact-hero">
-        <Navbar onNavigate={onNavigate} />
-
         <div className="contact-hero-copy">
           <h1>
             Let&apos;s Connect, Let&apos;s <span className="accent">Grow Together</span>

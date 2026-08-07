@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Search, Bell, Grid, ChevronRight, ChevronsLeft,
   HelpCircle, Flag, ShoppingBasket, Network,
@@ -9,9 +9,11 @@ import {
 import './ExportsPortal.css';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import WhyExports from './WhyExports';
 
 const navItems = [
-  { id: '1', title: 'Why Exports', icon: HelpCircle, active: true },
+  { id: '0', title: 'My Exports', icon: Home, active: true },
+  { id: '1', title: 'Why Exports', icon: HelpCircle, active: false },
   { id: '2', title: 'How to Start Exports', icon: Flag },
   { id: '3', title: 'Product Selection', icon: ShoppingBasket },
   { id: '4', title: 'Buyers Connection', icon: Network },
@@ -101,6 +103,7 @@ const cards = [
 ];
 
 const ExportsPortal = ({ onNavigate }) => {
+  const [activeTab, setActiveTab] = useState('0');
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc' }}>
       <Navbar onNavigate={onNavigate} />
@@ -110,34 +113,28 @@ const ExportsPortal = ({ onNavigate }) => {
         {/* LEFT SIDEBAR */}
         <aside className="ep-sidebar">
           <nav className="ep-nav-list">
-            {navItems.map((item) => (
-              <div key={item.id} className={`ep-nav-item ${item.active ? 'active' : ''}`}>
-                <item.icon size={18} className="ep-nav-icon" />
-                <span>{item.title}</span>
-                {item.active && <ChevronRight size={16} className="ep-nav-arrow" />}
-              </div>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeTab === item.id;
+              return (
+                <div 
+                  key={item.id} 
+                  className={`ep-nav-item ${isActive ? 'active' : ''}`}
+                  onClick={() => setActiveTab(item.id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <item.icon size={18} className="ep-nav-icon" />
+                  <span>{item.title}</span>
+                  {isActive && <ChevronRight size={16} className="ep-nav-arrow" />}
+                </div>
+              );
+            })}
           </nav>
 
-          <div className="ep-sidebar-footer">
-            <div className="ep-cta-card">
-              <div className="ep-cta-icon">
-                <Target size={24} color="#16a34a" />
-              </div>
-              <h4>Ready to take your products global?</h4>
-              <p>Explore step-by-step export guidance</p>
-              <button className="ep-cta-btn">
-                Get Started <ArrowRight size={14} />
-              </button>
-            </div>
-            <div className="ep-copyright">
-              © 2026 FEED Organization. All rights reserved.
-            </div>
-          </div>
         </aside>
 
         {/* MAIN CONTENT */}
-        <main className="ep-main-content">
+        {activeTab === '0' && (
+          <main className="ep-main-content">
         
         {/* HEADER */}
         <header className="ep-header">
@@ -167,24 +164,38 @@ const ExportsPortal = ({ onNavigate }) => {
 
         {/* GRID OF CARDS */}
         <div className="ep-cards-grid">
-          {cards.map((card, idx) => (
-            <div className="ep-card" key={idx}>
-              <div className={`ep-card-badge color-${card.color}`}>{card.num}</div>
-              <div className="ep-card-content">
-                <div className="ep-card-icon-area">
-                  <div className={`ep-icon-circle color-${card.color}`}>
-                    <img src={card.img} alt={card.title} className="ep-card-image" />
+          {cards.map((card, idx) => {
+            const animations = ['epSlideInFromLeft', 'epSlideInFromTop', 'epSlideInFromBottom', 'epSlideInFromRight'];
+            const animName = animations[idx % 4];
+            const animDelay = `${Math.floor(idx / 4) * 0.1}s`;
+
+            return (
+              <div 
+                className="ep-card" 
+                key={idx}
+                style={{
+                  animation: `${animName} 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${animDelay} backwards`
+                }}
+              >
+                <div className={`ep-card-badge color-${card.color}`}>{card.num}</div>
+                <div className="ep-card-content">
+                  <div className="ep-card-icon-area">
+                    <div className={`ep-icon-circle color-${card.color}`}>
+                      <img src={card.img} alt={card.title} className="ep-card-image" />
+                    </div>
+                  </div>
+                  <div className="ep-card-text-area">
+                    <h3>{card.title}</h3>
                   </div>
                 </div>
-                <div className="ep-card-text-area">
-                  <h3>{card.title}</h3>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         </main>
+        )}
+        {activeTab === '1' && <WhyExports />}
       </div>
       <Footer />
     </div>

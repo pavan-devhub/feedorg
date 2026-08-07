@@ -5,12 +5,14 @@ import Login from './components/Login';
 import Register from './components/Register';
 import ContactUs from './components/ContactUs';
 import ExportsPortal from './components/ExportsPortal';
+import Product360 from './components/Product360';
+import FpoPortal from './components/FpoPortal';
 
 
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState('home'); // 'login', 'home' or 'exports'
+  const [currentPage, setCurrentPage] = useState('home'); // 'login', 'home', 'exports', 'product360'
 
   // Sync state with browser history for back button support
   React.useEffect(() => {
@@ -51,6 +53,10 @@ function App() {
     return <ContactUs onNavigate={handleNavigate} />;
   }
 
+  if (currentPage === 'product360') {
+    return <Product360 onNavigate={handleNavigate} />;
+  }
+
   return (
     <div className={`app-container ${['home', 'exports'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
@@ -61,6 +67,8 @@ function App() {
           <Home onNavigate={handleNavigate} searchQuery={searchQuery} />
         ) : currentPage === 'exports' ? (
           <ExportsPortal onNavigate={handleNavigate} />
+        ) : currentPage === 'fpo' ? (
+          <FpoPortal onNavigate={handleNavigate} />
         ) : null}
       </div>
 
