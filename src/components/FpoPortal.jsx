@@ -66,13 +66,6 @@ const FpoPortal = ({ onNavigate }) => {
       
       {/* 1. LEFT SIDEBAR */}
       <aside className="fpo-sidebar">
-        <div className="fpo-sidebar-header">
-          <div className="fpo-logo">
-            <div className="fpo-logo-circle"></div>
-            <span>FEED</span>
-          </div>
-          <span className="fpo-subtitle">FPO Portal</span>
-        </div>
 
         <nav className="fpo-nav">
           {sidebarItems.map((item) => (
