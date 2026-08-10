@@ -175,6 +175,7 @@ const Navbar = ({ onNavigate }) => {
                     if (item.id === 'contact') onNavigate('contact');
                     if (item.id === 'exports') onNavigate('exports');
                     if (item.id === 'fpo') onNavigate('fpo');
+                    if (item.id === 'how') onNavigate('how');
 
                     if (item.id === 'services') setIsServicesOpen(!isServicesOpen);
                     if (item.id === 'about') {

@@ -7,6 +7,7 @@ import ContactUs from './components/ContactUs';
 import ExportsPortal from './components/ExportsPortal';
 import Product360 from './components/Product360';
 import FpoPortal from './components/FpoPortal';
+import HowFeedWorks from './components/HowFeedWorks';
 
 
 
@@ -58,7 +59,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -69,6 +70,8 @@ function App() {
           <ExportsPortal onNavigate={handleNavigate} />
         ) : currentPage === 'fpo' ? (
           <FpoPortal onNavigate={handleNavigate} />
+        ) : currentPage === 'how' ? (
+          <HowFeedWorks onNavigate={handleNavigate} />
         ) : null}
       </div>
 

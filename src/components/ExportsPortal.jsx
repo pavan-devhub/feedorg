@@ -10,6 +10,9 @@ import './ExportsPortal.css';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import WhyExports from './WhyExports';
+import HowToStartExports from './HowToStartExports';
+import ExportImportPolicy from './ExportImportPolicy';
+import ProceduresRegulations from './ProceduresRegulations';
 
 const navItems = [
   { id: '0', title: 'My Exports', icon: Home, active: true },
@@ -17,13 +20,13 @@ const navItems = [
   { id: '2', title: 'How to Start Exports', icon: Flag },
   { id: '3', title: 'Product Selection', icon: ShoppingBasket },
   { id: '4', title: 'Buyers Connection', icon: Network },
-  { id: '5', title: 'Export Policies & Regulations', icon: ShieldCheck },
+  { id: '5', title: 'Exports Import Policies and Regulations', icon: ShieldCheck },
   { id: '6', title: 'Export Finance & Insurance', icon: Landmark },
   { id: '7', title: 'Process & Export Order', icon: GitCommit },
   { id: '8', title: 'Export Documentation', icon: FileText },
   { id: '9', title: 'Global Trade Updates & Events', icon: Globe2 },
   { id: '10', title: 'Country Selection', icon: Map },
-  { id: '11', title: 'Export Tariff & Benefits', icon: Percent },
+  { id: '11', title: 'Procedures & Regulations', icon: Percent },
   { id: '12', title: 'Tools & Services', icon: PenTool },
 ];
 
@@ -173,7 +176,9 @@ const ExportsPortal = ({ onNavigate }) => {
               <div 
                 className="ep-card" 
                 key={idx}
+                onClick={() => setActiveTab(parseInt(card.num, 10).toString())}
                 style={{
+                  cursor: 'pointer',
                   animation: `${animName} 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${animDelay} backwards`
                 }}
               >
@@ -196,6 +201,9 @@ const ExportsPortal = ({ onNavigate }) => {
         </main>
         )}
         {activeTab === '1' && <WhyExports />}
+        {activeTab === '2' && <HowToStartExports />}
+        {activeTab === '5' && <ExportImportPolicy />}
+        {activeTab === '11' && <ProceduresRegulations />}
       </div>
       <Footer />
     </div>

@@ -89,7 +89,7 @@ const FpoPortal = ({ onNavigate }) => {
       <main className="fpo-main-content">
         
         {/* Top Navigation */}
-        <header className="fpo-top-nav">
+        <header className="fpo-top-nav anim-fly-in-top" style={{ animationDelay: '0.1s' }}>
           <div className="fpo-top-left">
             <button className="fpo-back-btn" onClick={() => onNavigate('home')}>
               <ArrowLeft size={20} />
@@ -119,7 +119,7 @@ const FpoPortal = ({ onNavigate }) => {
         </header>
 
         {/* Hero Banner */}
-        <section className="fpo-hero-section">
+        <section className="fpo-hero-section anim-scale-in" style={{ animationDelay: '0.2s' }}>
           <div className="fpo-hero-bg" style={{ backgroundImage: `url(${fpoHeroBg})` }}>
             <div className="fpo-hero-overlay"></div>
           </div>
@@ -151,13 +151,19 @@ const FpoPortal = ({ onNavigate }) => {
 
         {/* Quick Access */}
         <section className="fpo-quick-access">
-          <div className="fpo-section-header">
+          <div className="fpo-section-header anim-fly-in-left" style={{ animationDelay: '0.3s' }}>
             <h3>Quick Access</h3>
             <p>Access all FPC services in one place</p>
           </div>
           <div className="fpo-cards-grid">
-            {quickAccessCards.map((card, idx) => (
-              <div className="fpo-glass-card" key={idx}>
+            {quickAccessCards.map((card, idx) => {
+              const animClasses = ['anim-fly-in-left', 'anim-fly-in-bottom', 'anim-fly-in-right', 'anim-fly-in-top'];
+              return (
+              <div 
+                className={`fpo-glass-card ${animClasses[idx % 4]}`} 
+                key={idx}
+                style={{ animationDelay: `${0.3 + (idx * 0.05)}s` }}
+              >
                 <div className={`fpo-card-icon-area bg-${card.color}`}>
                   {card.img ? (
                     <img src={card.img} alt={card.title} />
@@ -173,18 +179,23 @@ const FpoPortal = ({ onNavigate }) => {
                   <ArrowRight size={16} />
                 </button>
               </div>
-            ))}
+            );
+            })}
           </div>
         </section>
 
         {/* Statistics Section */}
         <section className="fpo-stats-section">
-          <div className="fpo-section-header">
+          <div className="fpo-section-header anim-fly-in-left" style={{ animationDelay: '0.5s' }}>
             <h3>At a Glance</h3>
           </div>
           <div className="fpo-stats-grid">
             {stats.map((stat, idx) => (
-              <div className="fpo-stat-box" key={idx}>
+              <div 
+                className="fpo-stat-box anim-fly-in-bottom" 
+                key={idx}
+                style={{ animationDelay: `${0.5 + (idx * 0.1)}s` }}
+              >
                 <div className={`fpo-stat-icon text-${stat.color}`} style={{ background: 'transparent' }}>
                   {stat.img ? (
                     <img src={stat.img} alt={stat.title} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
@@ -204,13 +215,17 @@ const FpoPortal = ({ onNavigate }) => {
 
       {/* 3. RIGHT SIDEBAR (UPDATES PANEL) */}
       <aside className="fpo-updates-panel">
-        <div className="fpo-updates-header">
+        <div className="fpo-updates-header anim-fly-in-right" style={{ animationDelay: '0.2s' }}>
           <h3>FEED Updates</h3>
           <button className="fpo-view-all">View All</button>
         </div>
         <div className="fpo-updates-list">
           {updates.map((update, idx) => (
-            <div className="fpo-update-card" key={idx}>
+            <div 
+              className="fpo-update-card anim-fly-in-right" 
+              key={idx}
+              style={{ animationDelay: `${0.3 + (idx * 0.1)}s` }}
+            >
               <img src={update.img} alt={update.title} className="fpo-update-img" />
               <div className="fpo-update-info">
                 <h4>{update.title}</h4>
@@ -223,7 +238,7 @@ const FpoPortal = ({ onNavigate }) => {
           ))}
         </div>
 
-        <div className="fpo-newsletter-card">
+        <div className="fpo-newsletter-card anim-fly-in-bottom" style={{ animationDelay: '0.7s' }}>
           <div className="fpo-news-icon">
             <Mail size={24} />
           </div>
