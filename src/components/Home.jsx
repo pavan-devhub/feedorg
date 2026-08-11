@@ -357,10 +357,11 @@ const Home = ({ onNavigate }) => {
                 className="srv-card service-btn-animated"
                 style={{ 
                   animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none',
-                  cursor: service.name === 'PRODUCT 360' ? 'pointer' : undefined
+                  cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS') ? 'pointer' : undefined
                 }}
                 onClick={() => {
                   if (service.name === 'PRODUCT 360') onNavigate('product360');
+                  if (service.name === 'MY EXPORTS') onNavigate('exports');
                 }}
               >
                 <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>
@@ -562,7 +563,13 @@ const Home = ({ onNavigate }) => {
                       <h4 style={{ color: '#166534', fontSize: '15.5px', fontWeight: '800', margin: '0 0 4px 0' }}>{item.title}</h4>
                       <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.4', margin: 0, fontWeight: '500' }}>{item.desc}</p>
                     </div>
-                    <button style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={(e)=>{e.currentTarget.style.backgroundColor='#16a34a'; e.currentTarget.children[0].style.color='#fff'}} onMouseOut={(e)=>{e.currentTarget.style.backgroundColor='#f1f5f9'; e.currentTarget.children[0].style.color='#166534'}}>
+                    <button 
+                      onClick={() => {
+                        if (item.title === 'My Exports') {
+                          onNavigate('exports');
+                        }
+                      }}
+                      style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={(e)=>{e.currentTarget.style.backgroundColor='#16a34a'; e.currentTarget.children[0].style.color='#fff'}} onMouseOut={(e)=>{e.currentTarget.style.backgroundColor='#f1f5f9'; e.currentTarget.children[0].style.color='#166534'}}>
                       <ChevronRight size={16} color="#166534" strokeWidth={3} style={{ transition: 'color 0.2s' }} />
                     </button>
                   </div>

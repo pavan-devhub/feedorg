@@ -255,12 +255,16 @@ const Navbar = ({ onNavigate }) => {
                             className="srv-card service-btn-animated"
                             style={{ 
                               animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`,
-                              cursor: service.name === 'PRODUCT 360' ? 'pointer' : undefined
+                              cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS') ? 'pointer' : undefined
                             }}
                             onClick={() => {
                               if (service.name === 'PRODUCT 360') {
                                 setIsServicesOpen(false);
                                 onNavigate('product360');
+                              }
+                              if (service.name === 'MY EXPORTS') {
+                                setIsServicesOpen(false);
+                                onNavigate('exports');
                               }
                             }}
                           >

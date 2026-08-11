@@ -38,7 +38,7 @@ const ProceduresRegulations = () => {
     <main className="eip-main-content">
       <header className="eip-header">
         <div className="eip-header-titles">
-          <h1>Procedures & Regulations</h1>
+          <h1>Export & Import Tariff and Benefits</h1>
           <p>Navigate the complex landscape of international trade compliance and procedures.</p>
         </div>
       </header>

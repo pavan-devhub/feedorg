@@ -13,6 +13,8 @@ import WhyExports from './WhyExports';
 import HowToStartExports from './HowToStartExports';
 import ExportImportPolicy from './ExportImportPolicy';
 import ProceduresRegulations from './ProceduresRegulations';
+import CountrySelection from './CountrySelection';
+import ExportFinanceInsurance from './ExportFinanceInsurance';
 
 const navItems = [
   { id: '0', title: 'My Exports', icon: Home, active: true },
@@ -21,12 +23,12 @@ const navItems = [
   { id: '3', title: 'Product Selection', icon: ShoppingBasket },
   { id: '4', title: 'Buyers Connection', icon: Network },
   { id: '5', title: 'Exports Import Policies and Regulations', icon: ShieldCheck },
-  { id: '6', title: 'Export Finance & Insurance', icon: Landmark },
+  { id: '6', title: 'Export Import Finance & Insurance', icon: Landmark },
   { id: '7', title: 'Process & Export Order', icon: GitCommit },
   { id: '8', title: 'Export Documentation', icon: FileText },
   { id: '9', title: 'Global Trade Updates & Events', icon: Globe2 },
   { id: '10', title: 'Country Selection', icon: Map },
-  { id: '11', title: 'Procedures & Regulations', icon: Percent },
+  { id: '11', title: 'Export & Import Tariff and Benefits', icon: Percent },
   { id: '12', title: 'Tools & Services', icon: PenTool },
 ];
 
@@ -203,7 +205,9 @@ const ExportsPortal = ({ onNavigate }) => {
         {activeTab === '1' && <WhyExports />}
         {activeTab === '2' && <HowToStartExports />}
         {activeTab === '5' && <ExportImportPolicy />}
+        {activeTab === '6' && <ExportFinanceInsurance />}
         {activeTab === '11' && <ProceduresRegulations />}
+        {activeTab === '10' && <CountrySelection />}
       </div>
       <Footer />
     </div>
