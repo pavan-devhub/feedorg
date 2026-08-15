@@ -1,43 +1,48 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
-  Home as HomeIcon, Users, Settings, Calendar, Map, Activity, 
-  Package, PhoneCall, ChevronDown, Search, User, UserPlus, 
-  Sprout, Building2, Ship, Coins, TrendingUp, GraduationCap, 
-  Globe2, ClipboardList, Store, ShieldCheck, Wrench, Lightbulb, 
-  ShoppingBag, CreditCard 
+  Home as HomeIcon, Users, Settings, Calendar, Map, Activity,
+  Package, PhoneCall, ChevronDown, Search, User, UserPlus,
+  Sprout, Building2, Ship, Coins, TrendingUp, GraduationCap,
+  Globe2, ClipboardList, Store, ShieldCheck, Wrench, Lightbulb,
+  ShoppingBag, CreditCard, LayoutDashboard, LogOut
 } from 'lucide-react';
 import './Navbar.css';
 
 export const servicesMegaMenu = [
-  { name: 'PROJECT KRUSHI', num: '01', color: 'green', img: '/icons/icon_srv_krushi_1785921685926.jpg' },
-  { name: 'MY ORG', num: '02', color: 'blue', img: '/icons/icon_buyers_connection_1785919564348.jpg' },
-  { name: 'MY EXPORTS', num: '03', color: 'teal', img: '/icons/icon_country_selection_1785919634748.jpg' },
-  { name: 'LOANS & FINANCE', num: '04', color: 'yellow', img: '/icons/icon_finance_1785919584808.jpg' },
-  { name: 'PRODUCT 360', num: '05', color: 'orange', img: '/icons/icon_product_selection_1785919553355.jpg' },
-  { name: 'MY BUSINESS', num: '06', color: 'purple', img: '/icons/icon_process_order_1785919603239.jpg' },
-  { name: 'MY EDUCATION', num: '07', color: 'pink', img: '/icons/icon_documentation_1785919613435.jpg' },
-  { name: 'FEED WORLD', num: '08', color: 'blue-light', img: '/icons/icon_why_exports_1785919534482.jpg' },
-  { name: 'EPM', num: '09', color: 'green-light', img: '/icons/icon_start_exports_1785919544424.jpg' },
-  { name: 'TRADE FAIRS', num: '10', color: 'orange-light', img: '/icons/icon_trade_updates_1785919624005.jpg' },
-  { name: 'SAFE MISSION', num: '11', color: 'teal', img: '/icons/icon_policies_1785919575221.jpg' },
-  { name: 'MY TOOLS', num: '12', color: 'purple-light', img: '/icons/icon_tools_services_1785919653740.jpg' },
-  { name: 'KNOW SCHEMES', num: '13', color: 'yellow', img: '/icons/icon_policies_1785919575221.jpg' },
-  { name: 'MY MARKET', num: '14', color: 'orange', img: '/icons/icon_product_selection_1785919553355.jpg' },
-  { name: 'FEED CARD', num: '15', color: 'blue', img: '/icons/icon_tariffs_1785919643320.jpg' }
+  { name: 'PROJECT KRUSHI', num: '01', color: 'green', img: '/icons/icon-krushi.avif' },
+  { name: 'MY ORG', num: '02', color: 'blue', img: '/icons/icon-buyers-connection.avif' },
+  { name: 'MY EXPORTS', num: '03', color: 'teal', img: '/icons/icon-country-selection.avif' },
+  { name: 'LOANS & FINANCE', num: '04', color: 'yellow', img: '/icons/icon-finance.avif' },
+  { name: 'PRODUCT 360', num: '05', color: 'orange', img: '/icons/icon-product-selection.avif' },
+  { name: 'MY BUSINESS', num: '06', color: 'purple', img: '/icons/icon-process-order.avif' },
+  { name: 'MY EDUCATION', num: '07', color: 'pink', img: '/icons/icon-documentation.avif' },
+  { name: 'FEED WORLD', num: '08', color: 'blue-light', img: '/icons/icon-why-exports.avif' },
+  { name: 'EPM', num: '09', color: 'green-light', img: '/icons/icon-start-exports.avif' },
+  { name: 'TRADE FAIRS', num: '10', color: 'orange-light', img: '/icons/icon-trade-updates.avif' },
+  { name: 'SAFE MISSION', num: '11', color: 'teal', img: '/icons/icon-policies.avif' },
+  { name: 'MY TOOLS', num: '12', color: 'purple-light', img: '/icons/icon-tools-services.avif' },
+  { name: 'KNOW SCHEMES', num: '13', color: 'yellow', img: '/icons/icon-policies.avif' },
+  { name: 'MY MARKET', num: '14', color: 'orange', img: '/icons/icon-product-selection.avif' },
+  { name: 'FEED CARD', num: '15', color: 'blue', img: '/icons/icon-tariffs.avif' }
 ];
 
-const Navbar = ({ onNavigate }) => {
+const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const { i18n } = useTranslation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const servicesDropdownRef = useRef(null);
+  const profileDropdownRef = useRef(null);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target)) {
         setIsServicesOpen(false);
+      }
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -99,6 +104,8 @@ const Navbar = ({ onNavigate }) => {
         zIndex: 1000,
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
+        gap: '14px',
         transform: navHidden ? 'translateY(-120px)' : 'translateY(0)',
         transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
         pointerEvents: navHidden ? 'none' : 'auto',
@@ -106,7 +113,8 @@ const Navbar = ({ onNavigate }) => {
         <div style={{
           position: 'relative',
           width: '96%',
-          maxWidth: '1400px',
+          maxWidth: isLoggedIn ? '1150px' : '1400px',
+          transition: 'max-width 0.3s ease',
           height: '76px',
           backgroundColor: 'white',
           borderRadius: '40px',
@@ -217,7 +225,7 @@ const Navbar = ({ onNavigate }) => {
                       transform: 'translateX(-50%)',
                       width: '940px',
                       height: '620px', 
-                      backgroundImage: 'url(/services-bg.png)',
+                      backgroundImage: 'url(/services-bg.avif)',
                       backgroundSize: '100% 100%',
                       backgroundRepeat: 'no-repeat',
                       borderRadius: '24px',
@@ -255,7 +263,7 @@ const Navbar = ({ onNavigate }) => {
                             className="srv-card service-btn-animated"
                             style={{ 
                               animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`,
-                              cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS') ? 'pointer' : undefined
+                              cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS' || service.name === 'MY TOOLS' || service.name === 'MY BUSINESS') ? 'pointer' : undefined
                             }}
                             onClick={() => {
                               if (service.name === 'PRODUCT 360') {
@@ -265,6 +273,14 @@ const Navbar = ({ onNavigate }) => {
                               if (service.name === 'MY EXPORTS') {
                                 setIsServicesOpen(false);
                                 onNavigate('exports');
+                              }
+                              if (service.name === 'MY TOOLS') {
+                                setIsServicesOpen(false);
+                                onNavigate('tools');
+                              }
+                              if (service.name === 'MY BUSINESS') {
+                                setIsServicesOpen(false);
+                                onNavigate('mybusiness');
                               }
                             }}
                           >
@@ -298,34 +314,103 @@ const Navbar = ({ onNavigate }) => {
               <Search size={16} color="#ea580c" strokeWidth={2.5} />
             </button>
 
-            <div style={{ width: '1.5px', height: '24px', backgroundColor: '#ea580c', opacity: 0.5 }}></div>
+            {!isLoggedIn && (
+              <>
+                <div style={{ width: '1.5px', height: '24px', backgroundColor: '#ea580c', opacity: 0.5 }}></div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button 
-                onClick={() => onNavigate('login')}
-                style={{ 
-                  display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'white', 
-                  border: '1.5px solid #ea580c', color: '#1e293b', padding: '0 16px', height: '36px', borderRadius: '18px', 
-                  fontWeight: '700', fontSize: '13px', cursor: 'pointer'
-                }}>
-                <User size={14} color="#ea580c" strokeWidth={2.5} />
-                Login
-              </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <button
+                    onClick={() => onNavigate('login')}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'white',
+                      border: '1.5px solid #ea580c', color: '#1e293b', padding: '0 16px', height: '36px', borderRadius: '18px',
+                      fontWeight: '700', fontSize: '13px', cursor: 'pointer'
+                    }}>
+                    <User size={14} color="#ea580c" strokeWidth={2.5} />
+                    Login
+                  </button>
 
-              <button 
-                onClick={() => onNavigate('register')}
-                style={{ 
-                  display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#ea580c', 
-                  border: 'none', color: 'white', padding: '0 16px', height: '36px', borderRadius: '18px', 
-                  fontWeight: '700', fontSize: '13px', cursor: 'pointer'
-                }}>
-                <UserPlus size={14} color="white" strokeWidth={2.5} />
-                Register
-              </button>
-            </div>
+                  <button
+                    onClick={() => onNavigate('register')}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#ea580c',
+                      border: 'none', color: 'white', padding: '0 16px', height: '36px', borderRadius: '18px',
+                      fontWeight: '700', fontSize: '13px', cursor: 'pointer'
+                    }}>
+                    <UserPlus size={14} color="white" strokeWidth={2.5} />
+                    Register
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Profile Button - outside the navbar pill, same horizontal line, top-right */}
+      {isLoggedIn && (
+        <div ref={profileDropdownRef} style={{ position: 'relative', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <div
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            style={{
+              width: '44px', height: '44px', borderRadius: '50%', backgroundColor: '#ffedd5',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+              border: '2px solid #ea580c', color: '#ea580c', fontWeight: 'bold',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.12)'
+            }}
+          >
+            {user?.firstName ? user.firstName.charAt(0).toUpperCase() : <User size={18} />}
+          </div>
+
+          {isProfileOpen && (
+            <div style={{
+              position: 'absolute', top: '56px', right: '0', backgroundColor: 'white',
+              borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.15)', minWidth: '200px',
+              padding: '12px', zIndex: 1002
+            }}>
+              <div style={{ padding: '8px 12px', borderBottom: '1px solid #f1f5f9', marginBottom: '8px' }}>
+                <div style={{ fontWeight: '600', color: '#1e293b', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {user?.firstName} {user?.lastName}
+                </div>
+                <div style={{ color: '#64748b', fontSize: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {user?.email}
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setIsProfileOpen(false);
+                  if (onNavigate) onNavigate('dashboard');
+                }}
+                style={{
+                  width: '100%', padding: '10px 12px', backgroundColor: '#ffedd5', color: '#ea580c',
+                  border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600',
+                  display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px',
+                  justifyContent: 'center', marginBottom: '8px'
+                }}
+              >
+                <LayoutDashboard size={14} />
+                Dashboard
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsProfileOpen(false);
+                  if (onLogout) onLogout();
+                }}
+                style={{
+                  width: '100%', padding: '10px 12px', backgroundColor: '#fee2e2', color: '#ef4444',
+                  border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600',
+                  display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px',
+                  justifyContent: 'center'
+                }}
+              >
+                <LogOut size={14} />
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
     </>
   );
