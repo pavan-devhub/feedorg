@@ -11,12 +11,33 @@ import FpoPortal from './pages/FpoPortal';
 import HowFeedWorks from './pages/HowFeedWorks';
 import ToolsServices from './pages/ToolsServices';
 import MyBusiness from './pages/MyBusiness';
+import BusinessAccount from './pages/BusinessAccount';
+import AgmBoard from './pages/AgmBoard';
+import BusinessPlan from './pages/BusinessPlan';
+import MyBusinessLayout from './components/MyBusinessLayout';
 
-
+function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
+  return (
+    <MyBusinessLayout 
+      onNavigate={onNavigate} 
+      isLoggedIn={isLoggedIn} 
+      user={user} 
+      onLogout={onLogout}
+      currentTab={currentTab}
+    >
+      <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
+        <h2>Page Under Construction</h2>
+        <p>This module is currently being built.</p>
+      </div>
+    </MyBusinessLayout>
+  );
+}
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(() => {
+    return localStorage.getItem('currentPage') || 'home';
+  });
   
   const [user, setUser] = useState(null);
   
@@ -135,7 +156,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -154,6 +175,14 @@ function App() {
           <ToolsServices onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'mybusiness' ? (
           <MyBusiness onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'business-account' ? (
+          <BusinessAccount onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'agm-board' ? (
+          <AgmBoard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'business-plan' ? (
+          <BusinessPlan onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (
+          <MyBusinessPlaceholder onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} currentTab={currentPage} />
         ) : null}
       </div>
 

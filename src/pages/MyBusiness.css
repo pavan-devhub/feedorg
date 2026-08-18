@@ -14,16 +14,24 @@
    ==================== */
 .mb-sidebar {
   width: 260px;
-  background-color: #0f172a; /* Dark blue/slate */
+  background-color: #0f172a; /* Fallback */
+  background-image: url('../assets/my-business/business_sidebar_bg_v2.avif');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: white;
   z-index: 20;
-  box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+  box-shadow: 4px 4px 15px rgba(0,0,0,0.1);
   position: sticky;
-  top: 100px;
-  height: calc(100vh - 100px);
+  top: 120px;
+  height: calc(100vh - 140px);
+  margin-left: 20px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .mb-sidebar-top {
@@ -34,16 +42,21 @@
 
 
 
-.mb-menu-item-active {
+.mb-menu-item-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
   padding: 12px 16px;
   border-radius: 12px;
   margin-bottom: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  transition: all 0.2s ease;
+  color: #cbd5e1;
+}
+
+.mb-menu-item-main:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
 }
 
 .mb-menu-item-left {
@@ -52,6 +65,11 @@
   gap: 12px;
   font-weight: 600;
   font-size: 14px;
+}
+
+.mb-menu-item-main svg {
+  color: #60a5fa;
+  transition: color 0.2s ease;
 }
 
 .mb-nav-list {
@@ -78,11 +96,26 @@
   color: white;
 }
 
+/* ACTIVE STATE */
+.mb-menu-item-main.active, 
+.mb-nav-item.active {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
 .mb-nav-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #60a5fa; /* Light blue icons */
+  color: #60a5fa; /* Light blue icons for inactive */
+  transition: color 0.2s ease;
+}
+
+/* Active Icons become white */
+.mb-menu-item-main.active svg,
+.mb-nav-item.active .mb-nav-icon-wrapper svg {
+  color: white;
 }
 
 
