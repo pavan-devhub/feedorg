@@ -3,13 +3,14 @@ import {
   LayoutGrid, Users, User, Store, GraduationCap, Ship,
   ChevronRight, Headphones, ArrowRight
 } from 'lucide-react';
+import './MyFPOServiceHub.css';
 
 const sidebarItems = [
   { id: 'fpo', title: 'My FPO', icon: Users, color: '#16a34a', internal: true },
   { id: 'farmer', title: 'Farmer', icon: User, color: '#65a30d', internal: true },
-  { id: 'msme', title: 'MSME', icon: Store, color: '#f59e0b', route: 'home' },
+  { id: 'msme', title: 'MSME', icon: Store, color: '#f59e0b', internal: true },
   { id: 'student', title: 'Student', icon: GraduationCap, color: '#3b82f6', route: 'home' },
-  { id: 'exports', title: 'Exports', icon: Ship, color: '#0ea5e9', route: 'exports' },
+  { id: 'exports', title: 'Exports', icon: Ship, color: '#0ea5e9', internal: true },
 ];
 
 const MyToolsSidebar = ({ activeId, onSelectTool, onNavigate }) => (

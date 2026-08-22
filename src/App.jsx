@@ -14,6 +14,7 @@ import MyBusiness from './pages/MyBusiness';
 import BusinessAccount from './pages/BusinessAccount';
 import AgmBoard from './pages/AgmBoard';
 import BusinessPlan from './pages/BusinessPlan';
+import PublicationsHub from './pages/PublicationsHub';
 import MyBusinessLayout from './components/MyBusinessLayout';
 
 function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
@@ -156,7 +157,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -181,6 +182,8 @@ function App() {
           <AgmBoard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'business-plan' ? (
           <BusinessPlan onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'feedworld' ? (
+          <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (
           <MyBusinessPlaceholder onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} currentTab={currentPage} />
         ) : null}

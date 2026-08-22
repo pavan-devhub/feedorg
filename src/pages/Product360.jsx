@@ -58,18 +58,18 @@ function PartRow({ seg, layer, part, hidden }) {
 }
 
 function DivBlock({ seg, layer, div, g, query, forceOpen }) {
+  const [open, setOpen] = useState(Boolean(forceOpen));
+  useEffect(() => {
+    if (forceOpen) setOpen(true);
+    if (!query) setOpen(false);
+  }, [forceOpen, query]);
+
   const matchParts = div.parts.map((p) => ({
     part: p,
     match: !query || partSearchBlob(p).includes(query),
   }));
   const hasMatch = matchParts.some((m) => m.match);
   if (query && !hasMatch) return null;
-
-  const [open, setOpen] = useState(Boolean(forceOpen));
-  useEffect(() => {
-    if (forceOpen) setOpen(true);
-    if (!query) setOpen(false);
-  }, [forceOpen, query]);
 
   return (
     <div className={`div-block${open ? ' open' : ''}`} style={{ '--accent': g.accent }}>
@@ -98,17 +98,17 @@ function DivBlock({ seg, layer, div, g, query, forceOpen }) {
 }
 
 function CatCard({ seg, layer, cat, g, query, forceOpen }) {
-  const visibleDivs = cat.divs.filter((dv) => {
-    if (!query) return true;
-    return dv.parts.some((p) => partSearchBlob(p).includes(query));
-  });
-  if (query && visibleDivs.length === 0) return null;
-
   const [open, setOpen] = useState(Boolean(forceOpen));
   useEffect(() => {
     if (forceOpen) setOpen(true);
     if (!query) setOpen(false);
   }, [forceOpen, query]);
+
+  const visibleDivs = cat.divs.filter((dv) => {
+    if (!query) return true;
+    return dv.parts.some((p) => partSearchBlob(p).includes(query));
+  });
+  if (query && visibleDivs.length === 0) return null;
 
   return (
     <div className={`cat-card${open ? ' open' : ''}`}>

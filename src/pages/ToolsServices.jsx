@@ -4,6 +4,8 @@ import Footer from '../components/Footer';
 import { ArrowRight, Users, User, Store, GraduationCap, Ship } from 'lucide-react';
 import MyFPOServiceHub from '../components/MyFPOServiceHub';
 import FarmerHub from '../components/FarmerHub';
+import MSMEServiceHub from '../components/MSMEServiceHub';
+import ExportsHub from '../components/ExportsHub';
 import './ToolsServices.css';
 
 const ToolsServices = ({ onNavigate, isLoggedIn, user, onLogout }) => {
@@ -93,6 +95,12 @@ const ToolsServices = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               {activeTool === 'farmer' && (
                 <FarmerHub onNavigate={onNavigate} onSelectTool={setActiveTool} />
               )}
+              {activeTool === 'msme' && (
+                <MSMEServiceHub onNavigate={onNavigate} onSelectTool={setActiveTool} />
+              )}
+              {activeTool === 'exports' && (
+                <ExportsHub onNavigate={onNavigate} onSelectTool={setActiveTool} />
+              )}
             </div>
           ) : (
             <>
@@ -120,7 +128,7 @@ const ToolsServices = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                   <div
                     key={tool.id}
                     className="tool-card"
-                    onClick={() => (tool.id === 'fpo' || tool.id === 'farmer') ? setActiveTool(tool.id) : onNavigate(tool.route)}
+                    onClick={() => (tool.id === 'fpo' || tool.id === 'farmer' || tool.id === 'msme' || tool.id === 'exports') ? setActiveTool(tool.id) : onNavigate(tool.route)}
                     style={{ '--accent-color': tool.accentColor }}
                   >
                     <div className="tool-card-image-area">

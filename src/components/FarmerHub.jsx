@@ -64,46 +64,54 @@ const FarmerHub = ({ onNavigate, onSelectTool }) => {
 
         {/* Primary tools — 6 across */}
         <div className="farmer-grid-6">
-          {primaryTools.map((tool, idx) => (
-            <div
-              className="farmer-card"
-              key={tool.title}
-              style={{ animationDelay: `${idx * 0.05}s` }}
-            >
-              <div className="farmer-card-media">
-                <img src={tool.image} alt={tool.title} />
-              </div>
-              <h3>{tool.title}</h3>
-              <p>{tool.description}</p>
-              <span className="farmer-card-arrow">
-                <ArrowRight size={15} strokeWidth={2.5} />
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Secondary tools — 4 across, horizontal */}
-        <div className="farmer-grid-4">
-          {secondaryTools.map((tool, idx) => (
-            <div
-              className="farmer-card wide"
-              key={tool.title}
-              style={{ animationDelay: `${(idx + 6) * 0.05}s` }}
-            >
-              <div className="farmer-card-left">
+          {primaryTools.map((tool, idx) => {
+            const animationClasses = ['farmer-slide-left', 'farmer-slide-top', 'farmer-slide-bottom', 'farmer-slide-right'];
+            const animClass = animationClasses[idx % animationClasses.length];
+            return (
+              <div
+                className={`farmer-card ${animClass}`}
+                key={tool.title}
+                style={{ animationDelay: `${idx * 0.05}s` }}
+              >
                 <div className="farmer-card-media">
                   <img src={tool.image} alt={tool.title} />
                 </div>
+                <h3>{tool.title}</h3>
+                <p>{tool.description}</p>
                 <span className="farmer-card-arrow">
                   <ArrowRight size={15} strokeWidth={2.5} />
                 </span>
               </div>
-              <div className="farmer-card-right">
-                <h3>{tool.title}</h3>
-                <p>{tool.description}</p>
+            );
+          })}
+        </div>
+
+        {/* Secondary tools — 4 across, horizontal */}
+        <div className="farmer-grid-4">
+          {secondaryTools.map((tool, idx) => {
+            const animationClasses = ['farmer-slide-left', 'farmer-slide-top', 'farmer-slide-bottom', 'farmer-slide-right'];
+            const animClass = animationClasses[(idx + 6) % animationClasses.length];
+            return (
+              <div
+                className={`farmer-card wide ${animClass}`}
+                key={tool.title}
+                style={{ animationDelay: `${(idx + 6) * 0.05}s` }}
+              >
+                <div className="farmer-card-left">
+                  <div className="farmer-card-media">
+                    <img src={tool.image} alt={tool.title} />
+                  </div>
+                  <span className="farmer-card-arrow">
+                    <ArrowRight size={15} strokeWidth={2.5} />
+                  </span>
+                </div>
+                <div className="farmer-card-right">
+                  <h3>{tool.title}</h3>
+                  <p>{tool.description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Benefits bar */}

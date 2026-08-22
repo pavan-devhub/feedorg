@@ -17,6 +17,42 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes farmerSlideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes farmerSlideInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes farmerSlideInTop {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes farmerSlideInBottom {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.farmer-slide-left {
+  animation-name: farmerSlideInLeft;
+}
+
+.farmer-slide-right {
+  animation-name: farmerSlideInRight;
+}
+
+.farmer-slide-top {
+  animation-name: farmerSlideInTop;
+}
+
+.farmer-slide-bottom {
+  animation-name: farmerSlideInBottom;
+}
+
 /* --- Hero --- */
 .farmer-hero {
   position: relative;
@@ -143,7 +179,9 @@
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 26px -16px rgba(15, 23, 42, 0.2);
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-  animation: farmerCardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-fill-mode: backwards;
 }
 
 .farmer-card:hover {

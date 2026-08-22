@@ -261,9 +261,9 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                           return (
                           <div key={sIdx} 
                             className="srv-card service-btn-animated"
-                            style={{ 
+                            style={{
                               animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`,
-                              cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS' || service.name === 'MY TOOLS' || service.name === 'MY BUSINESS') ? 'pointer' : undefined
+                              cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS' || service.name === 'MY TOOLS' || service.name === 'MY BUSINESS' || service.name === 'FEED WORLD') ? 'pointer' : undefined
                             }}
                             onClick={() => {
                               if (service.name === 'PRODUCT 360') {
@@ -281,6 +281,10 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                               if (service.name === 'MY BUSINESS') {
                                 setIsServicesOpen(false);
                                 onNavigate('mybusiness');
+                              }
+                              if (service.name === 'FEED WORLD') {
+                                setIsServicesOpen(false);
+                                onNavigate('feedworld');
                               }
                             }}
                           >
