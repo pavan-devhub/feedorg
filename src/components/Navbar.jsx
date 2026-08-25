@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
+import {
   Home as HomeIcon, Users, Settings, Calendar, Map, Activity,
   Package, PhoneCall, ChevronDown, Search, User, UserPlus,
   Sprout, Building2, Ship, Coins, TrendingUp, GraduationCap,
   Globe2, ClipboardList, Store, ShieldCheck, Wrench, Lightbulb,
-  ShoppingBag, CreditCard, LayoutDashboard, LogOut
+  ShoppingBag, CreditCard, LayoutDashboard, LogOut, Laptop
 } from 'lucide-react';
 import './Navbar.css';
+import DevicesModal from './DevicesModal';
 
 export const servicesMegaMenu = [
   { name: 'PROJECT KRUSHI', num: '01', color: 'green', img: '/icons/icon-krushi.avif' },
@@ -31,6 +32,7 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const { i18n } = useTranslation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isDevicesOpen, setIsDevicesOpen] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const servicesDropdownRef = useRef(null);
   const profileDropdownRef = useRef(null);
@@ -355,7 +357,13 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
       {isLoggedIn && (
         <div ref={profileDropdownRef} style={{ position: 'relative', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           <div
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            onClick={() => {
+              if (isDevicesOpen) {
+                setIsDevicesOpen(false);
+              } else {
+                setIsProfileOpen(!isProfileOpen);
+              }
+            }}
             style={{
               width: '44px', height: '44px', borderRadius: '50%', backgroundColor: '#ffedd5',
               display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
@@ -399,6 +407,22 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               <button
                 onClick={() => {
                   setIsProfileOpen(false);
+                  setIsDevicesOpen(true);
+                }}
+                style={{
+                  width: '100%', padding: '10px 12px', backgroundColor: '#f1f5f9', color: '#334155',
+                  border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600',
+                  display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px',
+                  justifyContent: 'center', marginBottom: '8px'
+                }}
+              >
+                <Laptop size={14} />
+                Devices
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsProfileOpen(false);
                   if (onLogout) onLogout();
                 }}
                 style={{
@@ -415,6 +439,8 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           )}
         </div>
       )}
+
+      {isDevicesOpen && <DevicesModal onClose={() => setIsDevicesOpen(false)} anchorRef={profileDropdownRef} />}
     </div>
     </>
   );

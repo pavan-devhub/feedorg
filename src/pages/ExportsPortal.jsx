@@ -15,6 +15,7 @@ import ExportImportPolicy from './exports/ExportImportPolicy';
 import ProceduresRegulations from './exports/ProceduresRegulations';
 import CountrySelection from './exports/CountrySelection';
 import ExportFinanceInsurance from './exports/ExportFinanceInsurance';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 const navItems = [
   { id: '0', title: 'My Exports', icon: Home, active: true },
@@ -109,6 +110,7 @@ const cards = [
 
 const ExportsPortal = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('0');
+  useScrollToTop(activeTab);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc' }}>
       

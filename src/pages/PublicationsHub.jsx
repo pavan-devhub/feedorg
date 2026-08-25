@@ -11,6 +11,7 @@ import {
   fetchPublicationByYearMonth, fetchLatestPublication, searchPublications,
   getPublicationFileUrl, getPublicationThumbnailUrl
 } from '../api/publicationsApi';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './PublicationsHub.css';
 
 const MONTH_NAMES = [
@@ -37,9 +38,9 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [searching, setSearching] = useState(false);
   const searchDebounceRef = useRef(null);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // Opening a different publication swaps the whole viewer panel in place - reset scroll
+  // for that (mount-time scroll-to-top for the hub itself is unaffected, key starts null).
+  useScrollToTop(selected?.id ?? null);
 
   const loadYear = useCallback(async (year) => {
     setYearLoading((prev) => ({ ...prev, [year]: true }));

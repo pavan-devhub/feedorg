@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import bgImage from '../assets/Login.avif';
 import logoImage from '../assets/logo.webp';
 import { Mail, Lock, EyeOff, Eye, ArrowRight, UserPlus, Leaf, ArrowLeft, Check, X, AlertCircle } from 'lucide-react';
+import DeviceRow from '../components/DeviceRow';
 
 const Login = ({ onLogin, onRegisterClick, onBack }) => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,45 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
   const [rememberMe, setRememberMe] = useState(true);
   const [notification, setNotification] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Set when /login is blocked by the 3-device cap - holds the active sessions the
+  // "log out a device to continue" screen lets the user pick from.
+  const [blockedSessions, setBlockedSessions] = useState(null);
+  const [blockedMessage, setBlockedMessage] = useState('');
+  const [revokingId, setRevokingId] = useState(null);
+
+  // Shared by the initial submit and by the auto-retry that fires right after a device
+  // is logged out, so freeing a slot takes the user straight into the app.
+  const attemptLogin = async () => {
+    const response = await fetch(`http://${window.location.hostname}:8080/api/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json().catch(() => null);
+
+    if (response.ok) {
+      setBlockedSessions(null);
+      setNotification({ type: 'success', message: data?.message || 'Login successful!' });
+      setTimeout(() => {
+        onLogin(data);
+      }, 1200);
+      return;
+    }
+
+    if (response.status === 409 && Array.isArray(data?.activeSessions)) {
+      setBlockedSessions(data.activeSessions);
+      setBlockedMessage(
+        data?.error || 'You are already logged in on 3 devices. Log out from one device to continue on this device.'
+      );
+      return;
+    }
+
+    setBlockedSessions(null);
+    setNotification({ type: 'error', message: data?.error || 'User not found' });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,29 +57,43 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
     setNotification(null);
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/login`, {
+      await attemptLogin();
+    } catch (error) {
+      console.error('Login error:', error);
+      setNotification({ type: 'error', message: 'Network error. Please make sure the backend is running.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRevokeDevice = async (sessionId) => {
+    setRevokingId(sessionId);
+    try {
+      const res = await fetch(`http://${window.location.hostname}:8080/api/login/sessions/${sessionId}/revoke`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
+      const data = await res.json().catch(() => null);
 
-      const data = await response.json().catch(() => null);
-
-      if (response.ok) {
-        setNotification({ type: 'success', message: data?.message || 'Login successful!' });
-        setTimeout(() => {
-          onLogin(data);
-        }, 1200);
+      if (res.ok) {
+        // Drop it from the list right away, then continue the login this device was
+        // originally trying to do - only that one device's session is touched.
+        setBlockedSessions((prev) => (prev ? prev.filter((s) => s.id !== sessionId) : prev));
+        setNotification({ type: 'success', message: 'Logged out from that device. Logging you in…' });
+        setIsSubmitting(true);
+        await attemptLogin();
+        setIsSubmitting(false);
       } else {
-        setNotification({ type: 'error', message: data?.error || 'User not found' });
+        setNotification({ type: 'error', message: data?.error || 'Could not log out that device.' });
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Revoke session error:', error);
       setNotification({ type: 'error', message: 'Network error. Please make sure the backend is running.' });
     } finally {
-      setIsSubmitting(false);
+      setRevokingId(null);
     }
   };
 
@@ -200,7 +254,50 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
 
        
 
+        {/* "Maximum devices reached" screen, shown instead of the form after a 409 */}
+        {blockedSessions && (
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: textDark, marginBottom: '4px' }}>
+                Maximum 3 devices reached
+              </div>
+              <div style={{ fontSize: '13px', color: textLight }}>{blockedMessage}</div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {blockedSessions.map((s) => (
+                <DeviceRow key={s.id} session={s} onLogout={handleRevokeDevice} busy={revokingId === s.id} />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setBlockedSessions(null);
+                setNotification(null);
+              }}
+              style={{
+                alignSelf: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'none',
+                border: 'none',
+                color: textLight,
+                fontSize: '13px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                padding: '4px',
+              }}
+            >
+              <ArrowLeft size={16} />
+              Use a different account
+            </button>
+          </div>
+        )}
+
         {/* Form */}
+        {!blockedSessions && (
         <form
           onSubmit={handleSubmit}
           style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}
@@ -328,22 +425,26 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
             {!isSubmitting && <ArrowRight size={20} />}
           </button>
         </form>
+        )}
 
         {/* OR Divider */}
+        {!blockedSessions && (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%', margin: '16px 0', color: textLight, fontSize: '12px', fontWeight: '600' }}>
           <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
           <span style={{ margin: '0 16px' }}>OR</span>
           <div style={{ flex: 1, height: '1px', backgroundColor: '#e5e7eb' }}></div>
         </div>
+        )}
 
         {/* Registration Section */}
-        <div style={{ 
-          width: '100%', 
-          background: '#f1f4ed', 
-          borderRadius: '12px', 
-          padding: '20px 24px', 
-          display: 'flex', 
-          flexDirection: 'column', 
+        {!blockedSessions && (
+        <div style={{
+          width: '100%',
+          background: '#f1f4ed',
+          borderRadius: '12px',
+          padding: '20px 24px',
+          display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           gap: '12px',
           boxSizing: 'border-box'
@@ -381,6 +482,7 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
             Register Now
           </button>
         </div>
+        )}
 
       </div>
     </div>

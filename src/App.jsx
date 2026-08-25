@@ -16,6 +16,7 @@ import AgmBoard from './pages/AgmBoard';
 import BusinessPlan from './pages/BusinessPlan';
 import PublicationsHub from './pages/PublicationsHub';
 import MyBusinessLayout from './components/MyBusinessLayout';
+import useScrollToTop from './hooks/useScrollToTop';
 
 function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
   return (
@@ -134,6 +135,8 @@ function App() {
       handleNavigate('login');
     }
   }, [currentPage, isLoggedIn]);
+
+  useScrollToTop(currentPage);
 
 
 
