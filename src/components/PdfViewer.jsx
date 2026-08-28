@@ -4,12 +4,19 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import pdfWorkerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import {
-  Menu, ChevronLeft, ChevronRight, Minus, Plus, Maximize, RotateCw,
+  Menu, Minus, Plus, Maximize, RotateCw,
   Download, Printer
 } from 'lucide-react';
 import './PdfViewer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerSrc;
+
+// Left to itself pdf.js probes the file with a plain GET and then re-fetches it in byte
+// ranges, so a single "View Publication" click shows up as two hits on /{id}/file (and leaves
+// an aborted request behind on the server). One streamed request per publication is what this
+// viewer actually needs. Module-level so the object identity stays stable across renders -
+// a fresh object here would make react-pdf reload the document on every render.
+const PDF_OPTIONS = { disableRange: true };
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 2.5;
@@ -26,44 +33,89 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
-  const [showThumbs, setShowThumbs] = useState(true);
-  const thumbStripRef = useRef(null);
-  const activeThumbRef = useRef(null);
+  const [loadError, setLoadError] = useState(null);
+  const canvasAreaRef = useRef(null);
+  const pageRefs = useRef({});
+  const currentPageRef = useRef(1);
 
   // A different issue was opened - reset the viewer back to page 1 / default zoom.
   useEffect(() => {
+    currentPageRef.current = 1;
     setPageNumber(1);
     setScale(1);
     setRotation(0);
     setNumPages(initialPageCount || null);
+    setLoadError(null);
+    if (canvasAreaRef.current) {
+      canvasAreaRef.current.scrollTop = 0;
+      canvasAreaRef.current.scrollLeft = 0;
+    }
   }, [fileUrl, initialPageCount]);
 
   useEffect(() => {
-    if (activeThumbRef.current) {
-      activeThumbRef.current.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
     if (onPageChange) onPageChange(pageNumber);
+    currentPageRef.current = pageNumber;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber]);
 
+  useEffect(() => {
+    const root = canvasAreaRef.current;
+    if (!root || !numPages || typeof IntersectionObserver === 'undefined') return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visiblePage = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visiblePage) {
+          const nextPage = Number(visiblePage.target.dataset.pageNumber);
+          if (nextPage && nextPage !== currentPageRef.current) {
+            setPageNumber(nextPage);
+          }
+        }
+      },
+      {
+        root,
+        threshold: [0.25, 0.5, 0.75],
+      }
+    );
+
+    Object.values(pageRefs.current).forEach((pageEl) => {
+      if (pageEl) observer.observe(pageEl);
+    });
+
+    return () => observer.disconnect();
+  }, [numPages, scale, rotation]);
+
   const onDocumentLoadSuccess = useCallback(({ numPages: loadedPages }) => {
     setNumPages(loadedPages);
+    setLoadError(null);
+    if (canvasAreaRef.current) {
+      canvasAreaRef.current.scrollTop = 0;
+      canvasAreaRef.current.scrollLeft = 0;
+    }
+  }, []);
+
+  // Keep the actual pdf.js failure (HTTP status, CORS rejection, worker mismatch, corrupt
+  // file...) instead of swallowing it behind a generic panel - a bare "could not be loaded"
+  // with nothing behind it is what made this impossible to diagnose.
+  const onDocumentLoadError = useCallback((error) => {
+    console.error('[PdfViewer] pdf.js could not load the document:', error);
+    setLoadError(error);
   }, []);
 
   const goToPage = (target) => {
     const clamped = Math.min(Math.max(target, 1), numPages || target);
+    currentPageRef.current = clamped;
     setPageNumber(clamped);
+    pageRefs.current[clamped]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const zoomIn = () => setScale((s) => Math.min(MAX_SCALE, +(s + SCALE_STEP).toFixed(2)));
   const zoomOut = () => setScale((s) => Math.max(MIN_SCALE, +(s - SCALE_STEP).toFixed(2)));
   const resetZoom = () => setScale(1);
   const rotate = () => setRotation((r) => (r + 90) % 360);
-  const scrollThumbs = (direction) => {
-    if (thumbStripRef.current) {
-      thumbStripRef.current.scrollBy({ left: direction * 320, behavior: 'smooth' });
-    }
-  };
 
   const handlePrint = () => {
     const printWindow = window.open(fileUrl, '_blank');
@@ -78,9 +130,9 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
         <div className="pdf-toolbar-group">
           <button
             type="button"
-            className={`pdf-tool-btn ${showThumbs ? 'active' : ''}`}
-            title="Toggle thumbnails"
-            onClick={() => setShowThumbs((v) => !v)}
+            className="pdf-tool-btn"
+            title="Pages"
+            aria-label="Pages"
           >
             <Menu size={18} />
           </button>
@@ -126,49 +178,41 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
 
       <Document
         file={fileUrl}
+        options={PDF_OPTIONS}
         onLoadSuccess={onDocumentLoadSuccess}
+        onLoadError={onDocumentLoadError}
         loading={<div className="pdf-status">Loading publication…</div>}
-        error={<div className="pdf-status pdf-status-error">This PDF could not be loaded.</div>}
-      >
-        <div className="pdf-canvas-area">
-          <Page
-            pageNumber={pageNumber}
-            scale={scale}
-            rotate={rotation}
-            renderAnnotationLayer={false}
-            renderTextLayer={false}
-          />
-        </div>
-
-        {showThumbs && numPages > 0 && (
-          <div className="pdf-thumb-strip-wrapper">
-            <button type="button" className="pdf-thumb-nav" onClick={() => scrollThumbs(-1)}>
-              <ChevronLeft size={18} />
-            </button>
-            <div className="pdf-thumb-strip" ref={thumbStripRef}>
-              {Array.from({ length: numPages }, (_, i) => i + 1).map((n) => (
-                <div
-                  key={n}
-                  ref={n === pageNumber ? activeThumbRef : null}
-                  className={`pdf-thumb ${n === pageNumber ? 'active' : ''}`}
-                  onClick={() => goToPage(n)}
-                >
-                  <Page
-                    pageNumber={n}
-                    width={72}
-                    renderAnnotationLayer={false}
-                    renderTextLayer={false}
-                    loading={null}
-                  />
-                  <span>{n}</span>
-                </div>
-              ))}
-            </div>
-            <button type="button" className="pdf-thumb-nav" onClick={() => scrollThumbs(1)}>
-              <ChevronRight size={18} />
-            </button>
+        error={
+          <div className="pdf-status pdf-status-error">
+            This PDF could not be loaded.
+            {loadError && loadError.message && (
+              <div className="pdf-status-detail">{loadError.message}</div>
+            )}
           </div>
-        )}
+        }
+      >
+        <div className="pdf-canvas-area" ref={canvasAreaRef}>
+          {numPages > 0 &&
+            Array.from({ length: numPages }, (_, i) => i + 1).map((n) => (
+              <div
+                key={n}
+                ref={(el) => {
+                  pageRefs.current[n] = el;
+                }}
+                className="pdf-page-frame"
+                data-page-number={n}
+              >
+                <Page
+                  pageNumber={n}
+                  scale={scale}
+                  rotate={rotation}
+                  renderAnnotationLayer={false}
+                  renderTextLayer={false}
+                  loading={<div className="pdf-page-loading">Loading page {n}…</div>}
+                />
+              </div>
+            ))}
+        </div>
       </Document>
     </div>
   );

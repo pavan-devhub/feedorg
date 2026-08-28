@@ -176,7 +176,7 @@ const ContactUs = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   return (
     <div className="contact-page-container">
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="contact" />
       <ContactBackground />
       <section className="contact-hero">
         <div className="contact-hero-copy">

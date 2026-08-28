@@ -82,7 +82,7 @@ const ToolsServices = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
       {/* Main Content Area */}
       <div className="tools-content-wrapper">
-        <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+        <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="tools" />
 
         <div className="tools-main-section">
 

@@ -186,7 +186,7 @@ const Product360 = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   return (
     <div className="product360-page">
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} currentPage="product360" />
       <div style={{ height: '86px', flexShrink: 0 }} />
 
       {/* ===== HERO ===== */}

@@ -31,7 +31,7 @@ const navItems = [
 export default function MyBusinessLayout({ children, onNavigate, isLoggedIn, user, onLogout, currentTab }) {
   return (
     <>
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage={currentTab} />
       <div className="mb-layout">
         {/* Sidebar */}
         <aside className="mb-sidebar">

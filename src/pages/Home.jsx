@@ -163,7 +163,7 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
   return (
     <div className="home-landing-page" style={{ fontFamily: 'Inter, sans-serif', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
      
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="home" />
 
       {/* 2. Hero Slider (Image & Video) */}
       <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
@@ -203,19 +203,19 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
         {/* OVERLAYS (These sit ON TOP of the slider track and do not move) */}
         
         {/* Language Selector (Top Right) */}
-        <div style={{ position: 'absolute', top: '100px', right: '1.5%', zIndex: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', backgroundColor: '#ffffff', borderRadius: '24px', cursor: 'pointer', position: 'relative', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
-            <Globe2 size={20} color="#ea580c" strokeWidth={2} />
-            <select 
-              value={i18n.language} 
+        <div style={{ position: 'absolute', top: '100px', right: '4%', zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '5px 10px', backgroundColor: '#ffffff', borderRadius: '20px', cursor: 'pointer', position: 'relative', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+            <Globe2 size={15} color="#ea580c" strokeWidth={2} />
+            <select
+              value={i18n.language}
               onChange={handleLanguageChange}
-              style={{ background: 'transparent', color: '#111827', border: 'none', outline: 'none', fontSize: '14px', fontWeight: '700', appearance: 'none', paddingRight: '16px', cursor: 'pointer' }}
+              style={{ background: 'transparent', color: '#111827', border: 'none', outline: 'none', fontSize: '12px', fontWeight: '700', appearance: 'none', paddingRight: '14px', cursor: 'pointer' }}
             >
               <option value="en">English</option>
               <option value="hi">à¤¹à¤¿à¤‚à¤¦à¥€</option>
               <option value="te">à°¤à±†à°²à±à°—à±</option>
             </select>
-            <ChevronDown size={16} color="#111827" style={{ position: 'absolute', right: '12px', pointerEvents: 'none' }} />
+            <ChevronDown size={12} color="#111827" style={{ position: 'absolute', right: '8px', pointerEvents: 'none' }} />
           </div>
         </div>
 

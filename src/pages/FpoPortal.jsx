@@ -61,7 +61,7 @@ const FpoPortal = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc' }}>
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="fpo" />
       <div className="fpo-dashboard">
       
       {/* 1. LEFT SIDEBAR */}

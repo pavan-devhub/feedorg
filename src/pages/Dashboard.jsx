@@ -340,7 +340,7 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   // Simulated active tabs logic from ExportsPortal...
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc' }}>
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="dashboard" />
       <div className="db-layout">
       
       {/* 1. LEFT SIDEBAR */}

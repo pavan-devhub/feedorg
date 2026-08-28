@@ -25,7 +25,7 @@ const HowFeedWorks = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="how" />
 
       {/* Premium Layered Background */}
       <div className="hfw-bg-wrapper">

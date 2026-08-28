@@ -92,18 +92,45 @@
 
 .pdf-canvas-area {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 22px;
   padding: 24px;
-  min-height: 480px;
-  max-height: 70vh;
-  overflow: auto;
+  min-height: 800px;
+  max-height: 120vh;
+  overflow-y: auto;
+  overflow-x: auto;
   background: #334155;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+.pdf-page-frame {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.pdf-page-frame .react-pdf__Page {
+  /* No max-width constraint to allow natural zooming */
 }
 
 .pdf-canvas-area canvas {
+  display: block;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   border-radius: 4px;
+}
+
+.pdf-page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .pdf-status {
@@ -117,79 +144,19 @@
   color: #fca5a5;
 }
 
-.pdf-thumb-strip-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 10px;
-  background: #0f172a;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.pdf-thumb-nav {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
-  cursor: pointer;
-}
-
-.pdf-thumb-nav:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.pdf-thumb-strip {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 4px 6px;
-  scrollbar-width: thin;
-}
-
-.pdf-thumb {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.15s ease;
-}
-
-.pdf-thumb:hover {
-  opacity: 1;
-}
-
-.pdf-thumb canvas {
-  border-radius: 4px;
-  border: 2px solid transparent;
-}
-
-.pdf-thumb.active {
-  opacity: 1;
-}
-
-.pdf-thumb.active canvas {
-  border-color: #22c55e;
-}
-
-.pdf-thumb span {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #cbd5e1;
+.pdf-status-detail {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  word-break: break-word;
 }
 
 @media (max-width: 900px) {
   .pdf-canvas-area {
     padding: 14px;
+    gap: 16px;
     min-height: 340px;
+    scroll-padding-top: 14px;
   }
 }

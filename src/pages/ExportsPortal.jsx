@@ -115,7 +115,7 @@ const ExportsPortal = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc' }}>
       
       {/* Reusing Home Navbar */}
-      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="exports" />
       <div style={{ height: '86px', flexShrink: 0 }}></div>
 
       <div className="ep-layout">
