@@ -15,6 +15,9 @@ import BusinessAccount from './pages/BusinessAccount';
 import AgmBoard from './pages/AgmBoard';
 import BusinessPlan from './pages/BusinessPlan';
 import PublicationsHub from './pages/PublicationsHub';
+import Epm from './pages/Epm';
+import EpmDetails from './pages/EpmDetails';
+import EpmGallery from './pages/EpmGallery';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 
@@ -37,9 +40,7 @@ function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, current
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(() => {
-    return localStorage.getItem('currentPage') || 'home';
-  });
+  const [currentPage, setCurrentPage] = useState('home');
   
   const [user, setUser] = useState(null);
   
@@ -107,10 +108,8 @@ function App() {
     const handlePopState = (event) => {
       if (event.state && event.state.page) {
         setCurrentPage(event.state.page);
-        localStorage.setItem('currentPage', event.state.page);
       } else {
         setCurrentPage('home');  
-        localStorage.setItem('currentPage', 'home');
       }
     };
     
@@ -126,7 +125,6 @@ function App() {
 
   const handleNavigate = (page) => {
     setCurrentPage(page);
-    localStorage.setItem('currentPage', page);
     window.history.pushState({ page }, '');
   };
 
@@ -160,7 +158,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -187,6 +185,12 @@ function App() {
           <BusinessPlan onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'feedworld' ? (
           <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm' ? (
+          <Epm onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-details' ? (
+          <EpmDetails onNavigate={handleNavigate} />
+        ) : currentPage === 'epm-gallery' ? (
+          <EpmGallery onNavigate={handleNavigate} />
         ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (
           <MyBusinessPlaceholder onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} currentTab={currentPage} />
         ) : null}

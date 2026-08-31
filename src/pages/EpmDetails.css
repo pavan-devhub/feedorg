@@ -1,0 +1,135 @@
+.epm-details-page {
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.epm-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.epm-details-tabs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.epm-tab-btn {
+  padding: 12px 24px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #475569;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.epm-tab-btn:hover {
+  background: #f1f5f9;
+}
+
+.epm-tab-btn.active {
+  background: #1e3a8a;
+  border-color: #1e3a8a;
+  color: white;
+}
+
+.epm-filters-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+}
+
+.epm-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.epm-filter-group label {
+  font-weight: 600;
+  color: #334155;
+  font-size: 14px;
+}
+
+.epm-filter-group select {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 15px;
+  color: #1e293b;
+  outline: none;
+  background-color: #fff;
+}
+
+.epm-filter-group select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.epm-data-placeholder {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.epm-data-placeholder h3 {
+  margin: 0 0 10px 0;
+  color: #1e293b;
+}
+
+.epm-data-placeholder p {
+  color: #64748b;
+  margin: 0;
+}
+
+.epm-details-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.epm-header-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #1e3a8a;
+  color: #1e3a8a;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: absolute;
+  left: 0;
+}
+
+.epm-header-back-btn:hover {
+  background: #eff6ff;
+}
+
+.epm-details-title {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 700;
+}
