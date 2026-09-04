@@ -2,10 +2,25 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Home as HomeIcon, Settings, Calendar, Map, Activity,
   Package, PhoneCall, ChevronDown, Search, User,
-  Building2, Users, LayoutDashboard, LogOut, Laptop, Menu, X
+  Building2, Users, LayoutDashboard, LogOut, Laptop, Menu, X, Camera, Trash2
 } from 'lucide-react';
 import './Navbar.css';
 import DevicesModal from './DevicesModal';
+import { API_BASE_URL } from '../api/config';
+
+// Above this length the full name no longer fits the pill comfortably, so only the first word
+// (the first name) is shown instead.
+const ACCOUNT_LABEL_MAX_LENGTH = 12;
+
+const getAccountLabel = (user) => {
+  const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ').trim();
+  if (!fullName) return 'My Account';
+  return fullName.length > ACCOUNT_LABEL_MAX_LENGTH ? fullName.split(/\s+/)[0] : fullName;
+};
+
+// Lets other Navbar instances (each page mounts its own) and App's top-level `user` state pick up
+// a freshly uploaded/removed profile picture without threading a callback prop through every page.
+const PROFILE_IMAGE_UPDATED_EVENT = 'feed:profile-image-updated';
 
 export const servicesMegaMenu = [
   { name: 'PROJECT KRUSHI', num: '01', color: 'green', img: '/icons/icon-krushi.avif' },
@@ -73,6 +88,80 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
   const servicesDropdownRef = useRef(null);
   const profileDropdownRef = useRef(null);
   const lastScrollY = useRef(0);
+  const avatarInputRef = useRef(null);
+
+  const [avatarPath, setAvatarPath] = useState(user?.profileImageUrl || null);
+  const [avatarVersion, setAvatarVersion] = useState(0);
+  const [avatarBusy, setAvatarBusy] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
+
+  useEffect(() => {
+    setAvatarPath(user?.profileImageUrl || null);
+  }, [user?.profileImageUrl]);
+
+  // Cache-busted so re-uploading a new photo doesn't keep showing the old one from the browser
+  // cache - the URL path itself never changes across uploads.
+  const avatarSrc = avatarPath ? `${API_BASE_URL}${avatarPath}${avatarPath.includes('?') ? '&' : '?'}v=${avatarVersion}` : null;
+
+  const notifyProfileImageUpdated = (profileImageUrl) => {
+    window.dispatchEvent(new CustomEvent(PROFILE_IMAGE_UPDATED_EVENT, { detail: { profileImageUrl } }));
+  };
+
+  const handleAvatarFileChange = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    const token = localStorage.getItem('jwt');
+    if (!token) return;
+
+    setAvatarBusy(true);
+    setAvatarError('');
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(`${API_BASE_URL}/api/users/me/profile-image`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error || 'Failed to update profile picture');
+      }
+      setAvatarPath(data.profileImageUrl);
+      setAvatarVersion((v) => v + 1);
+      notifyProfileImageUpdated(data.profileImageUrl);
+    } catch (err) {
+      setAvatarError(err.message || 'Failed to update profile picture');
+    } finally {
+      setAvatarBusy(false);
+    }
+  };
+
+  const handleAvatarRemove = async () => {
+    const token = localStorage.getItem('jwt');
+    if (!token) return;
+
+    setAvatarBusy(true);
+    setAvatarError('');
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/users/me/profile-image`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || 'Failed to remove profile picture');
+      }
+      setAvatarPath(null);
+      notifyProfileImageUpdated(null);
+    } catch (err) {
+      setAvatarError(err.message || 'Failed to remove profile picture');
+    } finally {
+      setAvatarBusy(false);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -339,21 +428,71 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
                 }}
               >
                 <span className="fw-account-icon">
-                  {isLoggedIn && user?.firstName ? user.firstName.charAt(0).toUpperCase() : <User size={13} strokeWidth={2.5} />}
+                  {isLoggedIn && avatarSrc ? (
+                    <img src={avatarSrc} alt="" className="fw-account-avatar-img" />
+                  ) : isLoggedIn && user?.firstName ? (
+                    user.firstName.charAt(0).toUpperCase()
+                  ) : (
+                    <User size={13} strokeWidth={2.5} />
+                  )}
                 </span>
-                My Account
+                <span className="fw-account-label">{isLoggedIn ? getAccountLabel(user) : 'My Account'}</span>
               </button>
 
               {isLoggedIn && isProfileOpen && (
                 <div className="fw-account-dropdown">
-                  <div style={{ padding: '8px 12px', borderBottom: '1px solid #f1f5f9', marginBottom: '8px' }}>
-                    <div style={{ fontWeight: '600', color: '#1e293b', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {user?.firstName} {user?.lastName}
+                  <div style={{ padding: '8px 12px', borderBottom: '1px solid #f1f5f9', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div
+                      className="fw-account-avatar-edit"
+                      onClick={() => !avatarBusy && avatarInputRef.current?.click()}
+                      title="Change profile picture"
+                    >
+                      {avatarSrc ? (
+                        <img src={avatarSrc} alt="" />
+                      ) : (
+                        <span>{user?.firstName ? user.firstName.charAt(0).toUpperCase() : <User size={16} />}</span>
+                      )}
+                      <span className="fw-account-avatar-edit-badge"><Camera size={11} /></span>
                     </div>
-                    <div style={{ color: '#64748b', fontSize: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {user?.email}
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontWeight: '600', color: '#1e293b', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {user?.firstName} {user?.lastName}
+                      </div>
+                      <div style={{ color: '#64748b', fontSize: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {user?.email}
+                      </div>
                     </div>
+                    <input
+                      ref={avatarInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/gif"
+                      hidden
+                      onChange={handleAvatarFileChange}
+                    />
                   </div>
+
+                  {avatarBusy && (
+                    <div style={{ fontSize: '11px', color: '#64748b', padding: '0 12px 8px' }}>Updating photo…</div>
+                  )}
+                  {avatarError && (
+                    <div style={{ fontSize: '11px', color: '#ef4444', padding: '0 12px 8px' }}>{avatarError}</div>
+                  )}
+                  {avatarSrc && !avatarBusy && (
+                    <button
+                      type="button"
+                      onClick={handleAvatarRemove}
+                      style={{
+                        width: '100%', padding: '6px 12px', background: 'none', color: '#94a3b8',
+                        border: 'none', cursor: 'pointer', fontWeight: '600',
+                        display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px',
+                        justifyContent: 'center', marginBottom: '4px'
+                      }}
+                    >
+                      <Trash2 size={12} />
+                      Remove photo
+                    </button>
+                  )}
+
                   <button
                     onClick={() => {
                       setIsProfileOpen(false);

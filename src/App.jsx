@@ -18,6 +18,13 @@ import PublicationsHub from './pages/PublicationsHub';
 import Epm from './pages/Epm';
 import EpmDetails from './pages/EpmDetails';
 import EpmGallery from './pages/EpmGallery';
+import EpmObjective from './pages/EpmObjective';
+import EpmContentCoverage from './pages/EpmContentCoverage';
+import EpmBenefits from './pages/EpmBenefits';
+import EpmInvitees from './pages/EpmInvitees';
+import EpmRegister from './pages/EpmRegister';
+import EpmVolunteer from './pages/EpmVolunteer';
+import EpmEventDetails from './pages/EpmEventDetails';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 
@@ -38,10 +45,22 @@ function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, current
   );
 }
 
+// This app has no react-router-dom - the URL never changes between pages, so a hard refresh
+// would otherwise always remount App to its `useState('home')` default. Stashing the current
+// page in sessionStorage (per-tab, cleared when the tab closes) lets a refresh land back on
+// whatever page was actually open instead of bouncing to home.
+const PAGE_STORAGE_KEY = 'feed_current_page';
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState('home');
-  
+  const [currentPage, setCurrentPage] = useState(() => {
+    try {
+      return sessionStorage.getItem(PAGE_STORAGE_KEY) || 'home';
+    } catch {
+      return 'home';
+    }
+  });
+
   const [user, setUser] = useState(null);
   
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -104,17 +123,39 @@ function App() {
     };
     validateToken();
   }, []);
+
   React.useEffect(() => {
+    // Navbar dispatches this after the user uploads/removes their profile picture (each page
+    // mounts its own Navbar instance, so this keeps App's single `user` state in sync without
+    // threading a callback prop through every page).
+    const handleProfileImageUpdated = (event) => {
+      setUser((prev) => (prev ? { ...prev, profileImageUrl: event.detail?.profileImageUrl ?? null } : prev));
+    };
+    window.addEventListener('feed:profile-image-updated', handleProfileImageUpdated);
+    return () => window.removeEventListener('feed:profile-image-updated', handleProfileImageUpdated);
+  }, []);
+
+  React.useEffect(() => {
+    // Without this, the browser's own scroll-position restoration on back/forward navigation
+    // races with (and usually wins over) useScrollToTop below, leaving the page scrolled to
+    // wherever it happened to be instead of the top.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     const handlePopState = (event) => {
       if (event.state && event.state.page) {
         setCurrentPage(event.state.page);
+        const { page, ...rest } = event.state;
+        setNavState(rest);
       } else {
-        setCurrentPage('home');  
+        setCurrentPage('home');
+        setNavState({});
       }
     };
-    
+
     window.addEventListener('popstate', handlePopState);
-    
+
     // Initialize history state on first load
     if (!window.history.state) {
       window.history.replaceState({ page: currentPage }, '');
@@ -123,9 +164,20 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [currentPage]);
 
-  const handleNavigate = (page) => {
+  React.useEffect(() => {
+    try {
+      sessionStorage.setItem(PAGE_STORAGE_KEY, currentPage);
+    } catch {
+      // sessionStorage unavailable (e.g. private mode) - refresh just falls back to home
+    }
+  }, [currentPage]);
+
+  const [navState, setNavState] = useState({});
+
+  const handleNavigate = (page, extraState = {}) => {
     setCurrentPage(page);
-    window.history.pushState({ page }, '');
+    setNavState(extraState);
+    window.history.pushState({ page, ...extraState }, '');
   };
 
   React.useEffect(() => {
@@ -158,7 +210,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -188,9 +240,23 @@ function App() {
         ) : currentPage === 'epm' ? (
           <Epm onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'epm-details' ? (
-          <EpmDetails onNavigate={handleNavigate} />
+          <EpmDetails onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-event-details' ? (
+          <EpmEventDetails onNavigate={handleNavigate} eventId={navState.eventId} />
         ) : currentPage === 'epm-gallery' ? (
-          <EpmGallery onNavigate={handleNavigate} />
+          <EpmGallery onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-objective' ? (
+          <EpmObjective onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-content-coverage' ? (
+          <EpmContentCoverage onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-benefits' ? (
+          <EpmBenefits onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-invitees' ? (
+          <EpmInvitees onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-register' ? (
+          <EpmRegister onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-volunteer' ? (
+          <EpmVolunteer onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (
           <MyBusinessPlaceholder onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} currentTab={currentPage} />
         ) : null}

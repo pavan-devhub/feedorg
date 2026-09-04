@@ -293,6 +293,59 @@
   justify-content: center;
   font-size: 11px;
   font-weight: 800;
+  overflow: hidden;
+}
+
+.fw-account-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.fw-account-label {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fw-account-avatar-edit {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: #ffedd5;
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.fw-account-avatar-edit img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fw-account-avatar-edit-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0b5d3b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
 }
 
 .fw-account-dropdown {

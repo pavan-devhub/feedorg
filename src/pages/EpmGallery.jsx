@@ -1,34 +1,37 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { MapPin, ArrowRight, Star, X, ChevronLeft, ChevronRight, Users, Handshake, Globe, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { MapPin, ArrowRight, Star, X, ChevronLeft, ChevronRight, Users, Handshake, Globe, TrendingUp, ImageOff } from 'lucide-react';
+import { fetchEpmGalleryImages, getEpmGalleryImageUrl } from '../api/epmApi';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import './EpmGallery.css';
 
-// Reusable Image URLs (using Unsplash placeholders focused on meetings/conferences as requested)
-// We avoid unrelated photos and ensure they all look like business/promotional meetings.
-const IMAGES = [
-  'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800', // Audience
-  'https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&q=80&w=800', // Speaker stage
-  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800', // Handshake/networking
-  'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&q=80&w=800', // Panel discussion
-  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800', // Audience clapping
-  'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800', // Corporate meeting
-  'https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=800', // Group discussion
-  'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800', // Registration/Event
-  'https://images.unsplash.com/photo-1475721028070-075e6d62a222?auto=format&fit=crop&q=80&w=800', // Speaker close-up
-  'https://images.unsplash.com/photo-1591115765373-5207764f72e7?auto=format&fit=crop&q=80&w=800', // Presentation
-  'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800', // Event Hall
-  'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800', // Workshop
-  'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800', // Team
-  'https://images.unsplash.com/photo-1577415124269-fc1140a69e91?auto=format&fit=crop&q=80&w=800', // Handshake closeup
-];
+export default function EpmGallery({ onNavigate, isLoggedIn, user, onLogout }) {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
-// Helper to get random image from list for varied layouts
-const getImg = (index) => IMAGES[index % IMAGES.length];
-
-export default function EpmGallery({ onNavigate }) {
   const [lightbox, setLightbox] = useState({ isOpen: false, currentIndex: 0, items: [] });
   const [activeFilter, setActiveFilter] = useState('ALL');
 
-  // All images registered for lightbox will be pushed here
+  // Every photo below comes from the backend (admin-uploaded via AdminEpmGalleryController) -
+  // see EpmGalleryController#list. Nothing here is a stock/placeholder URL.
+  useEffect(() => {
+    let cancelled = false;
+    fetchEpmGalleryImages()
+      .then(data => { if (!cancelled) setImages(data); })
+      .catch(err => { if (!cancelled) setLoadError(err.message || 'Failed to load the gallery.'); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Cycles through however many photos actually exist (same "reuse across sections" approach the
+  // page always used, just backed by real data now instead of a hardcoded Unsplash array).
+  const imgAt = useCallback((index) => (images.length > 0 ? images[index % images.length] : null), [images]);
+  const srcAt = useCallback((index) => {
+    const img = imgAt(index);
+    return img ? getEpmGalleryImageUrl(img.imageUrl) : '';
+  }, [imgAt]);
+
   const openLightbox = (items, index) => {
     setLightbox({ isOpen: true, currentIndex: index, items });
   };
@@ -63,8 +66,10 @@ export default function EpmGallery({ onNavigate }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightbox.isOpen, nextLightbox, prevLightbox]);
 
-  // Scroll Animations Observer
+  // Scroll Animations Observer - re-runs once loading flips to false, since the
+  // .animate-on-scroll elements below don't exist in the DOM until the fetched photos render.
   useEffect(() => {
+    if (loading) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -78,43 +83,49 @@ export default function EpmGallery({ onNavigate }) {
     elements.forEach(el => observer.observe(el));
 
     return () => elements.forEach(el => observer.unobserve(el));
-  }, []);
+  }, [loading]);
 
-  // Content Data
-  const topFeatured = [
-    { city: 'Pune, Maharashtra', title: 'EPM – Maharashtra', desc: 'Bringing together exporters and global buyers to explore new opportunities and partnerships.', img: getImg(0) },
-    { city: 'Ahmedabad, Gujarat', title: 'EPM – Gujarat', desc: 'Promoting exports and showcasing Gujarat\'s products to international markets.', img: getImg(1) },
-    { city: 'Bengaluru, Karnataka', title: 'EPM – Karnataka', desc: 'Creating global exposure for businesses and strengthening export capabilities.', img: getImg(2) },
-    { city: 'Kolkata, West Bengal', title: 'EPM – West Bengal', desc: 'Connecting Bengal\'s vibrant industries with global buyers and opportunities.', img: getImg(3) }
-  ];
+  // Content Data - derived from whatever photos are actually in the database. Sections that name
+  // a specific place (top strip, city stories, the state-filterable archive) use each photo's own
+  // city/state/caption so a filter or label is never paired with the wrong photo; the purely
+  // generic "moment" sections (Networking, Opening Session, etc.) keep their stage-of-event
+  // labels since those describe a kind of moment, not a place.
+  const featuredPool = useMemo(() => {
+    const featured = images.filter(img => img.featured);
+    return (featured.length > 0 ? featured : images).slice(0, 4);
+  }, [images]);
 
-  const cityStories = [
-    { city: 'Pune', state: 'Maharashtra', desc: 'EPM – Export Promotional Meeting', img: getImg(4) },
-    { city: 'Ahmedabad', state: 'Gujarat', desc: 'EPM – Export Promotional Meeting', img: getImg(5) },
-    { city: 'Vijayawada', state: 'Andhra Pradesh', desc: 'EPM – Export Promotional Meeting', img: getImg(6) },
-    { city: 'Hyderabad', state: 'Telangana', desc: 'EPM – Export Promotional Meeting', img: getImg(7) },
-    { city: 'Bengaluru', state: 'Karnataka', desc: 'EPM – Export Promotional Meeting', img: getImg(8) },
-    { city: 'Chennai', state: 'Tamil Nadu', desc: 'EPM – Export Promotional Meeting', img: getImg(9) },
-  ];
+  const topFeatured = useMemo(() => featuredPool.map((img, idx) => ({
+    city: img.city || 'Location to be announced',
+    title: img.state ? `EPM – ${img.state}` : `EPM Gathering ${idx + 1}`,
+    desc: img.caption || 'Bringing together exporters and global buyers to explore new opportunities and partnerships.',
+    img: getEpmGalleryImageUrl(img.imageUrl),
+  })), [featuredPool]);
 
-  const archiveData = [
-    { state: 'MAHARASHTRA', title: 'Pune Networking', city: 'Pune', img: getImg(0) },
-    { state: 'GUJARAT', title: 'Keynote Session', city: 'Ahmedabad', img: getImg(1) },
-    { state: 'KARNATAKA', title: 'Buyer Meet', city: 'Bengaluru', img: getImg(2) },
-    { state: 'WEST BENGAL', title: 'Panel Discussion', city: 'Kolkata', img: getImg(3) },
-    { state: 'DELHI', title: 'Delegates Arriving', city: 'New Delhi', img: getImg(4) },
-    { state: 'ANDHRA PRADESH', title: 'Presentation', city: 'Vijayawada', img: getImg(5) },
-    { state: 'TELANGANA', title: 'B2B Connect', city: 'Hyderabad', img: getImg(6) },
-    { state: 'TAMIL NADU', title: 'Closing Ceremony', city: 'Chennai', img: getImg(7) },
-    { state: 'MAHARASHTRA', title: 'Exhibitor Booth', city: 'Mumbai', img: getImg(8) },
-    { state: 'GUJARAT', title: 'Roundtable', city: 'Surat', img: getImg(9) },
-  ];
+  const cityStories = useMemo(() => images.slice(0, 6).map(img => ({
+    city: img.city || 'EPM',
+    state: img.state || '',
+    desc: img.caption || 'EPM – Export Promotional Meeting',
+    img: getEpmGalleryImageUrl(img.imageUrl),
+  })), [images]);
+
+  const archiveData = useMemo(() => images.map(img => ({
+    state: (img.state || 'OTHER').toUpperCase(),
+    title: img.caption || 'EPM Moment',
+    city: img.city || '',
+    img: getEpmGalleryImageUrl(img.imageUrl),
+  })), [images]);
+
+  const filters = useMemo(
+    () => ['ALL', ...Array.from(new Set(archiveData.map(a => a.state))).sort()],
+    [archiveData]
+  );
 
   const filteredArchive = activeFilter === 'ALL' ? archiveData : archiveData.filter(item => item.state === activeFilter);
-  const filters = ['ALL', 'MAHARASHTRA', 'GUJARAT', 'ANDHRA PRADESH', 'TELANGANA', 'KARNATAKA', 'TAMIL NADU', 'WEST BENGAL', 'DELHI'];
 
   return (
     <div className="epm-gallery-page">
+      <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="epm" />
       {/* 1. PAGE INTRO */}
       <section className="eg-intro animate-on-scroll slide-up">
         <span className="eg-intro-subtitle">Export Promotional Meetings</span>
@@ -122,6 +133,22 @@ export default function EpmGallery({ onNavigate }) {
         <p className="eg-intro-desc">A visual collection of Export Promotional Meetings conducted across India.</p>
       </section>
 
+      {loading ? (
+        <div className="eg-container" style={{ padding: '60px 24px', textAlign: 'center', color: '#64748b' }}>
+          Loading gallery…
+        </div>
+      ) : loadError ? (
+        <div className="eg-container" style={{ padding: '60px 24px', textAlign: 'center', color: '#b91c1c' }}>
+          {loadError}
+        </div>
+      ) : images.length === 0 ? (
+        <div className="eg-container" style={{ padding: '60px 24px', textAlign: 'center', color: '#64748b' }}>
+          <ImageOff size={40} style={{ marginBottom: '16px', opacity: 0.6 }} />
+          <h3 style={{ margin: '0 0 8px', color: '#0f172a' }}>No photos yet</h3>
+          <p>Photos from Export Promotional Meetings will appear here once they're added.</p>
+        </div>
+      ) : (
+      <>
       {/* 2. TOP GALLERY - REFERENCE INSPIRED */}
       <section className="eg-ref-section">
         <div className="eg-container">
@@ -197,10 +224,9 @@ export default function EpmGallery({ onNavigate }) {
                 </div>
               </div>
             </div>
-            
+
             <div className="eg-ref-right animate-on-scroll slide-left delay-200">
-              {/* Reference image uses a large feature image here. Only EPM images allowed. */}
-              <img src={getImg(10)} alt="EPM Large Gathering" className="eg-ref-hero-img" onClick={() => openLightbox([{title: 'EPM Mega Gathering', city: 'National Event', img: getImg(10)}], 0)} />
+              <img src={srcAt(10)} alt="EPM Large Gathering" className="eg-ref-hero-img" onClick={() => openLightbox([{title: 'EPM Mega Gathering', city: 'National Event', img: srcAt(10)}], 0)} />
             </div>
           </div>
         </div>
@@ -213,26 +239,26 @@ export default function EpmGallery({ onNavigate }) {
             <h2 className="eg-section-title">EPM Moments</h2>
             <p className="eg-section-subtitle">Scenes from meetings that bring exporters and industry participants together.</p>
           </div>
-          
+
           <div className="eg-masonry">
-            <div className="eg-masonry-item animate-on-scroll slide-up eg-masonry-item-large" onClick={() => openLightbox([{title: 'Opening Session', img: getImg(4)}], 0)}>
-              <img loading="lazy" src={getImg(4)} alt="Opening Session" />
+            <div className="eg-masonry-item animate-on-scroll slide-up eg-masonry-item-large" onClick={() => openLightbox([{title: 'Opening Session', img: srcAt(4)}], 0)}>
+              <img loading="lazy" src={srcAt(4)} alt="Opening Session" />
               <div className="eg-masonry-caption">Opening Session</div>
             </div>
-            <div className="eg-masonry-item animate-on-scroll slide-up delay-100" onClick={() => openLightbox([{title: 'Networking', img: getImg(5)}], 0)}>
-              <img loading="lazy" src={getImg(5)} alt="Networking" />
+            <div className="eg-masonry-item animate-on-scroll slide-up delay-100" onClick={() => openLightbox([{title: 'Networking', img: srcAt(5)}], 0)}>
+              <img loading="lazy" src={srcAt(5)} alt="Networking" />
               <div className="eg-masonry-caption">Networking</div>
             </div>
-            <div className="eg-masonry-item animate-on-scroll slide-up eg-masonry-item-tall" onClick={() => openLightbox([{title: 'Panel Discussion', img: getImg(6)}], 0)}>
-              <img loading="lazy" src={getImg(6)} alt="Panel Discussion" />
+            <div className="eg-masonry-item animate-on-scroll slide-up eg-masonry-item-tall" onClick={() => openLightbox([{title: 'Panel Discussion', img: srcAt(6)}], 0)}>
+              <img loading="lazy" src={srcAt(6)} alt="Panel Discussion" />
               <div className="eg-masonry-caption">Panel Discussion</div>
             </div>
-            <div className="eg-masonry-item animate-on-scroll slide-up delay-100" onClick={() => openLightbox([{title: 'Buyer Interaction', img: getImg(7)}], 0)}>
-              <img loading="lazy" src={getImg(7)} alt="Buyer Interaction" />
+            <div className="eg-masonry-item animate-on-scroll slide-up delay-100" onClick={() => openLightbox([{title: 'Buyer Interaction', img: srcAt(7)}], 0)}>
+              <img loading="lazy" src={srcAt(7)} alt="Buyer Interaction" />
               <div className="eg-masonry-caption">Buyer Interaction</div>
             </div>
-            <div className="eg-masonry-item animate-on-scroll slide-up eg-masonry-item-wide" onClick={() => openLightbox([{title: 'Delegate Session', img: getImg(8)}], 0)}>
-              <img loading="lazy" src={getImg(8)} alt="Delegate Session" />
+            <div className="eg-masonry-item animate-on-scroll slide-up eg-masonry-item-wide" onClick={() => openLightbox([{title: 'Delegate Session', img: srcAt(8)}], 0)}>
+              <img loading="lazy" src={srcAt(8)} alt="Delegate Session" />
               <div className="eg-masonry-caption">Delegate Session</div>
             </div>
           </div>
@@ -250,7 +276,7 @@ export default function EpmGallery({ onNavigate }) {
               <img loading="lazy" src={item.img} alt={item.city} />
               <div className="eg-slide-overlay">
                 <h3 className="eg-slide-city">{item.city}</h3>
-                <h4 className="eg-slide-state">{item.state}</h4>
+                {item.state && <h4 className="eg-slide-state">{item.state}</h4>}
                 <p className="eg-slide-caption">{item.desc}</p>
               </div>
             </div>
@@ -266,17 +292,17 @@ export default function EpmGallery({ onNavigate }) {
             <p className="eg-section-subtitle">Scenes from meetings that bring exporters and industry participants together.</p>
           </div>
           <div className="eg-asym-grid">
-            <div className="eg-asym-img animate-on-scroll slide-right eg-asym-1" onClick={() => openLightbox([{title: 'Event Stage', img: getImg(9)}], 0)}>
-              <img loading="lazy" src={getImg(9)} alt="EPM Stage" />
+            <div className="eg-asym-img animate-on-scroll slide-right eg-asym-1" onClick={() => openLightbox([{title: 'Event Stage', img: srcAt(9)}], 0)}>
+              <img loading="lazy" src={srcAt(9)} alt="EPM Stage" />
             </div>
-            <div className="eg-asym-img animate-on-scroll slide-left eg-asym-2" onClick={() => openLightbox([{title: 'Audience', img: getImg(1)}], 0)}>
-              <img loading="lazy" src={getImg(1)} alt="EPM Audience" />
+            <div className="eg-asym-img animate-on-scroll slide-left eg-asym-2" onClick={() => openLightbox([{title: 'Audience', img: srcAt(1)}], 0)}>
+              <img loading="lazy" src={srcAt(1)} alt="EPM Audience" />
             </div>
-            <div className="eg-asym-img animate-on-scroll slide-up eg-asym-3" onClick={() => openLightbox([{title: 'Speaker Preparing', img: getImg(8)}], 0)}>
-              <img loading="lazy" src={getImg(8)} alt="Speaker" />
+            <div className="eg-asym-img animate-on-scroll slide-up eg-asym-3" onClick={() => openLightbox([{title: 'Speaker Preparing', img: srcAt(8)}], 0)}>
+              <img loading="lazy" src={srcAt(8)} alt="Speaker" />
             </div>
-            <div className="eg-asym-img animate-on-scroll slide-up delay-100 eg-asym-4" onClick={() => openLightbox([{title: 'Delegates Entering', img: getImg(10)}], 0)}>
-              <img loading="lazy" src={getImg(10)} alt="Delegates" />
+            <div className="eg-asym-img animate-on-scroll slide-up delay-100 eg-asym-4" onClick={() => openLightbox([{title: 'Delegates Entering', img: srcAt(10)}], 0)}>
+              <img loading="lazy" src={srcAt(10)} alt="Delegates" />
             </div>
           </div>
         </div>
@@ -290,8 +316,8 @@ export default function EpmGallery({ onNavigate }) {
           </div>
           <div className="eg-portrait-grid">
             {['Speaker', 'Exporter', 'Buyer', 'Delegate', 'Panelist', 'FEED Representative'].map((label, i) => (
-              <div key={i} className={`eg-portrait-card animate-on-scroll slide-up delay-${(i % 3) * 100}`} onClick={() => openLightbox([{title: label, img: getImg(i + 2)}], 0)}>
-                <img loading="lazy" src={getImg(i + 2)} alt={label} />
+              <div key={i} className={`eg-portrait-card animate-on-scroll slide-up delay-${(i % 3) * 100}`} onClick={() => openLightbox([{title: label, img: srcAt(i + 2)}], 0)}>
+                <img loading="lazy" src={srcAt(i + 2)} alt={label} />
                 <div className="eg-portrait-label">{label}</div>
               </div>
             ))}
@@ -301,8 +327,8 @@ export default function EpmGallery({ onNavigate }) {
 
       {/* 9. STAGE & SESSION */}
       <section className="eg-cinematic">
-        <div className="eg-cine-img animate-on-scroll slide-up" onClick={() => openLightbox([{title: 'Keynote Session', city: 'National Summit', img: getImg(3)}], 0)}>
-          <img loading="lazy" src={getImg(3)} alt="Cinematic Stage" />
+        <div className="eg-cine-img animate-on-scroll slide-up" onClick={() => openLightbox([{title: 'Keynote Session', city: 'National Summit', img: srcAt(3)}], 0)}>
+          <img loading="lazy" src={srcAt(3)} alt="Cinematic Stage" />
           <div className="eg-cine-caption">Keynote Sessions</div>
         </div>
       </section>
@@ -315,11 +341,11 @@ export default function EpmGallery({ onNavigate }) {
           </div>
           <div className="eg-network-grid">
             <div className="eg-net-col animate-on-scroll slide-right">
-              <div className="eg-net-img" onClick={() => openLightbox([{title: 'B2B Meeting', img: getImg(2)}], 0)}><img loading="lazy" src={getImg(2)} alt="Net 1" /></div>
-              <div className="eg-net-img" onClick={() => openLightbox([{title: 'Group Discussion', img: getImg(6)}], 0)}><img loading="lazy" src={getImg(6)} alt="Net 2" /></div>
+              <div className="eg-net-img" onClick={() => openLightbox([{title: 'B2B Meeting', img: srcAt(2)}], 0)}><img loading="lazy" src={srcAt(2)} alt="Net 1" /></div>
+              <div className="eg-net-img" onClick={() => openLightbox([{title: 'Group Discussion', img: srcAt(6)}], 0)}><img loading="lazy" src={srcAt(6)} alt="Net 2" /></div>
             </div>
-            <div className="eg-net-img animate-on-scroll slide-left delay-200" onClick={() => openLightbox([{title: 'Handshakes', img: getImg(13)}], 0)}>
-              <img loading="lazy" src={getImg(13)} alt="Net 3" />
+            <div className="eg-net-img animate-on-scroll slide-left delay-200" onClick={() => openLightbox([{title: 'Handshakes', img: srcAt(13)}], 0)}>
+              <img loading="lazy" src={srcAt(13)} alt="Net 3" />
             </div>
           </div>
         </div>
@@ -333,8 +359,8 @@ export default function EpmGallery({ onNavigate }) {
           </div>
           <div className="eg-details-grid">
             {[7, 8, 9, 10, 11].map(i => (
-              <div key={i} className="eg-detail-img animate-on-scroll slide-up" onClick={() => openLightbox([{title: 'Event Detail', img: getImg(i)}], 0)}>
-                <img loading="lazy" src={getImg(i)} alt="Detail" />
+              <div key={i} className="eg-detail-img animate-on-scroll slide-up" onClick={() => openLightbox([{title: 'Event Detail', img: srcAt(i)}], 0)}>
+                <img loading="lazy" src={srcAt(i)} alt="Detail" />
               </div>
             ))}
           </div>
@@ -349,17 +375,17 @@ export default function EpmGallery({ onNavigate }) {
           </div>
           <div className="eg-story-timeline">
             {[
-              { num: '01', label: 'Arrival', img: getImg(10) },
-              { num: '02', label: 'Opening', img: getImg(1) },
-              { num: '03', label: 'Keynote', img: getImg(8) },
-              { num: '04', label: 'Discussion', img: getImg(6) },
-              { num: '05', label: 'Networking', img: getImg(2) },
-              { num: '06', label: 'Closing', img: getImg(4) },
+              { num: '01', label: 'Arrival', idx: 10 },
+              { num: '02', label: 'Opening', idx: 1 },
+              { num: '03', label: 'Keynote', idx: 8 },
+              { num: '04', label: 'Discussion', idx: 6 },
+              { num: '05', label: 'Networking', idx: 2 },
+              { num: '06', label: 'Closing', idx: 4 },
             ].map((step, i) => (
               <div key={i} className="eg-story-item animate-on-scroll slide-up">
                 <div className="eg-story-num">{step.num}</div>
-                <div className="eg-story-img" onClick={() => openLightbox([{title: step.label, img: step.img}], 0)}>
-                  <img loading="lazy" src={step.img} alt={step.label} />
+                <div className="eg-story-img" onClick={() => openLightbox([{title: step.label, img: srcAt(step.idx)}], 0)}>
+                  <img loading="lazy" src={srcAt(step.idx)} alt={step.label} />
                 </div>
                 <div className="eg-story-label">{step.label}</div>
               </div>
@@ -371,8 +397,8 @@ export default function EpmGallery({ onNavigate }) {
       {/* 13. LARGE FEATURE */}
       <section className="eg-cinematic" style={{ padding: '40px 0' }}>
         <div className="eg-container">
-           <div className="eg-cine-img animate-on-scroll slide-up" style={{ borderRadius: '16px', height: '60vh' }} onClick={() => openLightbox([{title: 'Grand Meeting', img: getImg(0)}], 0)}>
-            <img loading="lazy" src={getImg(0)} alt="Large Feature" />
+           <div className="eg-cine-img animate-on-scroll slide-up" style={{ borderRadius: '16px', height: '60vh' }} onClick={() => openLightbox([{title: 'Grand Meeting', img: srcAt(0)}], 0)}>
+            <img loading="lazy" src={srcAt(0)} alt="Large Feature" />
           </div>
         </div>
       </section>
@@ -383,11 +409,11 @@ export default function EpmGallery({ onNavigate }) {
           <div className="eg-section-header animate-on-scroll slide-up">
             <h2 className="eg-section-title">Explore More EPM Moments</h2>
           </div>
-          
+
           <div className="eg-filter">
             {filters.map(f => (
-              <button 
-                key={f} 
+              <button
+                key={f}
                 className={`eg-filter-btn ${activeFilter === f ? 'active' : ''}`}
                 onClick={() => setActiveFilter(f)}
               >
@@ -399,11 +425,11 @@ export default function EpmGallery({ onNavigate }) {
           <div className="eg-archive-masonry">
             {filteredArchive.map((item, idx) => (
               <div key={idx} className="eg-archive-item animate-on-scroll slide-up" onClick={() => openLightbox(filteredArchive, idx)}>
-                <img loading="lazy" src={item.img} alt={item.title} loading="lazy" />
+                <img loading="lazy" src={item.img} alt={item.title} />
                 <div className="eg-archive-overlay">
                   <div className="eg-archive-info">
                     <h5>{item.title}</h5>
-                    <p>{item.city}, {item.state}</p>
+                    <p>{[item.city, item.state].filter(Boolean).join(', ')}</p>
                   </div>
                 </div>
               </div>
@@ -411,6 +437,8 @@ export default function EpmGallery({ onNavigate }) {
           </div>
         </div>
       </section>
+      </>
+      )}
 
       {/* 16. LIGHTBOX */}
       {lightbox.isOpen && (
@@ -429,13 +457,13 @@ export default function EpmGallery({ onNavigate }) {
                 <ChevronLeft size={32} />
               </button>
             )}
-            
-            <img loading="lazy" 
-              src={lightbox.items[lightbox.currentIndex].img} 
-              alt="Lightbox" 
-              className="eg-lb-img" 
+
+            <img loading="lazy"
+              src={lightbox.items[lightbox.currentIndex].img}
+              alt="Lightbox"
+              className="eg-lb-img"
             />
-            
+
             {lightbox.items.length > 1 && (
               <button className="eg-lb-nav eg-lb-next" onClick={nextLightbox}>
                 <ChevronRight size={32} />
@@ -455,6 +483,7 @@ export default function EpmGallery({ onNavigate }) {
         </div>
       )}
 
+      <Footer />
     </div>
   );
 }
