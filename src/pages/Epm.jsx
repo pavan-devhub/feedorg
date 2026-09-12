@@ -324,7 +324,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             <div className="epm-hb-bg">
               <img
                 className="epm-hb-image"
-                src="/epm_global_agri_export.png"
+                src="/epm_global_agri_export.avif"
                 alt="Global Agricultural Exports"
               />
               <div className="epm-hb-gradient"></div>
@@ -406,7 +406,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           <div className="redesign-stats-grid">
             <div className="redesign-stat-card r-stat-green">
               <div className="r-stat-bg">
-                <img src="/epm_stat_1.png" alt="EPMs Conducted" />
+                <img src="/epm_stat_1.avif" alt="EPMs Conducted" />
                 <div className="r-stat-fade"></div>
               </div>
               <div className="r-stat-content">
@@ -422,7 +422,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
             <div className="redesign-stat-card r-stat-blue">
               <div className="r-stat-bg">
-                <img src="/epm_stat_2.png" alt="Districts Covered" />
+                <img src="/epm_stat_2.avif" alt="Districts Covered" />
                 <div className="r-stat-fade"></div>
               </div>
               <div className="r-stat-content">
@@ -438,7 +438,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
             <div className="redesign-stat-card r-stat-purple">
               <div className="r-stat-bg">
-                <img src="/epm_stat_3.png" alt="Total Attendees" />
+                <img src="/epm_stat_3.avif" alt="Total Attendees" />
                 <div className="r-stat-fade"></div>
               </div>
               <div className="r-stat-content">
@@ -489,7 +489,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                 </div>
               </div>
               <div className="redesign-calendar-ill">
-                <img src="/epm_calendar.jpg" alt="Calendar landscape" />
+                <img src="/epm_calendar.avif" alt="Calendar landscape" />
               </div>
             </div>
 

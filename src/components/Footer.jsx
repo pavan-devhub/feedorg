@@ -14,7 +14,7 @@ import {
   Mail,
   Send
 } from 'lucide-react';
-import logo from '../assets/logo.webp';
+import logo from '../assets/logo.avif';
 
 const FacebookIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="white">

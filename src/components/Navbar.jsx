@@ -49,6 +49,7 @@ const SERVICE_ROUTES = {
   'MY BUSINESS': 'mybusiness',
   'FEED WORLD': 'feedworld',
   'EPM': 'epm',
+  'SAFE MISSION': 'safe-mission',
 };
 
 // `route` links a nav item to the `currentPage` value that should light it up; items without

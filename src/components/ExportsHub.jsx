@@ -68,7 +68,7 @@ const ExportsHub = ({ onNavigate, onSelectTool }) => {
           </div>
 
           <div className="exports-header-illustration">
-            <img src="/images/exports_header_illustration.jpg" alt="Global Exports illustration" />
+            <img src="/images/exports_header_illustration.avif" alt="Global Exports illustration" />
           </div>
 
         </div>

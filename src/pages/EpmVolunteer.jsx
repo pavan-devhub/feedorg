@@ -154,7 +154,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               </div>
             </div>
             <div className="epm-hero-visual">
-              <img src="/images/epm_volunteer_hero.jpg" alt="EPM Volunteer Community" className="epm-hero-image" />
+              <img src="/images/epm_volunteer_hero.avif" alt="EPM Volunteer Community" className="epm-hero-image" />
             </div>
           </div>
 

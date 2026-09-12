@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import bgImage from '../assets/Login.avif';
-import logoImage from '../assets/logo.webp';
+import logoImage from '../assets/logo.avif';
 import { Mail, Lock, EyeOff, Eye, ArrowRight, UserPlus, Leaf, ArrowLeft, Check, X, AlertCircle } from 'lucide-react';
 import DeviceRow from '../components/DeviceRow';
 

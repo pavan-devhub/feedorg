@@ -147,7 +147,7 @@ const MSMEServiceHub = ({ onNavigate, onSelectTool }) => {
           </div>
 
           <div className="msme-hero-illustration">
-            <img src="/images/msme_compact_illustration.png" alt="MSME Business Growth" className="msme-hero-img" />
+            <img src="/images/msme_compact_illustration.avif" alt="MSME Business Growth" className="msme-hero-img" />
           </div>
         </div>
 

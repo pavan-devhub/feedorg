@@ -140,7 +140,7 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               <p className="epm-hero-subtitle">Your journey from the farm to the global market begins here.</p>
             </div>
             <div className="epm-hero-visual">
-              <img src="/images/epm_register_hero.jpg" alt="EPM Global Market Journey" className="epm-hero-image" />
+              <img src="/images/epm_register_hero.avif" alt="EPM Global Market Journey" className="epm-hero-image" />
             </div>
           </div>
 

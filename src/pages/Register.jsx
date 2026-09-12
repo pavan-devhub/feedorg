@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-// IMPORTANT: Please replace 'reg.webp' with your actual registration background image once you save it to the assets folder.
-import bgImage from '../assets/reg.webp'; 
-import logoImage from '../assets/logo.webp';
+import bgImage from '../assets/reg.avif';
+import logoImage from '../assets/logo.avif';
 import { ArrowLeft, Check, X, AlertCircle } from 'lucide-react';
 
 const apDistricts = [

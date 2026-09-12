@@ -156,7 +156,7 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             </div>
           </div>
           <div className="epm-dir-hero-img-box">
-             <img src="/images/epm/epm-directory-hero-india.png" alt="India Agricultural Export Opportunities" className="epm-dir-hero-img" />
+             <img src="/images/epm/epm-directory-hero-india.avif" alt="India Agricultural Export Opportunities" className="epm-dir-hero-img" />
           </div>
         </div>
       </div>
