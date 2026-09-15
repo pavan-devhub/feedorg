@@ -24,9 +24,9 @@ const MONTH_NAMES = [
 // whatever data happens to be in the database.
 const YEAR_OPTIONS = [2026, 2025];
 
-// How many issues the archive sidebar can show at once, counting forward from whichever issue is
-// open. 12 is effectively "no cap" here - the backend already stops at December of that same
-// year, so at most 11 issues (the months after the open one) can ever come back.
+// How many issues the archive sidebar can show at once. 12 is effectively "no cap" here - the
+// backend never crosses into another year, so at most 11 other issues (every month of the open
+// issue's year besides the open one itself) can ever come back.
 const ARCHIVE_WINDOW_SIZE = 12;
 
 const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
@@ -66,9 +66,9 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   // for that (mount-time scroll-to-top for the hub itself is unaffected, key starts null).
   useScrollToTop(selected?.id ?? null);
 
-  // Archive sidebar tracks whatever issue is currently open - the remaining issues of that same
-  // calendar year, starting the month after the open one and running through December, oldest
-  // first. It never reaches into the open issue's own month or into another year.
+  // Archive sidebar tracks whatever issue is currently open - every other issue published in
+  // that same calendar year (both earlier and later months), January to December. It never
+  // reaches into the open issue's own month or into another year.
   useEffect(() => {
     if (!isLoggedIn || !selected) {
       setWindowItems([]);

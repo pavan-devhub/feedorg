@@ -64,6 +64,12 @@ export const fetchEpmCategories = () => getJson('/api/epm/events/categories');
 
 export const fetchEpmGalleryImages = () => getJson('/api/epm/gallery');
 
+// One EPM gallery page section's own photos, e.g. "epm-moments" or "the-epm-experience" - the
+// backend keeps each block's photos in their own storage/epm/gallery/<block>/ folder (see
+// EpmGalleryBlock), so dropping an image file straight into that folder is enough for it to
+// appear here, no upload call required.
+export const fetchEpmGalleryImagesByBlock = (block) => getJson(`/api/epm/gallery/${encodeURIComponent(block)}`);
+
 // EpmGalleryImageDto#imageUrl is already a server-relative path (e.g. "/api/epm/gallery/3/file");
 // this just prefixes it with the backend origin so it can be dropped straight into an <img src>.
 export const getEpmGalleryImageUrl = (relativeUrl) => `${API_BASE_URL}${relativeUrl}`;
