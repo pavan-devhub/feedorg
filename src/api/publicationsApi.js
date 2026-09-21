@@ -22,6 +22,29 @@ async function getJson(path) {
   return res.json();
 }
 
+// Shared by the admin write endpoints below (POST/PUT/DELETE on /api/admin/publications/**),
+// which additionally require the logged-in user to hold the ADMIN role - see SecurityConfig's
+// hasRole("ADMIN") matcher. A non-admin JWT gets a 403 with this same {status, error} JSON shape.
+async function authFetch(path, options = {}) {
+  const token = authToken();
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) },
+  });
+  if (!res.ok) {
+    let message = `Request failed (${res.status})`;
+    try {
+      const body = await res.json();
+      if (body && body.error) message = body.error;
+    } catch (_) {
+      // response had no JSON body - keep the generic message
+    }
+    throw new Error(message);
+  }
+  if (res.status === 204) return null;
+  return res.json().catch(() => null);
+}
+
 // Archive sidebar: up to `count` issues after year/month, oldest first, capped at December of
 // that same year.
 export const fetchPublicationsWindow = (year, month, count = 12) =>
@@ -40,15 +63,8 @@ export const fetchLatestPublication = () => getJson('/api/publications/latest');
 export const searchPublications = (query) =>
   getJson(`/api/publications/search?q=${encodeURIComponent(query)}`);
 
-// Viewing an issue pulls the bytes through the app's own authenticated request and keeps them
-// in memory, instead of pointing the viewer at a PDF URL and letting the browser fetch it.
-//
-// It deliberately hits /stream, not /file: /file is typed application/pdf, and a response typed
-// application/pdf is capturable content. Download managers (IDM and friends) and "always
-// download PDFs" browser settings grab it out from under the page - they cancel this very
-// request, which lands here as "Failed to fetch", and raise their own save dialog. That was the
-// automatic download. /stream serves the identical bytes under a content type no capture list
-// knows about, and the PDF label is reapplied here, in the page, where nothing can intercept it.
+// Hits /stream (not /file): /file is typed application/pdf and gets intercepted by download
+// managers / "always download PDFs" browser settings before the viewer's own fetch completes.
 export async function fetchPublicationPdfBlob(id) {
   const token = authToken();
   const res = await fetch(`${API_BASE_URL}/api/publications/${id}/stream`, {
@@ -89,3 +105,53 @@ export const getPublicationThumbnailUrl = (id) => {
   const token = authToken();
   return `${API_BASE_URL}/api/publications/${id}/thumbnail${token ? `?token=${encodeURIComponent(token)}` : ''}`;
 };
+
+// Every year that has at least one uploaded issue, newest first - drives the reader's "Find a
+// Publication" year dropdown and the admin dashboard's year selector, so neither has to be
+// hand-updated in code every January.
+export const fetchPublicationYears = () => getJson('/api/publications/years');
+
+// A whole year's worth of issues (summary shape) - used by the admin dashboard's publication
+// table for the selected year.
+export const fetchPublicationsByYear = (year) =>
+  getJson(`/api/publications?year=${encodeURIComponent(year)}`);
+
+// --- Admin only (requires the ADMIN role - see AdminPublicationController) -------------------
+
+// `fields` is { file, title, year, month, volume, issueNumber }. The backend derives the UUID
+// filenames, page count, file size and timestamps itself - none of those are sent here.
+export const createPublication = ({ file, title, year, month, volume, issueNumber }) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  if (title) formData.append('title', title);
+  formData.append('year', year);
+  formData.append('month', month);
+  if (volume !== undefined && volume !== null && volume !== '') formData.append('volume', volume);
+  if (issueNumber !== undefined && issueNumber !== null && issueNumber !== '') {
+    formData.append('issueNumber', issueNumber);
+  }
+  return authFetch('/api/admin/publications', { method: 'POST', body: formData });
+};
+
+export const updatePublicationMetadata = (id, { title, volume, issueNumber } = {}) => {
+  const params = new URLSearchParams();
+  if (title) params.set('title', title);
+  if (volume !== undefined && volume !== null && volume !== '') params.set('volume', volume);
+  if (issueNumber !== undefined && issueNumber !== null && issueNumber !== '') {
+    params.set('issueNumber', issueNumber);
+  }
+  const qs = params.toString();
+  return authFetch(`/api/admin/publications/${id}${qs ? `?${qs}` : ''}`, { method: 'PUT' });
+};
+
+// Swaps the PDF (and regenerates its thumbnail/page count) without changing the issue's id,
+// title, volume or issue number.
+export const replacePublicationPdf = (id, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return authFetch(`/api/admin/publications/${id}/pdf`, { method: 'PUT', body: formData });
+};
+
+// Removes the PDF, thumbnail and meta.json for that issue.
+export const deletePublicationAdmin = (id) =>
+  authFetch(`/api/admin/publications/${id}`, { method: 'DELETE' });

@@ -13,7 +13,7 @@ const TESTIMONIALS = [
     text: 'With multi-layer farming, my 14 acres now give year-round income. My earnings have 4x in just two years!',
     impactTitle: 'Income',
     impactValue: '4x',
-    imageSrc: '/images/safemission/farmer_1.jpg',
+    imageSrc: '/images/safe-mission/farmer_1.avif',
     Icon: IndianRupee,
   },
   {
@@ -22,7 +22,7 @@ const TESTIMONIALS = [
     text: 'The packhouse and value-addition support helped us get better prices and direct market access. S.A.F.E. Mission really stands with farmers.',
     impactTitle: 'Prices',
     impactValue: 'Better',
-    imageSrc: '/images/safemission/farmer_2.jpg',
+    imageSrc: '/images/safe-mission/farmer_2.avif',
     Icon: Sprout,
   },
   {
@@ -31,7 +31,7 @@ const TESTIMONIALS = [
     text: 'Export opportunities through S.A.F.E. Mission opened global markets for our produce. Our cooperative is now financially stronger than ever.',
     impactTitle: 'Opportunities',
     impactValue: 'Global',
-    imageSrc: '/images/safemission/farmer_3.jpg',
+    imageSrc: '/images/safe-mission/farmer_3.avif',
     Icon: Globe,
   },
 ];
@@ -157,7 +157,7 @@ const TestimonialsSection = () => {
 
       <div
         className="sm-landscape-strip"
-        style={{ backgroundImage: 'url(/images/safemission/agri_bg.jpg)' }}
+        style={{ backgroundImage: 'url(/images/safe-mission/agri_bg.avif)' }}
       >
         <span className="sm-handwritten sm-landscape-caption">Together for a Sustainable Tomorrow</span>
       </div>

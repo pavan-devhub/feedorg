@@ -730,3 +730,35 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* ---- Compact tile sizing for the Navbar "Services" dropdown only ----
+   Home.jsx's embedded Services Ecosystem section reuses these same .srv-card /
+   .srv-icon-circle / .srv-card-image / .srv-card-text-area classes in a much larger box, so
+   these overrides are scoped under .fw-services-dropdown rather than changing the base rules
+   everyone else uses. */
+.fw-services-dropdown .srv-cards-grid {
+  gap: 8px;
+}
+.fw-services-dropdown .srv-card {
+  padding: 8px 6px;
+}
+.fw-services-dropdown .srv-card-content {
+  gap: 5px;
+  margin-top: 2px;
+}
+.fw-services-dropdown .srv-icon-circle {
+  width: 38px;
+  height: 38px;
+}
+.fw-services-dropdown .srv-card-image {
+  width: 28px;
+  height: 28px;
+}
+.fw-services-dropdown .srv-card-text-area h3 {
+  font-size: 9px;
+  letter-spacing: 0.3px;
+}
+.fw-services-dropdown .srv-card-badge {
+  font-size: 9px;
+  padding: 1px 5px;
+}

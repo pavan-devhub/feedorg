@@ -9,7 +9,7 @@ import {
 import {
   fetchPublicationsWindow, fetchPublicationById,
   fetchPublicationByYearMonth, searchPublications, fetchPublicationPdfBlob,
-  getPublicationFileUrl, getPublicationThumbnailUrl
+  getPublicationFileUrl, getPublicationThumbnailUrl, fetchPublicationYears
 } from '../api/publicationsApi';
 import useScrollToTop from '../hooks/useScrollToTop';
 import './PublicationsHub.css';
@@ -18,11 +18,6 @@ const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
-
-// App is still in its rollout stage - publications only exist for this window, so the "Find a
-// Publication" year picker is deliberately limited to these two years rather than driven off
-// whatever data happens to be in the database.
-const YEAR_OPTIONS = [2026, 2025];
 
 // How many issues the archive sidebar can show at once. 12 is effectively "no cap" here - the
 // backend never crosses into another year, so at most 11 other issues (every month of the open
@@ -47,6 +42,15 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [filterYear, setFilterYear] = useState('');
   const [filterMonth, setFilterMonth] = useState('');
 
+  // Seeded with the current/previous year so the dropdown isn't empty during the brief moment
+  // before fetchPublicationYears() resolves; replaced with whatever years actually have an
+  // uploaded issue as soon as that call comes back, so an admin adding a future year's issue
+  // (see PublicationServiceImpl's rolling maxAllowedYear()) shows up here without a code change.
+  const [yearOptions, setYearOptions] = useState(() => {
+    const current = new Date().getFullYear();
+    return [current, current - 1];
+  });
+
   // The PDF bytes for the open issue, held as an object URL over an in-memory blob. Null until
   // an explicit user action has fetched them - the viewer is never pointed at a server URL.
   const [pdfUrl, setPdfUrl] = useState(null);
@@ -65,6 +69,20 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   // Opening a different publication swaps the whole viewer panel in place - reset scroll
   // for that (mount-time scroll-to-top for the hub itself is unaffected, key starts null).
   useScrollToTop(selected?.id ?? null);
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    let cancelled = false;
+    fetchPublicationYears()
+      .then((years) => {
+        if (cancelled || !Array.isArray(years) || years.length === 0) return;
+        setYearOptions(years.map((y) => y.year).sort((a, b) => b - a));
+      })
+      .catch(() => {
+        // Keep the seeded current/previous-year fallback if this fails.
+      });
+    return () => { cancelled = true; };
+  }, [isLoggedIn]);
 
   // Archive sidebar tracks whatever issue is currently open - every other issue published in
   // that same calendar year (both earlier and later months), January to December. It never
@@ -94,14 +112,8 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   useEffect(() => releasePdf, [releasePdf]);
 
-  // "Open in New Tab" deliberately opens the blob URL already sitting in memory for the in-page
-  // viewer, not a fresh request to /file - the same reasoning as fetchPublicationPdfBlob (see
-  // publicationsApi.js): /file is typed application/pdf, which download managers and "always
-  // download PDFs" browser settings intercept, so the tab that was supposed to open the PDF
-  // either never appears or silently becomes a download instead. A blob: URL carries no
-  // recognizable PDF content type for those tools to grab, so the new tab reliably shows just
-  // the PDF, filling the tab with nothing else from the page around it (mirrors PdfViewer's
-  // Print button, which opens the same blob URL for the same reason).
+  // "Open in New Tab" reuses the in-memory blob URL rather than requesting /file directly, for
+  // the same reason as fetchPublicationPdfBlob - avoids download-manager interception.
   const openInNewTab = useCallback(() => {
     if (pdfUrlRef.current) {
       window.open(pdfUrlRef.current, '_blank', 'noopener,noreferrer');
@@ -159,9 +171,7 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     setPageError('');
   };
 
-  // The single entry point for fetching a publication from the finder. Deliberately NOT a
-  // useEffect on [filterYear, filterMonth]: selecting a year or a month must leave the network
-  // completely idle, and nothing is requested until this click handler runs.
+  // Not a useEffect on [filterYear, filterMonth] - nothing fetches until this click handler runs.
   const handleViewPublication = async () => {
     if (!filterYear && !filterMonth) {
       setPageError('Please select a Year and a Month, then click "View Publication".');
@@ -296,7 +306,7 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                 <label>Year</label>
                 <select value={filterYear} onChange={handleYearChange}>
                   <option value="">--</option>
-                  {YEAR_OPTIONS.map((y) => (
+                  {yearOptions.map((y) => (
                     <option key={y} value={y}>{y}</option>
                   ))}
                 </select>

@@ -13,7 +13,7 @@ const benefitsData = [
     Icon: Sprout,
     title: 'Farming & Production',
     desc: 'Grow more. Grow better.',
-    image: '/images/benefits/farming_production.jpg',
+    image: '/images/benefits/farming_production.avif',
     points: ['3×–5× yield potential', 'GAP/BharatGAP compliance support']
   },
   {
@@ -23,7 +23,7 @@ const benefitsData = [
     Icon: Factory,
     title: 'Value Addition & Processing',
     desc: 'Turn produce into premium products.',
-    image: '/images/benefits/value_addition.jpg',
+    image: '/images/benefits/value_addition.avif',
     points: ['Up to 5× price realization', 'APEDA-certified packhouse access']
   },
   {
@@ -33,7 +33,7 @@ const benefitsData = [
     Icon: Globe,
     title: 'Market & Export',
     desc: 'Connecting farmers to global opportunities',
-    image: '/images/benefits/market_export.jpg',
+    image: '/images/benefits/market_export.avif',
     points: ['2x–4x export premium', 'Direct access to global buyers', 'Support for quality & certification']
   },
   {
@@ -43,7 +43,7 @@ const benefitsData = [
     Icon: Warehouse,
     title: 'Commodity Trading & Warehouse Finance',
     desc: 'Better storage. Better prices. Greater earnings.',
-    image: '/images/benefits/warehouse_finance.jpg',
+    image: '/images/benefits/warehouse_finance.avif',
     points: ['15–25% trading margin potential', 'eNAM trading & warehouse storage', 'Reduced post-harvest losses']
   },
   {
@@ -53,7 +53,7 @@ const benefitsData = [
     Icon: Tractor,
     title: 'Asset Leasing & Equipment',
     desc: 'Modern tools for modern farming.',
-    image: '/images/benefits/asset_leasing.jpg',
+    image: '/images/benefits/asset_leasing.avif',
     points: ['40–50% SMAM subsidy support', 'Access to modern machinery & CHCs', 'Improved productivity & efficiency']
   },
   {
@@ -63,7 +63,7 @@ const benefitsData = [
     Icon: HandCoins,
     title: 'Finance & Credit',
     desc: 'Capital that helps farmers grow.',
-    image: '/images/benefits/finance_credit.jpg',
+    image: '/images/benefits/finance_credit.avif',
     points: ['₹15–18L FPO equity grant support', 'KCC linkage & working capital', 'Financial literacy & handholding']
   },
   {
@@ -73,7 +73,7 @@ const benefitsData = [
     Icon: PiggyBank,
     title: 'Cost Reduction',
     desc: 'Lower costs, higher margins.',
-    image: '/images/benefits/cost_reduction.jpg',
+    image: '/images/benefits/cost_reduction.avif',
     points: ['15–25% input cost reduction', 'Cooperative bulk-purchase depots']
   },
   {
@@ -83,7 +83,7 @@ const benefitsData = [
     Icon: Smartphone,
     title: 'Technology & Traceability',
     desc: 'Digital farm-to-market visibility.',
-    image: '/images/benefits/technology_traceability.jpg',
+    image: '/images/benefits/technology_traceability.avif',
     points: ['Digital farm-to-market visibility', 'Farm-to-packhouse digital monitoring']
   },
   {
@@ -93,7 +93,7 @@ const benefitsData = [
     Icon: GraduationCap,
     title: 'Training & Governance',
     desc: 'Learn • Participate • Co-own',
-    image: '/images/benefits/training_governance.jpg',
+    image: '/images/benefits/training_governance.avif',
     points: ['Farm-level & export training', 'Cooperative leadership programs']
   }
 ];

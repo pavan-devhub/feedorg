@@ -26,8 +26,10 @@ import EpmRegister from './pages/EpmRegister';
 import EpmVolunteer from './pages/EpmVolunteer';
 import EpmEventDetails from './pages/EpmEventDetails';
 import SafeMission from './pages/SafeMission';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
+// import TradeFairs from './pages/TradeFairs';
 
 function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
   return (
@@ -73,7 +75,10 @@ function App() {
       localStorage.setItem('jwt', userData.token);
       setUser(userData);
       setIsLoggedIn(true);
-      handleNavigate('home');
+      // ADMIN accounts (see UserServiceImpl#resolveRole - whoever logs in with the configured
+      // feedworld.admin.email) land on the publication admin dashboard instead of the regular
+      // homepage; everyone else's login is unchanged.
+      handleNavigate(userData.role === 'ADMIN' ? 'admin-dashboard' : 'home');
     }
   };
 
@@ -182,10 +187,17 @@ function App() {
   };
 
   React.useEffect(() => {
-    if ((currentPage === 'product360' || currentPage === 'dashboard') && !isLoggedIn) {
+    if ((currentPage === 'product360' || currentPage === 'dashboard' || currentPage === 'admin-dashboard') && !isLoggedIn) {
       handleNavigate('login');
+      return;
     }
-  }, [currentPage, isLoggedIn]);
+    // Defense in depth only - the real enforcement is server-side (SecurityConfig's
+    // hasRole("ADMIN") on /api/admin/publications/**). A non-admin who lands here some other
+    // way (e.g. typing history state back in) is just bounced to home, not shown the page.
+    if (currentPage === 'admin-dashboard' && isLoggedIn && user && user.role !== 'ADMIN') {
+      handleNavigate('home');
+    }
+  }, [currentPage, isLoggedIn, user]);
 
   useScrollToTop(currentPage);
 
@@ -211,7 +223,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -226,6 +238,10 @@ function App() {
           <HowFeedWorks onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'dashboard' ? (
           !isLoggedIn ? null : <Dashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'admin-dashboard' ? (
+          !isLoggedIn || user?.role !== 'ADMIN' ? null : (
+            <AdminDashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          )
         ) : currentPage === 'tools' ? (
           <ToolsServices onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'mybusiness' ? (
@@ -237,8 +253,18 @@ function App() {
         ) : currentPage === 'business-plan' ? (
           <BusinessPlan onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'feedworld' ? (
-          <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-        ) : currentPage === 'epm' ? (
+          // An ADMIN landing on Feed World (e.g. via the Services mega menu, not just the
+          // post-login redirect) gets the publication management view instead of the regular
+          // reader page - same underlying feature, so there's no separate "admin" tile to add.
+          user?.role === 'ADMIN' ? (
+            <AdminDashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          ) : (
+            <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          )
+        ) :currentPage === 'TradeFairs'?(
+          <TradeFairs onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        )
+        : currentPage === 'epm' ? (
           <Epm onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'epm-details' ? (
           <EpmDetails onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />

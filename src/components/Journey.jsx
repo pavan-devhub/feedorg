@@ -5,12 +5,12 @@ import {
 import './Journey.css';
 
 const journeyStages = [
-  { num: '01', id: 'join', tone: 'green', Icon: Users, title: 'Join', desc: 'Enroll as a farmer, FPO, SHG or partner.', img: '/images/journey/01_join.jpg' },
-  { num: '02', id: 'assess', tone: 'blue', Icon: ClipboardCheck, title: 'Assess', desc: 'Farm, crop and market assessment to understand opportunities.', img: '/images/journey/02_assess.jpg' },
-  { num: '03', id: 'grow', tone: 'orange', Icon: Sprout, title: 'Grow', desc: 'Multi-layer production supported by GAP-oriented and sustainable farming practices.', img: '/images/journey/03_grow.jpg' },
-  { num: '04', id: 'add_value', tone: 'purple', Icon: Settings2, title: 'Add Value', desc: 'Sorting, grading, processing and packaging to create higher-value products.', img: '/images/journey/04_add_value.jpg' },
-  { num: '05', id: 'go_to_market', tone: 'teal', Icon: Truck, title: 'Go to Market', desc: 'Connect with buyers, trade opportunities, exports and logistics.', img: '/images/journey/05_go_to_market.jpg' },
-  { num: '06', id: 'scale', tone: 'coral', Icon: TrendingUp, title: 'Scale', desc: 'Technology, training, assets and enterprise support for long-term growth.', img: '/images/journey/06_scale.jpg' }
+  { num: '01', id: 'join', tone: 'green', Icon: Users, title: 'Join', desc: 'Enroll as a farmer, FPO, SHG or partner.', img: '/images/journey/01_join.avif' },
+  { num: '02', id: 'assess', tone: 'blue', Icon: ClipboardCheck, title: 'Assess', desc: 'Farm, crop and market assessment to understand opportunities.', img: '/images/journey/02_assess.avif' },
+  { num: '03', id: 'grow', tone: 'orange', Icon: Sprout, title: 'Grow', desc: 'Multi-layer production supported by GAP-oriented and sustainable farming practices.', img: '/images/journey/03_grow.avif' },
+  { num: '04', id: 'add_value', tone: 'purple', Icon: Settings2, title: 'Add Value', desc: 'Sorting, grading, processing and packaging to create higher-value products.', img: '/images/journey/04_add_value.avif' },
+  { num: '05', id: 'go_to_market', tone: 'teal', Icon: Truck, title: 'Go to Market', desc: 'Connect with buyers, trade opportunities, exports and logistics.', img: '/images/journey/05_go_to_market.avif' },
+  { num: '06', id: 'scale', tone: 'coral', Icon: TrendingUp, title: 'Scale', desc: 'Technology, training, assets and enterprise support for long-term growth.', img: '/images/journey/06_scale.avif' }
 ];
 
 const impactStrip = [

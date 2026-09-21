@@ -49,6 +49,7 @@ const SERVICE_ROUTES = {
   'MY BUSINESS': 'mybusiness',
   'FEED WORLD': 'feedworld',
   'EPM': 'epm',
+  'TRADE FAIRS':'TradeFairs',
   'SAFE MISSION': 'safe-mission',
 };
 
