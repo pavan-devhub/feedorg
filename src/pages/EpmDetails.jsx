@@ -36,14 +36,14 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [draft, setDraft] = useState(EMPTY_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState(EMPTY_FILTERS);
 
-  // Category list is driven entirely by the backend (EpmCategory enum) so it stays in sync
-  // without a frontend redeploy whenever a category is added, renamed or removed.
+  // Category list is driven entirely by the backend (the admin-managed epm_categories table) so it
+  // stays in sync without a frontend redeploy whenever a category is added, renamed or removed.
   useEffect(() => {
     let cancelled = false;
     fetchEpmCategories()
       .then(data => {
         if (cancelled) return;
-        const mapped = data.map(c => ({ name: c.label, id: c.id, color: getCategoryMeta(c.id).accent }));
+        const mapped = data.map(c => ({ name: c.label, id: c.id, color: c.color || getCategoryMeta(c.id).accent }));
         setCategories([{ name: 'All Categories', id: 'All Categories', color: 'gray' }, ...mapped]);
       })
       .catch(() => {}); // keep the "All Categories" fallback if this fails
@@ -113,7 +113,13 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     setAppliedFilters(EMPTY_FILTERS);
   };
   
-  const getCategoryStyle = (categoryStr) => getCategoryMeta(categoryStr);
+  // The admin picks each category's colour; categories the built-in map doesn't know (added in the
+  // admin panel) take that colour for their badge.
+  const getCategoryStyle = (categoryStr) => {
+    const meta = getCategoryMeta(categoryStr);
+    const color = categories.find(c => c.id === categoryStr)?.color;
+    return color && color !== 'gray' ? { ...meta, badge: `tag-${color}` } : meta;
+  };
 
   return (
     <div className="epm-dir-page">
@@ -312,7 +318,7 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                 {filteredEvents.map(event => {
                   const dateParts = formatEventDateParts(event.eventDate);
                   const styleData = getCategoryStyle(event.category);
-                  const registeredCount = Math.floor(Math.random() * 80) + 20; // Mock count
+                  const registeredCount = event.registrationCount ?? 0;
                   const description = event.description || `Learn about export compliance, documentation, and international certification processes for ${event.category || 'agriculture'}.`;
                   
                   return (
@@ -342,7 +348,7 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                             <img src="https://i.pravatar.cc/100?img=2" alt="user" />
                             <img src="https://i.pravatar.cc/100?img=3" alt="user" />
                           </div>
-                          <span>+{registeredCount} Registered</span>
+                          <span>{registeredCount} Registered</span>
                         </div>
                       </div>
                       

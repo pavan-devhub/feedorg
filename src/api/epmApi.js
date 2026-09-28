@@ -62,17 +62,31 @@ export const fetchEpmStats = () => getJson('/api/epm/events/stats');
 // EpmCategory enum - so the "Filter by Category" sidebar never has to be hand-updated in the UI.
 export const fetchEpmCategories = () => getJson('/api/epm/events/categories');
 
+// Every photo in the gallery page's sections - the EPM page's carousel falls back to these when
+// the admin hasn't put any photos in its own "epm-carousel" block.
 export const fetchEpmGalleryImages = () => getJson('/api/epm/gallery');
 
-// One EPM gallery page section's own photos, e.g. "epm-moments" or "the-epm-experience" - the
-// backend keeps each block's photos in their own storage/epm/gallery/<block>/ folder (see
-// EpmGalleryBlock), so dropping an image file straight into that folder is enough for it to
-// appear here, no upload call required.
+// One image section's own images, in the admin's display order - e.g. "epm-hero" or "epm-stats"
+// on the EPM page, "epm-moments" or "the-epm-experience" on the gallery page (see
+// EpmGalleryBlock). The backend reads each image's name from the database, then streams its file.
 export const fetchEpmGalleryImagesByBlock = (block) => getJson(`/api/epm/gallery/${encodeURIComponent(block)}`);
 
-// EpmGalleryImageDto#imageUrl is already a server-relative path (e.g. "/api/epm/gallery/3/file");
+// The gallery's state -> district -> photo tree (see EpmGalleryRegionService), managed from the
+// admin panel's Images section. Every state, each with its district cards (name, cover, photo count).
+export const fetchEpmGalleryStates = () => getJson('/api/epm/gallery/states');
+
+export const fetchEpmGalleryState = (state) => getJson(`/api/epm/gallery/states/${encodeURIComponent(state)}`);
+
+// One district's photos, plus the state/district names the page's breadcrumb needs.
+export const fetchEpmGalleryDistrict = (state, district) =>
+  getJson(`/api/epm/gallery/states/${encodeURIComponent(state)}/districts/${encodeURIComponent(district)}`);
+
+// EpmGalleryImageDto#imageUrl is already a server-relative path (e.g. "/api/epm/gallery/epm-hero/3/file?v=...");
 // this just prefixes it with the backend origin so it can be dropped straight into an <img src>.
 export const getEpmGalleryImageUrl = (relativeUrl) => `${API_BASE_URL}${relativeUrl}`;
+
+// Published testimonials for the EPM page's slider - written by the admin (see AdminEpmReviewController).
+export const fetchEpmReviews = () => getJson('/api/epm/reviews');
 
 export const submitEpmRegistration = (payload) => postJson('/api/epm/registrations', payload);
 

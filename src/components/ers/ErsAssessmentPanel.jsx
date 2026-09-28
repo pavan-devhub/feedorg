@@ -7,6 +7,7 @@ import {
 import { sections, scoreSections, computeGaps, getTier, TOTAL_MAX } from './ersData';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import './ErsAssessmentPanel.css';
+import { API_BASE_URL } from '../../api/config';
 
 const SECTION_ICONS = {
   landmark: Landmark,
@@ -18,7 +19,7 @@ const SECTION_ICONS = {
   file: FileText,
 };
 
-const apiBase = () => `http://${window.location.hostname}:8080/api/ers`;
+const apiBase = () => `${API_BASE_URL}/api/ers`;
 
 function authHeaders(extra = {}) {
   const token = localStorage.getItem('jwt');

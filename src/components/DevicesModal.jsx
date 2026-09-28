@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import DeviceRow from './DeviceRow';
+import { API_BASE_URL } from '../api/config';
 
 // Minimum gap kept between the popover and every viewport edge.
 const EDGE_MARGIN = 12;
@@ -66,7 +67,7 @@ const DevicesModal = ({ onClose, anchorRef }) => {
     setError(null);
     try {
       const token = localStorage.getItem('jwt');
-      const res = await fetch(`http://${window.location.hostname}:8080/api/auth/sessions`, {
+      const res = await fetch(`${API_BASE_URL}/api/auth/sessions`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json().catch(() => null);
@@ -90,7 +91,7 @@ const DevicesModal = ({ onClose, anchorRef }) => {
     setRevokingId(id);
     try {
       const token = localStorage.getItem('jwt');
-      const res = await fetch(`http://${window.location.hostname}:8080/api/auth/sessions/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/auth/sessions/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

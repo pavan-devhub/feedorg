@@ -18,6 +18,8 @@ import PublicationsHub from './pages/PublicationsHub';
 import Epm from './pages/Epm';
 import EpmDetails from './pages/EpmDetails';
 import EpmGallery from './pages/EpmGallery';
+import EpmGalleryState from './pages/EpmGalleryState';
+import EpmGalleryDistrict from './pages/EpmGalleryDistrict';
 import EpmObjective from './pages/EpmObjective';
 import EpmContentCoverage from './pages/EpmContentCoverage';
 import EpmBenefits from './pages/EpmBenefits';
@@ -26,9 +28,10 @@ import EpmRegister from './pages/EpmRegister';
 import EpmVolunteer from './pages/EpmVolunteer';
 import EpmEventDetails from './pages/EpmEventDetails';
 import SafeMission from './pages/SafeMission';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminPortal from './pages/admin/AdminPortal';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
+import { API_BASE_URL } from './api/config';
 // import TradeFairs from './pages/TradeFairs';
 
 function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
@@ -54,14 +57,34 @@ function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, current
 // whatever page was actually open instead of bouncing to home.
 const PAGE_STORAGE_KEY = 'feed_current_page';
 
+// An ADMIN account only ever sees the admin panel - no public pages, no user dashboard. Every other
+// page is off limits to it (see handleNavigate and the guard effect below).
+const ADMIN_PAGES = ['admin-dashboard'];
+
+// The stored JWT's payload carries the user's role (see JwtUtil#generateToken on the backend).
+// Reading it up front lets an admin's refresh or new tab open the admin panel straight away,
+// instead of flashing a public page while /api/auth/me is still loading. This only steers the UI -
+// the backend checks the role itself on every admin request.
+function roleFromStoredToken() {
+  try {
+    const payload = localStorage.getItem('jwt')?.split('.')[1];
+    if (!payload) return null;
+    return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/'))).role || null;
+  } catch {
+    return null;
+  }
+}
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(() => {
+    let page = 'home';
     try {
-      return sessionStorage.getItem(PAGE_STORAGE_KEY) || 'home';
+      page = sessionStorage.getItem(PAGE_STORAGE_KEY) || 'home';
     } catch {
-      return 'home';
+      // sessionStorage unavailable (e.g. private mode) - start from home
     }
+    return roleFromStoredToken() === 'ADMIN' && !ADMIN_PAGES.includes(page) ? 'admin-dashboard' : page;
   });
 
   const [user, setUser] = useState(null);
@@ -76,9 +99,9 @@ function App() {
       setUser(userData);
       setIsLoggedIn(true);
       // ADMIN accounts (see UserServiceImpl#resolveRole - whoever logs in with the configured
-      // feedworld.admin.email) land on the publication admin dashboard instead of the regular
-      // homepage; everyone else's login is unchanged.
-      handleNavigate(userData.role === 'ADMIN' ? 'admin-dashboard' : 'home');
+      // feedworld.admin.email) land on the shared admin panel (Feed World + EPM), which is the only
+      // page they can use; everyone else's login is unchanged.
+      goTo(userData.role === 'ADMIN' ? 'admin-dashboard' : 'home');
     }
   };
 
@@ -86,7 +109,7 @@ function App() {
     try {
       const token = localStorage.getItem('jwt');
       if (token) {
-        await fetch(`http://${window.location.hostname}:8080/api/auth/logout`, {
+        await fetch(`${API_BASE_URL}/api/auth/logout`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -99,7 +122,7 @@ function App() {
     localStorage.removeItem('jwt');
     setUser(null);
     setIsLoggedIn(false);
-    handleNavigate('home');
+    goTo('home');
   };
 
   React.useEffect(() => {
@@ -107,7 +130,7 @@ function App() {
       const token = localStorage.getItem('jwt');
       if (token) {
         try {
-          const res = await fetch(`http://${window.location.hostname}:8080/api/auth/me`, {
+          const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -178,28 +201,57 @@ function App() {
     }
   }, [currentPage]);
 
-  const [navState, setNavState] = useState({});
+  // Which state/district the EPM gallery drill-down is on lives in the history entry (see
+  // handleNavigate), which survives a refresh - so read it back here or a refresh would lose it.
+  const [navState, setNavState] = useState(() => {
+    const { page, ...rest } = window.history.state || {};
+    return page === currentPage ? rest : {};
+  });
 
-  const handleNavigate = (page, extraState = {}) => {
+  // Until /api/auth/me answers after a refresh, `user` is still null - the token's role stands in.
+  const isAdmin = isLoggedIn && (user ? user.role === 'ADMIN' : roleFromStoredToken() === 'ADMIN');
+
+  // Unrestricted navigation - used by login/logout and the redirects below.
+  const goTo = (page, extraState = {}) => {
     setCurrentPage(page);
     setNavState(extraState);
     window.history.pushState({ page, ...extraState }, '');
   };
 
+  // What every page gets as `onNavigate`. An admin stays inside the admin panel, so any link that
+  // would take them elsewhere (a stray footer or page link) simply does nothing.
+  const handleNavigate = (page, extraState = {}) => {
+    if (isAdmin && !ADMIN_PAGES.includes(page)) return;
+    goTo(page, extraState);
+  };
+
   React.useEffect(() => {
     if ((currentPage === 'product360' || currentPage === 'dashboard' || currentPage === 'admin-dashboard') && !isLoggedIn) {
-      handleNavigate('login');
+      goTo('login');
       return;
     }
     // Defense in depth only - the real enforcement is server-side (SecurityConfig's
-    // hasRole("ADMIN") on /api/admin/publications/**). A non-admin who lands here some other
+    // hasRole("ADMIN") on /api/admin/**). A non-admin who lands here some other
     // way (e.g. typing history state back in) is just bounced to home, not shown the page.
     if (currentPage === 'admin-dashboard' && isLoggedIn && user && user.role !== 'ADMIN') {
-      handleNavigate('home');
+      goTo('home');
+      return;
     }
-  }, [currentPage, isLoggedIn, user]);
+    // An admin who reaches any other page anyway - the back button, a page restored after a
+    // refresh - is put back in the admin panel. replaceState, so back doesn't bounce them again.
+    if (isAdmin && !ADMIN_PAGES.includes(currentPage)) {
+      setCurrentPage('admin-dashboard');
+      setNavState({});
+      window.history.replaceState({ page: 'admin-dashboard' }, '');
+    }
+  }, [currentPage, isLoggedIn, user, isAdmin]);
 
   useScrollToTop(currentPage);
+
+  // Never render a public page for an admin, even for the one render before the guard above runs.
+  if (isAdmin && !ADMIN_PAGES.includes(currentPage)) {
+    return null;
+  }
 
 
 
@@ -223,7 +275,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -239,8 +291,11 @@ function App() {
         ) : currentPage === 'dashboard' ? (
           !isLoggedIn ? null : <Dashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'admin-dashboard' ? (
+          // One admin panel for Feed World and EPM - the open section (and e.g. which EPM's
+          // registrations are showing) rides in navState so refresh/back keep it.
           !isLoggedIn || user?.role !== 'ADMIN' ? null : (
-            <AdminDashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+            <AdminPortal onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout}
+              section={navState.section} sectionParams={navState} />
           )
         ) : currentPage === 'tools' ? (
           <ToolsServices onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
@@ -253,14 +308,9 @@ function App() {
         ) : currentPage === 'business-plan' ? (
           <BusinessPlan onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'feedworld' ? (
-          // An ADMIN landing on Feed World (e.g. via the Services mega menu, not just the
-          // post-login redirect) gets the publication management view instead of the regular
-          // reader page - same underlying feature, so there's no separate "admin" tile to add.
-          user?.role === 'ADMIN' ? (
-            <AdminDashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-          ) : (
-            <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-          )
+          // Admins never get here (they're kept in the admin panel, which has its own
+          // Publications section) - this is the regular reader page.
+          <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) :currentPage === 'TradeFairs'?(
           <TradeFairs onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         )
@@ -272,6 +322,10 @@ function App() {
           <EpmEventDetails onNavigate={handleNavigate} eventId={navState.eventId} />
         ) : currentPage === 'epm-gallery' ? (
           <EpmGallery onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'epm-gallery-state' ? (
+          <EpmGalleryState onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} stateId={navState.state} />
+        ) : currentPage === 'epm-gallery-district' ? (
+          <EpmGalleryDistrict onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} stateId={navState.state} districtId={navState.district} />
         ) : currentPage === 'epm-objective' ? (
           <EpmObjective onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'epm-content-coverage' ? (

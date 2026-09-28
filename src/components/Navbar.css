@@ -418,6 +418,18 @@
   .fw-navbar-actions { padding-right: 10px; }
 }
 
+/* ---- Admin accounts: brand + profile button only (see Navbar's adminMode) ---- */
+.fw-navbar-logo--static {
+  cursor: default;
+}
+.fw-nav-admin .fw-navbar-actions {
+  margin-left: auto;
+}
+@media (max-width: 640px) {
+  /* The profile button is the admin's only way to log out, so it stays at every width. */
+  .fw-nav-admin .fw-account-wrap { display: flex; }
+}
+
 /* ---- Mobile drawer ---- */
 .fw-mobile-backdrop {
   position: fixed;

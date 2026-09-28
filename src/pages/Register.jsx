@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import bgImage from '../assets/reg.avif';
 import logoImage from '../assets/logo.avif';
 import { ArrowLeft, Check, X, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../api/config';
 
 const apDistricts = [
   'Alluri Sitharama Raju', 'Anakapalli', 'Ananthapuramu', 'Annamayya', 'Bapatla', 
@@ -62,7 +63,7 @@ const Register = ({ onBackToLogin }) => {
     setNotification(null);
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:8080/api/register`, {
+      const response = await fetch(`${API_BASE_URL}/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

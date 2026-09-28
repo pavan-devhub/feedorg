@@ -8,7 +8,9 @@ import {
   Image as ImageIcon, Quote
 } from 'lucide-react';
 import './Epm.css';
-import { fetchEpmEvents, fetchEpmGalleryImages, fetchEpmStats, getEpmGalleryImageUrl } from '../api/epmApi';
+import {
+  fetchEpmEvents, fetchEpmGalleryImages, fetchEpmGalleryImagesByBlock, fetchEpmReviews, fetchEpmStats, getEpmGalleryImageUrl,
+} from '../api/epmApi';
 import { formatEventDateParts } from '../utils/epmDate';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -16,13 +18,14 @@ import Footer from '../components/Footer';
 // Reveals a block with a directional slide-in the first time it scrolls into view (each caller
 // picks its own `dir` - 'left' | 'right' | 'top' | 'bottom' - so blocks visibly arrive from
 // different places instead of all fading in the same way).
+// Returns a callback ref (not a ref object) so a block that only mounts later - e.g. the
+// testimonials card, which waits for the reviews to load - is still observed once it appears.
 function useReveal() {
-  const ref = useRef(null);
+  const [node, setNode] = useState(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    if (!node || inView) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -32,11 +35,11 @@ function useReveal() {
       },
       { threshold: 0.15 }
     );
-    observer.observe(el);
+    observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [node, inView]);
 
-  return [ref, inView];
+  return [setNode, inView];
 }
 
 // Counts up from 0 to `target` once `active` first becomes true, fast at the start and easing to
@@ -99,25 +102,41 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const districtsCoveredDisplay = useCountUp(stats.districtsCovered, statsInView);
   const totalParticipantsDisplay = useCountUp(stats.totalParticipants, statsInView);
 
-  const testimonials = [
-    { id: 1, text: "Great initiative! EPM helped me understand export opportunities clearly.", author: "Ramesh, Farmer", rating: 5 },
-    { id: 2, text: "Informative session with practical insights on global markets.", author: "Sita, Entrepreneur", rating: 5 },
-    { id: 3, text: "Well organized and very impactful meeting for our FPO members.", author: "Anand, FPO Member", rating: 5 },
-    { id: 4, text: "The networking opportunities were fantastic. Highly recommend attending.", author: "Kiran, Trader", rating: 5 },
-    { id: 5, text: "Excellent guidance on export documentation and compliance.", author: "Lakshmi, Agri-Business", rating: 5 },
-  ];
+  // Testimonials are written by the admin (Admin panel > EPM > Reviews); the section is hidden
+  // until at least one is published.
+  const [testimonials, setTestimonials] = useState([]);
 
-  // Real EPM photos (admin-uploaded via AdminEpmGalleryController), not stock/placeholder URLs.
+  // Real EPM photos (admin-uploaded via the admin panel), not stock/placeholder URLs. The carousel
+  // uses its own "epm-carousel" photos when there are any, else the first gallery-page photos.
   const [galleryArray, setGalleryArray] = useState([]);
 
+  // Admin-managed pictures for the page's fixed spots (Admin panel > EPM > Page & Gallery Images).
+  // Until one is uploaded, each spot keeps its built-in picture from /public.
+  const [pageImages, setPageImages] = useState({ hero: null, stats: [], calendar: null });
+
   useEffect(() => {
-    fetchEpmGalleryImages()
-      .then(data => setGalleryArray(data.slice(0, 8).map(img => getEpmGalleryImageUrl(img.imageUrl))))
-      .catch(() => setGalleryArray([]));
+    const urlsOf = (data) => (data || []).map(img => getEpmGalleryImageUrl(img.imageUrl));
+    const block = (id) => fetchEpmGalleryImagesByBlock(id).then(urlsOf).catch(() => []);
+
+    Promise.all([block('epm-hero'), block('epm-stats'), block('epm-calendar')])
+      .then(([hero, statImages, calendar]) => setPageImages({ hero: hero[0] || null, stats: statImages, calendar: calendar[0] || null }));
+
+    block('epm-carousel')
+      .then(own => own.length > 0
+        ? own
+        : fetchEpmGalleryImages().then(data => urlsOf(data).slice(0, 8)).catch(() => []))
+      .then(setGalleryArray);
+
+    fetchEpmReviews()
+      .then(data => setTestimonials((data || []).map(r => ({
+        id: r.id, text: r.content, authorName: r.authorName, authorRole: r.authorRole, rating: r.rating,
+      }))))
+      .catch(() => setTestimonials([]));
+
     fetchEpmStats().then(setStats).catch(() => {});
   }, []);
 
-  const [testiIndex, setTestiIndex] = useState(testimonials.length * 2);
+  const [testiIndex, setTestiIndex] = useState(0);
   const [testiTransition, setTestiTransition] = useState(true);
 
   const [galleryIndex, setGalleryIndex] = useState(0);
@@ -130,6 +149,14 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
       setGalleryIndex(galleryArray.length * 2);
     }
   }, [galleryArray.length]);
+
+  // Reviews load asynchronously too, so the slider's wraparound starting index is set once they arrive.
+  useEffect(() => {
+    if (testimonials.length > 0) {
+      setTestiTransition(false);
+      setTestiIndex(testimonials.length * 2);
+    }
+  }, [testimonials.length]);
 
   const isGalleryHovered = useRef(false);
 
@@ -187,12 +214,13 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   // Main scroll interval for testimonials
   useEffect(() => {
+    if (testimonials.length === 0) return undefined;
     const timer = setInterval(() => {
       setTestiTransition(true);
       setTestiIndex(prev => prev - 1);
     }, 4000);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
 
   // Main scroll interval for gallery (faster, every 1.8s as requested)
   useEffect(() => {
@@ -207,7 +235,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   // Invisible reset for testimonials
   useEffect(() => {
-    if (testiIndex <= testimonials.length) {
+    if (testimonials.length > 0 && testiIndex <= testimonials.length) {
       const reset = setTimeout(() => {
         setTestiTransition(false);
         setTestiIndex(prev => prev + testimonials.length);
@@ -324,7 +352,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             <div className="epm-hb-bg">
               <img
                 className="epm-hb-image"
-                src="/epm_global_agri_export.avif"
+                src={pageImages.hero || '/epm_global_agri_export.avif'}
                 alt="Global Agricultural Exports"
               />
               <div className="epm-hb-gradient"></div>
@@ -406,7 +434,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           <div className="redesign-stats-grid">
             <div className="redesign-stat-card r-stat-green">
               <div className="r-stat-bg">
-                <img src="/epm_stat_1.avif" alt="EPMs Conducted" />
+                <img src={pageImages.stats[0] || '/epm_stat_1.avif'} alt="EPMs Conducted" />
                 <div className="r-stat-fade"></div>
               </div>
               <div className="r-stat-content">
@@ -422,7 +450,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
             <div className="redesign-stat-card r-stat-blue">
               <div className="r-stat-bg">
-                <img src="/epm_stat_2.avif" alt="Districts Covered" />
+                <img src={pageImages.stats[1] || '/epm_stat_2.avif'} alt="Districts Covered" />
                 <div className="r-stat-fade"></div>
               </div>
               <div className="r-stat-content">
@@ -438,7 +466,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
             <div className="redesign-stat-card r-stat-purple">
               <div className="r-stat-bg">
-                <img src="/epm_stat_3.avif" alt="Total Attendees" />
+                <img src={pageImages.stats[2] || '/epm_stat_3.avif'} alt="Total Attendees" />
                 <div className="r-stat-fade"></div>
               </div>
               <div className="r-stat-content">
@@ -489,7 +517,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                 </div>
               </div>
               <div className="redesign-calendar-ill">
-                <img src="/epm_calendar.avif" alt="Calendar landscape" />
+                <img src={pageImages.calendar || '/epm_calendar.avif'} alt="Calendar landscape" />
               </div>
             </div>
 
@@ -645,7 +673,8 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           </div>
         </div>
 
-        {/* Testimonials (Bottom Section) */}
+        {/* Testimonials (Bottom Section) - hidden until the admin has published at least one */}
+        {testimonials.length > 0 && (
         <div ref={testimonialRef} className={`epm-card testimonial-card epm-reveal dir-right ${testimonialInView ? 'in-view' : ''}`}>
           <div className="epm-card-header redesign-header">
             <div className="epm-header-left">
@@ -669,12 +698,12 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               }}
             >
               {extendedTestimonials.map((testi, index) => {
-                const [authorName, authorRole] = testi.author.split(',').map(s => s.trim());
+                const { authorName, authorRole } = testi;
                 return (
                   <div key={`${testi.id}-${index}`} className="epm-testimonial-content">
                     <Quote className="epm-testimonial-watermark" size={72} fill="currentColor" />
                     <div className="epm-testimonial-stars">
-                      {[...Array(testi.rating)].map((_, i) => (
+                      {[...Array(Math.max(0, Math.min(5, testi.rating || 0)))].map((_, i) => (
                         <Star key={i} size={15} className="epm-star-filled" fill="currentColor" />
                       ))}
                     </div>
@@ -692,6 +721,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             </div>
           </div>
         </div>
+        )}
 
         {/* Membership & Services Section */}
         <div ref={membershipRef} className={`epm-card membership-card epm-reveal dir-bottom ${membershipInView ? 'in-view' : ''}`}>

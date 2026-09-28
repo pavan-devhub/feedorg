@@ -3,6 +3,7 @@ import bgImage from '../assets/Login.avif';
 import logoImage from '../assets/logo.avif';
 import { Mail, Lock, EyeOff, Eye, ArrowRight, UserPlus, Leaf, ArrowLeft, Check, X, AlertCircle } from 'lucide-react';
 import DeviceRow from '../components/DeviceRow';
+import { API_BASE_URL } from '../api/config';
 
 const Login = ({ onLogin, onRegisterClick, onBack }) => {
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
   // Shared by the initial submit and by the auto-retry that fires right after a device
   // is logged out, so freeing a slot takes the user straight into the app.
   const attemptLogin = async () => {
-    const response = await fetch(`http://${window.location.hostname}:8080/api/login`, {
+    const response = await fetch(`${API_BASE_URL}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ const Login = ({ onLogin, onRegisterClick, onBack }) => {
   const handleRevokeDevice = async (sessionId) => {
     setRevokingId(sessionId);
     try {
-      const res = await fetch(`http://${window.location.hostname}:8080/api/login/sessions/${sessionId}/revoke`, {
+      const res = await fetch(`${API_BASE_URL}/api/login/sessions/${sessionId}/revoke`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

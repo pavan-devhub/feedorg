@@ -81,6 +81,9 @@ const MOBILE_ICON_STYLE = [
 ];
 
 const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) => {
+  // An ADMIN account only uses the admin panel (see App.jsx), so its navbar is just the brand and
+  // the profile button (with Logout) - no page links, search or mobile menu. Regular users are unaffected.
+  const adminMode = Boolean(isLoggedIn && user?.role === 'ADMIN');
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDevicesOpen, setIsDevicesOpen] = useState(false);
@@ -293,8 +296,19 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
         />
       )}
 
-      <nav className={`fw-nav-root${navHidden ? ' fw-nav-hidden' : ''}`} aria-label="Main navigation">
+      <nav className={`fw-nav-root${navHidden ? ' fw-nav-hidden' : ''}${adminMode ? ' fw-nav-admin' : ''}`} aria-label="Main navigation">
         <div className="fw-navbar">
+          {adminMode ? (
+            <div className="fw-navbar-logo fw-navbar-logo--static">
+              <span className="fw-navbar-logo-badge">
+                <img src="/dashboard-logo.avif" alt="Feed World" />
+              </span>
+              <span className="fw-navbar-logo-text">
+                <span className="fw-navbar-logo-title">FEED WORLD</span>
+                <span className="fw-navbar-logo-tagline">Admin panel</span>
+              </span>
+            </div>
+          ) : (
           <button type="button" className="fw-navbar-logo" onClick={() => onNavigate('home')} aria-label="Feed World home">
             <span className="fw-navbar-logo-badge">
               <img src="/dashboard-logo.avif" alt="Feed World" />
@@ -304,7 +318,10 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
               <span className="fw-navbar-logo-tagline">Empowering Farmers, Enriching Futures</span>
             </span>
           </button>
+          )}
 
+          {!adminMode && (
+          <>
           <span className="fw-navbar-divider" aria-hidden="true" />
 
           <ul className="fw-navbar-links">
@@ -405,11 +422,15 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
           </ul>
 
           <span className="fw-navbar-divider fw-navbar-divider--actions" aria-hidden="true" />
+          </>
+          )}
 
           <div className="fw-navbar-actions">
-            <button type="button" className="fw-search-btn" aria-label="Search">
-              <Search size={15} strokeWidth={2.25} />
-            </button>
+            {!adminMode && (
+              <button type="button" className="fw-search-btn" aria-label="Search">
+                <Search size={15} strokeWidth={2.25} />
+              </button>
+            )}
 
             <div className="fw-account-wrap" ref={profileDropdownRef}>
               <button
@@ -495,6 +516,9 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
                     </button>
                   )}
 
+                  {/* Admins get just the Logout button below. */}
+                  {!adminMode && (
+                  <>
                   <button
                     onClick={() => {
                       setIsProfileOpen(false);
@@ -526,6 +550,8 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
                     <Laptop size={14} />
                     Devices
                   </button>
+                  </>
+                  )}
 
                   <button
                     onClick={() => {
@@ -548,6 +574,7 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
           </div>
         </div>
 
+        {!adminMode && (
         <button
           type="button"
           className="fw-hamburger"
@@ -557,10 +584,11 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
         >
           {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
+        )}
       </nav>
 
       {/* Mobile Navigation Drawer */}
-      {isMobileOpen && (
+      {isMobileOpen && !adminMode && (
         <>
           <div className="fw-mobile-backdrop" onClick={() => setIsMobileOpen(false)} />
           <div className="fw-mobile-panel" role="dialog" aria-modal="true" aria-label="Mobile navigation">

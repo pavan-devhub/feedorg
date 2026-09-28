@@ -146,6 +146,7 @@ const sidebarMenu = [
 
 import Navbar, { servicesMegaMenu } from '../components/Navbar';
 import Footer from '../components/Footer';
+import { API_BASE_URL } from '../api/config';
 
 const HERO_CONTENT_DURATION = 6000;
 const HERO_SERVICES_DURATION = 20000;
@@ -249,7 +250,7 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     try {
       const token = localStorage.getItem('jwt');
       if (!token) return;
-      const res = await fetch(`http://${window.location.hostname}:8080/api/ers/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/ers/status`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) return;

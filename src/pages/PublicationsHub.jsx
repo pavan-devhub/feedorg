@@ -12,6 +12,7 @@ import {
   getPublicationFileUrl, getPublicationThumbnailUrl, fetchPublicationYears
 } from '../api/publicationsApi';
 import useScrollToTop from '../hooks/useScrollToTop';
+import { formatPublishedDate } from '../utils/publicationDate';
 import './PublicationsHub.css';
 
 const MONTH_NAMES = [
@@ -403,7 +404,7 @@ const PublicationsHub = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                   <div className="pubs-selected-info">
                     <h2>{selected.title} – {selected.monthName} {selected.year}</h2>
                     <div className="pubs-selected-meta">
-                      <span><Calendar size={13} /> Published: {selected.publishedDate}</span>
+                      <span><Calendar size={13} /> Published: {formatPublishedDate(selected.publishedDate)}</span>
                       {selected.volume && <span>Volume {selected.volume}</span>}
                       {selected.issueNumber && <span>Issue {selected.issueNumber}</span>}
                       {selected.pageCount && <span><FileText size={13} /> {selected.pageCount} Pages</span>}
