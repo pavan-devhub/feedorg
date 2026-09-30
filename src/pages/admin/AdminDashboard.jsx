@@ -3,13 +3,14 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import PdfViewer from '../../components/PdfViewer';
 import {
-  BookOpen, Plus, Pencil, RefreshCw, Trash2, Eye, Download, X, UploadCloud,
-  FileText, AlertCircle, CheckCircle2, Loader2, Search
+  BookOpen, Plus, RefreshCw, Trash2, Eye, Download, X, UploadCloud,
+  FileText, AlertCircle, CheckCircle2, Loader2
 } from 'lucide-react';
 import {
-  fetchPublicationYears, fetchPublicationsByYear, fetchPublicationById,
-  createPublication, updatePublicationMetadata, replacePublicationPdf, deletePublicationAdmin,
-  fetchPublicationPdfBlob, getPublicationFileUrl, searchPublications, PUBLICATION_LANGUAGES
+  fetchPublicationYears, fetchPublicationsByYear,
+  createPublication, replacePublicationPdf, deletePublicationAdmin,
+  fetchPublicationPdfBlob, getPublicationFileUrl, PUBLICATION_LANGUAGES,
+  publicationOrder
 } from '../../api/publicationsApi';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import { formatPublishedDate } from '../../utils/publicationDate';
@@ -20,12 +21,6 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-const formatBytes = (bytes) => {
-  if (bytes === null || bytes === undefined) return '—';
-  const mb = bytes / (1024 * 1024);
-  return mb >= 1 ? `${mb.toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
-};
-
 const LANGUAGE_BADGES = { English: 'EN', Telugu: 'TE', Hindi: 'HI' };
 
 const LanguageBadge = ({ language }) => (
@@ -35,6 +30,11 @@ const LanguageBadge = ({ language }) => (
   </span>
 );
 
+// A row only counts as uploaded when the backend found its PDF on disk (pdfAvailable) - a row
+// can outlive its file, and uploading that edition again fills the row back in. Anything but an
+// explicit false (e.g. a backend that predates the flag) is treated as uploaded.
+const isUploaded = (pub) => pub.pdfAvailable !== false;
+
 const StatusBadge = ({ published }) => (
   <span className={`admin-pub-status-badge ${published ? 'published' : 'not-uploaded'}`}>
     <span className="admin-pub-status-dot" />
@@ -43,7 +43,6 @@ const StatusBadge = ({ published }) => (
 );
 
 const emptyAddForm = (year, month, language) => ({
-  title: '',
   year: year || new Date().getFullYear(),
   month: month || '',
   language: language || 'English',
@@ -66,20 +65,10 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
   const [loadError, setLoadError] = useState('');
   const [banner, setBanner] = useState(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState(null);
-  const [searching, setSearching] = useState(false);
-  const searchDebounceRef = useRef(null);
-
   const [addOpen, setAddOpen] = useState(false);
   const [addForm, setAddForm] = useState(emptyAddForm());
   const [addSubmitting, setAddSubmitting] = useState(false);
   const [addError, setAddError] = useState('');
-
-  const [editing, setEditing] = useState(null);
-  const [editForm, setEditForm] = useState({ title: '' });
-  const [editSubmitting, setEditSubmitting] = useState(false);
-  const [editError, setEditError] = useState('');
 
   const [replacing, setReplacing] = useState(null);
   const [replaceFile, setReplaceFile] = useState(null);
@@ -114,18 +103,9 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     }
   }, []);
 
-  // Both the year list and search results only give id/title/monthName/pageCount/thumbnailUrl/
-  // publishedDate (see PublicationSummaryDto) - fileSizeBytes only exists on the full detail
-  // shape, so each summary is upgraded to its detail record. A year has at most 12 issues (and
-  // search results are only ever whatever matches the query), so this stays a small number of
-  // extra requests, run in parallel.
-  const toDetails = async (summaries) => {
-    const details = await Promise.all(
-      summaries.map((s) => fetchPublicationById(s.id).catch(() => s))
-    );
-    return details;
-  };
-
+  // A year's publications come back already sorted by the database - newest month first, then
+  // each month's editions by their `order` (Telugu 1, Hindi 2, English 3) - so they're used as-is
+  // (see PublicationRepository#CATALOG_ORDER).
   const loadPublications = useCallback(async (year) => {
     if (!year) {
       setPublications([]);
@@ -135,9 +115,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     setLoading(true);
     setLoadError('');
     try {
-      const summaries = await fetchPublicationsByYear(year);
-      const details = await toDetails(summaries);
-      setPublications(details.sort((a, b) => b.month - a.month));
+      setPublications(await fetchPublicationsByYear(year));
     } catch (e) {
       setLoadError(e.message || 'Failed to load publications.');
       setPublications([]);
@@ -154,47 +132,15 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     loadPublications(selectedYear);
   }, [selectedYear, loadPublications]);
 
-  const runSearch = async (query) => {
-    setSearching(true);
-    try {
-      const summaries = await searchPublications(query);
-      const details = await toDetails(summaries);
-      setSearchResults(details.sort((a, b) => (b.year - a.year) || (b.month - a.month)));
-    } catch (e) {
-      setSearchResults([]);
-    } finally {
-      setSearching(false);
-    }
-  };
-
-  // Debounced title search, independent of the selected year - a match reached from any year
-  // takes over the table (see displayedPublications below) until the query is cleared.
-  useEffect(() => {
-    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
-    const query = searchQuery.trim();
-    if (!query) {
-      setSearchResults(null);
-      setSearching(false);
-      return undefined;
-    }
-    setSearching(true);
-    searchDebounceRef.current = setTimeout(() => runSearch(query), 350);
-    return () => clearTimeout(searchDebounceRef.current);
-  }, [searchQuery]);
-
-  const isSearchActive = searchQuery.trim().length > 0;
-  const displayedPublications = isSearchActive ? (searchResults || []) : publications;
-
-  // One group per month, each holding whichever of the three language editions actually exist -
+  // One group per month, each holding whichever of the three language editions are uploaded -
   // the table always renders all three PUBLICATION_LANGUAGES rows per month (missing ones render
-  // as "Not uploaded"), with the Year/Month cells spanning all three. Search results stay a flat
-  // per-edition list instead (see the table body below), since a search match already picks out
-  // one specific edition.
+  // as "Not uploaded"), with the Year/Month cells spanning all three. A database row whose PDF
+  // isn't on the server counts as missing too (see isUploaded).
   const monthGroups = (() => {
     const byMonth = new Map();
     publications.forEach((pub) => {
       if (!byMonth.has(pub.month)) byMonth.set(pub.month, {});
-      byMonth.get(pub.month)[pub.language] = pub;
+      if (isUploaded(pub)) byMonth.get(pub.month)[pub.language] = pub;
     });
     return Array.from(byMonth.entries())
       .sort((a, b) => b[0] - a[0])
@@ -216,9 +162,6 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     const yearToShow = landOnYear && sorted.includes(landOnYear) ? landOnYear : selectedYear;
     setSelectedYear(yearToShow);
     loadPublications(yearToShow);
-    if (isSearchActive) {
-      runSearch(searchQuery.trim());
-    }
   };
 
   // --- Add ---
@@ -266,29 +209,6 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
       setAddError(err.message || 'Failed to add publication.');
     } finally {
       setAddSubmitting(false);
-    }
-  };
-
-  // --- Edit metadata ---
-  const openEdit = (pub) => {
-    setEditing(pub);
-    setEditForm({ title: pub.title || '' });
-    setEditError('');
-  };
-
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    setEditSubmitting(true);
-    setEditError('');
-    try {
-      await updatePublicationMetadata(editing.id, editForm);
-      showBanner('success', `${editing.language} edition of ${editing.monthName} ${editing.year} updated.`);
-      setEditing(null);
-      await refreshAfterChange();
-    } catch (err) {
-      setEditError(err.message || 'Failed to update publication.');
-    } finally {
-      setEditSubmitting(false);
     }
   };
 
@@ -387,7 +307,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
           <div>
             <div className="admin-pub-eyebrow"><BookOpen size={14} /> FEED WORLD</div>
             <h1>Publication Management</h1>
-            <p>Add, edit, replace or remove Feed World's monthly issues.</p>
+            <p>Add, replace or remove Feed World's monthly issues.</p>
           </div>
           <button type="button" className="admin-pub-btn primary" onClick={() => openAdd()}>
             <Plus size={16} /> Add Publication
@@ -410,37 +330,19 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
             id="admin-pub-year"
             value={selectedYear || ''}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
-            disabled={isSearchActive}
           >
             {years.length === 0 && <option value="">No publications yet</option>}
             {years.map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
-
-          <div className="admin-pub-search">
-            <Search size={15} />
-            <input
-              type="text"
-              placeholder="Search by title…"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button type="button" className="admin-pub-search-clear" onClick={() => setSearchQuery('')} title="Clear search">
-                <X size={14} />
-              </button>
-            )}
-          </div>
         </div>
 
         <div className="admin-pub-table-wrap">
-          {(isSearchActive ? searching && !searchResults : loading) ? (
-            <div className="admin-pub-empty"><Loader2 size={18} className="admin-pub-spin" /> {isSearchActive ? 'Searching…' : 'Loading publications…'}</div>
-          ) : (isSearchActive ? displayedPublications.length === 0 : monthGroups.length === 0) ? (
-            <div className="admin-pub-empty">
-              {isSearchActive ? `No publications match "${searchQuery.trim()}".` : `No publications for ${selectedYear || 'this year'} yet.`}
-            </div>
+          {loading ? (
+            <div className="admin-pub-empty"><Loader2 size={18} className="admin-pub-spin" /> Loading publications…</div>
+          ) : monthGroups.length === 0 ? (
+            <div className="admin-pub-empty">No publications for {selectedYear || 'this year'} yet.</div>
           ) : (
             <table className="admin-pub-table admin-pub-table-grouped">
               <thead>
@@ -448,56 +350,23 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                   <th>Year</th>
                   <th>Month</th>
                   <th>Language</th>
+                  <th>Order</th>
                   <th>Title</th>
                   <th>Published</th>
-                  <th>Pages</th>
-                  <th>Size</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {isSearchActive ? (
-                  // Search already resolved each row to one specific, uploaded edition.
-                  displayedPublications.map((pub) => (
-                    <tr key={pub.id}>
-                      <td data-label="Year">{pub.year}</td>
-                      <td data-label="Month">{pub.monthName}</td>
-                      <td data-label="Language"><LanguageBadge language={pub.language} /></td>
-                      <td data-label="Title">{pub.title}</td>
-                      <td data-label="Published">{pub.publishedDate ? formatPublishedDate(pub.publishedDate) : '—'}</td>
-                      <td data-label="Pages">{pub.pageCount ?? '—'}</td>
-                      <td data-label="Size">{formatBytes(pub.fileSizeBytes)}</td>
-                      <td data-label="Status"><StatusBadge published /></td>
-                      <td className="admin-pub-actions" data-label="Actions">
-                        <button type="button" className="admin-pub-icon-btn" title="View PDF" onClick={() => openView(pub)}>
-                          <Eye size={15} />
-                        </button>
-                        <a className="admin-pub-icon-btn" href={getPublicationFileUrl(pub.id, { download: true })} title="Download PDF">
-                          <Download size={15} />
-                        </a>
-                        <button type="button" className="admin-pub-icon-btn" title="Edit metadata" onClick={() => openEdit(pub)}>
-                          <Pencil size={15} />
-                        </button>
-                        <button type="button" className="admin-pub-icon-btn" title="Replace PDF" onClick={() => openReplace(pub)}>
-                          <RefreshCw size={15} />
-                        </button>
-                        <button type="button" className="admin-pub-icon-btn danger" title="Delete" onClick={() => setDeleting(pub)}>
-                          <Trash2 size={15} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  // Three rows per month - one per PUBLICATION_LANGUAGES entry, always in the same
-                  // order - with Year/Month spanning all three via rowSpan instead of repeating.
-                  // The rowSpan cells only exist in the DOM on the first row of each group, which
-                  // reads fine on the desktop table but leaves rows 2-3 with no visible year/month
-                  // once the responsive layout stacks every cell into its own block below 560px -
-                  // this mobile-only header row (hidden on desktop) carries that context instead.
-                  monthGroups.map(({ month, byLanguage }) => ([
+                {/* Three rows per month - one per PUBLICATION_LANGUAGES entry, always in the same
+                    order - with Year/Month spanning all three via rowSpan instead of repeating.
+                    The rowSpan cells only exist in the DOM on the first row of each group, which
+                    reads fine on the desktop table but leaves rows 2-3 with no visible year/month
+                    once the responsive layout stacks every cell into its own block below 560px -
+                    this mobile-only header row (hidden on desktop) carries that context instead. */}
+                {monthGroups.map(({ month, byLanguage }) => ([
                     <tr key={`${month}-mobile-header`} className="admin-pub-mobile-group-header">
-                      <td colSpan={9}>{selectedYear} — {MONTH_NAMES[month - 1]}</td>
+                      <td colSpan={8}>{selectedYear} — {MONTH_NAMES[month - 1]}</td>
                     </tr>,
                     ...PUBLICATION_LANGUAGES.map((lang, i) => {
                       const pub = byLanguage[lang];
@@ -510,12 +379,13 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                             </>
                           )}
                           <td data-label="Language"><LanguageBadge language={lang} /></td>
+                          {/* Uploaded editions show the value stored in the database; a missing
+                              edition shows the order its language always gets. */}
+                          <td data-label="Order">{pub ? publicationOrder(pub) : i + 1}</td>
                           {pub ? (
                             <>
                               <td data-label="Title">{pub.title}</td>
                               <td data-label="Published">{pub.publishedDate ? formatPublishedDate(pub.publishedDate) : '—'}</td>
-                              <td data-label="Pages">{pub.pageCount ?? '—'}</td>
-                              <td data-label="Size">{formatBytes(pub.fileSizeBytes)}</td>
                               <td data-label="Status"><StatusBadge published /></td>
                               <td className="admin-pub-actions" data-label="Actions">
                                 <button type="button" className="admin-pub-icon-btn" title="View PDF" onClick={() => openView(pub)}>
@@ -524,9 +394,6 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                                 <a className="admin-pub-icon-btn" href={getPublicationFileUrl(pub.id, { download: true })} title="Download PDF">
                                   <Download size={15} />
                                 </a>
-                                <button type="button" className="admin-pub-icon-btn" title="Edit metadata" onClick={() => openEdit(pub)}>
-                                  <Pencil size={15} />
-                                </button>
                                 <button type="button" className="admin-pub-icon-btn" title="Replace PDF" onClick={() => openReplace(pub)}>
                                   <RefreshCw size={15} />
                                 </button>
@@ -537,7 +404,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                             </>
                           ) : (
                             <>
-                              <td colSpan={4} className="admin-pub-empty-slot" data-label="Title">—</td>
+                              <td colSpan={2} className="admin-pub-empty-slot" data-label="Title">—</td>
                               <td data-label="Status"><StatusBadge published={false} /></td>
                               <td className="admin-pub-actions" data-label="Actions">
                                 <button
@@ -553,8 +420,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                         </tr>
                       );
                     }),
-                  ]))
-                )}
+                  ]))}
               </tbody>
             </table>
           )}
@@ -570,9 +436,10 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
             </div>
             <form onSubmit={handleAddSubmit} className="admin-pub-form">
               {addError && <div className="admin-pub-form-error"><AlertCircle size={14} /> {addError}</div>}
+              {/* Every issue is titled "Feed World" (the backend sets it) - shown locked, not editable. */}
               <label>
-                Title <span className="optional">(optional, defaults to "Feed World")</span>
-                <input type="text" value={addForm.title} onChange={(e) => setAddForm((f) => ({ ...f, title: e.target.value }))} />
+                Title
+                <input type="text" value="Feed World" disabled readOnly />
               </label>
               <div className="admin-pub-form-row">
                 <label>
@@ -655,31 +522,6 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
         </div>
       )}
 
-      {editing && (
-        <div className="admin-pub-modal-backdrop" onClick={() => !editSubmitting && setEditing(null)}>
-          <div className="admin-pub-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="admin-pub-modal-header">
-              <h3><Pencil size={18} /> Edit {editing.language} — {editing.monthName} {editing.year}</h3>
-              <button type="button" onClick={() => setEditing(null)} disabled={editSubmitting}><X size={18} /></button>
-            </div>
-            <form onSubmit={handleEditSubmit} className="admin-pub-form">
-              {editError && <div className="admin-pub-form-error"><AlertCircle size={14} /> {editError}</div>}
-              <label>
-                Title
-                <input type="text" value={editForm.title} onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))} />
-              </label>
-              <p className="admin-pub-hint">Year, month and the PDF/thumbnail files stay as they are — use "Replace PDF" to change the file itself.</p>
-              <div className="admin-pub-form-actions">
-                <button type="button" onClick={() => setEditing(null)} disabled={editSubmitting}>Cancel</button>
-                <button type="submit" className="primary" disabled={editSubmitting}>
-                  {editSubmitting ? (<><Loader2 size={14} className="admin-pub-spin" /> Saving…</>) : 'Save Changes'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {replacing && (
         <div className="admin-pub-modal-backdrop" onClick={() => !replaceSubmitting && setReplacing(null)}>
           <div className="admin-pub-modal" onClick={(e) => e.stopPropagation()}>
@@ -691,7 +533,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
               {replaceError && <div className="admin-pub-form-error"><AlertCircle size={14} /> {replaceError}</div>}
               <div className="admin-pub-replace-summary">
                 <div><span>Current Publication</span><strong>{replacing.language} — {replacing.monthName} {replacing.year}</strong></div>
-                <div><span>Current PDF</span><strong>{replacing.pageCount ? `Available (${replacing.pageCount} pages)` : 'Available'}</strong></div>
+                <div><span>Current PDF</span><strong>Available</strong></div>
               </div>
               <label>
                 New PDF

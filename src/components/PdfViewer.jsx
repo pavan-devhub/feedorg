@@ -18,7 +18,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerSrc;
 // a fresh object here would make react-pdf reload the document on every render.
 const PDF_OPTIONS = { disableRange: true };
 
-const MIN_SCALE = 0.5;
+// Low enough that fit-to-width (below) can fit a landscape page on a phone.
+const MIN_SCALE = 0.25;
 const MAX_SCALE = 2.5;
 const SCALE_STEP = 0.1;
 
@@ -37,6 +38,9 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
   const canvasAreaRef = useRef(null);
   const pageRefs = useRef({});
   const currentPageRef = useRef(1);
+  // The zoom at which page 1 exactly fits the viewer's width, capped at 100% - see
+  // onDocumentLoadSuccess. What "Fit to page" returns to.
+  const fitScaleRef = useRef(1);
 
   // A different issue was opened - reset the viewer back to page 1 / default zoom.
   useEffect(() => {
@@ -88,13 +92,27 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
     return () => observer.disconnect();
   }, [numPages, scale, rotation]);
 
-  const onDocumentLoadSuccess = useCallback(({ numPages: loadedPages }) => {
-    setNumPages(loadedPages);
+  const onDocumentLoadSuccess = useCallback((pdf) => {
+    setNumPages(pdf.numPages);
     setLoadError(null);
     if (canvasAreaRef.current) {
       canvasAreaRef.current.scrollTop = 0;
       canvasAreaRef.current.scrollLeft = 0;
     }
+    // Open narrow screens (phones, a slim admin pane) at fit-to-width rather than 100%, which
+    // would leave the page wider than the viewer. Wide screens still open at 100%.
+    pdf.getPage(1).then((page) => {
+      const area = canvasAreaRef.current;
+      if (!area) return;
+      const style = getComputedStyle(area);
+      const available = area.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const natural = page.getViewport({ scale: 1 }).width;
+      if (!(available > 0 && natural > 0)) return;
+      fitScaleRef.current = Math.max(MIN_SCALE, Math.min(1, Math.floor((available / natural) * 100) / 100));
+      setScale(fitScaleRef.current);
+    }).catch(() => {
+      // page 1 unreadable - the viewer's own error handling covers it; just stay at 100%
+    });
   }, []);
 
   // Keep the actual pdf.js failure (HTTP status, CORS rejection, worker mismatch, corrupt
@@ -158,7 +176,7 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
           <button type="button" className="pdf-tool-btn" title="Zoom in" onClick={zoomIn}>
             <Plus size={16} />
           </button>
-          <button type="button" className="pdf-tool-btn" title="Fit to page" onClick={resetZoom}>
+          <button type="button" className="pdf-tool-btn" title="Fit to page" onClick={() => setScale(fitScaleRef.current)}>
             <Maximize size={16} />
           </button>
           <button type="button" className="pdf-tool-btn" title="Rotate" onClick={rotate}>

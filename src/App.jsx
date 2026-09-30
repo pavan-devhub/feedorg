@@ -32,6 +32,7 @@ import AdminPortal from './pages/admin/AdminPortal';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 import { API_BASE_URL } from './api/config';
+import { takeReturnTo } from './utils/publicationLinks';
 // import TradeFairs from './pages/TradeFairs';
 
 function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
@@ -96,6 +97,13 @@ function App() {
   const handleLogin = (userData) => {
     if (userData && userData.token) {
       localStorage.setItem('jwt', userData.token);
+      // A shared publication link that needed a login first (see PublicationReader) goes
+      // straight back to that issue.
+      const returnTo = takeReturnTo();
+      if (returnTo && userData.role !== 'ADMIN') {
+        window.location.assign(returnTo);
+        return;
+      }
       setUser(userData);
       setIsLoggedIn(true);
       // ADMIN accounts (see UserServiceImpl#resolveRole - whoever logs in with the configured

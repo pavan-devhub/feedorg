@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import bgImage from '../assets/reg.avif';
 import logoImage from '../assets/logo.avif';
 import { ArrowLeft, Check, X, AlertCircle } from 'lucide-react';
@@ -42,6 +42,23 @@ const Register = ({ onBackToLogin }) => {
   });
   const [notification, setNotification] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // The "User Type" choices come from the backend's user_types table (GET /api/user-types), so a
+  // type added there shows up here without a frontend change. null = still loading.
+  const [userTypes, setUserTypes] = useState(null);
+  const [userTypesError, setUserTypesError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API_BASE_URL}/api/user-types`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((types) => { if (!cancelled) setUserTypes(types.map((t) => t.name)); })
+      .catch(() => { if (!cancelled) { setUserTypes([]); setUserTypesError(true); } });
+    return () => { cancelled = true; };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -493,10 +510,12 @@ const Register = ({ onBackToLogin }) => {
                   onFocus={(e) => e.target.style.borderColor = brandGreen}
                   onBlur={(e) => e.target.style.borderColor = inputBorder}
                 >
-                  <option value="" disabled>Select User Type</option>
-                  <option value="Individual">Individual</option>
-                  <option value="Institutional">Institutional</option>
-                  <option value="International Buyer">International Buyer</option>
+                  <option value="" disabled>
+                    {userTypes === null ? 'Loading user types…' : userTypesError ? "Couldn't load user types - please refresh" : 'Select User Type'}
+                  </option>
+                  {(userTypes || []).map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
                 </select>
               </div>
             </div>

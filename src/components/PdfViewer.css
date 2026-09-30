@@ -108,7 +108,9 @@
 
 .pdf-page-frame {
   display: flex;
-  justify-content: center;
+  /* `safe`: a page zoomed wider than the viewer falls back to left-aligned instead of being
+     centred past the left edge, where no amount of scrolling could reach it */
+  justify-content: safe center;
   width: 100%;
   flex-shrink: 0;
 }

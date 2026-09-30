@@ -17,7 +17,8 @@ async function getJson(path) {
     } catch (_) {
       // response had no JSON body - keep the generic message
     }
-    throw new Error(message);
+    // `status` lets a caller tell "not logged in" (401/403) from "no such issue" (404).
+    throw Object.assign(new Error(message), { status: res.status });
   }
   return res.json();
 }
@@ -71,11 +72,20 @@ export async function fetchPublicationPdfBlob(id) {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   if (!res.ok) {
-    throw new Error(
-      res.status === 404
+    // Prefer the backend's own {error} message (e.g. "PDF file is missing on the server for
+    // publication 2028-06-Hindi") over guessing what a status code means.
+    let serverMessage = null;
+    try {
+      const body = await res.json();
+      serverMessage = body && body.error;
+    } catch (_) {
+      // response had no JSON body - fall back to the generic messages below
+    }
+    throw Object.assign(new Error(
+      serverMessage || (res.status === 404
         ? 'The publication stream endpoint was not found (HTTP 404) - the backend may need to be restarted to pick it up.'
-        : `The PDF for this issue could not be loaded (HTTP ${res.status}).`
-    );
+        : `The PDF for this issue could not be loaded (HTTP ${res.status}).`)
+    ), { status: res.status });
   }
   const contentType = (res.headers.get('content-type') || '').toLowerCase();
   if (contentType.includes('json') || contentType.includes('html')) {
@@ -111,48 +121,47 @@ export const getPublicationThumbnailUrl = (id) => {
 // hand-updated in code every January.
 export const fetchPublicationYears = () => getJson('/api/publications/years');
 
-// A whole year's worth of issues (summary shape) - used by the admin dashboard's publication
-// table for the selected year.
-export const fetchPublicationsByYear = (year) =>
-  getJson(`/api/publications?year=${encodeURIComponent(year)}`);
+// A whole year's worth of issues (summary shape). Without `language`: every edition, newest month
+// first - the admin dashboard's publication table. With `language`: just that language's issues,
+// January to December - one year's shelf on the reader's publications page.
+export const fetchPublicationsByYear = (year, language) => {
+  const params = new URLSearchParams({ year });
+  if (language) params.set('language', language);
+  return getJson(`/api/publications?${params}`);
+};
 
 // --- Admin only (requires the ADMIN role - see AdminPublicationController) -------------------
 
 // Every issue is published separately in each of these languages - one PDF per (year, month,
-// language), not one PDF per month. Values must match PublicationLanguage's exact casing (the
-// backend enum round-trips via @Enumerated(EnumType.STRING), so "english" or "ENGLISH" would
-// fail Spring's enum binding).
-export const PUBLICATION_LANGUAGES = ['English', 'Telugu', 'Hindi'];
+// language), not one PDF per month. Listed in the sequence of the backend's `order` column
+// (Telugu 1, Hindi 2, English 3 - see PublicationLanguage), which is also how the API sorts a
+// month's editions, so position + 1 is each language's order. Values must match
+// PublicationLanguage's exact casing (the backend enum round-trips via
+// @Enumerated(EnumType.STRING), so "english" or "ENGLISH" would fail Spring's enum binding).
+export const PUBLICATION_LANGUAGES = ['Telugu', 'Hindi', 'English'];
 
-// `fields` is { file, title, year, month, language, volume, issueNumber }. The backend derives
-// the UUID filenames, page count, file size and timestamps itself - none of those are sent here.
-export const createPublication = ({ file, title, year, month, language, volume, issueNumber }) => {
+// How readers see each language named - in its own script, as it appears on the printed cover.
+export const PUBLICATION_LANGUAGE_LABELS = { Telugu: 'తెలుగు', Hindi: 'हिन्दी', English: 'English' };
+
+// A publication's `order` (1, 2 or 3) - the value the backend sent, or, when a row has none
+// (e.g. a backend that predates the `order` column), the same fixed value derived from its
+// language, so the admin table's Order column is never blank.
+export const publicationOrder = (pub) => pub.order ?? PUBLICATION_LANGUAGES.indexOf(pub.language) + 1;
+
+// `fields` is { file, year, month, language }. The backend sets the title (always "Feed World"),
+// the feed_world_<language> filenames, order, page count and timestamps itself - none of those
+// are sent here.
+export const createPublication = ({ file, year, month, language }) => {
   const formData = new FormData();
   formData.append('file', file);
-  if (title) formData.append('title', title);
   formData.append('year', year);
   formData.append('month', month);
   formData.append('language', language || 'English');
-  if (volume !== undefined && volume !== null && volume !== '') formData.append('volume', volume);
-  if (issueNumber !== undefined && issueNumber !== null && issueNumber !== '') {
-    formData.append('issueNumber', issueNumber);
-  }
   return authFetch('/api/admin/publications', { method: 'POST', body: formData });
 };
 
-export const updatePublicationMetadata = (id, { title, volume, issueNumber } = {}) => {
-  const params = new URLSearchParams();
-  if (title) params.set('title', title);
-  if (volume !== undefined && volume !== null && volume !== '') params.set('volume', volume);
-  if (issueNumber !== undefined && issueNumber !== null && issueNumber !== '') {
-    params.set('issueNumber', issueNumber);
-  }
-  const qs = params.toString();
-  return authFetch(`/api/admin/publications/${id}${qs ? `?${qs}` : ''}`, { method: 'PUT' });
-};
-
-// Swaps the PDF (and regenerates its thumbnail/page count) without changing the issue's id,
-// title, volume or issue number.
+// Swaps the PDF (and regenerates its thumbnail/page count) without changing the issue's id or
+// title.
 export const replacePublicationPdf = (id, file) => {
   const formData = new FormData();
   formData.append('file', file);
