@@ -749,6 +749,8 @@
    these overrides are scoped under .fw-services-dropdown rather than changing the base rules
    everyone else uses. */
 .fw-services-dropdown .srv-cards-grid {
+  /* 16 services -> an even 4 x 4, same as Home.jsx's grid (5 columns left one tile on its own row) */
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
 .fw-services-dropdown .srv-card {

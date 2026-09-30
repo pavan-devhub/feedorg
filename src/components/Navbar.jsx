@@ -23,21 +23,22 @@ const getAccountLabel = (user) => {
 const PROFILE_IMAGE_UPDATED_EVENT = 'feed:profile-image-updated';
 
 export const servicesMegaMenu = [
-  { name: 'PROJECT KRUSHI', num: '01', color: 'green', img: '/icons/icon-krushi.avif' },
-  { name: 'MY ORG', num: '02', color: 'blue', img: '/icons/icon-buyers-connection.avif' },
-  { name: 'MY EXPORTS', num: '03', color: 'teal', img: '/icons/icon-country-selection.avif' },
-  { name: 'LOANS & FINANCE', num: '04', color: 'yellow', img: '/icons/icon-finance.avif' },
-  { name: 'PRODUCT 360', num: '05', color: 'orange', img: '/icons/icon-product-selection.avif' },
-  { name: 'MY BUSINESS', num: '06', color: 'purple', img: '/icons/icon-process-order.avif' },
-  { name: 'MY EDUCATION', num: '07', color: 'pink', img: '/icons/icon-documentation.avif' },
-  { name: 'FEED WORLD', num: '08', color: 'blue-light', img: '/icons/icon-why-exports.avif' },
-  { name: 'EPM', num: '09', color: 'green-light', img: '/icons/icon-start-exports.avif' },
-  { name: 'TRADE FAIRS', num: '10', color: 'orange-light', img: '/icons/icon-trade-updates.avif' },
-  { name: 'SAFE MISSION', num: '11', color: 'teal', img: '/icons/icon-policies.avif' },
-  { name: 'MY TOOLS', num: '12', color: 'purple-light', img: '/icons/icon-tools-services.avif' },
-  { name: 'KNOW SCHEMES', num: '13', color: 'yellow', img: '/icons/icon-policies.avif' },
-  { name: 'MY MARKET', num: '14', color: 'orange', img: '/icons/icon-product-selection.avif' },
-  { name: 'FEED CARD', num: '15', color: 'blue', img: '/icons/icon-tariffs.avif' }
+  { name: 'KRUSHI YEVA JAYATE', num: '01', color: 'green', img: '/icons/icon-krushi-yeva-jayate.png' },
+  { name: 'YUVA KRUSHI', num: '02', color: 'green-light', img: '/icons/icon-yuva-krushi.svg' },
+  { name: 'MY ORG', num: '03', color: 'blue', img: '/icons/icon-buyers-connection.avif' },
+  { name: 'MY EXPORTS', num: '04', color: 'teal', img: '/icons/icon-country-selection.avif' },
+  { name: 'LOANS & FINANCE', num: '05', color: 'yellow', img: '/icons/icon-finance.avif' },
+  { name: 'PRODUCT 360', num: '06', color: 'orange', img: '/icons/icon-product-selection.avif' },
+  { name: 'MY BUSINESS', num: '07', color: 'purple', img: '/icons/icon-process-order.avif' },
+  { name: 'MY EDUCATION', num: '08', color: 'pink', img: '/icons/icon-documentation.avif' },
+  { name: 'FEED WORLD', num: '09', color: 'blue-light', img: '/icons/icon-why-exports.avif' },
+  { name: 'EPM', num: '10', color: 'green-light', img: '/icons/icon-start-exports.avif' },
+  { name: 'TRADE FAIRS', num: '11', color: 'orange-light', img: '/icons/icon-trade-updates.avif' },
+  { name: 'SAFE MISSION', num: '12', color: 'teal', img: '/icons/icon-policies.avif' },
+  { name: 'MY TOOLS', num: '13', color: 'purple-light', img: '/icons/icon-tools-services.avif' },
+  { name: 'KNOW YOUR SCHEMES', num: '14', color: 'yellow', img: '/icons/icon-policies.avif' },
+  { name: 'MY MARKET', num: '15', color: 'orange', img: '/icons/icon-product-selection.avif' },
+  { name: 'FEED CARD', num: '16', color: 'blue', img: '/icons/icon-tariffs.avif' }
 ];
 
 // Maps a mega-menu tile to the page it should open; tiles with no entry are inert (matches
