@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Quote, Plus, Pencil, Trash2, Star, Eye, EyeOff, ArrowUp, ArrowDown } from 'lucide-react';
 import { fetchAdminReviews, createAdminReview, updateAdminReview, deleteAdminReview } from '../../../api/adminEpmApi';
-import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, SectionHeader } from '../adminUi';
-import { useBanner } from '../adminUtils';
+import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, Pagination, SectionHeader } from '../adminUi';
+import { useBanner, usePagination } from '../adminUtils';
 
 const toPayload = (r, overrides = {}) => ({
   authorName: r.authorName,
@@ -58,6 +58,7 @@ export default function EpmReviewsAdmin() {
   };
 
   const publishedCount = reviews.filter((r) => r.published).length;
+  const pager = usePagination(reviews);
 
   return (
     <>
@@ -78,42 +79,47 @@ export default function EpmReviewsAdmin() {
       {loading ? <div className="admin-pub-table-wrap"><Loading label="Loading reviews…" /></div> : reviews.length === 0 ? (
         <div className="admin-pub-table-wrap"><Empty>No reviews yet - the EPM page hides its Testimonials section until one is published.</Empty></div>
       ) : (
-        <>
+        <div className="adm-paged">
           <div className="adm-table-caption">{publishedCount} of {reviews.length} shown on the EPM page, in this order</div>
           <ul className="adm-review-list">
-            {reviews.map((r, i) => (
-              <li key={r.id} className={`adm-review ${r.published ? '' : 'is-hidden'}`}>
-                <div className="adm-review-order">
-                  <button type="button" className="admin-pub-icon-btn" title="Move up" disabled={i === 0 || busyId !== null} onClick={() => move(i, -1)}><ArrowUp size={14} /></button>
-                  <button type="button" className="admin-pub-icon-btn" title="Move down" disabled={i === reviews.length - 1 || busyId !== null} onClick={() => move(i, 1)}><ArrowDown size={14} /></button>
-                </div>
-                <div className="adm-review-body">
-                  <div className="adm-stars" aria-label={`${r.rating} out of 5`}>
-                    {[1, 2, 3, 4, 5].map((n) => <Star key={n} size={14} className={n <= r.rating ? 'on' : ''} fill={n <= r.rating ? 'currentColor' : 'none'} />)}
-                    {!r.published && <span className="adm-tag adm-tag-gray">Hidden</span>}
+            {pager.pageItems.map((r, pageIndex) => {
+              // Position in the whole list - moving up/down works across page boundaries too.
+              const i = pager.start + pageIndex;
+              return (
+                <li key={r.id} className={`adm-review ${r.published ? '' : 'is-hidden'}`}>
+                  <div className="adm-review-order">
+                    <button type="button" className="admin-pub-icon-btn" title="Move up" disabled={i === 0 || busyId !== null} onClick={() => move(i, -1)}><ArrowUp size={14} /></button>
+                    <button type="button" className="admin-pub-icon-btn" title="Move down" disabled={i === reviews.length - 1 || busyId !== null} onClick={() => move(i, 1)}><ArrowDown size={14} /></button>
                   </div>
-                  <p className="adm-review-text">“{r.content}”</p>
-                  <div className="adm-review-author">
-                    <span className="adm-avatar">{r.authorName.charAt(0).toUpperCase()}</span>
-                    <div>
-                      <strong>{r.authorName}</strong>
-                      {r.authorRole && <div className="adm-cell-sub">{r.authorRole}</div>}
+                  <div className="adm-review-body">
+                    <div className="adm-stars" aria-label={`${r.rating} out of 5`}>
+                      {[1, 2, 3, 4, 5].map((n) => <Star key={n} size={14} className={n <= r.rating ? 'on' : ''} fill={n <= r.rating ? 'currentColor' : 'none'} />)}
+                      {!r.published && <span className="adm-tag adm-tag-gray">Hidden</span>}
+                    </div>
+                    <p className="adm-review-text">“{r.content}”</p>
+                    <div className="adm-review-author">
+                      <span className="adm-avatar">{r.authorName.charAt(0).toUpperCase()}</span>
+                      <div>
+                        <strong>{r.authorName}</strong>
+                        {r.authorRole && <div className="adm-cell-sub">{r.authorRole}</div>}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="adm-review-actions">
-                  <button type="button" className="admin-pub-icon-btn" title={r.published ? 'Hide from EPM page' : 'Show on EPM page'} disabled={busyId !== null}
-                    onClick={() => run(r.id, () => updateAdminReview(r.id, toPayload(r, { published: !r.published })),
-                      r.published ? `Hid ${r.authorName}'s review.` : `${r.authorName}'s review is now on the EPM page.`)}>
-                    {r.published ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                  <button type="button" className="admin-pub-icon-btn" title="Edit" onClick={() => setEditing({ review: r })}><Pencil size={15} /></button>
-                  <button type="button" className="admin-pub-icon-btn danger" title="Delete" onClick={() => setDeleting(r)}><Trash2 size={15} /></button>
-                </div>
-              </li>
-            ))}
+                  <div className="adm-review-actions">
+                    <button type="button" className="admin-pub-icon-btn" title={r.published ? 'Hide from EPM page' : 'Show on EPM page'} disabled={busyId !== null}
+                      onClick={() => run(r.id, () => updateAdminReview(r.id, toPayload(r, { published: !r.published })),
+                        r.published ? `Hid ${r.authorName}'s review.` : `${r.authorName}'s review is now on the EPM page.`)}>
+                      {r.published ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                    <button type="button" className="admin-pub-icon-btn" title="Edit" onClick={() => setEditing({ review: r })}><Pencil size={15} /></button>
+                    <button type="button" className="admin-pub-icon-btn danger" title="Delete" onClick={() => setDeleting(r)}><Trash2 size={15} /></button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
-        </>
+          <Pagination pager={pager} noun="reviews" />
+        </div>
       )}
 
       {editing && (

@@ -9,6 +9,9 @@ import { formatEventDateLong, formatEventDateParts } from '../utils/epmDate';
 import { getCategoryMeta } from '../utils/epmCategory';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ListPager from '../components/ListPager';
+import EpmChangeNotes from '../components/epm/EpmChangeNotes';
+import usePagedList from '../hooks/usePagedList';
 import './EpmDetails.css';
 
 const monthOptions = [
@@ -21,6 +24,9 @@ const monthOptions = [
 const EMPTY_FILTERS = { query: '', month: '', state: '', district: '', city: '' };
 
 const monthOf = (isoDate) => Number(isoDate.split('-')[1]);
+
+// Six fill two rows of the grid view and keep the list view to a comfortable length.
+const PAGE_SIZE = 6;
 
 const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('upcoming');
@@ -100,6 +106,8 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
     return searchMatch && monthMatch && stateMatch && districtMatch && cityMatch && categoryMatch;
   }), [events, appliedFilters, activeCategory]);
+
+  const pager = usePagedList(filteredEvents, PAGE_SIZE, `${activeTab}|${activeCategory}|${JSON.stringify(appliedFilters)}`);
 
   const filtersActive = appliedFilters.query || appliedFilters.month || appliedFilters.state || appliedFilters.district || appliedFilters.city;
 
@@ -314,8 +322,9 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             ) : filteredEvents.length === 0 ? (
                <div className="ed-state-msg">No events match your criteria.</div>
             ) : (
+              <>
               <div className={viewMode === 'list' ? 'ed-cards-list' : 'ed-cards-grid'}>
-                {filteredEvents.map(event => {
+                {pager.pageItems.map(event => {
                   const dateParts = formatEventDateParts(event.eventDate);
                   const styleData = getCategoryStyle(event.category);
                   const registeredCount = event.registrationCount ?? 0;
@@ -338,6 +347,7 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                           {event.timeRange && <span><Clock size={14}/> {event.timeRange}</span>}
                           {event.venue && <span><Building2 size={14}/> {event.venue}</span>}
                         </div>
+                        {activeTab === 'upcoming' && <EpmChangeNotes event={event} compact />}
                       </div>
                       
                       <div className="ed-card-desc">
@@ -353,7 +363,9 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                       </div>
                       
                       <div className="ed-card-actions">
-                        <span className="ed-status-pill upcoming">Upcoming</span>
+                        <span className={`ed-status-pill ${activeTab === 'upcoming' ? 'upcoming' : 'completed'}`}>
+                          {activeTab === 'upcoming' ? 'Upcoming' : 'Completed'}
+                        </span>
                         <div className="ed-action-btns">
                           <button className="ed-btn-details" onClick={() => onNavigate('epm-event-details', { eventId: event.id })}>
                             View Details <ArrowLeft size={14} style={{ transform: 'rotate(180deg)' }} />
@@ -369,6 +381,8 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                   );
                 })}
               </div>
+              <ListPager pager={pager} noun="EPMs" />
+              </>
             )}
           </div>
         </div>

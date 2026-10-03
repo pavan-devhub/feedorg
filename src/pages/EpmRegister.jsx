@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle, Clock, LayoutDashboard } from 'lucide-react';
 import { fetchEpmEvents, submitEpmRegistration } from '../api/epmApi';
-import { formatEventDateLong, formatEventDateParts } from '../utils/epmDate';
+import { formatEventDateLong } from '../utils/epmDate';
+import { requestNotificationsRefresh } from '../utils/notifications';
+import useMyEpmSignUps from '../hooks/useMyEpmSignUps';
+import useEpmParticipantTypes from '../hooks/useEpmParticipantTypes';
+import EpmEventPicker from '../components/epm/EpmEventPicker';
+import EpmChangeNotes from '../components/epm/EpmChangeNotes';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import useScrollToTop from '../hooks/useScrollToTop';
 import './EpmForms.css';
 
-const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
+// `eventId` (from a "New EPM" notification) opens the form for that EPM straight away, as long as
+// it's still open for registration.
+const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout, eventId: preselectId }) => {
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -34,14 +41,23 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   useEffect(() => {
     let cancelled = false;
-    fetchEpmEvents({ status: 'upcoming' })
-      .then(data => { if (!cancelled) setEvents(data); })
+    // Cancelled ones too: they stay listed, marked cancelled, so people can see they're off.
+    fetchEpmEvents({ status: 'upcoming', includeCancelled: true })
+      .then(data => {
+        if (cancelled) return;
+        setEvents(data);
+        if (preselectId && data.some(epm => epm.id === preselectId && !epm.cancelled)) setSelectedEpmId(preselectId);
+      })
       .catch(err => { if (!cancelled) setLoadError(err.message || 'Failed to load upcoming EPMs.'); })
       .finally(() => { if (!cancelled) setLoadingEvents(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [preselectId]);
 
   const selectedEpm = events.find(epm => epm.id === selectedEpmId);
+  // Reloaded after a sign-up, so going back to the list shows the new one marked.
+  const mySignUps = useMyEpmSignUps(isLoggedIn, isSuccess);
+  // Institutional, Individual, Business Collaborator, Student, Executive, Guest - from the user_types table.
+  const participantTypes = useEpmParticipantTypes();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -91,6 +107,7 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
         consent: formData.consent,
       });
       setIsSuccess(true);
+      requestNotificationsRefresh();
     } catch (err) {
       setSubmitError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -113,9 +130,21 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           <p className="epm-success-text">
             Your registration has been received successfully. We look forward to seeing you there and will share further details shortly.
           </p>
-          <button className="epm-back-btn" onClick={() => onNavigate('epm')}>
-            <ArrowLeft size={18} /> Back to EPM
-          </button>
+          <div className="epm-success-actions">
+            {isLoggedIn && (
+              <button className="epm-submit-btn" onClick={() => onNavigate('dashboard', { tab: 'status', epmId: selectedEpmId })}>
+                <LayoutDashboard size={18} /> View in Status of Activities
+              </button>
+            )}
+            <button className="epm-back-btn" onClick={() => onNavigate('epm')}>
+              <ArrowLeft size={18} /> Back to EPM
+            </button>
+          </div>
+          {isLoggedIn && (
+            <p className="epm-success-text" style={{ marginTop: '24px', marginBottom: 0, fontSize: '0.95rem' }}>
+              We'll remind you every week before the EPM, and again the day before - look for them under the bell.
+            </p>
+          )}
         </div>
         <Footer />
       </div>
@@ -153,34 +182,7 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             ) : events.length === 0 ? (
               <p style={{ color: '#64748b' }}>There are no upcoming EPMs open for registration right now. Please check back soon.</p>
             ) : (
-              <div className="epm-events-timeline">
-                {events.map(epm => {
-                  const { day, month, year } = formatEventDateParts(epm.eventDate);
-                  return (
-                    <div
-                      key={epm.id}
-                      className="epm-event-card"
-                      onClick={() => setSelectedEpmId(epm.id)}
-                    >
-                      <div className="epm-event-date-block">
-                        <span className="epm-date-day">{day}</span>
-                        <span className="epm-date-month">{month}</span>
-                        <span className="epm-date-year">{year}</span>
-                      </div>
-                      <div className="epm-event-details">
-                        <h3 className="epm-event-city">{epm.city}</h3>
-                        <p className="epm-event-state">{epm.state}</p>
-                        <div className="epm-event-venue">
-                          <MapPin size={14} /> {epm.venue}
-                        </div>
-                      </div>
-                      <div className="epm-event-action">
-                        <span className="epm-text-btn">Register for this EPM <ArrowRight size={16} /></span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <EpmEventPicker events={events} actionLabel="Register for this EPM" mine={mySignUps} onPick={setSelectedEpmId} />
             )}
           </div>
         </>
@@ -201,10 +203,15 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                   <span>{formatEventDateLong(selectedEpm.eventDate)}</span>
                 </div>
                 <div className="epm-info-meta-item">
+                  <Clock size={18} />
+                  <span>{selectedEpm.timeRange || 'Time to be announced'}</span>
+                </div>
+                <div className="epm-info-meta-item">
                   <MapPin size={18} />
                   <span>{selectedEpm.venue}</span>
                 </div>
               </div>
+              <div className="epm-info-notes"><EpmChangeNotes event={selectedEpm} /></div>
             </div>
           </div>
 
@@ -282,14 +289,7 @@ const EpmRegister = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                     onChange={handleInputChange}
                   >
                     <option value="">Select type</option>
-                    <option value="Farmer">Farmer</option>
-                    <option value="FPO">FPO</option>
-                    <option value="PACS">PACS</option>
-                    <option value="SHG">SHG</option>
-                    <option value="MSME">MSME</option>
-                    <option value="Exporter">Exporter</option>
-                    <option value="Entrepreneur">Entrepreneur</option>
-                    <option value="Other">Other</option>
+                    {participantTypes.map((type) => <option key={type} value={type}>{type}</option>)}
                   </select>
                   {errors.participantType && <span className="epm-form-error">{errors.participantType}</span>}
                 </div>

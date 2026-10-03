@@ -50,7 +50,19 @@
 .epm-event-state { font-size: 1rem; color: #64748b; margin-bottom: 12px; }
 .epm-event-venue { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; color: #475569; background: #f8fafc; padding: 6px 12px; border-radius: 20px; }
 .epm-event-venue svg { color: #10b981; }
+.epm-event-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.epm-mine-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 5px 12px; border-radius: 20px; }
+.epm-event-card:focus-visible { outline: 2px solid #10b981; outline-offset: 2px; }
+/* A cancelled EPM stays listed so people see it's off, but can't be picked. */
+.epm-event-card.is-cancelled { cursor: default; background: #fafafa; }
+.epm-event-card.is-cancelled:hover { transform: none; box-shadow: none; border-color: #e2e8f0; }
+.epm-event-card.is-cancelled::before { display: none; }
+.epm-event-card.is-cancelled .epm-date-day,
+.epm-event-card.is-cancelled .epm-event-city { color: #94a3b8; text-decoration: line-through; text-decoration-thickness: 2px; }
+.epm-event-card.is-cancelled .epm-date-month { color: #94a3b8; }
 .epm-event-action { padding-left: 24px; }
+.epm-text-btn.is-closed { color: #b91c1c; font-size: 0.9rem; white-space: nowrap; }
+.epm-event-card.is-cancelled:hover .epm-text-btn { gap: 8px; }
 .epm-text-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 600; color: #10b981; transition: gap 0.3s ease; }
 .epm-event-card:hover .epm-text-btn { gap: 12px; }
 .epm-form-layout { display: flex; gap: 40px; background: white; border-radius: 24px; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05); overflow: hidden; animation: fadeIn 0.4s ease forwards; margin-bottom: 64px; }
@@ -64,6 +76,9 @@
 .epm-info-meta-list { display: flex; flex-direction: column; gap: 16px; }
 .epm-info-meta-item { display: flex; align-items: flex-start; gap: 12px; color: #334155; font-size: 0.95rem; line-height: 1.5; }
 .epm-info-meta-item svg { color: #10b981; flex-shrink: 0; margin-top: 2px; }
+.epm-info-notes { margin-top: 24px; }
+.epm-success-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.epm-success-actions .epm-submit-btn { width: auto; padding: 14px 28px; font-size: 1rem; }
 .epm-form-main { flex: 1; padding: 48px 56px; }
 .epm-form-title { font-size: 1.75rem; font-weight: 600; color: #0f172a; margin-bottom: 32px; letter-spacing: -0.01em; }
 .epm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }

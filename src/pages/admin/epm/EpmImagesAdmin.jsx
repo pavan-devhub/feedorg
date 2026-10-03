@@ -8,11 +8,11 @@ import { Banner, ConfirmDialog, Loading, SectionHeader } from '../adminUi';
 import { useBanner } from '../adminUtils';
 import ImageGrid, { ImageDetailsModal, UploadButton } from './ImageGrid';
 import EpmGalleryRegionsAdmin from './EpmGalleryRegionsAdmin';
+import EpmVideoPanel from './EpmVideoPanel';
 
 // What the public EPM page shows for a block the admin hasn't uploaded anything to yet
 // (see Epm.jsx) - previewed here so it's clear what an upload will replace.
 const BUILT_IN = {
-  'epm-hero': { defaults: ['/epm_global_agri_export.avif'] },
   'epm-stats': {
     defaults: ['/epm_stat_1.avif', '/epm_stat_2.avif', '/epm_stat_3.avif'],
     slots: ['EPMs Conducted', 'Districts Covered', 'Total Attendees'],
@@ -67,7 +67,7 @@ export default function EpmImagesAdmin() {
         eyebrow="EPM"
         icon={Images}
         title="Page & Gallery Images"
-        description="Every picture on the EPM page and the EPM gallery page. Images are stored on the server; their names, captions and order are kept in the database."
+        description="The video and every picture on the EPM page, and every picture on the EPM gallery page. Files are stored on the server; their names, captions and order are kept in the database."
       >
         <button type="button" className="admin-pub-btn adm-btn-secondary" onClick={scan} disabled={scanning}
           title="Register image files that were copied straight into the server's storage folder">
@@ -90,6 +90,7 @@ export default function EpmImagesAdmin() {
         <EpmGalleryRegionsAdmin key={refreshKey} showBanner={showBanner} />
       ) : loading ? <Loading label="Loading image sections…" /> : (
         <div className="adm-block-list">
+          {tab === 'EPM_PAGE' && <EpmVideoPanel showBanner={showBanner} />}
           {blocks.filter((b) => b.page === tab).map((b) => (
             <BlockPanel key={`${b.id}-${refreshKey}`} block={b} showBanner={showBanner} onCountChange={loadBlocks} />
           ))}

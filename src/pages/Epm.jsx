@@ -4,12 +4,13 @@ import {
   ChevronRight, Star, HeartHandshake, UserPlus,
   ArrowRight, CheckCircle2, ChevronLeft,
   Target, BookOpen, Award,
-  Ship, Truck, Package, Leaf, TrendingUp, ShieldCheck, Sparkles,
+  Ship, Truck, Package, Leaf, TrendingUp, ShieldCheck,
   Image as ImageIcon, Quote
 } from 'lucide-react';
 import './Epm.css';
 import {
   fetchEpmEvents, fetchEpmGalleryImages, fetchEpmGalleryImagesByBlock, fetchEpmReviews, fetchEpmStats, getEpmGalleryImageUrl,
+  fetchEpmVideo, getEpmVideoUrl,
 } from '../api/epmApi';
 import { formatEventDateParts } from '../utils/epmDate';
 import Navbar from '../components/Navbar';
@@ -112,14 +113,22 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   // Admin-managed pictures for the page's fixed spots (Admin panel > EPM > Page & Gallery Images).
   // Until one is uploaded, each spot keeps its built-in picture from /public.
-  const [pageImages, setPageImages] = useState({ hero: null, stats: [], calendar: null });
+  const [pageImages, setPageImages] = useState({ stats: [], calendar: null });
+
+  // The video under the navbar - the admin's upload (same admin screen) or else the built-in
+  // /vid.mp4. Stays null until the lookup answers so the built-in one never starts and then swaps.
+  const [heroVideoSrc, setHeroVideoSrc] = useState(null);
 
   useEffect(() => {
+    fetchEpmVideo()
+      .then(video => setHeroVideoSrc(video ? getEpmVideoUrl(video.videoUrl) : '/vid.mp4'))
+      .catch(() => setHeroVideoSrc('/vid.mp4'));
+
     const urlsOf = (data) => (data || []).map(img => getEpmGalleryImageUrl(img.imageUrl));
     const block = (id) => fetchEpmGalleryImagesByBlock(id).then(urlsOf).catch(() => []);
 
-    Promise.all([block('epm-hero'), block('epm-stats'), block('epm-calendar')])
-      .then(([hero, statImages, calendar]) => setPageImages({ hero: hero[0] || null, stats: statImages, calendar: calendar[0] || null }));
+    Promise.all([block('epm-stats'), block('epm-calendar')])
+      .then(([statImages, calendar]) => setPageImages({ stats: statImages, calendar: calendar[0] || null }));
 
     block('epm-carousel')
       .then(own => own.length > 0
@@ -332,10 +341,22 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   return (
     <div className="epm-page">
       <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="epm" />
-      <section className="epm-hero-section">
-        <div className="epm-hero-inner">
 
-          {/* Top-right actions */}
+      {/* Full-width video right under the navbar, with the page's actions over its top-right corner */}
+      <section className="epm-video-hero">
+        {heroVideoSrc && (
+          <video
+            key={heroVideoSrc}
+            className="epm-video-hero-media"
+            src={heroVideoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+        )}
+        <div className="epm-video-hero-overlay">
           <div className="epm-hero-actions">
             <button className="epm-btn-outline" onClick={() => onNavigate('epm-register')}>
               <UserPlus size={16} />
@@ -346,32 +367,11 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               Become a Volunteer
             </button>
           </div>
+        </div>
+      </section>
 
-          {/* Hero intro */}
-          <div className="epm-hero-banner">
-            <div className="epm-hb-bg">
-              <img
-                className="epm-hb-image"
-                src={pageImages.hero || '/epm_global_agri_export.avif'}
-                alt="Global Agricultural Exports"
-              />
-              <div className="epm-hb-gradient"></div>
-            </div>
-            
-            <div className="epm-hb-content">
-              <div className="epm-hero-text">
-                <span className="epm-hero-eyebrow"><Sparkles size={13} /> EPM Initiative</span>
-                <h1 className="epm-hero-title">
-                  Export Promotional Meetings <span className="epm-hero-highlight">(EPMs)</span>
-                </h1>
-                <p className="epm-hero-subtitle">
-                  Connecting stakeholders. Creating opportunities.<br className="epm-hero-break" />
-                  Empowering agri-exports.
-                </p>
-                <span className="epm-hero-rule" />
-              </div>
-            </div>
-          </div>
+      <section className="epm-hero-section">
+        <div className="epm-hero-inner">
 
           {/* Info cards */}
           <div className="epm-info-grid">

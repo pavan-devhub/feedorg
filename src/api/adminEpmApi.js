@@ -57,9 +57,14 @@ const formWith = (file, fields = {}) => {
 
 export const fetchAdminEpmOverview = () => request('/api/admin/epm/overview');
 
-// Filters: { eventId, eventDate: 'yyyy-mm-dd' (the EPM's date), submittedOn: 'yyyy-mm-dd', q }
+// Filters: { eventId, eventDate: 'yyyy-mm-dd' (the EPM's date), submittedOn: 'yyyy-mm-dd', q }.
+// The lists come a page at a time - pass { page (0-based), size } too - as
+// { items, total, page, size, totalPages }; the export twins return every matching row, for the
+// spreadsheet download.
 export const fetchAdminRegistrations = (filters) => request(`/api/admin/epm/registrations${query(filters)}`);
 export const fetchAdminVolunteers = (filters) => request(`/api/admin/epm/volunteers${query(filters)}`);
+export const exportAdminRegistrations = (filters) => request(`/api/admin/epm/registrations/export${query(filters)}`);
+export const exportAdminVolunteers = (filters) => request(`/api/admin/epm/volunteers/export${query(filters)}`);
 
 // --- events -------------------------------------------------------------------------------
 
@@ -68,6 +73,13 @@ export const fetchAdminEvents = (filters) => request(`/api/admin/epm/events${que
 export const createAdminEvent = (payload) => request('/api/admin/epm/events', { method: 'POST', json: payload });
 export const updateAdminEvent = (id, payload) => request(`/api/admin/epm/events/${id}`, { method: 'PUT', json: payload });
 export const deleteAdminEvent = (id) => request(`/api/admin/epm/events/${id}`, { method: 'DELETE' });
+// Only upcoming EPMs can be edited, cancelled or reinstated - a previous one is kept as it was.
+// The optional reason is shown to everyone registered or volunteering for the EPM.
+export const cancelAdminEvent = (id, reason) => request(`/api/admin/epm/events/${id}/cancel`, { method: 'POST', json: { reason } });
+export const restoreAdminEvent = (id) => request(`/api/admin/epm/events/${id}/restore`, { method: 'POST' });
+// Every { state, district, city, venue } already used by an EPM or in the venue list - the event
+// form's suggestions. Saving an EPM at a new place adds it to the venue list on the backend.
+export const fetchAdminEventLocations = () => request('/api/admin/epm/events/locations');
 
 // --- categories ---------------------------------------------------------------------------
 
@@ -78,13 +90,6 @@ export const fetchAdminCategories = () => request('/api/admin/epm/categories');
 export const createAdminCategory = (payload) => request('/api/admin/epm/categories', { method: 'POST', json: payload });
 export const updateAdminCategory = (id, payload) => request(`/api/admin/epm/categories/${id}`, { method: 'PUT', json: payload });
 export const deleteAdminCategory = (id) => request(`/api/admin/epm/categories/${id}`, { method: 'DELETE' });
-
-// --- venues -------------------------------------------------------------------------------
-
-export const fetchAdminVenues = () => request('/api/admin/epm/venues');
-export const createAdminVenue = (payload) => request('/api/admin/epm/venues', { method: 'POST', json: payload });
-export const updateAdminVenue = (id, payload) => request(`/api/admin/epm/venues/${id}`, { method: 'PUT', json: payload });
-export const deleteAdminVenue = (id) => request(`/api/admin/epm/venues/${id}`, { method: 'DELETE' });
 
 // --- reviews ------------------------------------------------------------------------------
 
@@ -108,6 +113,32 @@ export const reorderBlockImages = (block, orderedIds) =>
 export const deleteBlockImage = (block, id) =>
   request(`/api/admin/epm/gallery/${encodeURIComponent(block)}/${id}`, { method: 'DELETE' });
 export const importGalleryFromStorage = () => request('/api/admin/epm/gallery/import', { method: 'POST' });
+
+// --- EPM page video (the full-width one under the navbar) ---------------------------------
+
+// Must match EpmPageVideoServiceImpl's limit (and the backend's multipart limit).
+export const VIDEO_MAX_BYTES = 50 * 1024 * 1024;
+
+/** null while the EPM page still plays its built-in video. */
+export const fetchEpmVideoAdmin = () => request('/api/admin/epm/video');
+export const deleteEpmVideo = () => request('/api/admin/epm/video', { method: 'DELETE' });
+
+// A video runs to tens of MB, so unlike every other upload here this one goes through
+// XMLHttpRequest - fetch can't report upload progress. `onProgress` gets 0..1.
+export const uploadEpmVideo = (file, onProgress) => new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('PUT', `${API_BASE_URL}/api/admin/epm/video`);
+  const token = authToken();
+  if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+  xhr.responseType = 'json';
+  xhr.upload.onprogress = (e) => { if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
+  xhr.onload = () => {
+    if (xhr.status >= 200 && xhr.status < 300) resolve(xhr.response);
+    else reject(new Error(messageFrom(xhr.response, xhr.status)));
+  };
+  xhr.onerror = () => reject(new Error('The upload was interrupted - check the connection and try again.'));
+  xhr.send(formWith(file));
+});
 
 // --- gallery page: states -> districts -> photos ------------------------------------------
 

@@ -3,8 +3,8 @@ import { Tags, Plus, Pencil, Trash2 } from 'lucide-react';
 import {
   fetchAdminCategories, createAdminCategory, updateAdminCategory, deleteAdminCategory, CATEGORY_COLORS,
 } from '../../../api/adminEpmApi';
-import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, SectionHeader } from '../adminUi';
-import { useBanner } from '../adminUtils';
+import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, Pagination, SectionHeader } from '../adminUi';
+import { useBanner, usePagination } from '../adminUtils';
 
 export default function EpmCategoriesAdmin({ onOpenSection }) {
   const [categories, setCategories] = useState([]);
@@ -27,6 +27,7 @@ export default function EpmCategoriesAdmin({ onOpenSection }) {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+  const pager = usePagination(categories);
 
   return (
     <>
@@ -48,42 +49,45 @@ export default function EpmCategoriesAdmin({ onOpenSection }) {
         {loading ? <Loading label="Loading categories…" /> : categories.length === 0 ? (
           <Empty>No categories yet - add one so EPMs can be filed under it.</Empty>
         ) : (
-          <table className="admin-pub-table adm-table">
-            <thead>
-              <tr>
-                <th>Order</th>
-                <th>Category</th>
-                <th>Shown on the directory as</th>
-                <th className="adm-num">Upcoming EPMs</th>
-                <th className="adm-num">All EPMs</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((c) => (
-                <tr key={c.id}>
-                  <td data-label="Order" className="adm-muted">{c.displayOrder}</td>
-                  <td data-label="Category"><span className={`adm-tag adm-tag-${c.color}`}>{c.name}</span></td>
-                  <td data-label="Shown as">{c.label}</td>
-                  <td data-label="Upcoming EPMs" className="adm-num">{c.upcomingEventCount}</td>
-                  <td data-label="All EPMs" className="adm-num">
-                    <button type="button" className="adm-count-btn" onClick={() => onOpenSection('epm-events')} title="Open EPM events">
-                      {c.eventCount}
-                    </button>
-                  </td>
-                  <td className="admin-pub-actions" data-label="Actions">
-                    <button type="button" className="admin-pub-icon-btn" title="Edit" onClick={() => setEditing({ category: c })}>
-                      <Pencil size={15} />
-                    </button>
-                    <button type="button" className="admin-pub-icon-btn danger" title={c.eventCount > 0 ? 'In use - move its EPMs first' : 'Delete'}
-                      onClick={() => setDeleting(c)}>
-                      <Trash2 size={15} />
-                    </button>
-                  </td>
+          <>
+            <table className="admin-pub-table adm-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Category</th>
+                  <th>Shown on the directory as</th>
+                  <th className="adm-num">Upcoming EPMs</th>
+                  <th className="adm-num">All EPMs</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {pager.pageItems.map((c) => (
+                  <tr key={c.id}>
+                    <td data-label="Order" className="adm-muted">{c.displayOrder}</td>
+                    <td data-label="Category"><span className={`adm-tag adm-tag-${c.color}`}>{c.name}</span></td>
+                    <td data-label="Shown as">{c.label}</td>
+                    <td data-label="Upcoming EPMs" className="adm-num">{c.upcomingEventCount}</td>
+                    <td data-label="All EPMs" className="adm-num">
+                      <button type="button" className="adm-count-btn" onClick={() => onOpenSection('epm-events')} title="Open EPM events">
+                        {c.eventCount}
+                      </button>
+                    </td>
+                    <td className="admin-pub-actions" data-label="Actions">
+                      <button type="button" className="admin-pub-icon-btn" title="Edit" onClick={() => setEditing({ category: c })}>
+                        <Pencil size={15} />
+                      </button>
+                      <button type="button" className="admin-pub-icon-btn danger" title={c.eventCount > 0 ? 'In use - move its EPMs first' : 'Delete'}
+                        onClick={() => setDeleting(c)}>
+                        <Trash2 size={15} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination pager={pager} noun="categories" />
+          </>
         )}
       </div>
 

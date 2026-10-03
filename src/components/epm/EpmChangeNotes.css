@@ -1,0 +1,72 @@
+/* An EPM's changes on the public lists (EpmChangeNotes.jsx). Prefix: ecn- */
+
+.ecn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.ecn-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ecn-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.ecn-tone-amber {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+
+.ecn-tone-blue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.ecn-tone-red {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.ecn-was {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.ecn-was s {
+  text-decoration-thickness: 1px;
+}
+
+.ecn-reason {
+  margin: 0;
+  color: #991b1b;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.ecn-when {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.ecn.is-compact {
+  margin-top: 8px;
+}

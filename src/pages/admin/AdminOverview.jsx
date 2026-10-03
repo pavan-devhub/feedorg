@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  LayoutDashboard, CalendarDays, History, Users, HeartHandshake, Images, Quote, BookOpen, ArrowRight, Tags, MapPin,
+  LayoutDashboard, CalendarDays, History, Users, HeartHandshake, Images, Quote, BookOpen, ArrowRight, Tags,
 } from 'lucide-react';
 import { fetchAdminEpmOverview, fetchAdminEvents } from '../../api/adminEpmApi';
 import { fetchLatestPublication, fetchPublicationYears } from '../../api/publicationsApi';
@@ -38,7 +38,6 @@ export default function AdminOverview({ user, onOpenSection }) {
     { label: 'Images', value: overview.galleryImages, icon: Images, section: 'epm-images', tone: 'purple' },
     { label: 'Reviews', value: overview.reviews, icon: Quote, section: 'epm-reviews', tone: 'amber' },
     { label: 'Categories', value: overview.categories, icon: Tags, section: 'epm-categories', tone: 'teal' },
-    { label: 'Venues', value: overview.venues, icon: MapPin, section: 'epm-venues', tone: 'slate' },
   ] : [];
 
   return (

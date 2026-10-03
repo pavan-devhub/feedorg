@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import './Navbar.css';
 import DevicesModal from './DevicesModal';
+import NotificationBell from './NotificationBell';
 import { API_BASE_URL } from '../api/config';
 
 // Above this length the full name no longer fits the pill comfortably, so only the first word
@@ -427,6 +428,11 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
           )}
 
           <div className="fw-navbar-actions">
+            {/* Visitors who aren't logged in get one too, for newly announced EPMs - keyed so
+                logging in or out starts it afresh with the right notifications. */}
+            {!adminMode && (
+              <NotificationBell key={isLoggedIn ? 'user' : 'guest'} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+            )}
             {!adminMode && (
               <button type="button" className="fw-search-btn" aria-label="Search">
                 <Search size={15} strokeWidth={2.25} />

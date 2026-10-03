@@ -8,11 +8,14 @@ import {
   Coins, Crown, ClipboardList, Warehouse, Wallet, Landmark, Receipt,
   Briefcase, GraduationCap, Truck, Stethoscope, Tractor, Cpu, Palette, Smartphone, Tag,
   Ship, Store, Building2, Layers, Key, PawPrint, Globe2, UserCog, PhoneCall,
-  Play, Leaf
+  Play, Leaf, House
 } from 'lucide-react';
 import './Dashboard.css';
 import MyDetailsForm from '../components/MyDetailsForm';
 import ErsAssessmentPanel from '../components/ers/ErsAssessmentPanel';
+import MyEpmActivities from '../components/dashboard/MyEpmActivities';
+import { fetchMyNotifications } from '../api/notificationsApi';
+import { TONE_COLORS, describeNotification, openNotificationLink, timeAgo } from '../utils/notifications';
 import PlansPage from '../components/plans/PlansPage';
 import { plans, CURRENT_PLAN_ID } from '../components/plans/plansData';
 import useScrollToTop from '../hooks/useScrollToTop';
@@ -21,6 +24,8 @@ const sidebarMenu = [
   {
     category: '',
     items: [
+      // The dashboard's landing screen (hero, ERS / coins / plan, quick access, alerts).
+      { id: 'home', title: 'Home', icon: House },
       {
         id: 'profile', title: 'My Profile', icon: User,
         subItems: [
@@ -200,13 +205,49 @@ const activityData = [
   },
 ];
 
-const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout }) => {
-  const [activeTab, setActiveTab] = useState('0');
+// Notification kinds the "Latest Alerts & Announcements" widget shows: changes to the user's
+// EPMs and their countdown reminders, newly announced EPMs and new Feed World issues (their own
+// sign-ups only go to the bell).
+const ALERT_TYPES = ['epm-update', 'epm-reminder', 'new-epm', 'new-publication'];
+
+const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout, navState }) => {
+  const [activeTab, setActiveTab] = useState(navState?.tab || 'home');
   const [openMenus, setOpenMenus] = useState({});
   const [ersPanelOpen, setErsPanelOpen] = useState(false);
   const [plansPanelOpen, setPlansPanelOpen] = useState(false);
   const [ersStatus, setErsStatus] = useState({ attempted: false, percentage: 0, passed: false, completedOn: null });
   const [heroPhase, setHeroPhase] = useState('content');
+  const [epmAlerts, setEpmAlerts] = useState([]);
+
+  // A link into the dashboard (e.g. a notification's { tab: 'status' }) opens that section. App
+  // makes a new navState on every navigation, so this re-runs even when the tab is the same.
+  useEffect(() => {
+    if (navState?.tab) {
+      setActiveTab(navState.tab);
+      setErsPanelOpen(false);
+      setPlansPanelOpen(false);
+    }
+  }, [navState]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchMyNotifications()
+      .then((data) => {
+        if (cancelled) return;
+        setEpmAlerts(data.items.filter((n) => ALERT_TYPES.includes(n.type)).map((n) => {
+          const d = describeNotification(n);
+          const [iconBg, iconColor] = TONE_COLORS[d.tone] || TONE_COLORS.blue;
+          return {
+            id: n.id, icon: d.icon, iconBg, iconColor, title: d.title, desc: d.message,
+            tag: n.unread ? 'New' : null, time: timeAgo(n.createdAt), link: d.link,
+          };
+        }));
+      })
+      .catch(() => {}); // the widget just keeps its standing announcements
+    return () => { cancelled = true; };
+  }, []);
+
+  const alerts = [...epmAlerts, ...alertsData];
 
   // activeTab/ersPanelOpen/plansPanelOpen together decide what's on screen inside the
   // dashboard - none of them touch App.jsx's currentPage, so this view needs its own reset.
@@ -310,6 +351,9 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               className={`${depth === 0 ? 'db-nav-item' : 'db-nav-subitem'} ${isActiveBranch ? 'active' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
+                // Any sidebar choice leaves the ERS / Plans panels, so e.g. Home always lands home.
+                setErsPanelOpen(false);
+                setPlansPanelOpen(false);
                 if (hasSubItems) {
                   toggleMenu(depth, item.id);
                   setActiveTab(firstLeafId(item));
@@ -390,6 +434,9 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             />
           ) : plansPanelOpen ? (
             <PlansPage onBack={() => setPlansPanelOpen(false)} />
+          ) : activeTab === 'status' ? (
+            // A notification's link carries the EPM it's about - the section opens at its card.
+            <MyEpmActivities user={user} onNavigate={onNavigate} focus={navState?.epmId ? navState : null} />
           ) : !activeTab.startsWith('profile') ? (
             <>
               {/* Hero Banner */}
@@ -678,9 +725,19 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                 <h3>Latest Alerts & Announcements</h3>
               </div>
               <div className="db-widget-content">
-                <div className="db-alert-list">
-                  {[...alertsData, ...alertsData].map((item, idx) => (
-                    <div key={`${item.id}-${idx}`} className="db-alert-item">
+                {/* The list is doubled for the endless scroll; slower the longer it gets. */}
+                <div className="db-alert-list" style={{ animationDuration: `${Math.max(14, alerts.length * 4.7)}s` }}>
+                  {[...alerts, ...alerts].map((item, idx) => (
+                    <div
+                      key={`${item.id}-${idx}`}
+                      className={`db-alert-item${item.link ? ' is-link' : ''}`}
+                      {...(item.link ? {
+                        role: 'button',
+                        tabIndex: idx < alerts.length ? 0 : -1,
+                        onClick: () => openNotificationLink(item.link, onNavigate),
+                        onKeyDown: (e) => { if (e.key === 'Enter') openNotificationLink(item.link, onNavigate); },
+                      } : {})}
+                    >
                       <div className="db-alert-icon" style={{ background: item.iconBg, color: item.iconColor }}>
                         <item.icon size={16} />
                       </div>

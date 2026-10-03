@@ -718,6 +718,11 @@
   color: #16a34a;
 }
 
+.ed-status-pill.completed {
+  background: #f1f5f9;
+  color: #475569;
+}
+
 .ed-action-btns {
   display: flex;
   align-items: center;

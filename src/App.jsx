@@ -296,7 +296,8 @@ function App() {
         ) : currentPage === 'how' ? (
           <HowFeedWorks onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'dashboard' ? (
-          !isLoggedIn ? null : <Dashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          // navState.tab opens a given dashboard section, e.g. a notification's { tab: 'status', epmId }.
+          !isLoggedIn ? null : <Dashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} navState={navState} />
         ) : currentPage === 'admin-dashboard' ? (
           // One admin panel for Feed World and EPM - the open section (and e.g. which EPM's
           // registrations are showing) rides in navState so refresh/back keep it.
@@ -342,9 +343,9 @@ function App() {
         ) : currentPage === 'epm-invitees' ? (
           <EpmInvitees onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'epm-register' ? (
-          <EpmRegister onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          <EpmRegister onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} eventId={navState.eventId} />
         ) : currentPage === 'epm-volunteer' ? (
-          <EpmVolunteer onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          <EpmVolunteer onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} eventId={navState.eventId} />
         ) : currentPage === 'safe-mission' ? (
           <SafeMission onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (

@@ -16,6 +16,39 @@ export function useBanner() {
   return [banner, show];
 }
 
+// --- paging -------------------------------------------------------------------------------
+
+/** Rows-per-page choices for the admin lists. */
+export const PAGE_SIZES = [5, 10, 20, 50];
+export const DEFAULT_PAGE_SIZE = 10;
+
+/**
+ * Pages an admin list that's already loaded in full (so filters and counts still see every row):
+ * returns this page's rows plus the state <Pagination> needs. Goes back to page 1 whenever
+ * `resetKey` changes - pass something built from the filters. (Registrations and volunteers are
+ * paged by the server instead - see EpmSubmissionsAdmin.)
+ */
+export function usePagination(items, resetKey) {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  useEffect(() => { setPage(1); }, [resetKey]);
+
+  const pageCount = Math.max(1, Math.ceil(items.length / pageSize));
+  // Deleting the last row of the last page would otherwise leave an empty page showing.
+  const current = Math.min(page, pageCount);
+  const start = (current - 1) * pageSize;
+  return {
+    page: current,
+    pageCount,
+    pageSize,
+    start,
+    total: items.length,
+    pageItems: items.slice(start, start + pageSize),
+    setPage,
+    setPageSize: (size) => { setPageSize(size); setPage(1); },
+  };
+}
+
 // --- formatting ---------------------------------------------------------------------------
 
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -40,28 +73,14 @@ export function formatDateTime(iso) {
   return time ? `${formatDate(iso)}, ${time}` : formatDate(iso);
 }
 
+/** 16455069 -> "15.7 MB", 5120 -> "5 KB"; null for no size. */
+export const formatSize = (bytes) => {
+  if (!bytes) return null;
+  return bytes >= 1024 * 1024 ? `${(bytes / (1024 * 1024)).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+};
+
 export const todayIso = () => {
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
   return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 };
-
-/** Saves `rows` as a CSV file. `columns` is [{ label, value: (row) => any }]. */
-export function downloadCsv(filename, columns, rows) {
-  const escape = (v) => {
-    const s = v === null || v === undefined ? '' : String(v);
-    return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-  };
-  const lines = [columns.map((c) => escape(c.label)).join(',')]
-    .concat(rows.map((r) => columns.map((c) => escape(c.value(r))).join(',')));
-  // BOM so Excel opens non-ASCII names (e.g. Telugu) correctly.
-  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}

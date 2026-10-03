@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  LayoutDashboard, BookOpen, CalendarDays, Users, HeartHandshake, Tags, MapPin, Images, Quote, ShieldCheck,
+  LayoutDashboard, BookOpen, CalendarDays, Users, HeartHandshake, Tags, Images, Quote, ShieldCheck,
 } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -10,7 +10,6 @@ import AdminOverview from './AdminOverview';
 import EpmEventsAdmin from './epm/EpmEventsAdmin';
 import EpmSubmissionsAdmin from './epm/EpmSubmissionsAdmin';
 import EpmCategoriesAdmin from './epm/EpmCategoriesAdmin';
-import EpmVenuesAdmin from './epm/EpmVenuesAdmin';
 import EpmImagesAdmin from './epm/EpmImagesAdmin';
 import EpmReviewsAdmin from './epm/EpmReviewsAdmin';
 import './AdminDashboard.css';
@@ -26,7 +25,6 @@ const ADMIN_SECTIONS = [
       { id: 'epm-registrations', label: 'Registrations', icon: Users },
       { id: 'epm-volunteers', label: 'Volunteers', icon: HeartHandshake },
       { id: 'epm-categories', label: 'Categories', icon: Tags },
-      { id: 'epm-venues', label: 'Venues', icon: MapPin },
       { id: 'epm-images', label: 'Page & Gallery Images', icon: Images },
       { id: 'epm-reviews', label: 'Reviews', icon: Quote },
     ],
@@ -62,9 +60,6 @@ export default function AdminPortal({ onNavigate, isLoggedIn, user, onLogout, se
       break;
     case 'epm-categories':
       content = <EpmCategoriesAdmin onOpenSection={openSection} />;
-      break;
-    case 'epm-venues':
-      content = <EpmVenuesAdmin />;
       break;
     case 'epm-images':
       content = <EpmImagesAdmin />;

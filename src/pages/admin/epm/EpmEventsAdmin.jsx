@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  CalendarDays, History, Plus, Pencil, Trash2, Search, X, Users, HeartHandshake, Ban, MapPin, Tags,
+  CalendarDays, History, Plus, Pencil, Trash2, Search, X, Users, HeartHandshake, Ban, MapPin, RotateCcw, BellRing, Eye, Lock,
 } from 'lucide-react';
 import {
-  fetchAdminEvents, createAdminEvent, updateAdminEvent, deleteAdminEvent,
-  fetchAdminCategories, fetchAdminVenues, createAdminVenue,
+  fetchAdminEvents, createAdminEvent, updateAdminEvent, deleteAdminEvent, fetchAdminEventLocations,
+  cancelAdminEvent, restoreAdminEvent, fetchAdminCategories,
 } from '../../../api/adminEpmApi';
-import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, SectionHeader } from '../adminUi';
-import { MONTH_NAMES, formatDate, todayIso, useBanner } from '../adminUtils';
+import {
+  Banner, ConfirmDialog, Empty, EpmStatusTags, FormActions, FormError, Loading, Modal, Pagination, SectionHeader,
+} from '../adminUi';
+import { MONTH_NAMES, formatDate, formatDateTime, todayIso, useBanner, usePagination } from '../adminUtils';
+import { describeUpdate } from '../../../utils/epmStatus';
 
 const EMPTY_FILTERS = { q: '', month: '', state: '', district: '', city: '', category: '' };
 
@@ -39,16 +42,33 @@ function formatTimeRange(start, end) {
 
 const uniqueSorted = (values) => Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b));
 
+const sameText = (a, b) => (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase();
+
+// Like uniqueSorted, but "Telangana" and "telangana" only show up once.
+function uniqueSuggestions(values) {
+  const byKey = new Map();
+  values.filter(Boolean).forEach((v) => {
+    const key = v.trim().toLowerCase();
+    if (!byKey.has(key)) byKey.set(key, v.trim());
+  });
+  return Array.from(byKey.values()).sort((a, b) => a.localeCompare(b));
+}
+
+const signedUpCount = (e) => (e.registrationCount ?? 0) + (e.volunteerCount ?? 0);
+
 export default function EpmEventsAdmin({ onOpenSection }) {
   const [tab, setTab] = useState('upcoming');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [categories, setCategories] = useState([]);
-  const [venues, setVenues] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [editing, setEditing] = useState(null); // null | { mode: 'create' | 'edit', event? }
+  const [viewing, setViewing] = useState(null); // a previous EPM, shown read-only
   const [deleting, setDeleting] = useState(null);
+  const [cancelling, setCancelling] = useState(null);
+  const [restoring, setRestoring] = useState(null);
   const [banner, showBanner] = useBanner();
 
   const load = useCallback(async () => {
@@ -66,7 +86,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
 
   const loadLookups = useCallback(() => {
     fetchAdminCategories().then(setCategories).catch(() => setCategories([]));
-    fetchAdminVenues().then(setVenues).catch(() => setVenues([]));
+    fetchAdminEventLocations().then(setLocations).catch(() => setLocations([]));
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -98,6 +118,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
       return true;
     });
   }, [events, filters]);
+  const pager = usePagination(visible, `${tab}|${JSON.stringify(filters)}`);
 
   const filtersActive = Object.values(filters).some(Boolean);
   const categoryColor = (name) => categories.find((c) => c.name === name)?.color || 'gray';
@@ -116,7 +137,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
         eyebrow="EPM"
         icon={CalendarDays}
         title="EPM Events"
-        description="Add, edit, cancel or remove upcoming and previous Export Promotional Meetings. An EPM moves to Previous on its own once its date has passed."
+        description="Add, edit, cancel or remove upcoming Export Promotional Meetings. An EPM moves to Previous on its own once its date has passed, and is then kept as a record - it can be viewed but no longer edited or cancelled."
       >
         <button type="button" className="admin-pub-btn primary" onClick={() => setEditing({ mode: 'create' })}>
           <Plus size={16} /> {tab === 'upcoming' ? 'Add upcoming EPM' : 'Add previous EPM'}
@@ -200,20 +221,20 @@ export default function EpmEventsAdmin({ onOpenSection }) {
                   <th>EPM</th>
                   <th>Place</th>
                   <th>Venue & time</th>
+                  <th>Status</th>
                   <th className="adm-num">Registered</th>
                   <th className="adm-num">Volunteers</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {visible.map((e) => (
+                {pager.pageItems.map((e) => (
                   <tr key={e.id} className={e.cancelled ? 'adm-row-muted' : undefined}>
                     <td data-label="Date" className="adm-nowrap"><strong>{formatDate(e.eventDate)}</strong></td>
                     <td data-label="EPM">
                       <div className="adm-cell-title">{e.title}</div>
                       <div className="adm-cell-tags">
                         <span className={`adm-tag adm-tag-${categoryColor(e.category)}`}>{e.category || 'No category'}</span>
-                        {e.cancelled && <span className="adm-tag adm-tag-red"><Ban size={11} /> Cancelled</span>}
                       </div>
                     </td>
                     <td data-label="Place">
@@ -224,6 +245,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
                       <div>{e.venue}</div>
                       <div className="adm-cell-sub">{e.timeRange || 'Time to be announced'}</div>
                     </td>
+                    <td data-label="Status"><EpmStatusTags event={e} /></td>
                     <td data-label="Registered" className="adm-num">
                       <button type="button" className="adm-count-btn" title="View registrations"
                         onClick={() => onOpenSection('epm-registrations', { eventId: e.id })}>
@@ -237,9 +259,15 @@ export default function EpmEventsAdmin({ onOpenSection }) {
                       </button>
                     </td>
                     <td className="admin-pub-actions" data-label="Actions">
-                      <button type="button" className="admin-pub-icon-btn" title="Edit" onClick={() => setEditing({ mode: 'edit', event: e })}>
-                        <Pencil size={15} />
-                      </button>
+                      {e.upcoming ? (
+                        <button type="button" className="admin-pub-icon-btn" title="Edit" onClick={() => setEditing({ mode: 'edit', event: e })}>
+                          <Pencil size={15} />
+                        </button>
+                      ) : (
+                        <button type="button" className="admin-pub-icon-btn" title="View (previous EPMs can't be edited)" onClick={() => setViewing(e)}>
+                          <Eye size={15} />
+                        </button>
+                      )}
                       <button type="button" className="admin-pub-icon-btn danger" title="Delete" onClick={() => setDeleting(e)}>
                         <Trash2 size={15} />
                       </button>
@@ -248,6 +276,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
                 ))}
               </tbody>
             </table>
+            <Pagination pager={pager} noun="EPMs" />
           </>
         )}
       </div>
@@ -258,12 +287,46 @@ export default function EpmEventsAdmin({ onOpenSection }) {
           event={editing.event}
           defaultPast={tab === 'previous'}
           categories={categories}
-          venues={venues}
-          knownPlaces={events}
-          onOpenSection={onOpenSection}
+          locations={locations}
           onClose={() => setEditing(null)}
           onSaved={(saved) => afterSave(saved, editing.mode)}
+          onCancelEvent={() => { setCancelling(editing.event); setEditing(null); }}
+          onRestoreEvent={() => { setRestoring(editing.event); setEditing(null); }}
         />
+      )}
+
+      {viewing && <EventDetailsModal event={viewing} categoryColor={categoryColor(viewing.category)} onClose={() => setViewing(null)} />}
+
+      {cancelling && (
+        <CancelEventDialog
+          event={cancelling}
+          onClose={() => setCancelling(null)}
+          onCancelled={(saved) => {
+            setCancelling(null);
+            showBanner('success', `Cancelled "${saved.title}" on ${formatDate(saved.eventDate)}. Everyone signed up has been notified, and the EPM lists show it as cancelled.`);
+            load();
+          }}
+        />
+      )}
+
+      {restoring && (
+        <ConfirmDialog
+          title="Reinstate EPM?"
+          icon={RotateCcw}
+          danger={false}
+          confirmLabel="Reinstate EPM"
+          busyLabel="Reinstating…"
+          onCancel={() => setRestoring(null)}
+          onConfirm={async () => {
+            const saved = await restoreAdminEvent(restoring.id);
+            showBanner('success', `"${saved.title}" is back on for ${formatDate(saved.eventDate)}.`);
+            setRestoring(null);
+            load();
+          }}
+        >
+          <p>Put <strong>{restoring.title}</strong> on {formatDate(restoring.eventDate)} in {restoring.city} back on?</p>
+          <p className="admin-pub-hint">It opens for sign-ups again on the public EPM pages, and everyone signed up is notified that it will be held as scheduled.</p>
+        </ConfirmDialog>
       )}
 
       {deleting && (
@@ -284,8 +347,11 @@ export default function EpmEventsAdmin({ onOpenSection }) {
               visible under Registrations / Volunteers.
             </p>
           )}
-          {!deleting.cancelled && deleting.upcoming && (
-            <p className="admin-pub-hint">To call off a meeting but keep it on record, edit it and tick “Cancelled” instead.</p>
+          {!deleting.cancelled && deleting.upcoming && signedUpCount(deleting) > 0 && (
+            <p className="admin-pub-hint">
+              To call off the meeting and let the people signed up know, edit it and use “Cancel EPM” instead - deleting it
+              sends them no notification.
+            </p>
           )}
         </ConfirmDialog>
       )}
@@ -293,7 +359,69 @@ export default function EpmEventsAdmin({ onOpenSection }) {
   );
 }
 
-function EventFormModal({ mode, event, defaultPast, categories, venues, knownPlaces, onOpenSection, onClose, onSaved }) {
+/** A previous EPM, read-only: it happened (or was called off), so it's kept exactly as it was. */
+function EventDetailsModal({ event, categoryColor, onClose }) {
+  const rows = [
+    ['Date', formatDate(event.eventDate)],
+    ['Time', event.timeRange || 'Time to be announced'],
+    ['Venue', event.venue],
+    ['Place', `${event.city}, ${event.district}, ${event.state}`],
+    ['Registered', event.registrationCount ?? 0],
+    ['Volunteers', event.volunteerCount ?? 0],
+  ];
+  const updates = event.updates || [];
+  return (
+    <Modal title="Previous EPM" icon={History} onClose={onClose} size="medium">
+      <div className="admin-pub-form">
+        <div>
+          <div className="adm-cell-title">{event.title}</div>
+          <div className="adm-cell-tags">
+            <span className={`adm-tag adm-tag-${categoryColor}`}>{event.category || 'No category'}</span>
+            <EpmStatusTags event={event} />
+          </div>
+        </div>
+        <dl className="adm-details">
+          {rows.map(([label, value]) => (
+            <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
+          ))}
+        </dl>
+        {event.description && <p className="adm-details-text">{event.description}</p>}
+        {updates.length > 0 && (
+          <div className="adm-fieldset">
+            <div className="adm-fieldset-head"><span><History size={14} /> Changes made before it was held</span></div>
+            <ul className="adm-update-log">
+              {updates.map((u, i) => {
+                const d = describeUpdate(u);
+                return (
+                  <li key={`${u.field}-${u.createdAt}-${i}`}>
+                    <strong>{d.tag}</strong>{' '}
+                    {d.kind === 'change' ? <>from {d.from} to {d.to}</> : d.note}
+                    <span className="adm-cell-sub"> · {formatDateTime(u.createdAt)}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+        <p className="admin-pub-hint adm-hint-tight">
+          <Lock size={13} /> Previous EPMs are kept as a record - they can't be edited or cancelled.
+        </p>
+        <div className="admin-pub-form-actions">
+          <button type="button" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+/** Shown under a field the admin has changed while editing: its saved value, in red. */
+function PreviousValue({ children }) {
+  return <span className="adm-prev-value"><span>Previous:</span> <s>{children}</s></span>;
+}
+
+const PLACE_FIELDS = ['state', 'district', 'city', 'venue'];
+
+function EventFormModal({ mode, event, defaultPast, categories, locations, onClose, onSaved, onCancelEvent, onRestoreEvent }) {
   const initialTimes = parseTimeRange(event?.timeRange);
   const [form, setForm] = useState(() => ({
     title: event?.title || '',
@@ -306,30 +434,50 @@ function EventFormModal({ mode, event, defaultPast, categories, venues, knownPla
     startTime: initialTimes.start,
     endTime: initialTimes.end,
     description: event?.description || '',
-    cancelled: Boolean(event?.cancelled),
   }));
-  const [saveVenue, setSaveVenue] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }));
+  const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const keptTimeText = event?.timeRange && !initialTimes.start ? event.timeRange : '';
-  const matchingVenue = venues.find((v) => [['name', 'venue'], ['city', 'city'], ['district', 'district'], ['state', 'state']]
-    .every(([a, b]) => (v[a] || '').trim().toLowerCase() === (form[b] || '').trim().toLowerCase()));
-  const venueComplete = form.state.trim() && form.district.trim() && form.city.trim() && form.venue.trim();
+  const timeRange = formatTimeRange(form.startTime, form.endTime) || keptTimeText;
 
-  const pickVenue = (id) => {
-    const v = venues.find((x) => String(x.id) === id);
-    if (v) setForm((f) => ({ ...f, state: v.state, district: v.district, city: v.city, venue: v.name }));
+  // Each place field suggests what's been entered before (any EPM, upcoming or previous, or the
+  // venue list), narrowed to the fields already filled in above it.
+  const within = (fields) => locations.filter((l) => fields.every((f) => !form[f].trim() || sameText(l[f], form[f])));
+  const stateList = uniqueSuggestions(locations.map((l) => l.state));
+  const districtList = uniqueSuggestions(within(['state']).map((l) => l.district));
+  const cityList = uniqueSuggestions(within(['state', 'district']).map((l) => l.city));
+  const venueList = uniqueSuggestions(within(['state', 'district', 'city']).map((l) => l.venue));
+
+  // While editing, a field that no longer matches the saved EPM turns green with its saved value
+  // underneath in red. Compared the way the backend logs changes (EpmEventChanges): place names
+  // ignoring case, everything else exactly. These are the updates people signed up get to see.
+  const saved = mode === 'edit' ? {
+    eventDate: event.eventDate || '',
+    time: event.timeRange || '',
+    state: event.state || '',
+    district: event.district || '',
+    city: event.city || '',
+    venue: event.venue || '',
+    description: event.description || '',
+  } : null;
+  const current = { ...form, time: timeRange };
+  const changed = (field) => {
+    if (!saved) return false;
+    const before = saved[field].trim();
+    const after = (current[field] || '').trim();
+    return PLACE_FIELDS.includes(field) ? before.toLowerCase() !== after.toLowerCase() : before !== after;
   };
-
-  // Suggestions for the free-text place fields: everything already in the venue list or used by an EPM.
-  const places = useMemo(() => [...venues.map((v) => ({ ...v, venue: v.name })), ...knownPlaces], [venues, knownPlaces]);
-  const stateList = uniqueSorted(places.map((p) => p.state));
-  const districtList = uniqueSorted(places.filter((p) => !form.state || p.state === form.state).map((p) => p.district));
-  const cityList = uniqueSorted(places.filter((p) => !form.district || p.district === form.district).map((p) => p.city));
+  const changedFields = Object.keys(saved || {}).filter(changed);
+  const mark = (field) => (changed(field) ? 'adm-input-changed' : undefined);
+  const previous = (field, empty = 'Not set') => changed(field) && <PreviousValue>{saved[field] || empty}</PreviousValue>;
+  const unsaved = changedFields.length > 0 || (saved && (form.title !== event.title || form.category !== (event.category || '')));
 
   const isPast = form.eventDate && form.eventDate < todayIso();
+  // Only upcoming EPMs reach this form for editing, and they can't be moved to a passed date
+  // (the backend refuses it too) - a new EPM can be backdated to record a previous one.
+  const minDate = mode === 'edit' ? todayIso() : undefined;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -347,17 +495,11 @@ function EventFormModal({ mode, event, defaultPast, categories, venues, knownPla
       city: form.city,
       venue: form.venue,
       eventDate: form.eventDate,
-      timeRange: formatTimeRange(form.startTime, form.endTime) || keptTimeText,
+      timeRange,
       description: form.description,
-      cancelled: form.cancelled,
     };
     try {
-      const saved = mode === 'create' ? await createAdminEvent(payload) : await updateAdminEvent(event.id, payload);
-      if (saveVenue && !matchingVenue && venueComplete) {
-        // Best effort - the EPM itself is already saved.
-        await createAdminVenue({ name: form.venue, state: form.state, district: form.district, city: form.city }).catch(() => {});
-      }
-      onSaved(saved);
+      onSaved(mode === 'create' ? await createAdminEvent(payload) : await updateAdminEvent(event.id, payload));
     } catch (err) {
       setError(err.message);
       setBusy(false);
@@ -383,84 +525,145 @@ function EventFormModal({ mode, event, defaultPast, categories, venues, knownPla
           </label>
           <label>
             Date
-            <input type="date" value={form.eventDate} onChange={set('eventDate')} required />
+            <input type="date" className={mark('eventDate')} value={form.eventDate} onChange={set('eventDate')} min={minDate} required />
+            {changed('eventDate') && <PreviousValue>{formatDate(saved.eventDate)}</PreviousValue>}
           </label>
         </div>
-        <p className="admin-pub-hint adm-hint-tight">
-          <Tags size={13} /> Categories are managed under{' '}
-          <button type="button" className="adm-inline-link" onClick={() => { onClose(); onOpenSection('epm-categories'); }}>Categories</button>.
-          {isPast && <> This date has passed, so the EPM will be listed under <strong>Previous</strong>.</>}
-        </p>
+        {isPast && (
+          <p className="admin-pub-hint adm-hint-tight">
+            <Lock size={13} /> This date has passed, so the EPM will be listed under <strong>Previous</strong> - and previous EPMs
+            can't be edited or cancelled once saved, so check the details first.
+          </p>
+        )}
 
         <div className="adm-fieldset">
           <div className="adm-fieldset-head">
             <span><MapPin size={14} /> Location</span>
-            {venues.length > 0 && (
-              <select className="adm-venue-picker" value={matchingVenue ? String(matchingVenue.id) : ''} onChange={(e) => pickVenue(e.target.value)}>
-                <option value="">Pick from venue list…</option>
-                {venues.map((v) => <option key={v.id} value={v.id}>{v.name} — {v.city}, {v.state}</option>)}
-              </select>
-            )}
           </div>
           <div className="admin-pub-form-row">
             <label>
               State
-              <input type="text" list="adm-ev-states" value={form.state} onChange={set('state')} required />
+              <input type="text" list="adm-ev-states" className={mark('state')} value={form.state} onChange={set('state')} required maxLength={255} autoComplete="off" />
+              {previous('state')}
             </label>
             <label>
               District
-              <input type="text" list="adm-ev-districts" value={form.district} onChange={set('district')} required />
+              <input type="text" list="adm-ev-districts" className={mark('district')} value={form.district} onChange={set('district')} required maxLength={255} autoComplete="off" />
+              {previous('district')}
             </label>
           </div>
           <div className="admin-pub-form-row">
             <label>
               Place
-              <input type="text" list="adm-ev-cities" value={form.city} onChange={set('city')} required />
+              <input type="text" list="adm-ev-cities" className={mark('city')} value={form.city} onChange={set('city')} required maxLength={255} autoComplete="off" />
+              {previous('city')}
             </label>
             <label>
               Venue
-              <input type="text" value={form.venue} onChange={set('venue')} required placeholder="e.g. Convention Centre" />
+              <input type="text" list="adm-ev-venues" className={mark('venue')} value={form.venue} onChange={set('venue')} required maxLength={255} autoComplete="off" placeholder="e.g. Convention Centre" />
+              {previous('venue')}
             </label>
           </div>
-          {venueComplete && !matchingVenue && (
-            <label className="adm-check">
-              <input type="checkbox" checked={saveVenue} onChange={(e) => setSaveVenue(e.target.checked)} />
-              Also add this venue to the venue list
-            </label>
-          )}
+          <p className="admin-pub-hint adm-hint-tight">
+            Pick a suggestion from earlier EPMs or type a new one - new places are saved for next time.
+          </p>
           <datalist id="adm-ev-states">{stateList.map((s) => <option key={s} value={s} />)}</datalist>
           <datalist id="adm-ev-districts">{districtList.map((s) => <option key={s} value={s} />)}</datalist>
           <datalist id="adm-ev-cities">{cityList.map((s) => <option key={s} value={s} />)}</datalist>
+          <datalist id="adm-ev-venues">{venueList.map((s) => <option key={s} value={s} />)}</datalist>
         </div>
 
         <div className="admin-pub-form-row">
           <label>
             Starts <span className="optional">(optional)</span>
-            <input type="time" value={form.startTime} onChange={set('startTime')} />
+            <input type="time" className={mark('time')} value={form.startTime} onChange={set('startTime')} />
           </label>
           <label>
             Ends <span className="optional">(optional)</span>
-            <input type="time" value={form.endTime} onChange={set('endTime')} />
+            <input type="time" className={mark('time')} value={form.endTime} onChange={set('endTime')} />
           </label>
         </div>
+        {changed('time') && (
+          <div className="adm-prev-row">
+            <PreviousValue>{saved.time || 'Time to be announced'}</PreviousValue>
+            <span className="adm-new-value"><span>New:</span> {timeRange || 'Time to be announced'}</span>
+          </div>
+        )}
         {keptTimeText && !form.startTime && (
           <p className="admin-pub-hint adm-hint-tight">Current time text “{keptTimeText}” is kept unless you pick new times.</p>
         )}
 
         <label>
           Description <span className="optional">(optional, shown on the EPM directory card)</span>
-          <textarea rows={3} maxLength={2000} value={form.description} onChange={set('description')} />
+          <textarea rows={3} maxLength={2000} className={mark('description')} value={form.description} onChange={set('description')} />
+          {previous('description', 'No description')}
         </label>
 
-        {mode === 'edit' && (
-          <label className="adm-check">
-            <input type="checkbox" checked={form.cancelled} onChange={set('cancelled')} />
-            Cancelled — hide from the public EPM pages but keep it (and its registrations) on record
-          </label>
+        {changedFields.length > 0 && signedUpCount(event) > 0 && (
+          <p className="adm-notice">
+            <BellRing size={14} />
+            <span>
+              The {event.registrationCount ?? 0} people registered and {event.volunteerCount ?? 0} volunteers are notified of{' '}
+              {changedFields.length === 1 ? 'this change' : 'these changes'} and see {changedFields.length === 1 ? 'it' : 'them'} in
+              “Status of Activities”. The register and volunteer lists show {changedFields.length === 1 ? 'it' : 'them'} to everyone.
+            </span>
+          </p>
         )}
+
+        {mode === 'edit' && (event.cancelled ? (
+          <div className="adm-cancel-zone is-cancelled">
+            <div>
+              <strong>This EPM is cancelled</strong>
+              <span>It is listed as cancelled on the register and volunteer pages and takes no sign-ups. Reinstate it to hold it as scheduled.</span>
+            </div>
+            <button type="button" className="admin-pub-btn adm-btn-secondary adm-btn-sm" onClick={onRestoreEvent} disabled={busy}>
+              <RotateCcw size={14} /> Reinstate EPM
+            </button>
+          </div>
+        ) : (
+          <div className="adm-cancel-zone">
+            <div>
+              <strong>Cancel this EPM</strong>
+              <span>
+                Calls off the EPM on {formatDate(event.eventDate)}: everyone signed up is notified, and the register and volunteer
+                pages list it as cancelled. Registrations are kept.{unsaved && ' Unsaved edits above are discarded.'}
+              </span>
+            </div>
+            <button type="button" className="admin-pub-btn adm-btn-danger adm-btn-sm" onClick={onCancelEvent} disabled={busy}>
+              <Ban size={14} /> Cancel EPM
+            </button>
+          </div>
+        ))}
 
         <FormActions onCancel={onClose} busy={busy} submitLabel={mode === 'create' ? 'Add EPM' : 'Save changes'} busyLabel="Saving…" />
       </form>
     </Modal>
+  );
+}
+
+function CancelEventDialog({ event, onClose, onCancelled }) {
+  const [reason, setReason] = useState('');
+  return (
+    <ConfirmDialog
+      title="Cancel EPM?"
+      icon={Ban}
+      confirmLabel="Cancel EPM"
+      busyLabel="Cancelling…"
+      cancelLabel="Keep EPM"
+      onCancel={onClose}
+      onConfirm={async () => onCancelled(await cancelAdminEvent(event.id, reason.trim() || null))}
+    >
+      <p>Call off <strong>{event.title}</strong> on {formatDate(event.eventDate)} in {event.city}?</p>
+      <label>
+        Reason <span className="optional">(optional, shown to everyone signed up)</span>
+        <textarea rows={2} maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Postponed due to heavy rain" />
+      </label>
+      {signedUpCount(event) > 0 && (
+        <p className="admin-pub-hint">
+          The {event.registrationCount ?? 0} people registered and {event.volunteerCount ?? 0} volunteers are notified and see it as
+          cancelled on their dashboard. Their sign-ups are kept.
+        </p>
+      )}
+    </ConfirmDialog>
   );
 }

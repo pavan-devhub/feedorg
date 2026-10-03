@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle, Clock, LayoutDashboard } from 'lucide-react';
 import { fetchEpmEvents, submitEpmVolunteer } from '../api/epmApi';
-import { formatEventDateLong, formatEventDateParts } from '../utils/epmDate';
+import { formatEventDateLong } from '../utils/epmDate';
+import { requestNotificationsRefresh } from '../utils/notifications';
+import useMyEpmSignUps from '../hooks/useMyEpmSignUps';
+import useEpmParticipantTypes from '../hooks/useEpmParticipantTypes';
+import EpmEventPicker from '../components/epm/EpmEventPicker';
+import EpmChangeNotes from '../components/epm/EpmChangeNotes';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import useScrollToTop from '../hooks/useScrollToTop';
 import './EpmForms.css';
 
-const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
+// `eventId` (e.g. from a notification) opens the form for that EPM straight away, as long as it's
+// still taking volunteers.
+const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: preselectId }) => {
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -19,7 +26,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     email: '',
     state: '',
     district: '',
-    experience: '',
+    participantType: '',
     reason: ''
   });
   const [errors, setErrors] = useState({});
@@ -34,14 +41,23 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
   useEffect(() => {
     let cancelled = false;
-    fetchEpmEvents({ status: 'upcoming' })
-      .then(data => { if (!cancelled) setEvents(data); })
+    // Cancelled ones too: they stay listed, marked cancelled, so people can see they're off.
+    fetchEpmEvents({ status: 'upcoming', includeCancelled: true })
+      .then(data => {
+        if (cancelled) return;
+        setEvents(data);
+        if (preselectId && data.some(epm => epm.id === preselectId && !epm.cancelled)) setSelectedEpmId(preselectId);
+      })
       .catch(err => { if (!cancelled) setLoadError(err.message || 'Failed to load upcoming EPMs.'); })
       .finally(() => { if (!cancelled) setLoadingEvents(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [preselectId]);
 
   const selectedEpm = events.find(epm => epm.id === selectedEpmId);
+  // Reloaded after a sign-up, so going back to the list shows the new one marked.
+  const mySignUps = useMyEpmSignUps(isLoggedIn, isSuccess);
+  // The same choices as the register form - from the user_types table.
+  const participantTypes = useEpmParticipantTypes();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +80,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     }
     if (!formData.state.trim()) newErrors.state = 'State is required';
     if (!formData.district.trim()) newErrors.district = 'District/City is required';
-    if (!formData.experience) newErrors.experience = 'Please select your background';
+    if (!formData.participantType) newErrors.participantType = 'Please select a participant type';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -84,10 +100,11 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
         email: formData.email.trim() || null,
         state: formData.state.trim(),
         district: formData.district.trim(),
-        experience: formData.experience,
+        participantType: formData.participantType,
         reason: formData.reason.trim() || null,
       });
       setIsSuccess(true);
+      requestNotificationsRefresh();
     } catch (err) {
       setSubmitError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -110,9 +127,21 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           <p className="epm-success-text">
             Your interest in supporting the EPM has been received. Our team will contact you with the next steps soon.
           </p>
-          <button className="epm-back-btn" onClick={() => onNavigate('epm')}>
-            <ArrowLeft size={18} /> Back to EPM
-          </button>
+          <div className="epm-success-actions">
+            {isLoggedIn && (
+              <button className="epm-submit-btn" onClick={() => onNavigate('dashboard', { tab: 'status', epmId: selectedEpmId })}>
+                <LayoutDashboard size={18} /> View in Status of Activities
+              </button>
+            )}
+            <button className="epm-back-btn" onClick={() => onNavigate('epm')}>
+              <ArrowLeft size={18} /> Back to EPM
+            </button>
+          </div>
+          {isLoggedIn && (
+            <p className="epm-success-text" style={{ marginTop: '24px', marginBottom: 0, fontSize: '0.95rem' }}>
+              We'll remind you every week before the EPM, and again the day before - look for them under the bell.
+            </p>
+          )}
         </div>
         <Footer />
       </div>
@@ -167,34 +196,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
             ) : events.length === 0 ? (
               <p style={{ color: '#64748b' }}>There are no upcoming EPMs looking for volunteers right now. Please check back soon.</p>
             ) : (
-              <div className="epm-events-timeline">
-                {events.map(epm => {
-                  const { day, month, year } = formatEventDateParts(epm.eventDate);
-                  return (
-                    <div
-                      key={epm.id}
-                      className="epm-event-card"
-                      onClick={() => setSelectedEpmId(epm.id)}
-                    >
-                      <div className="epm-event-date-block">
-                        <span className="epm-date-day">{day}</span>
-                        <span className="epm-date-month">{month}</span>
-                        <span className="epm-date-year">{year}</span>
-                      </div>
-                      <div className="epm-event-details">
-                        <h3 className="epm-event-city">{epm.city}</h3>
-                        <p className="epm-event-state">{epm.state}</p>
-                        <div className="epm-event-venue">
-                          <MapPin size={14} /> {epm.venue}
-                        </div>
-                      </div>
-                      <div className="epm-event-action">
-                        <span className="epm-text-btn">Volunteer for this EPM <ArrowRight size={16} /></span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <EpmEventPicker events={events} actionLabel="Volunteer for this EPM" mine={mySignUps} onPick={setSelectedEpmId} />
             )}
           </div>
         </>
@@ -215,10 +217,15 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                   <span>{formatEventDateLong(selectedEpm.eventDate)}</span>
                 </div>
                 <div className="epm-info-meta-item">
+                  <Clock size={18} />
+                  <span>{selectedEpm.timeRange || 'Time to be announced'}</span>
+                </div>
+                <div className="epm-info-meta-item">
                   <MapPin size={18} />
                   <span>{selectedEpm.venue}</span>
                 </div>
               </div>
+              <div className="epm-info-notes"><EpmChangeNotes event={selectedEpm} /></div>
             </div>
           </div>
 
@@ -275,23 +282,17 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                 </div>
 
                 <div className="epm-form-group">
-                  <label className="epm-form-label">Experience / Background <span className="required">*</span></label>
+                  <label className="epm-form-label">Participant Type <span className="required">*</span></label>
                   <select
-                    name="experience"
+                    name="participantType"
                     className="epm-form-select"
-                    value={formData.experience}
+                    value={formData.participantType}
                     onChange={handleInputChange}
                   >
-                    <option value="">Select background</option>
-                    <option value="Agriculture / Farming">Agriculture / Farming</option>
-                    <option value="FPO / Cooperative">FPO / Cooperative</option>
-                    <option value="Student">Student</option>
-                    <option value="Business / MSME">Business / MSME</option>
-                    <option value="Social / Community Work">Social / Community Work</option>
-                    <option value="Government / Institutional">Government / Institutional</option>
-                    <option value="Other">Other</option>
+                    <option value="">Select type</option>
+                    {participantTypes.map((type) => <option key={type} value={type}>{type}</option>)}
                   </select>
-                  {errors.experience && <span className="epm-form-error">{errors.experience}</span>}
+                  {errors.participantType && <span className="epm-form-error">{errors.participantType}</span>}
                 </div>
 
                 <div className="epm-form-group">

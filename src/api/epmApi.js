@@ -1,7 +1,14 @@
 import { API_BASE_URL } from './config';
 
-// EPM endpoints are all public (no login required - see SecurityConfig's permitAll fallback),
-// so unlike publicationsApi.js none of these calls carry a JWT.
+// EPM endpoints are public (no login required - see SecurityConfig's permitAll fallback). The
+// register/volunteer forms still send the JWT when someone is logged in, so the backend can tie the
+// submission to their account for their dashboard's "Status of Activities" (the last call here,
+// the only one that needs a login).
+
+const authHeaders = () => {
+  const token = localStorage.getItem('jwt');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
 
 function messageFrom(body) {
   if (!body) return null;
@@ -13,8 +20,9 @@ function messageFrom(body) {
   return null;
 }
 
-async function getJson(path) {
-  const res = await fetch(`${API_BASE_URL}${path}`);
+async function getJson(path, { auth = false } = {}) {
+  const res = await fetch(`${API_BASE_URL}${path}`, auth ? { headers: authHeaders() } : undefined);
+  if (res.status === 204) return null;
   if (!res.ok) {
     let message = `Request failed (${res.status})`;
     try {
@@ -30,7 +38,7 @@ async function getJson(path) {
 async function postJson(path, payload) {
   const res = await fetch(`${API_BASE_URL}${path}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(payload),
   });
   const data = await res.json().catch(() => null);
@@ -43,7 +51,10 @@ async function postJson(path, payload) {
 // status: 'upcoming' (default) | 'previous' | 'all'
 // `year` only matters paired with `month` (e.g. the homepage calendar widget asking for a specific
 // month of a specific year) - a bare `month` still matches that month across every year in the data.
-export const fetchEpmEvents = ({ status = 'upcoming', state, district, city, category, month, year } = {}) => {
+// `includeCancelled` also lists upcoming EPMs the admin has cancelled (the register / volunteer
+// pages show them marked "Cancelled"). Every EPM comes with `changes` and `updates` - what the admin
+// has changed since it was scheduled (see utils/epmStatus#epmChangeNotes).
+export const fetchEpmEvents = ({ status = 'upcoming', state, district, city, category, month, year, includeCancelled } = {}) => {
   const params = new URLSearchParams({ status });
   if (state) params.set('state', state);
   if (district) params.set('district', district);
@@ -51,6 +62,7 @@ export const fetchEpmEvents = ({ status = 'upcoming', state, district, city, cat
   if (category) params.set('category', category);
   if (month) params.set('month', month);
   if (year) params.set('year', year);
+  if (includeCancelled) params.set('includeCancelled', 'true');
   return getJson(`/api/epm/events?${params.toString()}`);
 };
 
@@ -66,7 +78,7 @@ export const fetchEpmCategories = () => getJson('/api/epm/events/categories');
 // the admin hasn't put any photos in its own "epm-carousel" block.
 export const fetchEpmGalleryImages = () => getJson('/api/epm/gallery');
 
-// One image section's own images, in the admin's display order - e.g. "epm-hero" or "epm-stats"
+// One image section's own images, in the admin's display order - e.g. "epm-stats" or "epm-calendar"
 // on the EPM page, "epm-moments" or "the-epm-experience" on the gallery page (see
 // EpmGalleryBlock). The backend reads each image's name from the database, then streams its file.
 export const fetchEpmGalleryImagesByBlock = (block) => getJson(`/api/epm/gallery/${encodeURIComponent(block)}`);
@@ -81,13 +93,28 @@ export const fetchEpmGalleryState = (state) => getJson(`/api/epm/gallery/states/
 export const fetchEpmGalleryDistrict = (state, district) =>
   getJson(`/api/epm/gallery/states/${encodeURIComponent(state)}/districts/${encodeURIComponent(district)}`);
 
-// EpmGalleryImageDto#imageUrl is already a server-relative path (e.g. "/api/epm/gallery/epm-hero/3/file?v=...");
+// EpmGalleryImageDto#imageUrl is already a server-relative path (e.g. "/api/epm/gallery/epm-stats/3/file?v=...");
 // this just prefixes it with the backend origin so it can be dropped straight into an <img src>.
 export const getEpmGalleryImageUrl = (relativeUrl) => `${API_BASE_URL}${relativeUrl}`;
+
+// The video under the navbar at the top of the EPM page, uploaded by the admin (see
+// AdminEpmVideoController) - null until one is, and the page then plays its built-in /vid.mp4.
+export const fetchEpmVideo = () => getJson('/api/epm/video');
+
+// Same as getEpmGalleryImageUrl, for EpmPageVideoDto#videoUrl ("/api/epm/video/file?v=...").
+export const getEpmVideoUrl = (relativeUrl) => `${API_BASE_URL}${relativeUrl}`;
 
 // Published testimonials for the EPM page's slider - written by the admin (see AdminEpmReviewController).
 export const fetchEpmReviews = () => getJson('/api/epm/reviews');
 
+// The "Participant Type" choices of the register and volunteer forms - [{ name }], from the
+// backend's user_types table (Institutional, Individual, Business Collaborator, Student, Executive, Guest).
+export const fetchEpmParticipantTypes = () => getJson('/api/epm/participant-types');
+
 export const submitEpmRegistration = (payload) => postJson('/api/epm/registrations', payload);
 
 export const submitEpmVolunteer = (payload) => postJson('/api/epm/volunteers', payload);
+
+// The logged-in user's own EPM registrations and volunteer sign-ups, each with its EPM's current
+// details, status and update log: { registrations: [...], volunteers: [...] } (see EpmActivityDto).
+export const fetchMyEpmActivities = () => getJson('/api/users/me/epm-activities', { auth: true });

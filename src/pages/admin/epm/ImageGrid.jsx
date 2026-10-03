@@ -2,13 +2,9 @@ import React, { useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Pencil, RefreshCw, Trash2, ImagePlus, Loader2 } from 'lucide-react';
 import { FormActions, FormError, Modal } from '../adminUi';
 import { getEpmGalleryImageUrl } from '../../../api/epmApi';
+import { formatSize } from '../adminUtils';
 
 export const IMAGE_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/avif';
-
-const formatSize = (bytes) => {
-  if (!bytes) return null;
-  return bytes >= 1024 * 1024 ? `${(bytes / (1024 * 1024)).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
-};
 
 /** A button that opens the file picker and hands back the chosen image file(s). */
 export function UploadButton({ label = 'Upload', multiple = false, disabled, busy, onFiles, className = 'admin-pub-btn primary adm-btn-sm' }) {
