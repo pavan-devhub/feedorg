@@ -129,9 +129,10 @@ function pageNumbers(page, pageCount) {
 /**
  * Page controls under an admin list, driven by usePagination (adminUtils) or a server-paged list
  * with the same shape. Shown whenever the list has rows, so the rows-per-page choice is always at
- * hand. Changing page brings the top of the list back into view.
+ * hand. Changing page brings the top of the list back into view. `sizes` overrides the
+ * rows-per-page choices.
  */
-export function Pagination({ pager, noun = 'records' }) {
+export function Pagination({ pager, noun = 'records', sizes = PAGE_SIZES }) {
   const ref = useRef(null);
   const { page, pageCount, pageSize, start, total, setPage, setPageSize } = pager;
   if (total === 0) return null;
@@ -150,7 +151,7 @@ export function Pagination({ pager, noun = 'records' }) {
         <label className="adm-pager-size">
           Rows per page
           <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
-            {PAGE_SIZES.map((n) => <option key={n} value={n}>{n}</option>)}
+            {sizes.map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
         </label>
         <nav className="adm-pager-pages" aria-label="Pages">

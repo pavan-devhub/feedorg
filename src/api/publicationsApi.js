@@ -122,8 +122,8 @@ export const getPublicationThumbnailUrl = (id) => {
 export const fetchPublicationYears = () => getJson('/api/publications/years');
 
 // A whole year's worth of issues (summary shape). Without `language`: every edition, newest month
-// first - the admin dashboard's publication table. With `language`: just that language's issues,
-// January to December - one year's shelf on the reader's publications page.
+// first. With `language`: just that language's issues, January to December - one year's shelf on
+// the reader's publications page.
 export const fetchPublicationsByYear = (year, language) => {
   const params = new URLSearchParams({ year });
   if (language) params.set('language', language);
@@ -143,20 +143,32 @@ export const PUBLICATION_LANGUAGES = ['Telugu', 'Hindi', 'English'];
 // How readers see each language named - in its own script, as it appears on the printed cover.
 export const PUBLICATION_LANGUAGE_LABELS = { Telugu: 'తెలుగు', Hindi: 'हिन्दी', English: 'English' };
 
-// A publication's `order` (1, 2 or 3) - the value the backend sent, or, when a row has none
-// (e.g. a backend that predates the `order` column), the same fixed value derived from its
-// language, so the admin table's Order column is never blank.
-export const publicationOrder = (pub) => pub.order ?? PUBLICATION_LANGUAGES.indexOf(pub.language) + 1;
+// What an issue is called unless the admin types another title when uploading it - the backend
+// falls back to the same name when the title is left out or blank.
+export const PUBLICATION_DEFAULT_TITLE = 'Feed World';
 
-// `fields` is { file, year, month, language }. The backend sets the title (always "Feed World"),
-// the feed_world_<language> filenames, order, page count and timestamps itself - none of those
-// are sent here.
-export const createPublication = ({ file, year, month, language }) => {
+// The dashboard's publication table, a page at a time: { items, total, page, size, totalPages },
+// `page` 0-based. Each item is one uploaded edition, { publication, status }: `publication` is the
+// summary shape, and `status` is 'PUBLISHED' (its month has begun, so readers can open it) or
+// 'NOT_PUBLISHED' (uploaded ahead of its month). A year lists only the months with an upload.
+// Filters: `month` (1-12) and `status`.
+export const fetchAdminPublications = ({ year, month, status, page = 0, size = 12 }) => {
+  const params = new URLSearchParams({ year, page, size });
+  if (month) params.set('month', month);
+  if (status) params.set('status', status);
+  return authFetch(`/api/admin/publications?${params}`);
+};
+
+// `fields` is { file, year, month, language, title }. A blank title is left out, and the backend
+// names the issue PUBLICATION_DEFAULT_TITLE. The backend sets the feed_world_<language>
+// filenames, order, page count and timestamps itself - none of those are sent here.
+export const createPublication = ({ file, year, month, language, title }) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('year', year);
   formData.append('month', month);
   formData.append('language', language || 'English');
+  if (title && title.trim()) formData.append('title', title.trim());
   return authFetch('/api/admin/publications', { method: 'POST', body: formData });
 };
 

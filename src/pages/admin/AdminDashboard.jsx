@@ -7,19 +7,35 @@ import {
   FileText, AlertCircle, CheckCircle2, Loader2
 } from 'lucide-react';
 import {
-  fetchPublicationYears, fetchPublicationsByYear,
+  fetchPublicationYears, fetchAdminPublications,
   createPublication, replacePublicationPdf, deletePublicationAdmin,
   fetchPublicationPdfBlob, getPublicationFileUrl, PUBLICATION_LANGUAGES,
-  publicationOrder
+  PUBLICATION_DEFAULT_TITLE
 } from '../../api/publicationsApi';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import { formatPublishedDate } from '../../utils/publicationDate';
+import { latestReleasedMonth } from '../../utils/publicationRelease';
+import { Pagination } from './adminUi';
 import './AdminDashboard.css';
 
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
+
+// A fully uploaded month has three editions, so multiples of three keep such a month's rows on
+// one page.
+const PAGE_SIZES = [6, 12, 24, 48];
+const DEFAULT_PAGE_SIZE = 12;
+
+// Published = readers can open it: its month has begun (the 1st, India time - see
+// PublicationVisibility). An issue uploaded ahead of its month is Not published until then.
+const STATUS_FILTERS = [
+  { value: 'PUBLISHED', label: 'Published' },
+  { value: 'NOT_PUBLISHED', label: 'Not published' },
+];
+
+const EMPTY_PAGE = { items: [], total: 0, totalPages: 1 };
 
 const LANGUAGE_BADGES = { English: 'EN', Telugu: 'TE', Hindi: 'HI' };
 
@@ -30,23 +46,20 @@ const LanguageBadge = ({ language }) => (
   </span>
 );
 
-// A row only counts as uploaded when the backend found its PDF on disk (pdfAvailable) - a row
-// can outlive its file, and uploading that edition again fills the row back in. Anything but an
-// explicit false (e.g. a backend that predates the flag) is treated as uploaded.
-const isUploaded = (pub) => pub.pdfAvailable !== false;
-
 const StatusBadge = ({ published }) => (
-  <span className={`admin-pub-status-badge ${published ? 'published' : 'not-uploaded'}`}>
+  <span className={`admin-pub-status-badge ${published ? 'published' : 'not-published'}`}>
     <span className="admin-pub-status-dot" />
-    {published ? 'Published' : 'Not uploaded'}
+    {published ? 'Published' : 'Not published'}
   </span>
 );
 
-const emptyAddForm = (year, month, language) => ({
-  year: year || new Date().getFullYear(),
+// The title starts as "Feed World"; the admin can change it, and clearing it falls back to
+// "Feed World" again (on the backend too).
+const emptyAddForm = (year, month) => ({
+  title: PUBLICATION_DEFAULT_TITLE,
+  year: year || latestReleasedMonth().year,
   month: month || '',
-  language: language || 'English',
-  languageLocked: Boolean(language),
+  language: 'English',
   file: null,
 });
 
@@ -60,13 +73,20 @@ const emptyAddForm = (year, month, language) => ({
 const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = false }) => {
   const [years, setYears] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
-  const [publications, setPublications] = useState([]);
+  const [monthFilter, setMonthFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [result, setResult] = useState(EMPTY_PAGE);
+  // Bumped to fetch the current page again after an add, replace or delete.
+  const [reloadKey, setReloadKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [banner, setBanner] = useState(null);
 
   const [addOpen, setAddOpen] = useState(false);
   const [addForm, setAddForm] = useState(emptyAddForm());
+  const [addTakenLanguages, setAddTakenLanguages] = useState([]);
   const [addSubmitting, setAddSubmitting] = useState(false);
   const [addError, setAddError] = useState('');
 
@@ -90,12 +110,16 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     setTimeout(() => setBanner((b) => (b && b.message === message ? null : b)), 4000);
   };
 
+  // The page opens on the current year (India time, like the release rule), and that year is
+  // always in the list - even before anything has been uploaded for it. Older and later years
+  // appear once they have an upload.
   const loadYears = useCallback(async () => {
     try {
       const data = await fetchPublicationYears();
-      const sorted = (data || []).map((y) => y.year).sort((a, b) => b - a);
+      const currentYear = latestReleasedMonth().year;
+      const sorted = Array.from(new Set([...(data || []).map((y) => y.year), currentYear])).sort((a, b) => b - a);
       setYears(sorted);
-      setSelectedYear((prev) => (prev && sorted.includes(prev) ? prev : sorted[0] || new Date().getFullYear()));
+      setSelectedYear((prev) => (prev && sorted.includes(prev) ? prev : currentYear));
       return sorted;
     } catch (e) {
       setLoadError(e.message || 'Failed to load publication years.');
@@ -103,90 +127,116 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     }
   }, []);
 
-  // A year's publications come back already sorted by the database - newest month first, then
-  // each month's editions by their `order` (Telugu 1, Hindi 2, English 3) - so they're used as-is
-  // (see PublicationRepository#CATALOG_ORDER).
-  const loadPublications = useCallback(async (year) => {
-    if (!year) {
-      setPublications([]);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    setLoadError('');
-    try {
-      setPublications(await fetchPublicationsByYear(year));
-    } catch (e) {
-      setLoadError(e.message || 'Failed to load publications.');
-      setPublications([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
     loadYears();
   }, [loadYears]);
 
+  // The backend pages the table (see AdminPublicationController#list): the year's uploaded
+  // editions only - so a year shows just the months that have a PDF - newest month first, each
+  // month's editions in language order, each marked Published or Not published.
   useEffect(() => {
-    loadPublications(selectedYear);
-  }, [selectedYear, loadPublications]);
+    if (!selectedYear) {
+      setResult(EMPTY_PAGE);
+      setLoading(false);
+      return undefined;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setLoadError('');
+    fetchAdminPublications({ year: selectedYear, month: monthFilter, status: statusFilter, page: page - 1, size: pageSize })
+      .then((data) => { if (!cancelled) setResult(data); })
+      .catch((e) => {
+        if (!cancelled) {
+          setLoadError(e.message || 'Failed to load publications.');
+          setResult(EMPTY_PAGE);
+        }
+      })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [selectedYear, monthFilter, statusFilter, page, pageSize, reloadKey]);
 
-  // One group per month, each holding whichever of the three language editions are uploaded -
-  // the table always renders all three PUBLICATION_LANGUAGES rows per month (missing ones render
-  // as "Not uploaded"), with the Year/Month cells spanning all three. A database row whose PDF
-  // isn't on the server counts as missing too (see isUploaded).
-  const monthGroups = (() => {
-    const byMonth = new Map();
-    publications.forEach((pub) => {
-      if (!byMonth.has(pub.month)) byMonth.set(pub.month, {});
-      if (isUploaded(pub)) byMonth.get(pub.month)[pub.language] = pub;
-    });
-    return Array.from(byMonth.entries())
-      .sort((a, b) => b[0] - a[0])
-      .map(([month, byLanguage]) => ({ month, byLanguage }));
-  })();
-
-  // Which languages already have an uploaded edition for a given year/month, so the Add modal can
-  // grey those out - only known for the currently-loaded year (selectedYear); for any other year
-  // typed into the modal this simply allows all three and leaves the duplicate check to the
-  // backend, which enforces it regardless (see AdminPublicationController/PublicationServiceImpl).
-  const languagesTakenFor = (year, month) => {
-    if (!month || Number(year) !== selectedYear) return [];
-    const group = monthGroups.find((g) => g.month === Number(month));
-    return group ? PUBLICATION_LANGUAGES.filter((lang) => group.byLanguage[lang]) : [];
+  const rows = result.items;
+  const pageCount = Math.max(1, result.totalPages);
+  const pager = {
+    page,
+    pageCount,
+    pageSize,
+    start: (page - 1) * pageSize,
+    total: result.total,
+    setPage,
+    setPageSize: (size) => { setPageSize(size); setPage(1); },
   };
 
+  // A delete can empty the last page - step back to the new last one.
+  useEffect(() => {
+    if (!loading && page > pageCount) setPage(pageCount);
+  }, [loading, page, pageCount]);
+
+  // This page's rows, grouped by month so the Year/Month cells can span each month's editions. A
+  // month split across two pages simply continues on the next one.
+  const monthGroups = [];
+  rows.forEach((row) => {
+    const { month } = row.publication;
+    const last = monthGroups[monthGroups.length - 1];
+    if (last && last.month === month) last.rows.push(row);
+    else monthGroups.push({ month, rows: [row] });
+  });
+
+  const filtersActive = Boolean(monthFilter || statusFilter);
+  const shownPeriod = monthFilter ? `${MONTH_NAMES[monthFilter - 1]} ${selectedYear}` : `${selectedYear}`;
+  const statusLabel = STATUS_FILTERS.find((s) => s.value === statusFilter)?.label.toLowerCase();
+  const tableSummary = `${result.total} ${statusLabel || 'uploaded'} PDF${result.total === 1 ? '' : 's'} in ${shownPeriod}`;
+  const emptyMessage = statusLabel
+    ? `No ${statusLabel} PDFs in ${shownPeriod}.`
+    : `No PDFs uploaded for ${shownPeriod}.`;
+
+  // Any filter change starts again from the first page.
+  const changeYear = (year) => { setSelectedYear(year); setPage(1); };
+  const changeMonth = (month) => { setMonthFilter(month); setPage(1); };
+  const changeStatus = (status) => { setStatusFilter(status); setPage(1); };
+  const clearFilters = () => { setMonthFilter(''); setStatusFilter(''); setPage(1); };
+
+  // After a change the year list is reloaded too: a delete can empty a year (loadYears then moves
+  // to the current year), and an add can create one - which the table then switches to.
   const refreshAfterChange = async (landOnYear) => {
     const sorted = await loadYears();
-    const yearToShow = landOnYear && sorted.includes(landOnYear) ? landOnYear : selectedYear;
-    setSelectedYear(yearToShow);
-    loadPublications(yearToShow);
+    if (landOnYear && sorted.includes(landOnYear) && landOnYear !== selectedYear) changeYear(landOnYear);
+    else if (!sorted.includes(selectedYear)) setPage(1);
+    setReloadKey((k) => k + 1);
   };
 
   // --- Add ---
-  // `preset` lets the inline "Add {language}" action (shown in a month row when that edition is
-  // missing) open this same modal pre-filled with the row's year/month/language, instead of the
-  // admin having to re-pick them.
-  const openAdd = (preset) => {
-    setAddForm(emptyAddForm(preset?.year ?? selectedYear, preset?.month, preset?.language));
+  // Starts on the year the table is showing, and on its month when the Month filter is set.
+  const openAdd = () => {
+    setAddForm(emptyAddForm(selectedYear, monthFilter));
     setAddError('');
     setAddOpen(true);
   };
 
-  // Whenever the modal's year/month lands on a combination where the currently-picked language
-  // is already taken (or nothing is picked yet), jump to the first still-available language, so
-  // the admin is never left with a disabled option selected. Skipped once a preset has locked the
-  // language (the "+ Upload {Language}" entry point) - that choice is fixed on purpose.
+  // Which languages already have a PDF for the modal's year/month, so the modal can grey those
+  // out. Asked of the backend, since the table only holds one page; the backend also rejects a
+  // duplicate upload regardless. A row whose PDF has gone missing doesn't count - uploading that
+  // edition again fills it back in.
   useEffect(() => {
-    if (!addOpen || addForm.languageLocked) return;
-    const taken = languagesTakenFor(addForm.year, addForm.month);
-    if (taken.includes(addForm.language)) {
-      const nextAvailable = PUBLICATION_LANGUAGES.find((lang) => !taken.includes(lang));
-      if (nextAvailable) setAddForm((f) => ({ ...f, language: nextAvailable }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addOpen, addForm.year, addForm.month, addForm.language, addForm.languageLocked, monthGroups]);
+    setAddTakenLanguages([]);
+    if (!addOpen || !addForm.month || !/^\d{4}$/.test(String(addForm.year))) return undefined;
+    let cancelled = false;
+    fetchAdminPublications({ year: addForm.year, month: addForm.month, size: PUBLICATION_LANGUAGES.length })
+      .then((data) => {
+        if (cancelled) return;
+        setAddTakenLanguages(data.items.filter((row) => row.publication.pdfAvailable).map((row) => row.publication.language));
+      })
+      .catch(() => {}); // the backend's duplicate check still applies
+    return () => { cancelled = true; };
+  }, [addOpen, addForm.year, addForm.month]);
+
+  // Whenever the picked language turns out to be taken, jump to the first still-available one, so
+  // the admin is never left with a disabled option selected.
+  useEffect(() => {
+    if (!addOpen || !addTakenLanguages.includes(addForm.language)) return;
+    const nextAvailable = PUBLICATION_LANGUAGES.find((lang) => !addTakenLanguages.includes(lang));
+    if (nextAvailable) setAddForm((f) => ({ ...f, language: nextAvailable }));
+  }, [addOpen, addForm.language, addTakenLanguages]);
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
@@ -201,9 +251,9 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     setAddSubmitting(true);
     setAddError('');
     try {
-      await createPublication(addForm);
+      const created = await createPublication(addForm);
       setAddOpen(false);
-      showBanner('success', `${addForm.language} publication for ${MONTH_NAMES[addForm.month - 1]} ${addForm.year} added.`);
+      showBanner('success', `"${created?.title || PUBLICATION_DEFAULT_TITLE}" - ${addForm.language} edition for ${MONTH_NAMES[addForm.month - 1]} ${addForm.year} added.`);
       await refreshAfterChange(Number(addForm.year));
     } catch (err) {
       setAddError(err.message || 'Failed to add publication.');
@@ -245,9 +295,8 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
     try {
       await deletePublicationAdmin(deleting.id);
       showBanner('success', `${deleting.language} edition of ${deleting.monthName} ${deleting.year} deleted.`);
-      const removedYear = deleting.year;
       setDeleting(null);
-      await refreshAfterChange(publications.length === 1 ? undefined : removedYear);
+      await refreshAfterChange();
     } catch (err) {
       showBanner('error', err.message || 'Failed to delete publication.');
       setDeleting(null);
@@ -307,7 +356,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
           <div>
             <div className="admin-pub-eyebrow"><BookOpen size={14} /> FEED WORLD</div>
             <h1>Publication Management</h1>
-            <p>Add, replace or remove Feed World's monthly issues.</p>
+            <p>Add, replace or remove Feed World's monthly issues. Readers can open an issue from the 1st of its month.</p>
           </div>
           <button type="button" className="admin-pub-btn primary" onClick={() => openAdd()}>
             <Plus size={16} /> Add Publication
@@ -324,105 +373,122 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
           <div className="admin-pub-banner error"><AlertCircle size={16} /> {loadError}</div>
         )}
 
-        <div className="admin-pub-toolbar">
-          <label htmlFor="admin-pub-year">Year</label>
-          <select
-            id="admin-pub-year"
-            value={selectedYear || ''}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-          >
-            {years.length === 0 && <option value="">No publications yet</option>}
-            {years.map((y) => (
-              <option key={y} value={y}>{y}</option>
-            ))}
-          </select>
+        <div className="adm-filters">
+          <label className="adm-filter">
+            <span>Year</span>
+            <select value={selectedYear || ''} onChange={(e) => changeYear(Number(e.target.value))}>
+              {years.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+          </label>
+          <label className="adm-filter">
+            <span>Month</span>
+            <select value={monthFilter} onChange={(e) => changeMonth(e.target.value ? Number(e.target.value) : '')}>
+              <option value="">All months</option>
+              {MONTH_NAMES.map((m, idx) => (
+                <option key={m} value={idx + 1}>{m}</option>
+              ))}
+            </select>
+          </label>
+          <label className="adm-filter">
+            <span>Status</span>
+            <select value={statusFilter} onChange={(e) => changeStatus(e.target.value)}>
+              <option value="">All statuses</option>
+              {STATUS_FILTERS.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
+          </label>
+          {filtersActive && (
+            <button type="button" className="adm-link-btn" onClick={clearFilters}>
+              <X size={14} /> Clear
+            </button>
+          )}
         </div>
 
         <div className="admin-pub-table-wrap">
-          {loading ? (
+          {loading && rows.length === 0 ? (
             <div className="admin-pub-empty"><Loader2 size={18} className="admin-pub-spin" /> Loading publications…</div>
-          ) : monthGroups.length === 0 ? (
-            <div className="admin-pub-empty">No publications for {selectedYear || 'this year'} yet.</div>
+          ) : rows.length === 0 ? (
+            <div className="admin-pub-empty">{emptyMessage}</div>
           ) : (
-            <table className="admin-pub-table admin-pub-table-grouped">
-              <thead>
-                <tr>
-                  <th>Year</th>
-                  <th>Month</th>
-                  <th>Language</th>
-                  <th>Order</th>
-                  <th>Title</th>
-                  <th>Published</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Three rows per month - one per PUBLICATION_LANGUAGES entry, always in the same
-                    order - with Year/Month spanning all three via rowSpan instead of repeating.
-                    The rowSpan cells only exist in the DOM on the first row of each group, which
-                    reads fine on the desktop table but leaves rows 2-3 with no visible year/month
-                    once the responsive layout stacks every cell into its own block below 560px -
-                    this mobile-only header row (hidden on desktop) carries that context instead. */}
-                {monthGroups.map(({ month, byLanguage }) => ([
-                    <tr key={`${month}-mobile-header`} className="admin-pub-mobile-group-header">
-                      <td colSpan={8}>{selectedYear} — {MONTH_NAMES[month - 1]}</td>
-                    </tr>,
-                    ...PUBLICATION_LANGUAGES.map((lang, i) => {
-                      const pub = byLanguage[lang];
-                      return (
-                        <tr key={`${month}-${lang}`} className={i === 0 ? 'admin-pub-group-start' : undefined}>
-                          {i === 0 && (
-                            <>
-                              <td rowSpan={3} className="admin-pub-group-cell" data-label="Year">{selectedYear}</td>
-                              <td rowSpan={3} className="admin-pub-group-cell" data-label="Month">{MONTH_NAMES[month - 1]}</td>
-                            </>
-                          )}
-                          <td data-label="Language"><LanguageBadge language={lang} /></td>
-                          {/* Uploaded editions show the value stored in the database; a missing
-                              edition shows the order its language always gets. */}
-                          <td data-label="Order">{pub ? publicationOrder(pub) : i + 1}</td>
-                          {pub ? (
-                            <>
-                              <td data-label="Title">{pub.title}</td>
-                              <td data-label="Published">{pub.publishedDate ? formatPublishedDate(pub.publishedDate) : '—'}</td>
-                              <td data-label="Status"><StatusBadge published /></td>
-                              <td className="admin-pub-actions" data-label="Actions">
-                                <button type="button" className="admin-pub-icon-btn" title="View PDF" onClick={() => openView(pub)}>
-                                  <Eye size={15} />
-                                </button>
-                                <a className="admin-pub-icon-btn" href={getPublicationFileUrl(pub.id, { download: true })} title="Download PDF">
-                                  <Download size={15} />
-                                </a>
-                                <button type="button" className="admin-pub-icon-btn" title="Replace PDF" onClick={() => openReplace(pub)}>
-                                  <RefreshCw size={15} />
-                                </button>
-                                <button type="button" className="admin-pub-icon-btn danger" title="Delete" onClick={() => setDeleting(pub)}>
-                                  <Trash2 size={15} />
-                                </button>
-                              </td>
-                            </>
-                          ) : (
-                            <>
-                              <td colSpan={2} className="admin-pub-empty-slot" data-label="Title">—</td>
-                              <td data-label="Status"><StatusBadge published={false} /></td>
-                              <td className="admin-pub-actions" data-label="Actions">
-                                <button
-                                  type="button"
-                                  className="admin-pub-btn small"
-                                  onClick={() => openAdd({ year: selectedYear, month, language: lang })}
-                                >
-                                  <Plus size={13} /> Upload {lang}
-                                </button>
-                              </td>
-                            </>
-                          )}
-                        </tr>
-                      );
-                    }),
-                  ]))}
-              </tbody>
-            </table>
+            <>
+              <div className="adm-table-caption">
+                {tableSummary}
+                {loading && <Loader2 size={13} className="admin-pub-spin" style={{ marginLeft: 8, verticalAlign: 'middle' }} />}
+              </div>
+              <table className="admin-pub-table admin-pub-table-grouped">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th>Month</th>
+                    <th>Language</th>
+                    <th>Order</th>
+                    <th>Title</th>
+                    <th>Release date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* One row per uploaded edition, in the backend's order (Telugu, Hindi, English
+                      within a month), with Year/Month spanning the month's rows via rowSpan instead
+                      of repeating. The rowSpan cells only exist in the DOM on the first row of each
+                      group, which reads fine on the desktop table but leaves the other rows with no
+                      visible year/month once the responsive layout stacks every cell into its own
+                      block below 560px - this mobile-only header row (hidden on desktop) carries
+                      that context instead. */}
+                  {monthGroups.map(({ month, rows: monthRows }) => ([
+                      <tr key={`${month}-mobile-header`} className="admin-pub-mobile-group-header">
+                        <td colSpan={8}>{selectedYear} — {MONTH_NAMES[month - 1]}</td>
+                      </tr>,
+                      ...monthRows.map(({ publication: pub, status }, i) => {
+                        // A row can outlive its PDF on the server: it can't be viewed, but Replace
+                        // puts a new PDF in place and Delete removes it.
+                        const pdfMissing = pub.pdfAvailable === false;
+                        return (
+                          <tr key={pub.id} className={i === 0 ? 'admin-pub-group-start' : undefined}>
+                            {i === 0 && (
+                              <>
+                                <td rowSpan={monthRows.length} className="admin-pub-group-cell" data-label="Year">{pub.year}</td>
+                                <td rowSpan={monthRows.length} className="admin-pub-group-cell" data-label="Month">{MONTH_NAMES[month - 1]}</td>
+                              </>
+                            )}
+                            <td data-label="Language"><LanguageBadge language={pub.language} /></td>
+                            <td data-label="Order">{pub.order}</td>
+                            <td data-label="Title">{pub.title}</td>
+                            <td data-label="Release date">{pub.publishedDate ? formatPublishedDate(pub.publishedDate) : '—'}</td>
+                            <td data-label="Status">
+                              <StatusBadge published={status === 'PUBLISHED'} />
+                              {pdfMissing && <span className="admin-pub-pdf-missing"><AlertCircle size={12} /> PDF missing</span>}
+                            </td>
+                            <td className="admin-pub-actions" data-label="Actions">
+                              {!pdfMissing && (
+                                <>
+                                  <button type="button" className="admin-pub-icon-btn" title="View PDF" onClick={() => openView(pub)}>
+                                    <Eye size={15} />
+                                  </button>
+                                  <a className="admin-pub-icon-btn" href={getPublicationFileUrl(pub.id, { download: true })} title="Download PDF">
+                                    <Download size={15} />
+                                  </a>
+                                </>
+                              )}
+                              <button type="button" className="admin-pub-icon-btn" title="Replace PDF" onClick={() => openReplace(pub)}>
+                                <RefreshCw size={15} />
+                              </button>
+                              <button type="button" className="admin-pub-icon-btn danger" title="Delete" onClick={() => setDeleting(pub)}>
+                                <Trash2 size={15} />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      }),
+                    ]))}
+                </tbody>
+              </table>
+              <Pagination pager={pager} noun="PDFs" sizes={PAGE_SIZES} />
+            </>
           )}
         </div>
       </div>
@@ -436,10 +502,16 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
             </div>
             <form onSubmit={handleAddSubmit} className="admin-pub-form">
               {addError && <div className="admin-pub-form-error"><AlertCircle size={14} /> {addError}</div>}
-              {/* Every issue is titled "Feed World" (the backend sets it) - shown locked, not editable. */}
               <label>
                 Title
-                <input type="text" value="Feed World" disabled readOnly />
+                <input
+                  type="text"
+                  value={addForm.title}
+                  onChange={(e) => setAddForm((f) => ({ ...f, title: e.target.value }))}
+                  placeholder={PUBLICATION_DEFAULT_TITLE}
+                  maxLength={255}
+                />
+                <span className="admin-pub-hint">Left empty, the issue is saved as "{PUBLICATION_DEFAULT_TITLE}".</span>
               </label>
               <div className="admin-pub-form-row">
                 <label>
@@ -448,7 +520,6 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                     type="number"
                     value={addForm.year}
                     onChange={(e) => setAddForm((f) => ({ ...f, year: e.target.value }))}
-                    disabled={addForm.languageLocked}
                     required
                   />
                 </label>
@@ -457,7 +528,6 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
                   <select
                     value={addForm.month}
                     onChange={(e) => setAddForm((f) => ({ ...f, month: e.target.value }))}
-                    disabled={addForm.languageLocked}
                     required
                   >
                     <option value="">Select month</option>
@@ -469,38 +539,26 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
               </div>
               <div className="admin-pub-field-block">
                 <span className="admin-pub-field-label">Language</span>
-                {addForm.languageLocked ? (
-                  <div className="admin-pub-lang-locked">
-                    <LanguageBadge language={addForm.language} />
-                    <span className="admin-pub-hint">Preselected from the row you opened this from.</span>
-                  </div>
-                ) : (
-                  (() => {
-                    const taken = languagesTakenFor(addForm.year, addForm.month);
+                <div className="admin-pub-lang-picker">
+                  {PUBLICATION_LANGUAGES.map((lang) => {
+                    const isTaken = addTakenLanguages.includes(lang);
+                    const isSelected = addForm.language === lang;
                     return (
-                      <div className="admin-pub-lang-picker">
-                        {PUBLICATION_LANGUAGES.map((lang) => {
-                          const isTaken = taken.includes(lang);
-                          const isSelected = addForm.language === lang;
-                          return (
-                            <button
-                              type="button"
-                              key={lang}
-                              className={`admin-pub-lang-option ${isSelected ? 'selected' : ''} ${isTaken ? 'taken' : ''}`}
-                              disabled={isTaken}
-                              onClick={() => setAddForm((f) => ({ ...f, language: lang }))}
-                            >
-                              <LanguageBadge language={lang} />
-                              <span className="admin-pub-lang-option-note">
-                                {isTaken ? '✓ Already uploaded' : '○ Available'}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
+                      <button
+                        type="button"
+                        key={lang}
+                        className={`admin-pub-lang-option ${isSelected ? 'selected' : ''} ${isTaken ? 'taken' : ''}`}
+                        disabled={isTaken}
+                        onClick={() => setAddForm((f) => ({ ...f, language: lang }))}
+                      >
+                        <LanguageBadge language={lang} />
+                        <span className="admin-pub-lang-option-note">
+                          {isTaken ? '✓ Already uploaded' : '○ Available'}
+                        </span>
+                      </button>
                     );
-                  })()
-                )}
+                  })}
+                </div>
               </div>
               <label>
                 PDF File
@@ -533,7 +591,7 @@ const AdminDashboard = ({ onNavigate, isLoggedIn, user, onLogout, embedded = fal
               {replaceError && <div className="admin-pub-form-error"><AlertCircle size={14} /> {replaceError}</div>}
               <div className="admin-pub-replace-summary">
                 <div><span>Current Publication</span><strong>{replacing.language} — {replacing.monthName} {replacing.year}</strong></div>
-                <div><span>Current PDF</span><strong>Available</strong></div>
+                <div><span>Current PDF</span><strong>{replacing.pdfAvailable === false ? 'Missing' : 'Available'}</strong></div>
               </div>
               <label>
                 New PDF
