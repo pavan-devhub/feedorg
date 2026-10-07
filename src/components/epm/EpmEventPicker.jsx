@@ -1,29 +1,43 @@
 import React, { useRef } from 'react';
 import { ArrowRight, Ban, CheckCircle2, Clock, MapPin } from 'lucide-react';
+import { fetchEpmEventsPage } from '../../api/epmApi';
+import { LIVE } from '../../api/liveUpdates';
 import { formatEventDateParts } from '../../utils/epmDate';
-import usePagedList from '../../hooks/usePagedList';
+import useLiveUpdates from '../../hooks/useLiveUpdates';
+import useServerPagedList from '../../hooks/useServerPagedList';
 import ListPager from '../ListPager';
 import EpmChangeNotes from './EpmChangeNotes';
 
 const PAGE_SIZE = 5;
 
+// Cancelled ones too: they stay listed, marked cancelled, so people can see they're off.
+const fetchUpcomingPage = ({ page, size }) => fetchEpmEventsPage({ status: 'upcoming', includeCancelled: true, page, size });
+
 /**
- * The upcoming-EPM list on the register and volunteer pages, a page at a time. Each card says what
- * has changed since the EPM was scheduled (rescheduled, new venue or time...); a cancelled EPM is
- * listed but can't be picked. `mine` maps an EPM id to the logged-in user's own sign-ups for it,
- * e.g. ['Registered', 'Volunteering'], shown as a tag on its card.
+ * The upcoming-EPM list on the register and volunteer pages, a page at a time from the backend.
+ * Each card says what has changed since the EPM was scheduled (rescheduled, new venue or time...);
+ * a cancelled EPM is listed but can't be picked. `mine` maps an EPM id to the logged-in user's own
+ * sign-ups for it, e.g. ['Registered', 'Volunteering'], shown as a tag on its card. `onPick` gets
+ * the picked EPM; `emptyMessage` is shown when there are no upcoming EPMs at all.
  */
-export default function EpmEventPicker({ events, actionLabel, mine, onPick }) {
+export default function EpmEventPicker({ actionLabel, mine, onPick, emptyMessage }) {
   const listRef = useRef(null);
-  const pager = usePagedList(events, PAGE_SIZE, events.length);
+  const { items: events, pager, loading, error, reload } = useServerPagedList(fetchUpcomingPage, PAGE_SIZE);
+  // Live: an EPM added, changed, cancelled or removed - or one that passed at midnight - reloads
+  // the list. It shows no sign-up counts, so sign-ups don't.
+  useLiveUpdates([LIVE.EPM_EVENTS], reload, (update) => update.type !== 'SIGNUPS_CHANGED');
+
+  if (loading && events.length === 0) return <p style={{ color: '#64748b' }}>Loading upcoming EPMs…</p>;
+  if (error) return <p className="epm-form-error" style={{ fontSize: '0.95rem' }}>{error}</p>;
+  if (events.length === 0) return <p style={{ color: '#64748b' }}>{emptyMessage}</p>;
 
   return (
     <>
       <div className="epm-events-timeline" ref={listRef}>
-        {pager.pageItems.map((epm) => {
+        {events.map((epm) => {
           const { day, month, year } = formatEventDateParts(epm.eventDate);
           const signedUp = mine?.get(epm.id) || [];
-          const pick = () => { if (!epm.cancelled) onPick(epm.id); };
+          const pick = () => { if (!epm.cancelled) onPick(epm); };
           return (
             <div
               key={epm.id}

@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   ArrowLeft, MapPin, Calendar, Clock, Filter, RotateCcw,
   CalendarDays, History, ChevronDown, Building2, Map,
   Loader2, AlertTriangle, Search, CheckCircle2, Users, LayoutGrid, List, Bookmark, LayoutList
 } from 'lucide-react';
-import { fetchEpmEvents, fetchEpmCategories } from '../api/epmApi';
+import { fetchEpmEventsPage, fetchEpmEventFacets, fetchEpmCategories } from '../api/epmApi';
+import { LIVE } from '../api/liveUpdates';
+import useLiveUpdates from '../hooks/useLiveUpdates';
 import { formatEventDateLong, formatEventDateParts } from '../utils/epmDate';
 import { getCategoryMeta } from '../utils/epmCategory';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ListPager from '../components/ListPager';
 import EpmChangeNotes from '../components/epm/EpmChangeNotes';
-import usePagedList from '../hooks/usePagedList';
+import useServerPagedList from '../hooks/useServerPagedList';
 import './EpmDetails.css';
 
 const monthOptions = [
@@ -22,18 +24,16 @@ const monthOptions = [
 ];
 
 const EMPTY_FILTERS = { query: '', month: '', state: '', district: '', city: '' };
+const EMPTY_FACETS = { total: 0, places: [], categoryCounts: {} };
 
-const monthOf = (isoDate) => Number(isoDate.split('-')[1]);
+const uniqueSorted = (values) => Array.from(new Set(values)).sort();
 
 // Six fill two rows of the grid view and keep the list view to a comfortable length.
 const PAGE_SIZE = 6;
 
 const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('upcoming');
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState('');
-  const [retryToken, setRetryToken] = useState(0);
+  const [facets, setFacets] = useState(EMPTY_FACETS);
   
   const [viewMode, setViewMode] = useState('list'); // 'list' | 'grid'
   const [activeCategory, setActiveCategory] = useState('All Categories');
@@ -56,58 +56,60 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     return () => { cancelled = true; };
   }, []);
 
+  // The backend filters and pages the list; new filters (or the other tab) start again from page 1.
+  const fetchPage = useCallback(({ page, size }) => fetchEpmEventsPage({
+    status: activeTab,
+    q: appliedFilters.query.trim(),
+    month: appliedFilters.month,
+    state: appliedFilters.state,
+    district: appliedFilters.district,
+    city: appliedFilters.city,
+    category: activeCategory === 'All Categories' ? undefined : activeCategory,
+    page,
+    size,
+  }), [activeTab, appliedFilters, activeCategory]);
+  const { items: events, pager, loading, error: loadError, reload } = useServerPagedList(fetchPage, PAGE_SIZE);
+
+  // Live: an EPM added, changed or removed, a sign-up (the registered counts) or midnight reloads
+  // the page on show and the filters' choices.
+  const [facetsKey, setFacetsKey] = useState(0);
+  useLiveUpdates([LIVE.EPM_EVENTS], () => {
+    reload();
+    setFacetsKey(k => k + 1);
+  });
+
+  // The filters' choices and the category counts cover the whole tab, not just the page on show.
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setLoadError('');
+    fetchEpmEventFacets(activeTab)
+      .then(data => { if (!cancelled) setFacets(data); })
+      .catch(() => { if (!cancelled) setFacets(EMPTY_FACETS); });
+    return () => { cancelled = true; };
+  }, [activeTab, facetsKey]);
+
+  const switchTab = (tab) => {
+    setActiveTab(tab);
     setDraft(EMPTY_FILTERS);
     setAppliedFilters(EMPTY_FILTERS);
+  };
 
-    fetchEpmEvents({ status: activeTab })
-      .then(data => { if (!cancelled) setEvents(data); })
-      .catch(err => { if (!cancelled) setLoadError(err.message || 'Failed to load EPMs.'); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-
-    return () => { cancelled = true; };
-  }, [activeTab, retryToken]);
-
-  const stateOptions = useMemo(() => Array.from(new Set(events.map(e => e.state))).sort(), [events]);
+  const { places } = facets;
+  const stateOptions = useMemo(() => uniqueSorted(places.map(p => p.state)), [places]);
   const districtOptions = useMemo(
-    () => Array.from(new Set(events.filter(e => !draft.state || e.state === draft.state).map(e => e.district))).sort(),
-    [events, draft.state]
+    () => uniqueSorted(places.filter(p => !draft.state || p.state === draft.state).map(p => p.district)),
+    [places, draft.state]
   );
   const cityOptions = useMemo(
-    () => Array.from(new Set(events
-      .filter(e => (!draft.state || e.state === draft.state) && (!draft.district || e.district === draft.district))
-      .map(e => e.city))).sort(),
-    [events, draft.state, draft.district]
+    () => uniqueSorted(places
+      .filter(p => (!draft.state || p.state === draft.state) && (!draft.district || p.district === draft.district))
+      .map(p => p.city)),
+    [places, draft.state, draft.district]
   );
 
-  const categoryCounts = useMemo(() => {
-    const counts = { 'All Categories': events.length };
-    events.forEach(e => {
-      if (e.category) counts[e.category] = (counts[e.category] || 0) + 1;
-    });
-    return counts;
-  }, [events]);
-
-  const filteredEvents = useMemo(() => events.filter(e => {
-    const searchMatch = !appliedFilters.query || 
-      e.title?.toLowerCase().includes(appliedFilters.query.toLowerCase()) ||
-      e.city?.toLowerCase().includes(appliedFilters.query.toLowerCase()) ||
-      e.state?.toLowerCase().includes(appliedFilters.query.toLowerCase());
-
-    const monthMatch = !appliedFilters.month || String(monthOf(e.eventDate)) === appliedFilters.month;
-    const stateMatch = !appliedFilters.state || e.state === appliedFilters.state;
-    const districtMatch = !appliedFilters.district || e.district === appliedFilters.district;
-    const cityMatch = !appliedFilters.city || e.city === appliedFilters.city;
-    
-    const categoryMatch = activeCategory === 'All Categories' || e.category === activeCategory;
-
-    return searchMatch && monthMatch && stateMatch && districtMatch && cityMatch && categoryMatch;
-  }), [events, appliedFilters, activeCategory]);
-
-  const pager = usePagedList(filteredEvents, PAGE_SIZE, `${activeTab}|${activeCategory}|${JSON.stringify(appliedFilters)}`);
+  const categoryCounts = useMemo(
+    () => ({ ...facets.categoryCounts, 'All Categories': facets.total }),
+    [facets]
+  );
 
   const filtersActive = appliedFilters.query || appliedFilters.month || appliedFilters.state || appliedFilters.district || appliedFilters.city;
 
@@ -116,9 +118,11 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
     setAppliedFilters(draft);
   };
 
+  // Reset clears everything that narrows the list - the category chip too - so the whole tab shows again.
   const handleResetFilters = () => {
     setDraft(EMPTY_FILTERS);
     setAppliedFilters(EMPTY_FILTERS);
+    setActiveCategory('All Categories');
   };
   
   // The admin picks each category's colour; categories the built-in map doesn't know (added in the
@@ -283,20 +287,20 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               <div className="ed-toolbar-icon"><CalendarDays size={20} /></div>
               <div>
                 <h2>{activeTab === 'upcoming' ? 'Upcoming EPMs' : 'Previous EPMs'}</h2>
-                <p>{filteredEvents.length} events found</p>
+                <p>{pager.total} events found</p>
               </div>
             </div>
             <div className="ed-toolbar-right">
               <div className="ed-tabs">
                 <button 
                   className={`ed-tab ${activeTab === 'upcoming' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('upcoming')}
+                  onClick={() => switchTab('upcoming')}
                 >
                   <CalendarDays size={14} /> Upcoming
                 </button>
                 <button 
                   className={`ed-tab ${activeTab === 'previous' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('previous')}
+                  onClick={() => switchTab('previous')}
                 >
                   <History size={14} /> Previous
                 </button>
@@ -315,16 +319,16 @@ const EpmDetails = ({ onNavigate, isLoggedIn, user, onLogout }) => {
           </div>
 
           <div className="ed-event-list">
-            {loading ? (
+            {loading && events.length === 0 ? (
                <div className="ed-state-msg"><Loader2 className="spin" size={24}/> Loading Events...</div>
             ) : loadError ? (
                <div className="ed-state-msg text-red-500"><AlertTriangle size={24}/> {loadError}</div>
-            ) : filteredEvents.length === 0 ? (
+            ) : events.length === 0 ? (
                <div className="ed-state-msg">No events match your criteria.</div>
             ) : (
               <>
               <div className={viewMode === 'list' ? 'ed-cards-list' : 'ed-cards-grid'}>
-                {pager.pageItems.map(event => {
+                {events.map(event => {
                   const dateParts = formatEventDateParts(event.eventDate);
                   const styleData = getCategoryStyle(event.category);
                   const registeredCount = event.registrationCount ?? 0;

@@ -81,6 +81,8 @@
 .epm-success-actions .epm-submit-btn { width: auto; padding: 14px 28px; font-size: 1rem; }
 .epm-form-main { flex: 1; padding: 48px 56px; }
 .epm-form-title { font-size: 1.75rem; font-weight: 600; color: #0f172a; margin-bottom: 32px; letter-spacing: -0.01em; }
+.epm-prefill-note { display: flex; align-items: flex-start; gap: 10px; margin: -12px 0 28px; padding: 12px 16px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; color: #065f46; font-size: 0.95rem; line-height: 1.5; }
+.epm-prefill-note svg { flex-shrink: 0; margin-top: 2px; color: #10b981; }
 .epm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 .epm-form-group { display: flex; flex-direction: column; }
 .epm-form-group.full-width { grid-column: 1 / -1; }

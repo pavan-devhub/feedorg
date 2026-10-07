@@ -127,8 +127,7 @@ function pageNumbers(page, pageCount) {
 }
 
 /**
- * Page controls under an admin list, driven by usePagination (adminUtils) or a server-paged list
- * with the same shape. Shown whenever the list has rows, so the rows-per-page choice is always at
+ * Page controls under an admin list, driven by a server-paged list (see hooks/useServerPagedList). Shown whenever the list has rows, so the rows-per-page choice is always at
  * hand. Changing page brings the top of the list back into view. `sizes` overrides the
  * rows-per-page choices.
  */

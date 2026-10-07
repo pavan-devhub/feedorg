@@ -31,6 +31,7 @@ import AdminPortal from './pages/admin/AdminPortal';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 import { API_BASE_URL } from './api/config';
+import { syncLiveLogin } from './api/liveUpdates';
 import { takeReturnTo } from './utils/publicationLinks';
 // import TradeFairs from './pages/TradeFairs';
 
@@ -92,6 +93,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return !!localStorage.getItem('jwt');
   });
+
+  // The live-updates connection logs in with the stored JWT, so it reconnects as the new user (or
+  // as a guest) whenever someone logs in or out.
+  React.useEffect(() => { syncLiveLogin(); }, [isLoggedIn]);
 
   const handleLogin = (userData) => {
     if (userData && userData.token) {

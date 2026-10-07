@@ -1512,3 +1512,42 @@
     text-align: left !important;
   }
 }
+
+/* ---------- System admins: add-admin form ---------- */
+
+/* A field the backend (or the form's own check) rejected - e.g. a username that's already taken. */
+.admin-pub-form input.adm-input-invalid {
+  border-color: #f87171;
+  background: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.12);
+}
+
+.adm-field-error {
+  font-size: 12px;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+/* Password input with its show/hide button inside the right edge. */
+.adm-password {
+  position: relative;
+  display: flex;
+}
+
+.adm-password input {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.adm-password button {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  padding: 6px;
+  border: none;
+  background: none;
+  color: #64748b;
+  cursor: pointer;
+}

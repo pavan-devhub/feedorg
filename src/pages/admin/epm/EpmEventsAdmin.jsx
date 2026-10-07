@@ -1,18 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  CalendarDays, History, Plus, Pencil, Trash2, Search, X, Users, HeartHandshake, Ban, MapPin, RotateCcw, BellRing, Eye, Lock,
+  CalendarDays, History, Plus, Pencil, Trash2, Search, X, Users, HeartHandshake, Ban, MapPin, RotateCcw, BellRing, Eye, Lock, Loader2,
 } from 'lucide-react';
 import {
-  fetchAdminEvents, createAdminEvent, updateAdminEvent, deleteAdminEvent, fetchAdminEventLocations,
+  fetchAdminEventsPage, fetchAdminEventFacets, createAdminEvent, updateAdminEvent, deleteAdminEvent, fetchAdminEventLocations,
   cancelAdminEvent, restoreAdminEvent, fetchAdminCategories,
 } from '../../../api/adminEpmApi';
 import {
   Banner, ConfirmDialog, Empty, EpmStatusTags, FormActions, FormError, Loading, Modal, Pagination, SectionHeader,
 } from '../adminUi';
-import { MONTH_NAMES, formatDate, formatDateTime, todayIso, useBanner, usePagination } from '../adminUtils';
+import { DEFAULT_PAGE_SIZE, MONTH_NAMES, formatDate, formatDateTime, todayIso, useBanner } from '../adminUtils';
+import { LIVE } from '../../../api/liveUpdates';
+import useLiveUpdates from '../../../hooks/useLiveUpdates';
+import useServerPagedList from '../../../hooks/useServerPagedList';
 import { describeUpdate } from '../../../utils/epmStatus';
 
 const EMPTY_FILTERS = { q: '', month: '', state: '', district: '', city: '', category: '' };
+const EMPTY_FACETS = { total: 0, places: [] };
 
 // "10:00 AM - 02:00 PM" <-> { start: "10:00", end: "14:00" }. Events store the display text only
 // (see EpmEvent#timeRange); the form edits it with two time pickers.
@@ -58,12 +62,11 @@ const signedUpCount = (e) => (e.registrationCount ?? 0) + (e.volunteerCount ?? 0
 
 export default function EpmEventsAdmin({ onOpenSection }) {
   const [tab, setTab] = useState('upcoming');
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState('');
+  const [facets, setFacets] = useState(EMPTY_FACETS);
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [editing, setEditing] = useState(null); // null | { mode: 'create' | 'edit', event? }
   const [viewing, setViewing] = useState(null); // a previous EPM, shown read-only
   const [deleting, setDeleting] = useState(null);
@@ -71,17 +74,21 @@ export default function EpmEventsAdmin({ onOpenSection }) {
   const [restoring, setRestoring] = useState(null);
   const [banner, showBanner] = useBanner();
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setLoadError('');
-    try {
-      setEvents(await fetchAdminEvents({ status: tab }));
-    } catch (e) {
-      setLoadError(e.message);
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQuery(filters.q.trim()), 300);
+    return () => clearTimeout(t);
+  }, [filters.q]);
+
+  // The backend filters and pages the table; new filters start again from page 1.
+  const { month, state, district, city, category } = filters;
+  const fetchPage = useCallback(
+    ({ page, size }) => fetchAdminEventsPage({ status: tab, q: debouncedQuery, month, state, district, city, category, page, size }),
+    [tab, debouncedQuery, month, state, district, city, category]
+  );
+  const { items: events, pager, loading, error: loadError, reload } = useServerPagedList(fetchPage, DEFAULT_PAGE_SIZE);
+
+  const loadFacets = useCallback(() => {
+    fetchAdminEventFacets(tab).then(setFacets).catch(() => setFacets(EMPTY_FACETS));
   }, [tab]);
 
   const loadLookups = useCallback(() => {
@@ -89,36 +96,39 @@ export default function EpmEventsAdmin({ onOpenSection }) {
     fetchAdminEventLocations().then(setLocations).catch(() => setLocations([]));
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { loadFacets(); }, [loadFacets]);
   useEffect(() => { loadLookups(); }, [loadLookups]);
-  useEffect(() => { setFilters(EMPTY_FILTERS); }, [tab]);
 
-  // Filter options come from the events in this tab, same as the public EPM directory's filters.
-  const stateOptions = useMemo(() => uniqueSorted(events.map((e) => e.state)), [events]);
+  const switchTab = (next) => {
+    setTab(next);
+    setFilters(EMPTY_FILTERS);
+    setDebouncedQuery('');
+  };
+
+  // A change can add or remove a place or move an EPM to the other tab.
+  const reloadAll = () => {
+    reload();
+    loadFacets();
+  };
+
+  // Live: another admin's change, a sign-up (the Registered / Volunteers counts) or midnight
+  // moving an EPM to Previous.
+  useLiveUpdates([LIVE.EPM_EVENTS], reloadAll);
+
+  // Filter options are every place an EPM in this tab is held (from the backend, as the table only
+  // holds one page), same as the public EPM directory's filters.
+  const { places } = facets;
+  const stateOptions = useMemo(() => uniqueSorted(places.map((p) => p.state)), [places]);
   const districtOptions = useMemo(
-    () => uniqueSorted(events.filter((e) => !filters.state || e.state === filters.state).map((e) => e.district)),
-    [events, filters.state]
+    () => uniqueSorted(places.filter((p) => !filters.state || p.state === filters.state).map((p) => p.district)),
+    [places, filters.state]
   );
   const cityOptions = useMemo(
-    () => uniqueSorted(events
-      .filter((e) => (!filters.state || e.state === filters.state) && (!filters.district || e.district === filters.district))
-      .map((e) => e.city)),
-    [events, filters.state, filters.district]
+    () => uniqueSorted(places
+      .filter((p) => (!filters.state || p.state === filters.state) && (!filters.district || p.district === filters.district))
+      .map((p) => p.city)),
+    [places, filters.state, filters.district]
   );
-
-  const visible = useMemo(() => {
-    const q = filters.q.trim().toLowerCase();
-    return events.filter((e) => {
-      if (q && ![e.title, e.city, e.district, e.state, e.venue, e.category].some((v) => v && v.toLowerCase().includes(q))) return false;
-      if (filters.month && Number(e.eventDate.slice(5, 7)) !== Number(filters.month)) return false;
-      if (filters.state && e.state !== filters.state) return false;
-      if (filters.district && e.district !== filters.district) return false;
-      if (filters.city && e.city !== filters.city) return false;
-      if (filters.category && e.category !== filters.category) return false;
-      return true;
-    });
-  }, [events, filters]);
-  const pager = usePagination(visible, `${tab}|${JSON.stringify(filters)}`);
 
   const filtersActive = Object.values(filters).some(Boolean);
   const categoryColor = (name) => categories.find((c) => c.name === name)?.color || 'gray';
@@ -127,7 +137,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
     setEditing(null);
     const movedTab = saved.upcoming ? 'upcoming' : 'previous';
     showBanner('success', `${mode === 'create' ? 'Added' : 'Saved'} "${saved.title}" on ${formatDate(saved.eventDate)}${movedTab !== tab ? ` - it is listed under ${movedTab === 'upcoming' ? 'Upcoming' : 'Previous'} EPMs` : ''}.`);
-    load();
+    reloadAll();
     loadLookups();
   };
 
@@ -147,10 +157,10 @@ export default function EpmEventsAdmin({ onOpenSection }) {
       <Banner banner={banner} />
 
       <div className="adm-tabs" role="tablist">
-        <button type="button" role="tab" aria-selected={tab === 'upcoming'} className={`adm-tab ${tab === 'upcoming' ? 'active' : ''}`} onClick={() => setTab('upcoming')}>
+        <button type="button" role="tab" aria-selected={tab === 'upcoming'} className={`adm-tab ${tab === 'upcoming' ? 'active' : ''}`} onClick={() => switchTab('upcoming')}>
           <CalendarDays size={15} /> Upcoming
         </button>
-        <button type="button" role="tab" aria-selected={tab === 'previous'} className={`adm-tab ${tab === 'previous' ? 'active' : ''}`} onClick={() => setTab('previous')}>
+        <button type="button" role="tab" aria-selected={tab === 'previous'} className={`adm-tab ${tab === 'previous' ? 'active' : ''}`} onClick={() => switchTab('previous')}>
           <History size={15} /> Previous
         </button>
       </div>
@@ -207,13 +217,16 @@ export default function EpmEventsAdmin({ onOpenSection }) {
       {loadError && <div className="admin-pub-banner error">{loadError}</div>}
 
       <div className="admin-pub-table-wrap">
-        {loading ? <Loading label="Loading EPMs…" /> : visible.length === 0 ? (
+        {loading && events.length === 0 ? <Loading label="Loading EPMs…" /> : events.length === 0 ? (
           <Empty>
             {filtersActive ? 'No EPMs match these filters.' : tab === 'upcoming' ? 'No upcoming EPMs yet - add the next one.' : 'No previous EPMs recorded.'}
           </Empty>
         ) : (
           <>
-            <div className="adm-table-caption">{visible.length} {visible.length === 1 ? 'EPM' : 'EPMs'}{filtersActive ? ` of ${events.length}` : ''}</div>
+            <div className="adm-table-caption">
+              {pager.total} {pager.total === 1 ? 'EPM' : 'EPMs'}{filtersActive ? ` of ${facets.total}` : ''}
+              {loading && <Loader2 size={13} className="admin-pub-spin" style={{ marginLeft: 8, verticalAlign: 'middle' }} />}
+            </div>
             <table className="admin-pub-table adm-table">
               <thead>
                 <tr>
@@ -228,7 +241,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
                 </tr>
               </thead>
               <tbody>
-                {pager.pageItems.map((e) => (
+                {events.map((e) => (
                   <tr key={e.id} className={e.cancelled ? 'adm-row-muted' : undefined}>
                     <td data-label="Date" className="adm-nowrap"><strong>{formatDate(e.eventDate)}</strong></td>
                     <td data-label="EPM">
@@ -304,7 +317,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
           onCancelled={(saved) => {
             setCancelling(null);
             showBanner('success', `Cancelled "${saved.title}" on ${formatDate(saved.eventDate)}. Everyone signed up has been notified, and the EPM lists show it as cancelled.`);
-            load();
+            reload();
           }}
         />
       )}
@@ -321,7 +334,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
             const saved = await restoreAdminEvent(restoring.id);
             showBanner('success', `"${saved.title}" is back on for ${formatDate(saved.eventDate)}.`);
             setRestoring(null);
-            load();
+            reload();
           }}
         >
           <p>Put <strong>{restoring.title}</strong> on {formatDate(restoring.eventDate)} in {restoring.city} back on?</p>
@@ -337,7 +350,7 @@ export default function EpmEventsAdmin({ onOpenSection }) {
             await deleteAdminEvent(deleting.id);
             showBanner('success', `Deleted "${deleting.title}".`);
             setDeleting(null);
-            load();
+            reloadAll();
           }}
         >
           <p>Delete <strong>{deleting.title}</strong> on {formatDate(deleting.eventDate)} in {deleting.city}?</p>
@@ -421,6 +434,24 @@ function PreviousValue({ children }) {
 
 const PLACE_FIELDS = ['state', 'district', 'city', 'venue'];
 
+// Every field the edit form can change, in form order, for the "Do you really want to update ...?" popup.
+const FIELD_LABELS = [
+  ['title', 'Title'], ['category', 'Category'], ['eventDate', 'Date'], ['state', 'State'], ['district', 'District'],
+  ['city', 'Place'], ['venue', 'Venue'], ['time', 'Time'], ['description', 'Description'],
+];
+
+// ["Date", "Venue", "Time"] -> "Date, Venue and Time"
+function joinLabels(labels) {
+  return labels.length <= 1 ? labels.join('') : `${labels.slice(0, -1).join(', ')} and ${labels[labels.length - 1]}`;
+}
+
+function displayValue(field, value) {
+  if (field === 'eventDate') return value ? formatDate(value) : 'Not set';
+  if (field === 'time') return value || 'Time to be announced';
+  if (field === 'description') return value || 'No description';
+  return value || 'Not set';
+}
+
 function EventFormModal({ mode, event, defaultPast, categories, locations, onClose, onSaved, onCancelEvent, onRestoreEvent }) {
   const initialTimes = parseTimeRange(event?.timeRange);
   const [form, setForm] = useState(() => ({
@@ -437,6 +468,7 @@ function EventFormModal({ mode, event, defaultPast, categories, locations, onClo
   }));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [confirming, setConfirming] = useState(false);
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const keptTimeText = event?.timeRange && !initialTimes.start ? event.timeRange : '';
@@ -472,19 +504,32 @@ function EventFormModal({ mode, event, defaultPast, categories, locations, onClo
   const changedFields = Object.keys(saved || {}).filter(changed);
   const mark = (field) => (changed(field) ? 'adm-input-changed' : undefined);
   const previous = (field, empty = 'Not set') => changed(field) && <PreviousValue>{saved[field] || empty}</PreviousValue>;
-  const unsaved = changedFields.length > 0 || (saved && (form.title !== event.title || form.category !== (event.category || '')));
+  // Title and category aren't in `saved` (people signed up aren't notified of them), but the
+  // update popup still names them.
+  const savedValue = (field) => (field in saved ? saved[field] : event[field] || '');
+  const editedFields = FIELD_LABELS.filter(([field]) => saved && (field in saved
+    ? changed(field)
+    : (form[field] || '').trim() !== savedValue(field).trim()));
+  const unsaved = editedFields.length > 0;
 
   const isPast = form.eventDate && form.eventDate < todayIso();
   // Only upcoming EPMs reach this form for editing, and they can't be moved to a passed date
   // (the backend refuses it too) - a new EPM can be backdated to record a previous one.
   const minDate = mode === 'edit' ? todayIso() : undefined;
 
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
     if (form.startTime && form.endTime && form.endTime <= form.startTime) {
       setError('The end time must be after the start time.');
       return;
     }
+    setError('');
+    // An edit asks "Do you really want to update ...?" first; a new EPM saves straight away.
+    if (unsaved) setConfirming(true);
+    else save();
+  };
+
+  const save = async () => {
     setBusy(true);
     setError('');
     const payload = {
@@ -501,13 +546,17 @@ function EventFormModal({ mode, event, defaultPast, categories, locations, onClo
     try {
       onSaved(mode === 'create' ? await createAdminEvent(payload) : await updateAdminEvent(event.id, payload));
     } catch (err) {
+      // Back to the form, where whatever the backend refused can be fixed.
+      setConfirming(false);
       setError(err.message);
       setBusy(false);
     }
   };
 
   return (
-    <Modal title={mode === 'create' ? 'Add EPM' : `Edit EPM`} icon={mode === 'create' ? Plus : Pencil} onClose={onClose} busy={busy} size="medium">
+    <>
+    {/* busy while the popup is open too, so its Escape key doesn't also close this form */}
+    <Modal title={mode === 'create' ? 'Add EPM' : `Edit EPM`} icon={mode === 'create' ? Plus : Pencil} onClose={onClose} busy={busy || confirming} size="medium">
       <form className="admin-pub-form" onSubmit={submit}>
         <FormError message={error} />
         <label>
@@ -638,6 +687,32 @@ function EventFormModal({ mode, event, defaultPast, categories, locations, onClo
         <FormActions onCancel={onClose} busy={busy} submitLabel={mode === 'create' ? 'Add EPM' : 'Save changes'} busyLabel="Saving…" />
       </form>
     </Modal>
+
+    {confirming && (
+      <ConfirmDialog
+        title="Update EPM?"
+        icon={Pencil}
+        danger={false}
+        confirmLabel="Yes"
+        busyLabel="Saving…"
+        cancelLabel="No"
+        onCancel={() => setConfirming(false)}
+        onConfirm={save}
+      >
+        <p>
+          Do you really want to update the <strong>{joinLabels(editedFields.map(([, label]) => label))}</strong> of{' '}
+          <strong>{event.title}</strong>?
+        </p>
+        <ul className="adm-update-log">
+          {editedFields.map(([field, label]) => (
+            <li key={field}>
+              <strong>{label}:</strong> <s>{displayValue(field, savedValue(field))}</s> → {displayValue(field, current[field])}
+            </li>
+          ))}
+        </ul>
+      </ConfirmDialog>
+    )}
+    </>
   );
 }
 
@@ -647,13 +722,13 @@ function CancelEventDialog({ event, onClose, onCancelled }) {
     <ConfirmDialog
       title="Cancel EPM?"
       icon={Ban}
-      confirmLabel="Cancel EPM"
+      confirmLabel="Yes, cancel EPM"
       busyLabel="Cancelling…"
-      cancelLabel="Keep EPM"
+      cancelLabel="No, keep EPM"
       onCancel={onClose}
       onConfirm={async () => onCancelled(await cancelAdminEvent(event.id, reason.trim() || null))}
     >
-      <p>Call off <strong>{event.title}</strong> on {formatDate(event.eventDate)} in {event.city}?</p>
+      <p>Do you really want to cancel the EPM <strong>{event.title}</strong> on {formatDate(event.eventDate)} in {event.city}?</p>
       <label>
         Reason <span className="optional">(optional, shown to everyone signed up)</span>
         <textarea rows={2} maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Postponed due to heavy rain" />

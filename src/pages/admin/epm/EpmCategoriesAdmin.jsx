@@ -1,33 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Tags, Plus, Pencil, Trash2 } from 'lucide-react';
 import {
-  fetchAdminCategories, createAdminCategory, updateAdminCategory, deleteAdminCategory, CATEGORY_COLORS,
+  fetchAdminCategoriesPage, createAdminCategory, updateAdminCategory, deleteAdminCategory, CATEGORY_COLORS,
 } from '../../../api/adminEpmApi';
 import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, Pagination, SectionHeader } from '../adminUi';
-import { useBanner, usePagination } from '../adminUtils';
+import { DEFAULT_PAGE_SIZE, useBanner } from '../adminUtils';
+import useServerPagedList from '../../../hooks/useServerPagedList';
 
 export default function EpmCategoriesAdmin({ onOpenSection }) {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [editing, setEditing] = useState(null); // null | { category? }
   const [deleting, setDeleting] = useState(null);
   const [banner, showBanner] = useBanner();
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      setCategories(await fetchAdminCategories());
-      setError('');
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
-  const pager = usePagination(categories);
+  // The backend pages the table, counting EPMs for the categories on show only.
+  const { items: categories, pager, loading, error, reload } = useServerPagedList(fetchAdminCategoriesPage, DEFAULT_PAGE_SIZE);
 
   return (
     <>
@@ -46,7 +32,7 @@ export default function EpmCategoriesAdmin({ onOpenSection }) {
       {error && <div className="admin-pub-banner error">{error}</div>}
 
       <div className="admin-pub-table-wrap">
-        {loading ? <Loading label="Loading categories…" /> : categories.length === 0 ? (
+        {loading && categories.length === 0 ? <Loading label="Loading categories…" /> : categories.length === 0 ? (
           <Empty>No categories yet - add one so EPMs can be filed under it.</Empty>
         ) : (
           <>
@@ -62,7 +48,7 @@ export default function EpmCategoriesAdmin({ onOpenSection }) {
                 </tr>
               </thead>
               <tbody>
-                {pager.pageItems.map((c) => (
+                {categories.map((c) => (
                   <tr key={c.id}>
                     <td data-label="Order" className="adm-muted">{c.displayOrder}</td>
                     <td data-label="Category"><span className={`adm-tag adm-tag-${c.color}`}>{c.name}</span></td>
@@ -94,14 +80,14 @@ export default function EpmCategoriesAdmin({ onOpenSection }) {
       {editing && (
         <CategoryFormModal
           category={editing.category}
-          nextOrder={categories.length}
+          nextOrder={pager.total}
           onClose={() => setEditing(null)}
           onSaved={(saved, renamedFrom) => {
             setEditing(null);
             showBanner('success', renamedFrom && renamedFrom !== saved.name
               ? `Renamed “${renamedFrom}” to “${saved.name}” - its ${saved.eventCount} EPM(s) were updated too.`
               : `Saved “${saved.name}”.`);
-            load();
+            reload();
           }}
         />
       )}
@@ -114,7 +100,7 @@ export default function EpmCategoriesAdmin({ onOpenSection }) {
             await deleteAdminCategory(deleting.id);
             showBanner('success', `Deleted “${deleting.name}”.`);
             setDeleting(null);
-            load();
+            reload();
           }}
         >
           <p>Delete the category <strong>{deleting.name}</strong>?</p>

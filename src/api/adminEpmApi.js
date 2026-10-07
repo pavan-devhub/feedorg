@@ -68,8 +68,15 @@ export const exportAdminVolunteers = (filters) => request(`/api/admin/epm/volunt
 
 // --- events -------------------------------------------------------------------------------
 
-// Filters: { status: 'upcoming' | 'previous' | 'all', q, state, district, city, category, month, year }
+// Filters: { status: 'upcoming' | 'previous' | 'all', q, state, district, city, category, month, year }.
+// fetchAdminEvents returns every matching EPM (the lookups other screens need); the EPM Events
+// table pages them on the server - pass { page (0-based), size } too - as
+// { items, total, page, size, totalPages }.
 export const fetchAdminEvents = (filters) => request(`/api/admin/epm/events${query(filters)}`);
+export const fetchAdminEventsPage = (filters) => request(`/api/admin/epm/events/page${query(filters)}`);
+// The EPM Events filters' choices for one tab: { total, places: [{ state, district, city }] } -
+// `total` counts the tab's EPMs before any filter.
+export const fetchAdminEventFacets = (status) => request(`/api/admin/epm/events/facets${query({ status })}`);
 export const createAdminEvent = (payload) => request('/api/admin/epm/events', { method: 'POST', json: payload });
 export const updateAdminEvent = (id, payload) => request(`/api/admin/epm/events/${id}`, { method: 'PUT', json: payload });
 export const deleteAdminEvent = (id) => request(`/api/admin/epm/events/${id}`, { method: 'DELETE' });
@@ -81,22 +88,41 @@ export const restoreAdminEvent = (id) => request(`/api/admin/epm/events/${id}/re
 // form's suggestions. Saving an EPM at a new place adds it to the venue list on the backend.
 export const fetchAdminEventLocations = () => request('/api/admin/epm/events/locations');
 
+// --- activity log -------------------------------------------------------------------------
+
+// The EPM Activity log - which admin did what to each EPM, newest first, a page at a time:
+// { items, total, page, size, totalPages } of { id, createdAt, adminId, adminUsername, action,
+// field, epmEventId, eventTitle, eventDate, eventCity, oldValue, newValue }. `action` is created /
+// updated / cancelled / reinstated / deleted; `field` (updated only) is what changed, e.g. 'venue'.
+// Filters: { adminId, action, eventDate: 'yyyy-mm-dd' (the EPM's date) }. There is no way to
+// change or remove an entry.
+export const fetchAdminEpmActivity = (params) => request(`/api/admin/epm/activity${query(params)}`);
+// [{ id, username }] - every admin with an entry, by username (deleted admins included).
+export const fetchAdminEpmActivityAdmins = () => request('/api/admin/epm/activity/admins');
+
 // --- categories ---------------------------------------------------------------------------
 
 // Accent colours the public pages have styles for - must match EpmCategory.COLORS on the backend.
 export const CATEGORY_COLORS = ['green', 'teal', 'purple', 'blue', 'orange', 'emerald', 'gray'];
 
+// Every category (the EPM form's choices); the Categories table pages them on the server instead.
 export const fetchAdminCategories = () => request('/api/admin/epm/categories');
+export const fetchAdminCategoriesPage = ({ page, size }) => request(`/api/admin/epm/categories/page${query({ page, size })}`);
 export const createAdminCategory = (payload) => request('/api/admin/epm/categories', { method: 'POST', json: payload });
 export const updateAdminCategory = (id, payload) => request(`/api/admin/epm/categories/${id}`, { method: 'PUT', json: payload });
 export const deleteAdminCategory = (id) => request(`/api/admin/epm/categories/${id}`, { method: 'DELETE' });
 
 // --- reviews ------------------------------------------------------------------------------
 
-export const fetchAdminReviews = () => request('/api/admin/epm/reviews');
+// A page of reviews in display order: { items, total, page, size, totalPages, publishedCount } -
+// `publishedCount` is how many reviews, on any page, the EPM page shows.
+export const fetchAdminReviews = ({ page, size }) => request(`/api/admin/epm/reviews${query({ page, size })}`)
+  .then(({ page: rows, publishedCount }) => ({ ...rows, publishedCount }));
 export const createAdminReview = (payload) => request('/api/admin/epm/reviews', { method: 'POST', json: payload });
 export const updateAdminReview = (id, payload) => request(`/api/admin/epm/reviews/${id}`, { method: 'PUT', json: payload });
 export const deleteAdminReview = (id) => request(`/api/admin/epm/reviews/${id}`, { method: 'DELETE' });
+// One place up (delta -1) or down (1) the Testimonials slider - across pages too.
+export const moveAdminReview = (id, delta) => request(`/api/admin/epm/reviews/${id}/move${query({ delta })}`, { method: 'POST' });
 
 // --- block images (EPM page + gallery page sections) --------------------------------------
 

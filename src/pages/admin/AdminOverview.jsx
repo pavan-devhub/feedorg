@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   LayoutDashboard, CalendarDays, History, Users, HeartHandshake, Images, Quote, BookOpen, ArrowRight, Tags,
 } from 'lucide-react';
 import { fetchAdminEpmOverview, fetchAdminEvents } from '../../api/adminEpmApi';
 import { fetchLatestPublication, fetchPublicationYears } from '../../api/publicationsApi';
+import { LIVE } from '../../api/liveUpdates';
+import useLiveUpdates from '../../hooks/useLiveUpdates';
 import { Empty, Loading, SectionHeader } from './adminUi';
 import { formatDate } from './adminUtils';
 
@@ -14,18 +16,25 @@ export default function AdminOverview({ user, onOpenSection }) {
   const [feedWorld, setFeedWorld] = useState(null);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const loadEpm = useCallback(() => {
     fetchAdminEpmOverview().then(setOverview).catch((e) => setError(e.message));
     fetchAdminEvents({ status: 'upcoming' })
       .then((data) => setNextEvents(data.filter((e) => !e.cancelled).slice(0, 5)))
       .catch(() => setNextEvents([]));
+  }, []);
+
+  // Live: the EPM numbers and "Next EPMs" follow every EPM change, sign-up and midnight.
+  useLiveUpdates([LIVE.EPM_EVENTS], loadEpm);
+
+  useEffect(() => {
+    loadEpm();
     Promise.all([fetchPublicationYears().catch(() => []), fetchLatestPublication().catch(() => null)])
       .then(([years, latest]) => setFeedWorld({
         issues: years.reduce((sum, y) => sum + (y.count || 0), 0),
         years: years.length,
         latest,
       }));
-  }, []);
+  }, [loadEpm]);
 
   const cards = overview ? [
     { label: 'Upcoming EPMs', value: overview.upcomingEvents, icon: CalendarDays, section: 'epm-events', tone: 'green' },

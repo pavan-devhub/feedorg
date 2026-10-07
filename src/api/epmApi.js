@@ -49,13 +49,15 @@ async function postJson(path, payload) {
 }
 
 // status: 'upcoming' (default) | 'previous' | 'all'
+// `q` is free text over title, place, district, state, venue and category.
 // `year` only matters paired with `month` (e.g. the homepage calendar widget asking for a specific
 // month of a specific year) - a bare `month` still matches that month across every year in the data.
 // `includeCancelled` also lists upcoming EPMs the admin has cancelled (the register / volunteer
 // pages show them marked "Cancelled"). Every EPM comes with `changes` and `updates` - what the admin
 // has changed since it was scheduled (see utils/epmStatus#epmChangeNotes).
-export const fetchEpmEvents = ({ status = 'upcoming', state, district, city, category, month, year, includeCancelled } = {}) => {
+function eventParams({ status = 'upcoming', q, state, district, city, category, month, year, includeCancelled, page, size }) {
   const params = new URLSearchParams({ status });
+  if (q) params.set('q', q);
   if (state) params.set('state', state);
   if (district) params.set('district', district);
   if (city) params.set('city', city);
@@ -63,9 +65,23 @@ export const fetchEpmEvents = ({ status = 'upcoming', state, district, city, cat
   if (month) params.set('month', month);
   if (year) params.set('year', year);
   if (includeCancelled) params.set('includeCancelled', 'true');
-  return getJson(`/api/epm/events?${params.toString()}`);
-};
+  if (page !== undefined) params.set('page', page);
+  if (size !== undefined) params.set('size', size);
+  return params.toString();
+}
 
+export const fetchEpmEvents = (filters = {}) => getJson(`/api/epm/events?${eventParams(filters)}`);
+
+// The same list a page at a time - the EPM directory and the register / volunteer pages: pass
+// { page (0-based), size } with the filters; resolves to { items, total, page, size, totalPages }.
+export const fetchEpmEventsPage = (filters = {}) => getJson(`/api/epm/events/page?${eventParams(filters)}`);
+
+// The directory's filter choices for one tab ('upcoming' | 'previous'): { total, places, categoryCounts } -
+// every { state, district, city } its EPMs are held at, and how many EPMs each category name has.
+// `total` counts the tab's EPMs before any filter.
+export const fetchEpmEventFacets = (status) => getJson(`/api/epm/events/facets?${new URLSearchParams({ status })}`);
+
+// One EPM, with its counts and change history - upcoming or not, cancelled or not.
 export const fetchEpmEventById = (id) => getJson(`/api/epm/events/${id}`);
 
 export const fetchEpmStats = () => getJson('/api/epm/events/stats');
@@ -118,3 +134,8 @@ export const submitEpmVolunteer = (payload) => postJson('/api/epm/volunteers', p
 // The logged-in user's own EPM registrations and volunteer sign-ups, each with its EPM's current
 // details, status and update log: { registrations: [...], volunteers: [...] } (see EpmActivityDto).
 export const fetchMyEpmActivities = () => getJson('/api/users/me/epm-activities', { auth: true });
+
+// The logged-in user's own details from their account, shaped like the register / volunteer forms:
+// { fullName, mobileNumber, email, state, district, participantType } - participantType is null
+// when the account's user type isn't one the EPM forms offer.
+export const fetchMyEpmDetails = () => getJson('/api/users/me/epm-details', { auth: true });

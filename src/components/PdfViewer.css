@@ -47,6 +47,46 @@
   color: #ffffff;
 }
 
+/* The "Pages" button's list of pages, dropping down under it. */
+.pdf-pages-wrap {
+  position: relative;
+}
+
+.pdf-pages-menu {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 20;
+  min-width: 120px;
+  max-height: 320px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.pdf-pages-menu button {
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #cbd5e1;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pdf-pages-menu button:hover,
+.pdf-pages-menu button.current {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
 .pdf-zoom-value {
   min-width: 56px;
   padding: 0 8px;

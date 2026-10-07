@@ -17,7 +17,7 @@ function pageNumbers(page, pageCount) {
 
 /**
  * Page controls under a public list (the EPM directory, the register / volunteer pages), driven
- * by usePagedList. Changing page brings the top of the list - the element before this one, or
+ * by useServerPagedList - the backend pages the list. Changing page brings the top of the list - the element before this one, or
  * `scrollTarget` - back into view.
  */
 export default function ListPager({ pager, noun = 'items', scrollTarget }) {

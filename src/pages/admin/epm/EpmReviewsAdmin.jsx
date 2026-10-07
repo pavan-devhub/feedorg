@@ -1,8 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Quote, Plus, Pencil, Trash2, Star, Eye, EyeOff, ArrowUp, ArrowDown } from 'lucide-react';
-import { fetchAdminReviews, createAdminReview, updateAdminReview, deleteAdminReview } from '../../../api/adminEpmApi';
+import {
+  fetchAdminReviews, createAdminReview, updateAdminReview, deleteAdminReview, moveAdminReview,
+} from '../../../api/adminEpmApi';
 import { Banner, ConfirmDialog, Empty, FormActions, FormError, Loading, Modal, Pagination, SectionHeader } from '../adminUi';
-import { useBanner, usePagination } from '../adminUtils';
+import { DEFAULT_PAGE_SIZE, useBanner } from '../adminUtils';
+import useServerPagedList from '../../../hooks/useServerPagedList';
 
 const toPayload = (r, overrides = {}) => ({
   authorName: r.authorName,
@@ -15,33 +18,22 @@ const toPayload = (r, overrides = {}) => ({
 });
 
 export default function EpmReviewsAdmin() {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [editing, setEditing] = useState(null); // null | { review? }
   const [deleting, setDeleting] = useState(null);
   const [busyId, setBusyId] = useState(null);
   const [banner, showBanner] = useBanner();
 
-  const load = useCallback(async () => {
-    try {
-      setReviews(await fetchAdminReviews());
-      setError('');
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
+  // The backend pages the list, in the order the EPM page shows it.
+  const {
+    items: reviews, result, pager, loading, error, reload,
+  } = useServerPagedList(fetchAdminReviews, DEFAULT_PAGE_SIZE);
 
   const run = async (id, action, message) => {
     setBusyId(id);
     try {
       await action();
       if (message) showBanner('success', message);
-      await load();
+      reload();
     } catch (e) {
       showBanner('error', e.message);
     } finally {
@@ -49,16 +41,9 @@ export default function EpmReviewsAdmin() {
     }
   };
 
-  // Swap positions with the neighbour; order values are rewritten as 0..n-1 so ties can't stick.
-  const move = (index, delta) => {
-    const next = [...reviews];
-    const [item] = next.splice(index, 1);
-    next.splice(index + delta, 0, item);
-    run(item.id, () => Promise.all(next.map((r, i) => (r.displayOrder === i ? null : updateAdminReview(r.id, toPayload(r, { displayOrder: i }))))));
-  };
-
-  const publishedCount = reviews.filter((r) => r.published).length;
-  const pager = usePagination(reviews);
+  // Swaps places with the neighbour - which may be on the next or previous page; the backend
+  // rewrites every review's order as 0..n-1 so ties can't stick.
+  const move = (review, delta) => run(review.id, () => moveAdminReview(review.id, delta));
 
   return (
     <>
@@ -76,20 +61,20 @@ export default function EpmReviewsAdmin() {
       <Banner banner={banner} />
       {error && <div className="admin-pub-banner error">{error}</div>}
 
-      {loading ? <div className="admin-pub-table-wrap"><Loading label="Loading reviews…" /></div> : reviews.length === 0 ? (
+      {loading && reviews.length === 0 ? <div className="admin-pub-table-wrap"><Loading label="Loading reviews…" /></div> : reviews.length === 0 ? (
         <div className="admin-pub-table-wrap"><Empty>No reviews yet - the EPM page hides its Testimonials section until one is published.</Empty></div>
       ) : (
         <div className="adm-paged">
-          <div className="adm-table-caption">{publishedCount} of {reviews.length} shown on the EPM page, in this order</div>
+          <div className="adm-table-caption">{result.publishedCount} of {pager.total} shown on the EPM page, in this order</div>
           <ul className="adm-review-list">
-            {pager.pageItems.map((r, pageIndex) => {
+            {reviews.map((r, pageIndex) => {
               // Position in the whole list - moving up/down works across page boundaries too.
               const i = pager.start + pageIndex;
               return (
                 <li key={r.id} className={`adm-review ${r.published ? '' : 'is-hidden'}`}>
                   <div className="adm-review-order">
-                    <button type="button" className="admin-pub-icon-btn" title="Move up" disabled={i === 0 || busyId !== null} onClick={() => move(i, -1)}><ArrowUp size={14} /></button>
-                    <button type="button" className="admin-pub-icon-btn" title="Move down" disabled={i === reviews.length - 1 || busyId !== null} onClick={() => move(i, 1)}><ArrowDown size={14} /></button>
+                    <button type="button" className="admin-pub-icon-btn" title="Move up" disabled={i === 0 || busyId !== null || loading} onClick={() => move(r, -1)}><ArrowUp size={14} /></button>
+                    <button type="button" className="admin-pub-icon-btn" title="Move down" disabled={i === pager.total - 1 || busyId !== null || loading} onClick={() => move(r, 1)}><ArrowDown size={14} /></button>
                   </div>
                   <div className="adm-review-body">
                     <div className="adm-stars" aria-label={`${r.rating} out of 5`}>
@@ -129,7 +114,7 @@ export default function EpmReviewsAdmin() {
           onSaved={(saved) => {
             setEditing(null);
             showBanner('success', `Saved ${saved.authorName}'s review.`);
-            load();
+            reload();
           }}
         />
       )}
@@ -142,7 +127,7 @@ export default function EpmReviewsAdmin() {
             await deleteAdminReview(deleting.id);
             showBanner('success', `Deleted ${deleting.authorName}'s review.`);
             setDeleting(null);
-            load();
+            reload();
           }}
         >
           <p>Delete the review by <strong>{deleting.authorName}</strong>? To take it off the EPM page but keep it, hide it instead.</p>

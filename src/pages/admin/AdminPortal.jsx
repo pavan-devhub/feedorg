@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  LayoutDashboard, BookOpen, CalendarDays, Users, HeartHandshake, Tags, Images, Quote, ShieldCheck,
+  LayoutDashboard, BookOpen, CalendarDays, History, Users, HeartHandshake, Tags, Images, Quote, ShieldCheck, UserCog,
 } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -8,10 +8,12 @@ import useScrollToTop from '../../hooks/useScrollToTop';
 import AdminDashboard from './AdminDashboard';
 import AdminOverview from './AdminOverview';
 import EpmEventsAdmin from './epm/EpmEventsAdmin';
+import EpmActivityAdmin from './epm/EpmActivityAdmin';
 import EpmSubmissionsAdmin from './epm/EpmSubmissionsAdmin';
 import EpmCategoriesAdmin from './epm/EpmCategoriesAdmin';
 import EpmImagesAdmin from './epm/EpmImagesAdmin';
 import EpmReviewsAdmin from './epm/EpmReviewsAdmin';
+import SystemAdminsAdmin from './SystemAdminsAdmin';
 import './AdminDashboard.css';
 import './AdminPortal.css';
 
@@ -22,6 +24,7 @@ const ADMIN_SECTIONS = [
     group: 'EPM',
     items: [
       { id: 'epm-events', label: 'EPM Events', icon: CalendarDays },
+      { id: 'epm-activity', label: 'EPM Activity', icon: History },
       { id: 'epm-registrations', label: 'Registrations', icon: Users },
       { id: 'epm-volunteers', label: 'Volunteers', icon: HeartHandshake },
       { id: 'epm-categories', label: 'Categories', icon: Tags },
@@ -29,6 +32,7 @@ const ADMIN_SECTIONS = [
       { id: 'epm-reviews', label: 'Reviews', icon: Quote },
     ],
   },
+  { group: 'Access', items: [{ id: 'system-admins', label: 'System Admins', icon: UserCog }] },
 ];
 
 const ALL_IDS = ADMIN_SECTIONS.flatMap((g) => g.items.map((i) => i.id));
@@ -52,6 +56,9 @@ export default function AdminPortal({ onNavigate, isLoggedIn, user, onLogout, se
     case 'epm-events':
       content = <EpmEventsAdmin onOpenSection={openSection} />;
       break;
+    case 'epm-activity':
+      content = <EpmActivityAdmin user={user} />;
+      break;
     case 'epm-registrations':
       content = <EpmSubmissionsAdmin key="registrations" kind="registrations" params={sectionParams} onOpenSection={openSection} />;
       break;
@@ -66,6 +73,9 @@ export default function AdminPortal({ onNavigate, isLoggedIn, user, onLogout, se
       break;
     case 'epm-reviews':
       content = <EpmReviewsAdmin />;
+      break;
+    case 'system-admins':
+      content = <SystemAdminsAdmin user={user} />;
       break;
     default:
       content = <AdminOverview user={user} onOpenSection={openSection} />;

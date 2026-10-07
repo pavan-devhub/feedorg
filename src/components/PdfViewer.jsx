@@ -35,6 +35,8 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [loadError, setLoadError] = useState(null);
+  // The toolbar's "Pages" list - every page, to jump straight to one.
+  const [pagesOpen, setPagesOpen] = useState(false);
   const canvasAreaRef = useRef(null);
   const pageRefs = useRef({});
   const currentPageRef = useRef(1);
@@ -50,6 +52,7 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
     setRotation(0);
     setNumPages(initialPageCount || null);
     setLoadError(null);
+    setPagesOpen(false);
     if (canvasAreaRef.current) {
       canvasAreaRef.current.scrollTop = 0;
       canvasAreaRef.current.scrollLeft = 0;
@@ -146,14 +149,37 @@ const PdfViewer = ({ fileUrl, downloadUrl, initialPageCount, onPageChange }) => 
     <div className="pdf-viewer">
       <div className="pdf-toolbar">
         <div className="pdf-toolbar-group">
-          <button
-            type="button"
-            className="pdf-tool-btn"
-            title="Pages"
-            aria-label="Pages"
-          >
-            <Menu size={18} />
-          </button>
+          <div className="pdf-pages-wrap">
+            <button
+              type="button"
+              className={`pdf-tool-btn ${pagesOpen ? 'active' : ''}`}
+              title="Pages"
+              aria-label="Pages"
+              aria-expanded={pagesOpen}
+              onClick={() => setPagesOpen((open) => !open)}
+              disabled={!numPages}
+            >
+              <Menu size={18} />
+            </button>
+            {pagesOpen && numPages > 0 && (
+              <ul className="pdf-pages-menu" aria-label="Go to page">
+                {Array.from({ length: numPages }, (_, i) => i + 1).map((n) => (
+                  <li key={n}>
+                    <button
+                      type="button"
+                      className={n === pageNumber ? 'current' : undefined}
+                      onClick={() => {
+                        goToPage(n);
+                        setPagesOpen(false);
+                      }}
+                    >
+                      Page {n}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <span className="pdf-page-indicator">
             <input
               type="number"

@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AlertCircle, ArrowRight, CalendarDays, CheckCircle2, ChevronDown, Clock, HeartHandshake,
   Info, Loader2, MapPin, Megaphone, RefreshCw, XCircle,
 } from 'lucide-react';
 import { fetchMyEpmActivities } from '../../api/epmApi';
-import { getCategoryMeta } from '../../utils/epmCategory';
+import { LIVE } from '../../api/liveUpdates';
+import useLiveUpdates from '../../hooks/useLiveUpdates';
 import { formatEventDateShort, formatTimestampParts } from '../../utils/epmDate';
 import { describeUpdate, epmStatusTags } from '../../utils/epmStatus';
 import { UPDATE_ICONS } from '../../utils/notifications';
@@ -14,7 +15,8 @@ import './MyEpmActivities.css';
 // volunteers at (past ones aren't sent - see EpmActivityServiceImpl), each with its current status
 // and the admin's updates (new date, time, venue, cancellation...), which are shown open. Opened
 // from a notification, `focus` is the dashboard's navState - { epmId } - and the EPM's cards are
-// opened, scrolled to and briefly highlighted.
+// opened, scrolled to and briefly highlighted. It reloads live when the admin changes one of the
+// person's EPMs, they sign up elsewhere, or the day turns over (see useLiveUpdates).
 
 const SECTIONS = {
   registrations: {
@@ -52,9 +54,17 @@ function viewOf(item) {
     date: ev?.eventDate || item.eventDate,
     time: ev?.timeRange || 'Time to be announced',
     place: ev ? [ev.venue, ev.city, ev.state].filter(Boolean).join(', ') : [item.eventCity, item.eventState].filter(Boolean).join(', '),
-    img: getCategoryMeta(ev?.category).img,
     updates: ev?.updates || [],
   };
+}
+
+/** Card key -> how many updates its EPM has. */
+function updateCounts(data) {
+  const counts = new Map();
+  ['registrations', 'volunteers'].forEach((key) => {
+    (data?.[key] || []).forEach((item) => counts.set(`${key}-${item.id}`, item.event?.updates?.length || 0));
+  });
+  return counts;
 }
 
 /** The big badge next to each card: where the person's sign-up stands. */
@@ -73,26 +83,38 @@ export default function MyEpmActivities({ user, onNavigate, focus }) {
   // The cards a notification pointed at, highlighted for a few seconds.
   const [highlighted, setHighlighted] = useState(() => new Set());
 
-  const load = useCallback(() => {
-    setLoading(true);
-    setError('');
+  const dataRef = useRef(null);
+
+  // `quiet` (a live reload) keeps the cards on show while it loads, and a failure keeps them too.
+  const load = useCallback((quiet = false) => {
+    if (!quiet) {
+      setLoading(true);
+      setError('');
+    }
     fetchMyEpmActivities()
       .then((result) => {
+        // Cards open when they have updates - all of them on a full load; on a live reload only
+        // those that just got a new one, the rest staying as the person left them.
+        const before = updateCounts(quiet ? dataRef.current : null);
+        const opened = [...updateCounts(result)].filter(([key, count]) => count > (before.get(key) || 0)).map(([key]) => key);
+        dataRef.current = result;
         setData(result);
-        const open = new Set();
-        ['registrations', 'volunteers'].forEach((key) => {
-          (result[key] || []).forEach((item) => {
-            if (item.event?.updates?.length > 0) open.add(`${key}-${item.id}`);
-          });
-        });
-        setExpanded(open);
+        setExpanded((prev) => new Set(quiet ? [...prev, ...opened] : opened));
       })
-      .catch((e) => setError(e.message || 'Could not load your activities.'))
-      .finally(() => setLoading(false));
+      .catch((e) => { if (!quiet) setError(e.message || 'Could not load your activities.'); })
+      .finally(() => { if (!quiet) setLoading(false); });
   }, []);
 
   // Each notification click is a new navigation (a new `focus`), so the data is fresh for it too.
   useEffect(() => { load(); }, [load, focus]);
+
+  useLiveUpdates(
+    [LIVE.MINE, LIVE.EPM_EVENTS],
+    () => load(true),
+    // Their own EPMs (from their queue), and midnight - when a passed EPM drops off. Other EPMs'
+    // changes on the public topic aren't theirs.
+    (update) => update.type === 'MY_EPM_CHANGED' || update.type === 'DAY_CHANGED',
+  );
 
   useEffect(() => {
     if (!data || !focus?.epmId) return undefined;
@@ -141,7 +163,7 @@ export default function MyEpmActivities({ user, onNavigate, focus }) {
       ) : error ? (
         <div className="mea-state mea-state-error">
           <AlertCircle size={20} /> {error}
-          <button type="button" className="mea-btn-outline" onClick={load}><RefreshCw size={14} /> Try again</button>
+          <button type="button" className="mea-btn-outline" onClick={() => load()}><RefreshCw size={14} /> Try again</button>
         </div>
       ) : (
         Object.entries(SECTIONS).map(([key, config]) => (
@@ -215,8 +237,6 @@ function ActivityCard({ id, item, config, expanded, highlighted, onToggle }) {
         onClick={onToggle}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
       >
-        <img src={view.img} alt="" className="mea-card-img" loading="lazy" />
-
         <div className="mea-card-info">
           <h4>{view.title}</h4>
           <div className="mea-card-meta">

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle, Clock, LayoutDashboard } from 'lucide-react';
-import { fetchEpmEvents, submitEpmVolunteer } from '../api/epmApi';
+import { MapPin, Calendar, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle, Clock, LayoutDashboard, UserCheck } from 'lucide-react';
+import { fetchEpmEventById, submitEpmVolunteer } from '../api/epmApi';
 import { formatEventDateLong } from '../utils/epmDate';
 import { requestNotificationsRefresh } from '../utils/notifications';
 import useMyEpmSignUps from '../hooks/useMyEpmSignUps';
 import useEpmParticipantTypes from '../hooks/useEpmParticipantTypes';
+import useMyEpmDetails, { fillFromMyDetails } from '../hooks/useMyEpmDetails';
 import EpmEventPicker from '../components/epm/EpmEventPicker';
 import EpmChangeNotes from '../components/epm/EpmChangeNotes';
 import Navbar from '../components/Navbar';
@@ -15,11 +16,10 @@ import './EpmForms.css';
 // `eventId` (e.g. from a notification) opens the form for that EPM straight away, as long as it's
 // still taking volunteers.
 const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: preselectId }) => {
-  const [events, setEvents] = useState([]);
-  const [loadingEvents, setLoadingEvents] = useState(true);
-  const [loadError, setLoadError] = useState('');
-
-  const [selectedEpmId, setSelectedEpmId] = useState('');
+  // The EPM being signed up for - picked from the list, or the one `preselectId` names.
+  const [selectedEpm, setSelectedEpm] = useState(null);
+  // While the EPM `preselectId` names is looked up, the list waits rather than flashing past.
+  const [preselecting, setPreselecting] = useState(Boolean(preselectId));
   const [formData, setFormData] = useState({
     fullName: '',
     mobileNumber: '',
@@ -37,27 +37,35 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: presele
   // This page swaps between browse / form / success entirely via local state rather than
   // App-level navigation, so it needs its own scroll reset on each step - otherwise landing on
   // the success screen keeps whatever scroll position the form was left at.
-  useScrollToTop(isSuccess ? 'success' : (selectedEpmId || 'browse'));
+  useScrollToTop(isSuccess ? 'success' : (selectedEpm?.id || 'browse'));
 
+  // The list itself is paged by the backend (see EpmEventPicker); a preselected EPM is fetched on
+  // its own, and only opens the form while it is upcoming and not cancelled.
   useEffect(() => {
+    if (!preselectId) {
+      setPreselecting(false);
+      return undefined;
+    }
     let cancelled = false;
-    // Cancelled ones too: they stay listed, marked cancelled, so people can see they're off.
-    fetchEpmEvents({ status: 'upcoming', includeCancelled: true })
-      .then(data => {
-        if (cancelled) return;
-        setEvents(data);
-        if (preselectId && data.some(epm => epm.id === preselectId && !epm.cancelled)) setSelectedEpmId(preselectId);
-      })
-      .catch(err => { if (!cancelled) setLoadError(err.message || 'Failed to load upcoming EPMs.'); })
-      .finally(() => { if (!cancelled) setLoadingEvents(false); });
+    setPreselecting(true);
+    fetchEpmEventById(preselectId)
+      .then(epm => { if (!cancelled && epm.upcoming && !epm.cancelled) setSelectedEpm(epm); })
+      .catch(() => {}) // just show the list
+      .finally(() => { if (!cancelled) setPreselecting(false); });
     return () => { cancelled = true; };
   }, [preselectId]);
 
-  const selectedEpm = events.find(epm => epm.id === selectedEpmId);
   // Reloaded after a sign-up, so going back to the list shows the new one marked.
   const mySignUps = useMyEpmSignUps(isLoggedIn, isSuccess);
   // The same choices as the register form - from the user_types table.
   const participantTypes = useEpmParticipantTypes();
+
+  // A logged-in user's form opens filled in from their account, so all that's left is the button -
+  // only still-empty fields are filled, never anything they've typed.
+  const myDetails = useMyEpmDetails(isLoggedIn);
+  useEffect(() => {
+    if (myDetails) setFormData(prev => fillFromMyDetails(prev, myDetails));
+  }, [myDetails]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +102,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: presele
     setSubmitError('');
     try {
       await submitEpmVolunteer({
-        epmEventId: selectedEpmId,
+        epmEventId: selectedEpm.id,
         fullName: formData.fullName.trim(),
         mobileNumber: formData.mobileNumber.trim(),
         email: formData.email.trim() || null,
@@ -129,7 +137,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: presele
           </p>
           <div className="epm-success-actions">
             {isLoggedIn && (
-              <button className="epm-submit-btn" onClick={() => onNavigate('dashboard', { tab: 'status', epmId: selectedEpmId })}>
+              <button className="epm-submit-btn" onClick={() => onNavigate('dashboard', { tab: 'status', epmId: selectedEpm?.id })}>
                 <LayoutDashboard size={18} /> View in Status of Activities
               </button>
             )}
@@ -157,7 +165,7 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: presele
         </button>
       </div>
 
-      {!selectedEpmId ? (
+      {!selectedEpm ? (
         <>
           <div className="epm-hero-split">
             <div className="epm-hero-content">
@@ -189,21 +197,18 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: presele
 
           <div className="epm-events-section">
             <h2 className="epm-section-heading">Where would you like to volunteer?</h2>
-            {loadingEvents ? (
+            {preselecting ? (
               <p style={{ color: '#64748b' }}>Loading upcoming EPMs…</p>
-            ) : loadError ? (
-              <p className="epm-form-error" style={{ fontSize: '0.95rem' }}>{loadError}</p>
-            ) : events.length === 0 ? (
-              <p style={{ color: '#64748b' }}>There are no upcoming EPMs looking for volunteers right now. Please check back soon.</p>
             ) : (
-              <EpmEventPicker events={events} actionLabel="Volunteer for this EPM" mine={mySignUps} onPick={setSelectedEpmId} />
+              <EpmEventPicker actionLabel="Volunteer for this EPM" mine={mySignUps} onPick={setSelectedEpm}
+                emptyMessage="There are no upcoming EPMs looking for volunteers right now. Please check back soon." />
             )}
           </div>
         </>
       ) : (
         <div className="epm-form-layout">
           <div className="epm-form-sidebar">
-            <button onClick={() => setSelectedEpmId('')} className="epm-change-location-btn">
+            <button onClick={() => setSelectedEpm(null)} className="epm-change-location-btn">
               <ArrowLeft size={16} /> Change Location
             </button>
             <div className="epm-selected-event-info">
@@ -231,6 +236,17 @@ const EpmVolunteer = ({ onNavigate, isLoggedIn, user, onLogout, eventId: presele
 
           <div className="epm-form-main">
             <h3 className="epm-form-title">Volunteer Application</h3>
+            {myDetails && (
+              <div className="epm-prefill-note">
+                <UserCheck size={18} />
+                <span>
+                  We've filled in your details from your account.{' '}
+                  {myDetails.participantType
+                    ? 'Just check them and press "Apply as Volunteer".'
+                    : 'Just choose your participant type and press "Apply as Volunteer".'}
+                </span>
+              </div>
+            )}
             {submitError && (
               <div className="epm-form-error" style={{
                 display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px',

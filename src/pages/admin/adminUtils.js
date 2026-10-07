@@ -18,36 +18,11 @@ export function useBanner() {
 
 // --- paging -------------------------------------------------------------------------------
 
+// Every admin list is paged by the server (see hooks/useServerPagedList), this many rows at a time.
+
 /** Rows-per-page choices for the admin lists. */
 export const PAGE_SIZES = [5, 10, 20, 50];
 export const DEFAULT_PAGE_SIZE = 10;
-
-/**
- * Pages an admin list that's already loaded in full (so filters and counts still see every row):
- * returns this page's rows plus the state <Pagination> needs. Goes back to page 1 whenever
- * `resetKey` changes - pass something built from the filters. (Registrations and volunteers are
- * paged by the server instead - see EpmSubmissionsAdmin.)
- */
-export function usePagination(items, resetKey) {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  useEffect(() => { setPage(1); }, [resetKey]);
-
-  const pageCount = Math.max(1, Math.ceil(items.length / pageSize));
-  // Deleting the last row of the last page would otherwise leave an empty page showing.
-  const current = Math.min(page, pageCount);
-  const start = (current - 1) * pageSize;
-  return {
-    page: current,
-    pageCount,
-    pageSize,
-    start,
-    total: items.length,
-    pageItems: items.slice(start, start + pageSize),
-    setPage,
-    setPageSize: (size) => { setPageSize(size); setPage(1); },
-  };
-}
 
 // --- formatting ---------------------------------------------------------------------------
 

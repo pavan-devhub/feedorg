@@ -6,6 +6,8 @@ import {
 import {
   TONE_COLORS, describeNotification, onNotificationsRefresh, openNotificationLink, timeAgo,
 } from '../utils/notifications';
+import { LIVE } from '../api/liveUpdates';
+import useLiveUpdates from '../hooks/useLiveUpdates';
 import './NotificationBell.css';
 
 // The navbar's bell: a badge with the number of new notifications, and a panel listing them.
@@ -13,8 +15,10 @@ import './NotificationBell.css';
 // new Feed World issues; for a visitor who isn't logged in, just the newly announced EPMs (each
 // shows up 15 days before it's held). Opening the panel marks everything as seen; the new ones
 // stay highlighted until it's closed.
-
-const REFRESH_MS = 60 * 1000;
+//
+// It reloads live, when the server says something on it changed (see useLiveUpdates); this slow
+// timer is only a backstop for when the live connection can't be made at all.
+const FALLBACK_REFRESH_MS = 5 * 60 * 1000;
 
 export default function NotificationBell({ onNavigate, isLoggedIn = true }) {
   const [data, setData] = useState({ items: [], unreadCount: 0 });
@@ -30,7 +34,7 @@ export default function NotificationBell({ onNavigate, isLoggedIn = true }) {
 
   useEffect(() => {
     load();
-    const timer = setInterval(load, REFRESH_MS);
+    const timer = setInterval(load, FALLBACK_REFRESH_MS);
     window.addEventListener('focus', load);
     const stopListening = onNotificationsRefresh(load);
     return () => {
@@ -39,6 +43,13 @@ export default function NotificationBell({ onNavigate, isLoggedIn = true }) {
       stopListening();
     };
   }, [load]);
+
+  // Other people's sign-ups only move the EPM lists' counts, never anything on the bell.
+  useLiveUpdates(
+    isLoggedIn ? [LIVE.EPM_EVENTS, LIVE.PUBLICATIONS, LIVE.MINE] : [LIVE.EPM_EVENTS],
+    load,
+    (update) => update.type !== 'SIGNUPS_CHANGED',
+  );
 
   const close = useCallback(() => {
     setOpen(false);

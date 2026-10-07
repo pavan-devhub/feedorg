@@ -12,6 +12,8 @@ import {
   fetchEpmEvents, fetchEpmGalleryImages, fetchEpmGalleryImagesByBlock, fetchEpmReviews, fetchEpmStats, getEpmGalleryImageUrl,
   fetchEpmVideo, getEpmVideoUrl,
 } from '../api/epmApi';
+import { LIVE } from '../api/liveUpdates';
+import useLiveUpdates from '../hooks/useLiveUpdates';
 import { formatEventDateParts } from '../utils/epmDate';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -178,9 +180,19 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [calendarMonth, setCalendarMonth] = useState(() => new Date().getMonth() + 1); // 1-indexed
   const [calendarEventDays, setCalendarEventDays] = useState([]);
 
+  // Live: an EPM added, changed or removed - or midnight, when one stops being upcoming - reloads
+  // the calendar and its list; any sign-up also moves the participant count in the stats.
+  const [liveKey, setLiveKey] = useState(0);
+  useLiveUpdates([LIVE.EPM_EVENTS], () => setLiveKey(k => k + 1), update => update.type !== 'SIGNUPS_CHANGED');
+  useLiveUpdates([LIVE.EPM_EVENTS], () => fetchEpmStats().then(setStats).catch(() => {}));
+
+  const shownMonthRef = useRef('');
   useEffect(() => {
     let cancelled = false;
-    setEventsLoading(true);
+    // Only another month shows "loading" - a live reload keeps the month on show until it's back.
+    const month = `${calendarYear}-${calendarMonth}`;
+    if (shownMonthRef.current !== month) setEventsLoading(true);
+    shownMonthRef.current = month;
     fetchEpmEvents({ status: 'upcoming', year: calendarYear, month: calendarMonth })
       .then(data => {
         if (cancelled) return;
@@ -194,7 +206,7 @@ const Epm = ({ onNavigate, isLoggedIn, user, onLogout }) => {
       })
       .finally(() => { if (!cancelled) setEventsLoading(false); });
     return () => { cancelled = true; };
-  }, [calendarYear, calendarMonth]);
+  }, [calendarYear, calendarMonth, liveKey]);
 
   const goToPrevMonth = () => {
     if (calendarMonth === 1) {

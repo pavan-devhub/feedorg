@@ -472,17 +472,19 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
               {isLoggedIn && isProfileOpen && (
                 <div className="fw-account-dropdown">
                   <div style={{ padding: '8px 12px', borderBottom: '1px solid #f1f5f9', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {/* System admins have no profile picture - it belongs to a user account. */}
                     <div
                       className="fw-account-avatar-edit"
-                      onClick={() => !avatarBusy && avatarInputRef.current?.click()}
-                      title="Change profile picture"
+                      onClick={() => !adminMode && !avatarBusy && avatarInputRef.current?.click()}
+                      title={adminMode ? undefined : 'Change profile picture'}
+                      style={adminMode ? { cursor: 'default' } : undefined}
                     >
                       {avatarSrc ? (
                         <img src={avatarSrc} alt="" />
                       ) : (
                         <span>{user?.firstName ? user.firstName.charAt(0).toUpperCase() : <User size={16} />}</span>
                       )}
-                      <span className="fw-account-avatar-edit-badge"><Camera size={11} /></span>
+                      {!adminMode && <span className="fw-account-avatar-edit-badge"><Camera size={11} /></span>}
                     </div>
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <div style={{ fontWeight: '600', color: '#1e293b', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
