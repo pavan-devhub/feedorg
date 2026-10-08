@@ -48,6 +48,7 @@ export const servicesMegaMenu = [
 export const SERVICE_ROUTES = {
   'PRODUCT 360': 'product360',
   'MY EXPORTS': 'exports',
+  'LOANS & FINANCE': 'loans-finance',
   'MY TOOLS': 'tools',
   'MY BUSINESS': 'mybusiness',
   'FEED WORLD': 'feedworld',

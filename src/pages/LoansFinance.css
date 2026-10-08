@@ -1,0 +1,20 @@
+.lf-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f4fbf7;
+}
+
+/* Room for the fixed navbar (10px offset + 68px bar + a little air), as on the admin panel. */
+.lf-page-nav-spacer {
+  height: 86px;
+  flex-shrink: 0;
+}
+
+/* As tall as the embedded page (at least the rest of the screen, while it loads); the footer comes
+   after it and the whole page scrolls together. */
+.lf-page-frame {
+  flex-shrink: 0;
+  min-height: calc(100vh - 86px);
+  min-height: calc(100dvh - 86px);
+}
