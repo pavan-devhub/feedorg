@@ -1,8 +1,43 @@
-import React, { useState } from 'react';
-import { ChevronRight, ArrowRight, ArrowLeft, ExternalLink } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft, ExternalLink, X } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { CENTRAL_MINISTRIES, STATES } from '../../data/schemesData';
+import { schemeTheme } from './schemeThemes';
 import './KnowYourSchemes.css';
+
+const countSchemes = (groups) => groups.reduce((n, g) => n + g.schemes.length, 0);
+
+const LEVELS = [
+  { value: 'central', label: 'Central Government' },
+  { value: 'state', label: 'State Government' },
+];
+
+// What step 2 offers for each level: central ministries, or every state's departments.
+// `place` heads the results ("Schemes for <place> → <name>").
+const GROUPS = {
+  central: CENTRAL_MINISTRIES.map((m) => ({ ...m, place: 'Central Government' })),
+  state: STATES.flatMap((s) => s.depts.map((d) => ({ ...d, place: `${s.name} Government` }))),
+};
+
+const CENTRAL_SCHEME_COUNT = countSchemes(CENTRAL_MINISTRIES);
+const AP_SCHEME_COUNT = countSchemes(STATES.find((s) => s.id === 'AP').depts);
+
+// Detail rows of the "View Details" dialog, shown when the scheme has the field.
+const SCHEME_FACTS = [
+  ['benefit', 'Benefits'],
+  ['who', 'Who can apply'],
+  ['nodal', 'Nodal agency'],
+  ['stacks', 'Combines with'],
+];
+
+const hostOf = (url) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+};
 
 // Solid glyphs matching the reference artwork (lucide only ships outline icons).
 const BankIcon = () => (
@@ -73,27 +108,30 @@ const StepWave = ({ id }) => (
   </svg>
 );
 
+// `controlId` makes the step title the label of the dropdown in that card.
 const STEPS = [
   {
-    level: 'central',
+    key: 'level',
     tone: 'green',
     icon: <BankIcon />,
     title: 'Choose level',
     text: ['Select Central, State or', 'Ministry / Department level'],
+    controlId: 'kys-level',
   },
   {
-    level: 'ministry',
+    key: 'group',
     tone: 'blue',
     icon: <DocumentIcon />,
     title: ['Choose ministry', 'or department'],
     text: ['Select the relevant ministry', 'or department'],
+    controlId: 'kys-group',
   },
   {
-    level: 'details',
+    key: 'count',
     tone: 'orange',
     icon: <ExternalLink strokeWidth={2.6} />,
-    title: 'Open the scheme',
-    text: ['View detailed information,', 'eligibility, benefits and apply'],
+    title: 'Available schemes',
+    text: ['View schemes based on your', 'selection below'],
   },
 ];
 
@@ -105,11 +143,127 @@ const withBreaks = (lines) =>
     </React.Fragment>
   ));
 
-const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
-  const [selectedLevel, setSelectedLevel] = useState('central');
+const Select = ({ children, ...props }) => (
+  <span className="kys-select">
+    <select {...props}>{children}</select>
+    <ChevronDown strokeWidth={2.2} aria-hidden="true" />
+  </span>
+);
 
-  const handleLevelSelect = (level) => {
-    setSelectedLevel(level);
+const SchemeCard = ({ scheme, onOpen }) => {
+  const { Icon, tone, image } = schemeTheme(scheme);
+  return (
+    <li className={`kys-scheme kys-tone--${tone}`}>
+      <img className="kys-scheme-img" src={image} alt="" loading="lazy" decoding="async" />
+      <span className="kys-scheme-icon" aria-hidden="true"><Icon strokeWidth={2} /></span>
+      <div className="kys-scheme-body">
+        <h3 className="kys-scheme-title">{scheme.name}</h3>
+        <p className="kys-scheme-desc">{scheme.benefit}</p>
+        <button type="button" className="kys-scheme-btn" onClick={onOpen} aria-label={`View details: ${scheme.name}`}>
+          View Details <ArrowRight strokeWidth={2.2} />
+        </button>
+      </div>
+    </li>
+  );
+};
+
+// Native modal <dialog>: it traps focus, closes on Esc and hands focus back by itself.
+// A click on the backdrop lands on the <dialog> element itself, so that closes it too.
+const SchemeDetails = ({ scheme, group, onClosed }) => {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (scheme) dialogRef.current.showModal();
+  }, [scheme]);
+
+  const close = () => dialogRef.current.close();
+  const theme = scheme && schemeTheme(scheme);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      className="kys-dialog"
+      aria-labelledby="kys-dialog-title"
+      onClose={onClosed}
+      onClick={(e) => e.target === e.currentTarget && close()}
+    >
+      {scheme && (
+        <div className={`kys-dialog-inner kys-tone--${theme.tone}`}>
+          <img className="kys-dialog-img" src={theme.image} alt="" />
+          <button type="button" className="kys-dialog-close" onClick={close} aria-label="Close">
+            <X strokeWidth={2.4} />
+          </button>
+          <div className="kys-dialog-body">
+            <div className="kys-dialog-head">
+              <span className="kys-scheme-icon" aria-hidden="true"><theme.Icon strokeWidth={2} /></span>
+              <p className="kys-dialog-place">{group.place} · {group.name}</p>
+            </div>
+            <h2 id="kys-dialog-title" className="kys-dialog-title">{scheme.name}</h2>
+            {scheme.type && scheme.type !== 'State scheme' && <span className="kys-dialog-type">{scheme.type}</span>}
+            <dl className="kys-dialog-facts">
+              {SCHEME_FACTS.filter(([field]) => scheme[field]).map(([field, label]) => (
+                <div key={field}>
+                  <dt>{label}</dt>
+                  <dd>{scheme[field]}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="kys-dialog-foot">
+              <a className="kys-dialog-apply" href={scheme.url} target="_blank" rel="noopener noreferrer">
+                Visit official website <ExternalLink strokeWidth={2.4} />
+              </a>
+              <span className="kys-dialog-host">{hostOf(scheme.url)}</span>
+            </div>
+            <p className="kys-dialog-note">
+              Rates, limits and deadlines change, so confirm on the official website before applying.
+            </p>
+          </div>
+        </div>
+      )}
+    </dialog>
+  );
+};
+
+const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
+  const [level, setLevel] = useState('central');
+  const [groupId, setGroupId] = useState(GROUPS.central[0].id);
+  const [openScheme, setOpenScheme] = useState(null);
+
+  const group = GROUPS[level].find((g) => g.id === groupId);
+  const schemeCount = group.schemes.length;
+
+  // A new level starts on its first ministry / department, so there is always a list to show.
+  const handleLevelChange = (e) => {
+    const nextLevel = e.target.value;
+    setLevel(nextLevel);
+    setGroupId(GROUPS[nextLevel][0].id);
+  };
+
+  const stepControls = {
+    level: (
+      <Select id="kys-level" value={level} onChange={handleLevelChange}>
+        {LEVELS.map((l) => (
+          <option key={l.value} value={l.value}>{l.label}</option>
+        ))}
+      </Select>
+    ),
+    group: (
+      <Select id="kys-group" value={groupId} onChange={(e) => setGroupId(e.target.value)}>
+        {level === 'central'
+          ? CENTRAL_MINISTRIES.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)
+          : STATES.map((s) => (
+            <optgroup key={s.id} label={s.name}>
+              {s.depts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </optgroup>
+          ))}
+      </Select>
+    ),
+    count: (
+      <p className="kys-step-count" aria-live="polite">
+        <span className="kys-step-count-num">{schemeCount}</span>
+        {schemeCount === 1 ? 'Scheme found' : 'Schemes found'}
+      </p>
+    ),
   };
 
   const handleEligibilityCheck = () => {
@@ -130,10 +284,10 @@ const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               src="/images/know-your-schemes/hero-art.jpg"
               alt="Farmer checking government schemes on a phone in front of a government building"
             />
+            <button type="button" className="kys-back-btn" onClick={() => onNavigate('home')}>
+              <ArrowLeft strokeWidth={2.4} /> Back to Home
+            </button>
             <div className="kys-hero-copy">
-              <button type="button" className="kys-back-btn" onClick={() => onNavigate('home')}>
-                <ArrowLeft strokeWidth={2.4} /> Back to Home
-              </button>
               <h1 className="kys-hero-title">
                 Know Your <span className="kys-hero-highlight">Schemes</span>
               </h1>
@@ -167,14 +321,14 @@ const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               <div className="kys-stat kys-stat--green">
                 <div className="kys-stat-icon"><BankIcon /></div>
                 <div className="kys-stat-text">
-                  <span className="kys-stat-num">152</span>
+                  <span className="kys-stat-num">{CENTRAL_SCHEME_COUNT}</span>
                   <span className="kys-stat-label">Central Schemes</span>
                 </div>
               </div>
               <div className="kys-stat kys-stat--blue">
                 <div className="kys-stat-icon"><PeopleIcon /></div>
                 <div className="kys-stat-text">
-                  <span className="kys-stat-num">31</span>
+                  <span className="kys-stat-num">{CENTRAL_MINISTRIES.length}</span>
                   <span className="kys-stat-label">Ministries &amp; Bodies</span>
                 </div>
               </div>
@@ -183,7 +337,7 @@ const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
                   <img src="/images/know-your-schemes/india-map.png" alt="" />
                 </div>
                 <div className="kys-stat-text">
-                  <span className="kys-stat-num">26</span>
+                  <span className="kys-stat-num">{AP_SCHEME_COUNT}</span>
                   <span className="kys-stat-label">Andhra Pradesh Schemes</span>
                 </div>
               </div>
@@ -202,29 +356,46 @@ const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
             {/* THREE-STEP FLOW */}
             <ol className="kys-steps">
-              {STEPS.map((step, i) => (
-                <li key={step.level} className={`kys-step kys-step--${step.tone}`}>
-                  <button
-                    type="button"
-                    className="kys-step-card"
-                    aria-current={selectedLevel === step.level ? 'step' : undefined}
-                    onClick={() => handleLevelSelect(step.level)}
-                  >
-                    <StepWave id={`kys-wave-${step.tone}`} />
-                    <span className="kys-step-num">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="kys-step-icon">{step.icon}</span>
-                    <span className="kys-step-text">
-                      <span className="kys-step-title">{withBreaks(step.title)}</span>
-                      <span className="kys-step-desc">{withBreaks(step.text)}</span>
-                    </span>
-                    <span className="kys-step-arrow"><ChevronRight strokeWidth={2.6} /></span>
-                  </button>
-                  {i < STEPS.length - 1 && (
-                    <span className="kys-step-connector" aria-hidden="true"><ChevronRight strokeWidth={2.8} /></span>
-                  )}
-                </li>
-              ))}
+              {STEPS.map((step, i) => {
+                const Title = step.controlId ? 'label' : 'span';
+                return (
+                  <li key={step.key} className={`kys-step kys-step--${step.tone}`}>
+                    <div className="kys-step-card">
+                      <StepWave id={`kys-wave-${step.tone}`} />
+                      <span className="kys-step-num">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="kys-step-icon">{step.icon}</span>
+                      <span className="kys-step-text">
+                        <Title className="kys-step-title" htmlFor={step.controlId}>{withBreaks(step.title)}</Title>
+                        <span className="kys-step-desc">{withBreaks(step.text)}</span>
+                      </span>
+                      {stepControls[step.key]}
+                    </div>
+                    {i < STEPS.length - 1 && (
+                      <span className="kys-step-connector" aria-hidden="true"><ChevronRight strokeWidth={2.8} /></span>
+                    )}
+                  </li>
+                );
+              })}
             </ol>
+
+            {/* SCHEMES OF THE SELECTED MINISTRY / DEPARTMENT */}
+            <section className="kys-schemes" aria-labelledby="kys-schemes-title">
+              <header className="kys-schemes-head">
+                <h2 id="kys-schemes-title" className="kys-schemes-title">
+                  <span>Schemes for</span>{' '}
+                  <span className="kys-schemes-place">{group.place}</span>{' '}
+                  <ArrowRight className="kys-schemes-sep" strokeWidth={2.4} aria-hidden="true" />{' '}
+                  <span className="kys-schemes-place">{group.name}</span>
+                </h2>
+                <p className="kys-schemes-desc">Explore the available schemes, view details, eligibility criteria and apply.</p>
+              </header>
+              <ul className="kys-scheme-grid">
+                {group.schemes.map((scheme) => (
+                  <SchemeCard key={scheme.name} scheme={scheme} onOpen={() => setOpenScheme(scheme)} />
+                ))}
+              </ul>
+            </section>
+            <SchemeDetails scheme={openScheme} group={group} onClosed={() => setOpenScheme(null)} />
 
             {/* ELIGIBILITY CHECKER */}
             <section className="kys-eligibility" aria-labelledby="kys-eligibility-title">
