@@ -1,7 +1,8 @@
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 import states from "./states_urls";
 import "./TradeFairs.css";
-function TradeFairs() {
+function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
 
     const [state, setState] = useState("");
     const [ministry, setMinistry] = useState("");
@@ -102,6 +103,8 @@ function TradeFairs() {
     return (
 
         <div className="trade-page">
+
+            <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="TradeFairs" />
 
 
             {/* Decorative greenery */}

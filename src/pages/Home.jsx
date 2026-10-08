@@ -3,7 +3,7 @@ import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, 
 import { useTranslation } from 'react-i18next';
 import Footer from '../components/Footer';
 import AboutUs from './AboutUs';
-import Navbar, { servicesMegaMenu } from '../components/Navbar';
+import Navbar, { servicesMegaMenu, SERVICE_ROUTES } from '../components/Navbar';
 import '../components/Navbar.css';
 // --- Events & Updates Static Data ---
 const centralStateUpdates = [
@@ -303,10 +303,6 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
             @keyframes flyInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
             @keyframes flyInTop { from { opacity: 0; transform: translateY(-80px); } to { opacity: 1; transform: translateY(0); } }
             @keyframes flyInBottom { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: translateY(0); } }
-            
-            .service-btn-animated {
-              opacity: 0;
-            }
 
             .eco-obj {
               position: absolute;
@@ -354,16 +350,18 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
               const animName = animations[sIdx % 4];
               return (
               <div key={sIdx} 
-                className="srv-card service-btn-animated"
+                className="srv-card"
                 style={{ 
-                  animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards` : 'none',
-                  cursor: (service.name === 'PRODUCT 360' || service.name === 'MY EXPORTS' || service.name === 'MY TOOLS' || service.name === 'MY BUSINESS') ? 'pointer' : undefined
+                  // Hidden until the section scrolls into view, then flies in. `backwards` (not
+                  // `forwards`) hands the tile back to its own styles once it lands, so the
+                  // .srv-card:hover lift isn't pinned away by the animation's last frame.
+                  opacity: isServicesVisible ? 1 : 0,
+                  animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s backwards` : 'none',
+                  cursor: SERVICE_ROUTES[service.name] ? 'pointer' : 'default'
                 }}
                 onClick={() => {
-                  if (service.name === 'PRODUCT 360') onNavigate('product360');
-                  if (service.name === 'MY EXPORTS') onNavigate('exports');
-                  if (service.name === 'MY TOOLS') onNavigate('tools');
-                  if (service.name === 'MY BUSINESS') onNavigate('mybusiness');
+                  const target = SERVICE_ROUTES[service.name];
+                  if (target) onNavigate(target);
                 }}
               >
                 <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>

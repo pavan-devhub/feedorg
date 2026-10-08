@@ -3,7 +3,11 @@
 /* ==========================================================================
    FEED WORLD — Global Navbar
    ========================================================================== */
-.fw-nav-root {
+/* The mobile drawer renders as a sibling of .fw-nav-root, not inside it, so it needs the colour
+   tokens declared on it too - otherwise its header and Login button gradients resolve to nothing
+   and leave white text on a white background. */
+.fw-nav-root,
+.fw-mobile-panel {
   --fw-forest: #0b5d3b;
   --fw-forest-2: #1b7a46;
   --fw-forest-dark: #073322;
@@ -11,6 +15,9 @@
   --fw-orange-light: #ff9838;
   --fw-saffron: #f5a900;
   --fw-bg-warm: #fcfcf8;
+}
+
+.fw-nav-root {
   position: fixed;
   top: 10px;
   left: 0;
@@ -390,13 +397,54 @@
   outline-offset: 2px;
 }
 
+/* ---- Services mega menu ---- */
+.fw-services-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* Above any page content, just under the navbar (1000) that holds the menu itself. */
+  z-index: 999;
+  animation: fwFade 0.25s ease;
+}
+
 .fw-services-dropdown {
+  position: fixed;
+  top: 92px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* The tiles have to land on the artwork's white block, so the panel keeps the image's 940 x 620
+     proportions and shrinks as a whole on shorter screens instead of running off the bottom (a
+     fixed 620px panel didn't fit on a typical laptop, and scrolling to reach the last row closed it). */
+  width: min(940px, calc(100vw - 32px), calc((100vh - 108px) * 940 / 620));
+  aspect-ratio: 940 / 620;
+  /* Lets everything inside size itself in cqw, i.e. in proportion to the panel. */
+  container-type: inline-size;
+  background: url(/services-bg.avif) center / 100% 100% no-repeat;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
   animation: fwDropIn 0.25s ease;
 }
 @keyframes fwDropIn {
   from { opacity: 0; transform: translate(-50%, -8px); }
   to { opacity: 1; transform: translate(-50%, 0); }
 }
+
+/* Pushes the grid down into the artwork's white block: 32% of the panel's height. */
+.fw-services-dropdown-spacer {
+  height: 21.1cqw;
+  flex-shrink: 0;
+}
+
+@keyframes fwFlyInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fwFlyInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fwFlyInTop { from { opacity: 0; transform: translateY(-80px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fwFlyInBottom { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ---- Responsive tiers ---- */
 @media (max-width: 1320px) {
@@ -450,6 +498,8 @@
   top: 0;
   right: 0;
   height: 100vh;
+  /* Phones' collapsing address bar makes 100vh taller than what's visible, hiding the footer. */
+  height: 100dvh;
   width: min(86vw, 360px);
   background: #ffffff;
   z-index: 1002;
@@ -593,8 +643,8 @@
   cursor: default;
 }
 .fw-mobile-submenu-item img {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -747,32 +797,39 @@
    Home.jsx's embedded Services Ecosystem section reuses these same .srv-card /
    .srv-icon-circle / .srv-card-image / .srv-card-text-area classes in a much larger box, so
    these overrides are scoped under .fw-services-dropdown rather than changing the base rules
-   everyone else uses. */
+   everyone else uses. Sizes are in cqw so the tiles scale with the panel; the px value each one
+   works out to at the full 940px width is noted alongside (1cqw = 9.4px there). */
 .fw-services-dropdown .srv-cards-grid {
+  flex: 1;
+  min-height: 0;
+  /* Left, right, bottom padding to align with the artwork's white boundaries */
+  padding: 0 5cqw 4cqw;
   /* 16 services -> an even 4 x 4, same as Home.jsx's grid (5 columns left one tile on its own row) */
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 0.85cqw; /* 8px */
 }
 .fw-services-dropdown .srv-card {
-  padding: 8px 6px;
+  padding: 0.85cqw 0.64cqw; /* 8px 6px */
 }
 .fw-services-dropdown .srv-card-content {
-  gap: 5px;
-  margin-top: 2px;
+  gap: 0.53cqw; /* 5px */
+  margin-top: 0.2cqw; /* 2px */
 }
 .fw-services-dropdown .srv-icon-circle {
-  width: 38px;
-  height: 38px;
+  width: 5.1cqw; /* 48px */
+  height: 5.1cqw;
 }
 .fw-services-dropdown .srv-card-image {
-  width: 28px;
-  height: 28px;
+  width: 3.83cqw; /* 36px */
+  height: 3.83cqw;
 }
 .fw-services-dropdown .srv-card-text-area h3 {
-  font-size: 9px;
+  font-size: max(8px, 0.96cqw); /* 9px */
   letter-spacing: 0.3px;
 }
 .fw-services-dropdown .srv-card-badge {
-  font-size: 9px;
+  top: 0.85cqw; /* 8px */
+  left: 0.85cqw;
+  font-size: max(8px, 0.96cqw); /* 9px */
   padding: 1px 5px;
 }

@@ -1,19 +1,12 @@
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
 /* =========================
    Main Page
 ========================= */
 
 .trade-page {
     min-height: 100vh;
+
+    /* Clears the fixed site navbar so it doesn't sit on top of the page's own header. */
+    padding-top: 90px;
 
     background:
         linear-gradient(
@@ -34,7 +27,7 @@ body {
    Decorative Leaves
 ========================= */
 
-.leaf {
+.trade-page .leaf {
     position: absolute;
 
     font-size: 70px;
@@ -44,28 +37,28 @@ body {
     pointer-events: none;
 }
 
-.leaf-one {
+.trade-page .leaf-one {
     top: 120px;
     left: -10px;
 
     transform: rotate(-25deg);
 }
 
-.leaf-two {
+.trade-page .leaf-two {
     top: 300px;
     right: -10px;
 
     transform: rotate(25deg);
 }
 
-.leaf-three {
+.trade-page .leaf-three {
     bottom: 150px;
     left: 30px;
 
     font-size: 55px;
 }
 
-.leaf-four {
+.trade-page .leaf-four {
     bottom: 300px;
     right: 40px;
 
@@ -77,7 +70,7 @@ body {
    Header
 ========================= */
 
-.trade-header {
+.trade-page .trade-header {
     min-height: 90px;
 
     padding: 15px 7%;
@@ -107,7 +100,7 @@ body {
 }
 
 
-.brand-section {
+.trade-page .brand-section {
     display: flex;
 
     align-items: center;
@@ -116,7 +109,7 @@ body {
 }
 
 
-.brand-icon {
+.trade-page .brand-icon {
     width: 55px;
     height: 55px;
 
@@ -138,14 +131,14 @@ body {
 }
 
 
-.brand-section h1 {
+.trade-page .brand-section h1 {
     margin: 0;
 
     font-size: 24px;
 }
 
 
-.brand-section p {
+.trade-page .brand-section p {
     margin: 4px 0 0;
 
     font-size: 13px;
@@ -154,7 +147,7 @@ body {
 }
 
 
-.header-leaves {
+.trade-page .header-leaves {
     font-size: 25px;
 
     letter-spacing: 7px;
@@ -165,7 +158,7 @@ body {
    Main Container
 ========================= */
 
-.trade-container {
+.trade-page .trade-container {
     width: 90%;
 
     max-width: 1050px;
@@ -184,14 +177,14 @@ body {
    Hero
 ========================= */
 
-.hero-section {
+.trade-page .hero-section {
     text-align: center;
 
     margin-bottom: 35px;
 }
 
 
-.hero-icon {
+.trade-page .hero-icon {
     font-size: 55px;
 
     display: inline-block;
@@ -201,7 +194,7 @@ body {
 }
 
 
-.hero-section h2 {
+.trade-page .hero-section h2 {
     margin: 10px 0;
 
     color: #1b5e20;
@@ -210,7 +203,7 @@ body {
 }
 
 
-.hero-section p {
+.trade-page .hero-section p {
     margin: auto;
 
     max-width: 650px;
@@ -227,7 +220,7 @@ body {
    Domestic / International
 ========================= */
 
-.type-section {
+.trade-page .type-section {
     display: flex;
 
     justify-content: center;
@@ -238,7 +231,7 @@ body {
 }
 
 
-.type-button {
+.trade-page .type-button {
     padding: 14px 30px;
 
     border: 2px solid #a5d6a7;
@@ -266,7 +259,7 @@ body {
 }
 
 
-.type-button:hover {
+.trade-page .type-button:hover {
     transform: translateY(-3px);
 
     border-color: #4caf50;
@@ -277,7 +270,7 @@ body {
 }
 
 
-.type-button.active {
+.trade-page .type-button.active {
     background: #2e7d32;
 
     border-color: #2e7d32;
@@ -294,7 +287,7 @@ body {
    Filter Card
 ========================= */
 
-.filter-card {
+.trade-page .filter-card {
     background: white;
 
     border-radius: 20px;
@@ -311,7 +304,7 @@ body {
 }
 
 
-.filter-card::before {
+.trade-page .filter-card::before {
     content: "";
 
     position: absolute;
@@ -339,7 +332,7 @@ body {
    Heading
 ========================= */
 
-.card-heading {
+.trade-page .card-heading {
     display: flex;
 
     align-items: center;
@@ -350,7 +343,7 @@ body {
 }
 
 
-.heading-icon {
+.trade-page .heading-icon {
     width: 55px;
     height: 55px;
 
@@ -368,7 +361,7 @@ body {
 }
 
 
-.card-heading h3 {
+.trade-page .card-heading h3 {
     margin: 0;
 
     color: #1b5e20;
@@ -377,7 +370,7 @@ body {
 }
 
 
-.card-heading p {
+.trade-page .card-heading p {
     margin: 5px 0 0;
 
     color: #718071;
@@ -390,7 +383,7 @@ body {
    Filters
 ========================= */
 
-.filters-grid {
+.trade-page .filters-grid {
     display: grid;
 
     grid-template-columns:
@@ -400,14 +393,14 @@ body {
 }
 
 
-.filter-group {
+.trade-page .filter-group {
     display: flex;
 
     flex-direction: column;
 }
 
 
-.filter-group label {
+.trade-page .filter-group label {
     margin-bottom: 8px;
 
     color: #315b35;
@@ -418,7 +411,7 @@ body {
 }
 
 
-.filter-group select {
+.trade-page .filter-group select {
     width: 100%;
 
     padding: 14px;
@@ -443,14 +436,14 @@ body {
 }
 
 
-.filter-group select:hover {
+.trade-page .filter-group select:hover {
     border-color: #4caf50;
 
     background: #f1f8f1;
 }
 
 
-.filter-group select:focus {
+.trade-page .filter-group select:focus {
     border-color: #2e7d32;
 
     background: white;
@@ -465,7 +458,7 @@ body {
    View Button
 ========================= */
 
-.view-button {
+.trade-page .view-button {
     width: 100%;
 
     margin-top: 30px;
@@ -508,7 +501,7 @@ body {
 }
 
 
-.view-button:hover {
+.trade-page .view-button:hover {
     transform: translateY(-3px);
 
     box-shadow:
@@ -517,7 +510,7 @@ body {
 }
 
 
-.view-button:active {
+.trade-page .view-button:active {
     transform: translateY(0);
 }
 
@@ -526,7 +519,7 @@ body {
    Information Box
 ========================= */
 
-.info-box {
+.trade-page .info-box {
     margin-top: 25px;
 
     padding: 15px 18px;
@@ -546,12 +539,12 @@ body {
 }
 
 
-.info-icon {
+.trade-page .info-icon {
     font-size: 19px;
 }
 
 
-.info-box p {
+.trade-page .info-box p {
     margin: 0;
 
     color: #617061;
@@ -566,7 +559,7 @@ body {
    Footer
 ========================= */
 
-.trade-footer {
+.trade-page .trade-footer {
     min-height: 80px;
 
     padding: 20px;
@@ -587,7 +580,7 @@ body {
 }
 
 
-.trade-footer p {
+.trade-page .trade-footer p {
     margin: 0;
 
     opacity: 0.9;
@@ -621,49 +614,49 @@ body {
 
 @media (max-width: 768px) {
 
-    .trade-header {
+    .trade-page .trade-header {
         padding: 15px 5%;
     }
 
 
-    .header-leaves {
+    .trade-page .header-leaves {
         display: none;
     }
 
 
-    .trade-container {
+    .trade-page .trade-container {
         width: 92%;
 
         padding-top: 35px;
     }
 
 
-    .hero-section h2 {
+    .trade-page .hero-section h2 {
         font-size: 30px;
     }
 
 
-    .type-section {
+    .trade-page .type-section {
         flex-direction: column;
     }
 
 
-    .type-button {
+    .trade-page .type-button {
         justify-content: center;
     }
 
 
-    .filters-grid {
+    .trade-page .filters-grid {
         grid-template-columns: 1fr;
     }
 
 
-    .filter-card {
+    .trade-page .filter-card {
         padding: 25px 20px;
     }
 
 
-    .trade-footer {
+    .trade-page .trade-footer {
         text-align: center;
 
         flex-wrap: wrap;
@@ -674,17 +667,17 @@ body {
 
 @media (max-width: 480px) {
 
-    .brand-section h1 {
+    .trade-page .brand-section h1 {
         font-size: 20px;
     }
 
 
-    .brand-section p {
+    .trade-page .brand-section p {
         font-size: 11px;
     }
 
 
-    .brand-icon {
+    .trade-page .brand-icon {
         width: 45px;
         height: 45px;
 
@@ -692,12 +685,12 @@ body {
     }
 
 
-    .hero-section h2 {
+    .trade-page .hero-section h2 {
         font-size: 27px;
     }
 
 
-    .card-heading h3 {
+    .trade-page .card-heading h3 {
         font-size: 18px;
     }
 

@@ -43,8 +43,9 @@ export const servicesMegaMenu = [
 ];
 
 // Maps a mega-menu tile to the page it should open; tiles with no entry are inert (matches
-// the set of live destinations the mega menu already supported before this redesign).
-const SERVICE_ROUTES = {
+// the set of live destinations the mega menu already supported before this redesign). Home's
+// Services Ecosystem grid shares it, so both menus always open the same pages.
+export const SERVICE_ROUTES = {
   'PRODUCT 360': 'product360',
   'MY EXPORTS': 'exports',
   'MY TOOLS': 'tools',
@@ -53,6 +54,7 @@ const SERVICE_ROUTES = {
   'EPM': 'epm',
   'TRADE FAIRS':'TradeFairs',
   'SAFE MISSION': 'safe-mission',
+  'KNOW YOUR SCHEMES': 'schemes',
 };
 
 // `route` links a nav item to the `currentPage` value that should light it up; items without
@@ -96,6 +98,9 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
   const profileDropdownRef = useRef(null);
   const lastScrollY = useRef(0);
   const avatarInputRef = useRef(null);
+  // Read by the (mount-once) scroll listener, so the bar never slides away from under an open menu.
+  const menuOpenRef = useRef(false);
+  menuOpenRef.current = isServicesOpen || isProfileOpen || isDevicesOpen;
 
   const [avatarPath, setAvatarPath] = useState(user?.profileImageUrl || null);
   const [avatarVersion, setAvatarVersion] = useState(0);
@@ -183,16 +188,16 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Auto-hide navbar on scroll down, show on scroll up
+  // Auto-hide navbar on scroll down, show on scroll up - but never while one of its menus is open,
+  // or the menu would be carried off-screen with it.
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
       const delta = currentY - lastScrollY.current;
 
       // Only react to meaningful scrolls (>10px) to avoid jitter
-      if (delta > 10 && currentY > 80) {
+      if (delta > 10 && currentY > 80 && !menuOpenRef.current) {
         setNavHidden(true);
-        setIsServicesOpen(false);
       } else if (delta < -10) {
         setNavHidden(false);
       }
@@ -224,10 +229,19 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // The services mega menu and the mobile drawer both sit over a full-screen backdrop, so the page
+  // behind them is locked in place while either is open. The reserved scrollbar gutter stops the
+  // page (and this fixed navbar) from jumping sideways when the scrollbar disappears.
+  const pageScrollLocked = isMobileOpen || isServicesOpen;
   useEffect(() => {
-    document.body.style.overflow = isMobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [isMobileOpen]);
+    if (!pageScrollLocked) return undefined;
+    document.documentElement.style.scrollbarGutter = 'stable';
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.documentElement.style.scrollbarGutter = '';
+      document.body.style.overflow = '';
+    };
+  }, [pageScrollLocked]);
 
   const scrollToAboutUs = () => {
     const el = document.getElementById('about-us');
@@ -281,21 +295,7 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
     <>
       {/* Background Blur Overlay for Services Menu */}
       {isServicesOpen && (
-        <div
-          onClick={() => setIsServicesOpen(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'rgba(255, 255, 255, 0.3)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            zIndex: 40,
-            transition: 'all 0.3s ease'
-          }}
-        />
+        <div className="fw-services-overlay" onClick={() => setIsServicesOpen(false)} />
       )}
 
       <nav className={`fw-nav-root${navHidden ? ' fw-nav-hidden' : ''}${adminMode ? ' fw-nav-admin' : ''}`} aria-label="Main navigation">
@@ -353,53 +353,26 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
 
                   {/* Services Mega Menu */}
                   {isServicesItem && isServicesOpen && (
-                    <div className="fw-services-dropdown" style={{
-                      position: 'fixed',
-                      top: '92px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '940px',
-                      height: '620px',
-                      backgroundImage: 'url(/services-bg.avif)',
-                      backgroundSize: '100% 100%',
-                      backgroundRepeat: 'no-repeat',
-                      borderRadius: '24px',
-                      boxShadow: '0 30px 60px -15px rgba(0,0,0,0.6)',
-                      zIndex: 9999,
-                      cursor: 'default',
-                      display: 'flex',
-                      flexDirection: 'column'
-                    }} onClick={(e) => e.stopPropagation()}>
-
-                      <style>{`
-                        @keyframes flyInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
-                        @keyframes flyInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
-                        @keyframes flyInTop { from { opacity: 0; transform: translateY(-80px); } to { opacity: 1; transform: translateY(0); } }
-                        @keyframes flyInBottom { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: translateY(0); } }
-
-                        .service-btn-animated {
-                          opacity: 0;
-                        }
-                      `}</style>
+                    <div className="fw-services-dropdown" onClick={(e) => e.stopPropagation()}>
 
                       {/* Spacer to push grid down into the white block (approx 32% from top) */}
-                      <div style={{ height: '32%', width: '100%' }}></div>
+                      <div className="fw-services-dropdown-spacer" />
 
                       {/* Buttons Grid container positioned tightly in the white space */}
-                      <div className="srv-cards-grid" style={{
-                        flex: 1,
-                        padding: '0 5% 4% 5%', // Left, right, bottom padding to align with white boundaries
-                      }}>
+                      <div className="srv-cards-grid">
                         {servicesMegaMenu.map((service, sIdx) => {
-                          const animations = ['flyInLeft', 'flyInTop', 'flyInBottom', 'flyInRight'];
+                          const animations = ['fwFlyInLeft', 'fwFlyInTop', 'fwFlyInBottom', 'fwFlyInRight'];
                           const animName = animations[sIdx % 4];
                           const clickable = Boolean(SERVICE_ROUTES[service.name]);
                           return (
                           <div key={sIdx}
-                            className="srv-card service-btn-animated"
+                            className="srv-card"
                             style={{
-                              animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s forwards`,
-                              cursor: clickable ? 'pointer' : undefined
+                              // `backwards` (not `forwards`) holds the hidden first frame through the
+                              // stagger delay, then hands the tile back to its own styles once it lands -
+                              // a `forwards` fill would pin `transform` and kill the :hover lift.
+                              animation: `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s backwards`,
+                              cursor: clickable ? 'pointer' : 'default'
                             }}
                             onClick={() => handleServiceTileClick(service)}
                           >

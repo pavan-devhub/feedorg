@@ -15,6 +15,14 @@ class ErrorBoundary extends React.Component {
   }
 
   handleReload = () => {
+    // App restores the last open page from sessionStorage on load (see PAGE_STORAGE_KEY in
+    // App.jsx), so without clearing it a plain reload would land straight back on the page that
+    // just crashed - and crash again.
+    try {
+      sessionStorage.removeItem('feed_current_page');
+    } catch {
+      // sessionStorage unavailable - App starts from home anyway
+    }
     window.location.href = '/';
   };
 

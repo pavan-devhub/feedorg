@@ -27,13 +27,14 @@ import EpmRegister from './pages/EpmRegister';
 import EpmVolunteer from './pages/EpmVolunteer';
 import EpmEventDetails from './pages/EpmEventDetails';
 import SafeMission from './pages/SafeMission';
+import TradeFairs from './pages/TradeFairs';
+import KnowYourSchemes from './pages/know-your-schemes/KnowYourSchemes';
 import AdminPortal from './pages/admin/AdminPortal';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 import { API_BASE_URL } from './api/config';
 import { syncLiveLogin } from './api/liveUpdates';
 import { takeReturnTo } from './utils/publicationLinks';
-// import TradeFairs from './pages/TradeFairs';
 
 function MyBusinessPlaceholder({ onNavigate, isLoggedIn, user, onLogout, currentTab }) {
   return (
@@ -287,7 +288,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'schemes', 'TradeFairs'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -324,10 +325,9 @@ function App() {
           // Admins never get here (they're kept in the admin panel, which has its own
           // Publications section) - this is the regular reader page.
           <PublicationsHub onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-        ) :currentPage === 'TradeFairs'?(
+        ) : currentPage === 'TradeFairs' ? (
           <TradeFairs onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-        )
-        : currentPage === 'epm' ? (
+        ) : currentPage === 'epm' ? (
           <Epm onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'epm-details' ? (
           <EpmDetails onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
@@ -353,6 +353,8 @@ function App() {
           <EpmVolunteer onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} eventId={navState.eventId} />
         ) : currentPage === 'safe-mission' ? (
           <SafeMission onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'schemes' ? (
+          <KnowYourSchemes onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (
           <MyBusinessPlaceholder onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} currentTab={currentPage} />
         ) : null}
