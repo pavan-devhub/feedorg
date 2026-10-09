@@ -119,7 +119,7 @@
   border-radius: 20px;
   background: #f0f5f7;
 }
-.loans-hero__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 23%; } /* shows from the top of the farmer's hair down to the hands holding the notes */
+.loans-hero__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 57%; } /* shows the customer from the top of his hair down to the hands holding the notes */
 .loans-hero__title {
   position: absolute;
   bottom: 0;
@@ -326,7 +326,7 @@ a.finance-stat-card:focus-visible { outline: 3px solid rgba(22, 119, 255, .4); o
   .loans-hero { padding-top: 16px; }
   .loans-hero__media, .loans-hero__intro, .finance-stats, .finance-categories__inner { width: calc(100% - 32px); }
   .loans-hero__media { height: 130px; border-radius: 16px; }
-  .loans-hero__image { object-position: 52% 20%; }
+  .loans-hero__image { object-position: 52% 60%; }
   .loans-hero__title { height: 36px; padding: 0 14px; font-size: 14px; letter-spacing: .8px; line-height: 36px; }
   .loans-hero__intro { margin-top: 20px; font-size: 17px; }
   .finance-stats { grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 16px; padding: 4px; border-radius: 30px; }
