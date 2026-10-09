@@ -535,10 +535,14 @@
   position: relative;
   width: calc(1804 * var(--u));
   margin: calc(40 * var(--u)) 0 0 calc(8 * var(--u));
-  padding: calc(32 * var(--u)) calc(220 * var(--u)) calc(40 * var(--u));
+  padding: calc(56 * var(--u)) calc(220 * var(--u)) calc(40 * var(--u));
   border: 1px solid #e3ebf3;
   border-radius: calc(16 * var(--u));
-  background: #ffffff;
+  /* the warm + mint wash behind the Loans & Finance category cards */
+  background:
+    radial-gradient(900px 340px at 92% -10%, rgba(255, 159, 67, 0.22), transparent 70%),
+    radial-gradient(780px 340px at -5% 105%, rgba(16, 185, 129, 0.16), transparent 70%),
+    linear-gradient(180deg, #f2fbf6 0%, #fffaf4 100%);
   box-shadow: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(28, 58, 94, 0.06);
 }
 
@@ -587,11 +591,16 @@
   color: #4f5a72;
 }
 
+/*
+ * Scheme cards: the same card as the Loans & Finance "Explore your finance needs" grid - an inset
+ * 4:3 photo, title, benefit line and an accent tag; four to a row. Sized in px like that page
+ * (not design units) so they match it at every width; the stacked sizes are further down.
+ */
 .kys-scheme-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: calc(36 * var(--u)) calc(48 * var(--u));
-  margin: calc(26 * var(--u)) 0 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin: calc(48 * var(--u)) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -604,61 +613,61 @@
 .kys-tone--amber { --tone-fg: #cf8700; --tone-bg: #fff1d4; }
 .kys-tone--teal { --tone-fg: #0f8a83; --tone-bg: #dcf5f2; }
 
-/* photo across the top; below it the tone icon beside the title, benefit and button */
+/* Card accents use the Loans & Finance palette; tones it doesn't have take the nearest one. */
+.kys-scheme.kys-tone--green,
+.kys-scheme.kys-tone--teal { --accent: #0ea063; }
+.kys-scheme.kys-tone--orange,
+.kys-scheme.kys-tone--amber { --accent: #f2650a; }
+.kys-scheme.kys-tone--purple,
+.kys-scheme.kys-tone--pink { --accent: #7c3aed; }
+.kys-scheme.kys-tone--blue { --accent: #2a7cf5; }
+
 .kys-scheme {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
-  grid-template-areas: 'img img' 'icon body';
-  column-gap: calc(24 * var(--u));
-  row-gap: calc(16 * var(--u));
-  padding: calc(12 * var(--u)) calc(12 * var(--u)) calc(20 * var(--u));
-  border: 1px solid #edf2f7;
-  border-radius: calc(18 * var(--u));
+  --accent: #0ea063;
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 8px;
+  border: 1px solid rgba(16, 40, 30, 0.06);
+  border-radius: 22px;
   background: #ffffff;
-  box-shadow: 0 calc(6 * var(--u)) calc(22 * var(--u)) rgba(28, 58, 94, 0.07);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 1px 2px rgba(16, 40, 30, 0.04), 0 12px 28px rgba(16, 60, 40, 0.08);
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .kys-scheme:hover {
-  transform: translateY(-3px);
-  border-color: var(--blue);
-  /* the 1px ring thickens the border to 2px without shifting the card's content */
-  box-shadow: 0 0 0 1px var(--blue), 0 calc(14 * var(--u)) calc(30 * var(--u)) rgba(28, 58, 94, 0.12);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: translateY(-4px);
+  box-shadow: 0 2px 4px rgba(16, 40, 30, 0.05), 0 20px 36px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.kys-scheme-media {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background: #e9f3ed;
 }
 
 .kys-scheme-img {
-  grid-area: img;
   display: block;
   width: 100%;
-  aspect-ratio: 460 / 215;
+  height: 100%;
   object-fit: cover;
-  border-radius: calc(12 * var(--u));
-  background: #eef4f9;
+  filter: saturate(1.22) contrast(1.04) brightness(1.03);
+  transition: transform 0.5s ease;
 }
 
-.kys-scheme-icon {
-  grid-area: icon;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(70 * var(--u));
-  height: calc(70 * var(--u));
-  margin: 0 0 0 calc(10 * var(--u));
-  border-radius: 50%;
-  background: var(--tone-bg);
-  color: var(--tone-fg);
-}
-
-.kys-scheme-icon svg { width: 44%; height: 44%; }
+.kys-scheme:hover .kys-scheme-img { transform: scale(1.04); }
 
 .kys-scheme-body {
-  grid-area: body;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: flex-start;
   min-width: 0;
-  padding-right: calc(10 * var(--u));
+  padding: 14px 8px 8px;
 }
 
 .kys-scheme-title,
@@ -671,52 +680,76 @@
   overflow-wrap: anywhere;
 }
 
+/* scheme names run longer than the Loans & Finance titles, so they get a third line */
 .kys-scheme-title {
-  margin: calc(4 * var(--u)) 0 0;
-  font-size: max(14px, calc(19.5 * var(--u)));
-  line-height: 1.24;
-  font-weight: 700;
-  color: var(--navy);
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  color: #172a72;
 }
 
 .kys-scheme-desc {
-  margin: calc(8 * var(--u)) 0 calc(14 * var(--u));
-  font-size: max(12.5px, calc(16 * var(--u)));
-  line-height: 1.35;
-  color: #5b6579;
+  margin: 4px 0 12px;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #8b95a7;
 }
 
-.kys-scheme-btn {
+.kys-scheme-tag {
   display: inline-flex;
   align-items: center;
-  gap: calc(14 * var(--u));
-  height: max(32px, calc(42 * var(--u)));
+  gap: 6px;
+  max-width: 100%;
   margin-top: auto;
-  padding: 0 calc(20 * var(--u));
-  border: none;
-  border-radius: calc(8 * var(--u));
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 11%, #ffffff);
+  color: color-mix(in srgb, var(--accent) 78%, #0f172a);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.kys-scheme-tag svg { flex: none; width: 14px; height: 14px; color: var(--accent); }
+
+.kys-scheme-tag-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Invisible button over the whole card, so any click on the card opens its details */
+.kys-scheme-open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+.kys-scheme-open:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 3px;
+}
+
+/* Tone icon chip at the top of the "View Details" dialog */
+.kys-scheme-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
   background: var(--tone-bg);
   color: var(--tone-fg);
-  font-family: inherit;
-  font-size: max(12.5px, calc(16 * var(--u)));
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.kys-scheme-btn svg {
-  width: max(14px, calc(19 * var(--u)));
-  height: max(14px, calc(19 * var(--u)));
-  transition: transform 0.2s ease;
-}
-
-.kys-scheme-btn:hover { background: var(--tone-fg); color: #ffffff; }
-.kys-scheme-btn:hover svg { transform: translateX(3px); }
-
-.kys-scheme-btn:focus-visible {
-  outline: 2px solid var(--tone-fg);
-  outline-offset: 2px;
-}
+.kys-scheme-icon svg { width: 44%; height: 44%; }
 
 /* "View Details" dialog: sits in the top layer, so it is sized in px rather than design units */
 html:has(.kys-dialog[open]) { overflow: hidden; }
@@ -1189,21 +1222,13 @@ html:has(.kys-dialog[open]) { overflow: hidden; }
   .kys-step-connector { top: auto; left: 50%; bottom: -22px; transform: translate(-50%, 50%) rotate(90deg); }
   .kys-step-connector svg { width: 26px; height: 26px; }
 
-  .kys-schemes { width: auto; margin: 44px 0 0; padding: 24px 20px; border-radius: 16px; }
+  .kys-schemes { width: auto; margin: 44px 0 0; padding: 40px 20px 24px; border-radius: 16px; }
   .kys-schemes-head { padding-left: 18px; }
   .kys-schemes-head::before { left: 0; top: 4px; width: 5px; height: 24px; }
   .kys-schemes-title { column-gap: 8px; font-size: 21px; }
   .kys-schemes-sep { width: 18px; height: 18px; margin: 0 2px; }
   .kys-schemes-desc { margin-top: 6px; font-size: 14.5px; }
-  .kys-scheme-grid { grid-template-columns: repeat(auto-fill, minmax(min(310px, 100%), 1fr)); gap: 22px; margin-top: 20px; }
-  .kys-scheme { column-gap: 16px; row-gap: 12px; padding: 10px 10px 14px; border-radius: 14px; }
-  .kys-scheme-img { border-radius: 10px; }
-  .kys-scheme-icon { width: 54px; height: 54px; margin-left: 6px; }
-  .kys-scheme-body { padding-right: 6px; }
-  .kys-scheme-title { margin-top: 2px; font-size: 16px; }
-  .kys-scheme-desc { margin: 6px 0 12px; font-size: 13.5px; }
-  .kys-scheme-btn { height: 36px; padding: 0 14px; gap: 10px; border-radius: 8px; font-size: 14px; }
-  .kys-scheme-btn svg { width: 16px; height: 16px; }
+  .kys-scheme-grid { margin-top: 36px; }
 
   .kys-eligibility {
     width: auto;
@@ -1261,6 +1286,27 @@ html:has(.kys-dialog[open]) { overflow: hidden; }
   .kys-eligibility-ribbon svg { top: 12px; right: 17px; width: 29px; height: 36px; }
 }
 
+/* Scheme cards switch at the same widths as the Loans & Finance cards they copy */
+@container (max-width: 1100px) {
+  .kys-scheme-grid { gap: 16px; }
+  .kys-scheme-title { font-size: 17px; }
+}
+
+@container (max-width: 860px) {
+  .kys-scheme-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@container (max-width: 680px) {
+  .kys-scheme-grid { gap: 12px; }
+  .kys-scheme { padding: 6px; border-radius: 18px; }
+  .kys-scheme-media { border-radius: 13px; }
+  .kys-scheme-body { padding: 10px 5px 5px; }
+  .kys-scheme-title { font-size: 15px; letter-spacing: -0.2px; }
+  .kys-scheme-desc { margin: 3px 0 10px; font-size: 12px; }
+  .kys-scheme-tag { gap: 5px; padding: 4px 9px; font-size: 11.5px; }
+  .kys-scheme-tag svg { width: 13px; height: 13px; }
+}
+
 @container (max-width: 640px) {
   .kys-hero { --nav-clear: 84px; padding: var(--nav-clear) 16px calc(var(--art-h) * 0.72 + 8px); }
   .kys-back-btn { --back-h: 36px; margin-bottom: 16px; font-size: 13px; }
@@ -1287,10 +1333,9 @@ html:has(.kys-dialog[open]) { overflow: hidden; }
   .kys-select,
   .kys-step-count { margin-left: 20px; }
 
-  .kys-schemes { padding: 20px 14px; }
+  .kys-schemes { padding: 32px 14px 20px; }
+  .kys-scheme-grid { margin-top: 28px; }
   .kys-schemes-title { font-size: 19px; }
-  .kys-scheme { column-gap: 12px; }
-  .kys-scheme-icon { width: 44px; height: 44px; margin-left: 4px; }
 
   .kys-dialog-body { padding: 0 18px 20px; }
   .kys-dialog-img { height: 140px; }

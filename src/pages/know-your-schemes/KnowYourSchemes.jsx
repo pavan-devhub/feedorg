@@ -150,19 +150,32 @@ const Select = ({ children, ...props }) => (
   </span>
 );
 
+// The same card as the Loans & Finance "Explore your finance needs" grid: inset photo, title,
+// benefit line and an accent tag with the scheme type. The whole card opens the details dialog.
 const SchemeCard = ({ scheme, onOpen }) => {
   const { Icon, tone, image } = schemeTheme(scheme);
   return (
     <li className={`kys-scheme kys-tone--${tone}`}>
-      <img className="kys-scheme-img" src={image} alt="" loading="lazy" decoding="async" />
-      <span className="kys-scheme-icon" aria-hidden="true"><Icon strokeWidth={2} /></span>
+      <div className="kys-scheme-media">
+        <img className="kys-scheme-img" src={image} alt="" loading="lazy" decoding="async" draggable="false" />
+      </div>
       <div className="kys-scheme-body">
         <h3 className="kys-scheme-title">{scheme.name}</h3>
         <p className="kys-scheme-desc">{scheme.benefit}</p>
-        <button type="button" className="kys-scheme-btn" onClick={onOpen} aria-label={`View details: ${scheme.name}`}>
-          View Details <ArrowRight strokeWidth={2.2} />
-        </button>
+        {scheme.type && (
+          <span className="kys-scheme-tag">
+            <Icon strokeWidth={2} aria-hidden="true" />
+            <span className="kys-scheme-tag-text">{scheme.type}</span>
+          </span>
+        )}
       </div>
+      <button
+        type="button"
+        className="kys-scheme-open"
+        onClick={onOpen}
+        aria-haspopup="dialog"
+        aria-label={`View details: ${scheme.name}`}
+      />
     </li>
   );
 };

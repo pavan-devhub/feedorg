@@ -26,7 +26,7 @@ const THEMES = [
   { match: /market|\bgem\b|\bondc\b|trade|nafed|trifed|\bgcc\b|\bnsic\b|offtake|investment/i, Icon: Store, tone: 'green', image: 'journey/05_go_to_market.avif' },
   { match: /awaas|housing|\bpmay\b|property|svamitva|land/i, Icon: House, tone: 'orange', image: 'journey/01_join.avif' },
   { match: /women|mahila|didi|shakti|\bshg\b|\bstree\b|matru|cooperative|sahakar|\bpacs\b|tribal|van dhan/i, Icon: Users, tone: 'pink', image: 'tool_fpo_farmers.avif' },
-  { match: /\bdbt\b|kisan|income|employment|nregs|bharosa|sukhibhava|jan dhan|poshan/i, Icon: HandCoins, tone: 'green', image: 'safe-mission/farmer_1.avif' },
+  { match: /\bdbt\b|kisan|income|employment|nregs|bharosa|sukhibhava|jan dhan|poshan/i, Icon: HandCoins, tone: 'green', image: 'know-your-schemes/dbt-farmer.avif' },
 ];
 
 const DEFAULT_THEME = { Icon: Sprout, tone: 'green', image: 'journey/04_add_value.avif' };
