@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ArrowRight, Globe, Info, Leaf, MapPin, Search, Sprout, Wheat } from "lucide-react";
 import Navbar from "../components/Navbar";
 import states from "./states_urls";
 import "./TradeFairs.css";
@@ -107,22 +108,24 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
             <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="TradeFairs" />
 
 
-            {/* Decorative greenery */}
+            {/* Decorative greenery. Every icon on this page is an SVG, not an emoji: emoji are drawn
+                by each OS's own emoji font, so they looked different (or as "IN" letters / empty
+                boxes) on every system. */}
 
-            <div className="leaf leaf-one">
-                🌿
+            <div className="leaf leaf-one" aria-hidden="true">
+                <Leaf />
             </div>
 
-            <div className="leaf leaf-two">
-                🍃
+            <div className="leaf leaf-two" aria-hidden="true">
+                <Leaf />
             </div>
 
-            <div className="leaf leaf-three">
-                🌱
+            <div className="leaf leaf-three" aria-hidden="true">
+                <Sprout />
             </div>
 
-            <div className="leaf leaf-four">
-                🌿
+            <div className="leaf leaf-four" aria-hidden="true">
+                <Leaf />
             </div>
 
 
@@ -132,8 +135,8 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
 
                 <div className="brand-section">
 
-                    <div className="brand-icon">
-                        🌾
+                    <div className="trade-brand-icon" aria-hidden="true">
+                        <Wheat size={30} />
                     </div>
 
                     <div>
@@ -151,8 +154,10 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
                 </div>
 
 
-                <div className="header-leaves">
-                    🌿 🌱 🍃
+                <div className="header-leaves" aria-hidden="true">
+                    <Leaf size={24} />
+                    <Sprout size={24} />
+                    <Leaf size={24} />
                 </div>
 
             </header>
@@ -167,8 +172,8 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
 
                 <section className="hero-section">
 
-                    <div className="hero-icon">
-                        🌾
+                    <div className="hero-icon" aria-hidden="true">
+                        <Wheat size={52} />
                     </div>
 
                     <h2>
@@ -192,9 +197,7 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
                         className="type-button active"
                     >
 
-                        <span>
-                            🇮🇳
-                        </span>
+                        <MapPin size={18} aria-hidden="true" />
 
                         India Domestic
 
@@ -206,9 +209,7 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
                         onClick={handleInternational}
                     >
 
-                        <span>
-                            🌍
-                        </span>
+                        <Globe size={18} aria-hidden="true" />
 
                         International
 
@@ -225,8 +226,8 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
 
                     <div className="card-heading">
 
-                        <div className="heading-icon">
-                            🌱
+                        <div className="heading-icon" aria-hidden="true">
+                            <Sprout size={28} />
                         </div>
 
 
@@ -425,15 +426,11 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
                         onClick={handleViewFairs}
                     >
 
-                        <span>
-                            🔎
-                        </span>
+                        <Search size={18} aria-hidden="true" />
 
                         View Trade Fairs
 
-                        <span>
-                            →
-                        </span>
+                        <ArrowRight size={18} aria-hidden="true" />
 
                     </button>
 
@@ -443,9 +440,7 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
 
                     <div className="info-box">
 
-                        <span className="info-icon">
-                            ℹ️
-                        </span>
+                        <Info size={19} className="trade-info-icon" aria-hidden="true" />
 
                         <p>
                             Select a state to view the available
@@ -465,17 +460,13 @@ function TradeFairs({ onNavigate, isLoggedIn, user, onLogout }) {
 
             <footer className="trade-footer">
 
-                <span>
-                    🌱
-                </span>
+                <Sprout size={18} aria-hidden="true" />
 
                 <p>
                     Connecting Farmers, Businesses & Opportunities
                 </p>
 
-                <span>
-                    🌾
-                </span>
+                <Wheat size={18} aria-hidden="true" />
 
             </footer>
 

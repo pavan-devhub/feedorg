@@ -92,10 +92,13 @@ export const fetchAdminEventLocations = () => request('/api/admin/epm/events/loc
 
 // The EPM Activity log - which admin did what to each EPM, newest first, a page at a time:
 // { items, total, page, size, totalPages } of { id, createdAt, adminId, adminUsername, action,
-// field, epmEventId, eventTitle, eventDate, eventCity, oldValue, newValue }. `action` is created /
-// updated / cancelled / reinstated / deleted; `field` (updated only) is what changed, e.g. 'venue'.
-// Filters: { adminId, action, eventDate: 'yyyy-mm-dd' (the EPM's date) }. There is no way to
-// change or remove an entry.
+// field, epmEventId, eventTitle, eventDate, eventCity, eventStatus, eventCancelled, dateAtAction,
+// oldValue, newValue }. `action` is created / updated / cancelled / reinstated / deleted; `field`
+// (updated only) is what changed, e.g. 'venue'. eventTitle / eventDate / eventCity are the EPM as it
+// stands now (as the EPM Events list shows it), and eventStatus is 'upcoming' / 'previous' by that
+// date, or 'deleted'; dateAtAction is the EPM's date right after this entry's action.
+// Filters: { adminId, action, eventDate: 'yyyy-mm-dd' (the EPM's current date) }. There is no way
+// to change or remove an entry.
 export const fetchAdminEpmActivity = (params) => request(`/api/admin/epm/activity${query(params)}`);
 // [{ id, username }] - every admin with an entry, by username (deleted admins included).
 export const fetchAdminEpmActivityAdmins = () => request('/api/admin/epm/activity/admins');

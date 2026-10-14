@@ -119,7 +119,7 @@
   border-radius: 20px;
   background: #f0f5f7;
 }
-.loans-hero__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 57%; } /* shows the customer from the top of his hair down to the hands holding the notes */
+.loans-hero__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 65%; } /* shows the customer from the top of his hair down to the hands holding the notes */
 .loans-hero__title {
   position: absolute;
   bottom: 0;
@@ -326,7 +326,7 @@ a.finance-stat-card:focus-visible { outline: 3px solid rgba(22, 119, 255, .4); o
   .loans-hero { padding-top: 16px; }
   .loans-hero__media, .loans-hero__intro, .finance-stats, .finance-categories__inner { width: calc(100% - 32px); }
   .loans-hero__media { height: 130px; border-radius: 16px; }
-  .loans-hero__image { object-position: 52% 60%; }
+  .loans-hero__image { object-position: 52% 68%; }
   .loans-hero__title { height: 36px; padding: 0 14px; font-size: 14px; letter-spacing: .8px; line-height: 36px; }
   .loans-hero__intro { margin-top: 20px; font-size: 17px; }
   .finance-stats { grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 16px; padding: 4px; border-radius: 30px; }
@@ -628,6 +628,8 @@ a.finance-stat-card:focus-visible { outline: 3px solid rgba(22, 119, 255, .4); o
   position: relative;
   padding: 48px 0;
   background: #f8fafc;
+  /* the cards fly in from outside the panel - keep them from widening the page meanwhile */
+  overflow: hidden;
 }
 
 .finance-options-v2__inner {
@@ -752,55 +754,38 @@ a.finance-stat-card:focus-visible { outline: 3px solid rgba(22, 119, 255, .4); o
   transform: translateY(-4px);
 }
 
-.finance-card-v2__cover {
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-  display: block;
+/* Hidden until the fly-in intro starts */
+.finance-options-v2__grid.is-waiting .finance-card-v2 {
+  opacity: 0;
+}
+
+/* The bank's logo is the card's picture */
+.finance-card-v2__media {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--tint) 16%, #fff), color-mix(in srgb, var(--tint) 5%, #fff));
+}
+
+.finance-card-v2__media img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
 }
 
 .finance-card-v2__content {
-  padding: 0 16px 20px;
+  padding: 16px 16px 20px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-}
-
-.finance-card-v2__logo-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: -24px;
-  margin-bottom: 12px;
-}
-
-.finance-card-v2__logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  background: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.finance-card-v2__logo img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
 }
 
 .finance-card-v2__name {
   font-size: 16px;
   font-weight: 800;
   color: #1e3a8a;
-  margin: 0;
-  margin-top: 24px;
+  margin: 0 0 8px;
 }
 
 .finance-card-v2__desc {

@@ -40,7 +40,7 @@ const LoansFinance = ({ onNavigate, isLoggedIn, user, onLogout }) => (
 
         {/* Section 4 runs full width, above section 5 */}
         <div className="lf-w-full">
-          <GovernmentSchemes />
+          <GovernmentSchemes onNavigate={onNavigate} />
         </div>
 
         <div className="lf-w-full">

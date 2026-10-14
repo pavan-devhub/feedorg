@@ -304,20 +304,20 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
           {adminMode ? (
             <div className="fw-navbar-logo fw-navbar-logo--static">
               <span className="fw-navbar-logo-badge">
-                <img src="/dashboard-logo.avif" alt="Feed World" />
+                <img src="/dashboard-logo.avif" alt="FEED MSCS LTD" />
               </span>
               <span className="fw-navbar-logo-text">
-                <span className="fw-navbar-logo-title">FEED WORLD</span>
+                <span className="fw-navbar-logo-title">FEED MSCS LTD</span>
                 <span className="fw-navbar-logo-tagline">Admin panel</span>
               </span>
             </div>
           ) : (
-          <button type="button" className="fw-navbar-logo" onClick={() => onNavigate('home')} aria-label="Feed World home">
+          <button type="button" className="fw-navbar-logo" onClick={() => onNavigate('home')} aria-label="FEED MSCS LTD home">
             <span className="fw-navbar-logo-badge">
-              <img src="/dashboard-logo.avif" alt="Feed World" />
+              <img src="/dashboard-logo.avif" alt="FEED MSCS LTD" />
             </span>
             <span className="fw-navbar-logo-text">
-              <span className="fw-navbar-logo-title">FEED WORLD</span>
+              <span className="fw-navbar-logo-title">FEED MSCS LTD</span>
               <span className="fw-navbar-logo-tagline">Empowering Farmers, Enriching Futures</span>
             </span>
           </button>
@@ -578,9 +578,9 @@ const Navbar = ({ onNavigate, isLoggedIn, user, onLogout, currentPage = '' }) =>
             <div className="fw-mobile-header">
               <div className="fw-mobile-header-brand">
                 <span className="fw-mobile-logo-badge">
-                  <img src="/dashboard-logo.avif" alt="Feed World" />
+                  <img src="/dashboard-logo.avif" alt="FEED MSCS LTD" />
                 </span>
-                <span className="fw-mobile-header-title">FEED WORLD</span>
+                <span className="fw-mobile-header-title">FEED MSCS LTD</span>
               </div>
               <button type="button" className="fw-mobile-close" aria-label="Close menu" onClick={() => setIsMobileOpen(false)}>
                 <X size={18} />

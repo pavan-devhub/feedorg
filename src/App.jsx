@@ -307,8 +307,10 @@ function App() {
           !isLoggedIn ? null : <Dashboard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} navState={navState} />
         ) : currentPage === 'admin-dashboard' ? (
           // One admin panel for Feed World and EPM - the open section (and e.g. which EPM's
-          // registrations are showing) rides in navState so refresh/back keep it.
-          !isLoggedIn || user?.role !== 'ADMIN' ? null : (
+          // registrations are showing) rides in navState so refresh/back keep it. isAdmin, not
+          // user.role: `user` is null until /api/auth/me answers (forever if the backend is down),
+          // and gating on it here left admins on a blank page after every refresh.
+          !isAdmin ? null : (
             <AdminPortal onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout}
               section={navState.section} sectionParams={navState} />
           )

@@ -1,55 +1,33 @@
 import React, { useEffect, useRef } from 'react';
 import { FinanceIcon } from './FinanceIcon';
 
-// Intro for the bank cards: each card spins down into its small round logo, the logos circle the
-// blue panel together, then spin back out into the rectangular cards in their own places.
-const ORBIT_START = 0.24;
-const ORBIT_END = 0.74;
-const ORBIT_STEPS = 24;
-const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+// Intro for the bank cards: each card flies in from its own side of the blue panel (the corner or
+// edge it sits nearest) and settles into its place in the grid.
+const FLY_DISTANCE = 220;
+const FLY_DURATION = 900;
+const FLY_STAGGER = 90;
 
-const playOrbitIntro = (grid) => {
+const playFlyInIntro = (grid) => {
   const cards = [...grid.querySelectorAll('.finance-card-v2')];
   const gridBox = grid.getBoundingClientRect();
-  // Circle around the middle of the on-screen part of the grid (on phones the grid is taller than the screen)
-  const top = Math.max(gridBox.top, 0);
-  const bottom = Math.min(gridBox.bottom, window.innerHeight);
   const centerX = gridBox.left + gridBox.width / 2;
-  const centerY = (top + bottom) / 2;
-  const radius = Math.max(Math.min(gridBox.width, bottom - top) / 2 - 56, 60);
+  const centerY = gridBox.top + gridBox.height / 2;
+  const singleColumn = new Set(cards.map((card) => card.offsetLeft)).size === 1;
 
   return cards.map((card, i) => {
     const box = card.getBoundingClientRect();
-    const logo = card.querySelector('.finance-card-v2__logo').getBoundingClientRect();
-    const logoX = logo.left - box.left + logo.width / 2;
-    const logoY = logo.top - box.top + logo.height / 2;
-    const r = logo.width / 2;
-    const full = 'inset(0px 0px 0px 0px round 12px)';
-    const bubble = `inset(${logoY - r}px ${box.width - logoX - r}px ${box.height - logoY - r}px ${logoX - r}px round ${r}px)`;
-    const transformOrigin = `${logoX}px ${logoY}px`;
-    const startAngle = -90 + (360 / cards.length) * i;
-
-    const orbit = Array.from({ length: ORBIT_STEPS + 1 }, (_, k) => {
-      const p = k / ORBIT_STEPS;
-      const angle = ((startAngle + 360 * p) * Math.PI) / 180;
-      const x = centerX + radius * Math.cos(angle) - (box.left + logoX);
-      const y = centerY + radius * Math.sin(angle) - (box.top + logoY);
-      return {
-        offset: ORBIT_START + (ORBIT_END - ORBIT_START) * easeInOut(p),
-        transform: `translate(${x}px, ${y}px) rotate(${180 + 360 * p}deg) scale(1.15)`,
-        clipPath: bubble,
-        transformOrigin,
-      };
-    });
-    orbit[orbit.length - 1].easing = 'cubic-bezier(.45, 0, .2, 1)';
+    const dx = box.left + box.width / 2 - centerX;
+    const dy = box.top + box.height / 2 - centerY;
+    // In one column every card is centred, so alternate left / right instead
+    const sideX = singleColumn ? (i % 2 ? 1 : -1) : Math.abs(dx) < box.width / 4 ? 0 : Math.sign(dx);
+    const sideY = singleColumn ? 0 : Math.abs(dy) < box.height / 4 ? 0 : Math.sign(dy);
 
     return card.animate(
       [
-        { offset: 0, transform: 'translate(0px, 0px) rotate(0deg) scale(1)', clipPath: full, transformOrigin, easing: 'cubic-bezier(.55, 0, .35, 1)' },
-        ...orbit,
-        { offset: 1, transform: 'translate(0px, 0px) rotate(720deg) scale(1)', clipPath: full, transformOrigin },
+        { transform: `translate(${sideX * FLY_DISTANCE}px, ${sideY * FLY_DISTANCE}px) scale(0.85)`, opacity: 0 },
+        { transform: 'translate(0px, 0px) scale(1)', opacity: 1 },
       ],
-      { duration: 3600 },
+      { duration: FLY_DURATION, delay: i * FLY_STAGGER, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'backwards' },
     );
   });
 };
@@ -57,18 +35,20 @@ const playOrbitIntro = (grid) => {
 export const FinanceOptionsTable = () => {
   const gridRef = useRef(null);
 
-  // Play the intro once, when most of the cards are on screen
+  // Cards wait hidden, then play the intro once, when enough of the grid is on screen
   useEffect(() => {
     const grid = gridRef.current;
     if (!grid?.animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
     let animations = [];
+    grid.classList.add('is-waiting');
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const needed = Math.min(entry.boundingClientRect.height, window.innerHeight) * 0.6;
+        const needed = Math.min(entry.boundingClientRect.height, window.innerHeight) * 0.45;
         if (!entry.isIntersecting || entry.intersectionRect.height < needed) return;
         observer.disconnect();
-        animations = playOrbitIntro(grid);
+        animations = playFlyInIntro(grid);
+        grid.classList.remove('is-waiting');
       },
       { threshold: Array.from({ length: 11 }, (_, i) => i / 10) },
     );
@@ -76,6 +56,7 @@ export const FinanceOptionsTable = () => {
 
     return () => {
       observer.disconnect();
+      grid.classList.remove('is-waiting');
       animations.forEach((animation) => animation.cancel());
     };
   }, []);
@@ -88,7 +69,6 @@ export const FinanceOptionsTable = () => {
       url: 'https://sbi.bank.in/', 
       tint: '#2f80ed',
       desc: 'Agriculture, Business and Allied Activities Loans',
-      cover: '/images/banks/sbi-building.png',
     },
     {
       id: 2, 
@@ -97,7 +77,6 @@ export const FinanceOptionsTable = () => {
       url: 'https://www.hdfc.bank.in/', 
       tint: '#e5484d',
       desc: 'Agriculture, MSME and Business Loans',
-      cover: '/images/banks/hdfc-building.png',
     },
     {
       id: 3, 
@@ -106,7 +85,6 @@ export const FinanceOptionsTable = () => {
       url: 'https://www.nabard.org/EngDefault.aspx', 
       tint: '#2e9e5b',
       desc: 'Rural Development, Agriculture and Farmers Support',
-      cover: '/images/banks/nabard-building.png',
     },
     {
       id: 4, 
@@ -115,7 +93,6 @@ export const FinanceOptionsTable = () => {
       url: 'https://www.eximbankindia.in/', 
       tint: '#7c6ee6',
       desc: 'Export-Import Finance and International Trade Support',
-      cover: '/images/banks/exim-building.png',
     },
     {
       id: 5, 
@@ -124,7 +101,6 @@ export const FinanceOptionsTable = () => {
       url: 'https://www.ncdc.in/', 
       tint: '#3aa55d',
       desc: 'Cooperative Finance, Rural Development and Agriculture',
-      cover: '/images/banks/ncdc-building.png',
     },
     {
       id: 6, 
@@ -133,7 +109,6 @@ export const FinanceOptionsTable = () => {
       url: 'https://bankofbaroda.bank.in/', 
       tint: '#f26522',
       desc: 'Agriculture, MSME and Personal Loans',
-      cover: '/images/banks/bob-building.png',
     },
   ];
 
@@ -174,16 +149,11 @@ export const FinanceOptionsTable = () => {
             <div className="finance-options-v2__grid" ref={gridRef}>
               {options.map((opt) => (
                 <article key={opt.id} className="finance-card-v2" style={{ '--tint': opt.tint }}>
-                  <img src={opt.cover} alt={`${opt.name} building`} className="finance-card-v2__cover" />
+                  <div className="finance-card-v2__media">
+                    <img src={opt.logo} alt={`${opt.name} logo`} />
+                  </div>
                   <div className="finance-card-v2__content">
-                    
-                    <div className="finance-card-v2__logo-wrapper">
-                      <div className="finance-card-v2__logo">
-                        <img src={opt.logo} alt={`${opt.name} logo`} />
-                      </div>
-                      <h3 className="finance-card-v2__name">{opt.name}</h3>
-                    </div>
-                    
+                    <h3 className="finance-card-v2__name">{opt.name}</h3>
                     <p className="finance-card-v2__desc">{opt.desc}</p>
                     
                     <a

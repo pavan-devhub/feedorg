@@ -29,11 +29,19 @@ const FIELDS = {
   description: { label: 'Details', tag: 'Details changed', tone: 'amber' },
 };
 
+// Where the EPM is now - the EPM Events tab it's listed under (by its current date), or gone.
+const EPM_STATUS = {
+  upcoming: { label: 'Upcoming', tone: 'blue' },
+  previous: { label: 'Previous', tone: 'slate' },
+  deleted: { label: 'Deleted', tone: 'gray' },
+};
+
 /** An entry as { tag, tone, detail } for its Action and Details cells. */
 function describe(entry) {
   switch (entry.action) {
     case 'created':
-      return { tag: 'Created', tone: 'green', detail: `Scheduled for ${formatDate(entry.eventDate)}` };
+      // The date it was first scheduled for - the EPM column shows the date it has now.
+      return { tag: 'Created', tone: 'green', detail: `Scheduled for ${formatDate(entry.dateAtAction || entry.eventDate)}` };
     case 'cancelled':
       return { tag: 'Cancelled', tone: 'red', detail: entry.newValue ? `Reason: ${entry.newValue}` : 'No reason given' };
     case 'reinstated':
@@ -135,6 +143,7 @@ export default function EpmActivityAdmin({ user }) {
               <tbody>
                 {entries.map((entry) => {
                   const d = describe(entry);
+                  const status = EPM_STATUS[entry.eventStatus];
                   return (
                     <tr key={entry.id}>
                       <td data-label="When" className="adm-nowrap">{formatDateTime(entry.createdAt)}</td>
@@ -146,7 +155,11 @@ export default function EpmActivityAdmin({ user }) {
                       </td>
                       <td data-label="Action"><span className={`adm-tag adm-tag-${d.tone}`}>{d.tag}</span></td>
                       <td data-label="EPM">
-                        <div>{entry.eventTitle}</div>
+                        <div className="adm-cell-tags">
+                          <span>{entry.eventTitle}</span>
+                          {status && <span className={`adm-tag adm-tag-${status.tone}`}>{status.label}</span>}
+                          {entry.eventCancelled && <span className="adm-tag adm-tag-red">Cancelled</span>}
+                        </div>
                         <div className="adm-cell-sub">
                           <button type="button" className="adm-inline-link adm-left" onClick={() => setEventDate(entry.eventDate)}
                             title="Show activity for EPMs on this date">

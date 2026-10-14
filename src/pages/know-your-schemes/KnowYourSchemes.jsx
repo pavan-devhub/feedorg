@@ -1,27 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft, ExternalLink, X } from 'lucide-react';
+import { ChevronRight, ArrowRight, ArrowLeft, ExternalLink, X } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { CENTRAL_MINISTRIES, STATES } from '../../data/schemesData';
+import { CENTRAL_MINISTRIES, INDIAN_STATES, STATES } from '../../data/schemesData';
 import { schemeTheme } from './schemeThemes';
+import { SchemeIcon } from './schemeIcons';
+import StepDropdown from './StepDropdown';
 import './KnowYourSchemes.css';
 
 const countSchemes = (groups) => groups.reduce((n, g) => n + g.schemes.length, 0);
+const schemesLabel = (n) => `${n} ${n === 1 ? 'scheme' : 'schemes'}`;
 
-const LEVELS = [
-  { value: 'central', label: 'Central Government' },
-  { value: 'state', label: 'State Government' },
-];
+// What step 2 offers: the central ministries, or the departments of the chosen state (most states
+// have none listed yet). `place` heads the results ("Schemes for <place> → <name>").
+const CENTRAL_GROUPS = CENTRAL_MINISTRIES.map((m) => ({ ...m, place: 'Central Government' }));
+const STATE_GROUPS = Object.fromEntries(
+  INDIAN_STATES.map((s) => [
+    s.id,
+    (STATES.find((listed) => listed.id === s.id)?.depts ?? []).map((d) => ({ ...d, place: `${s.name} Government` })),
+  ]),
+);
+const groupsFor = (level, stateId) => (level === 'central' ? CENTRAL_GROUPS : STATE_GROUPS[stateId]);
+const stateName = (stateId) => INDIAN_STATES.find((s) => s.id === stateId).name;
 
-// What step 2 offers for each level: central ministries, or every state's departments.
-// `place` heads the results ("Schemes for <place> → <name>").
-const GROUPS = {
-  central: CENTRAL_MINISTRIES.map((m) => ({ ...m, place: 'Central Government' })),
-  state: STATES.flatMap((s) => s.depts.map((d) => ({ ...d, place: `${s.name} Government` }))),
-};
+const DEFAULT_STATE = 'AP';
+const MYSCHEME_SEARCH = 'https://www.myscheme.gov.in/search';
 
 const CENTRAL_SCHEME_COUNT = countSchemes(CENTRAL_MINISTRIES);
-const AP_SCHEME_COUNT = countSchemes(STATES.find((s) => s.id === 'AP').depts);
+const STATE_SCHEME_COUNT = countSchemes(Object.values(STATE_GROUPS).flat());
+const AP_SCHEME_COUNT = countSchemes(STATE_GROUPS.AP);
 
 // Detail rows of the "View Details" dialog, shown when the scheme has the field.
 const SCHEME_FACTS = [
@@ -108,7 +115,38 @@ const StepWave = ({ id }) => (
   </svg>
 );
 
-// `controlId` makes the step title the label of the dropdown in that card.
+// Options of the step dropdowns, each a title over a hint (StepDropdown lists them A-Z).
+const LEVEL_OPTIONS = [
+  {
+    value: 'central',
+    label: 'Central Government',
+    hint: `${CENTRAL_MINISTRIES.length} ministries & bodies · ${schemesLabel(CENTRAL_SCHEME_COUNT)}`,
+  },
+  {
+    value: 'state',
+    label: 'State Government',
+    hint: `${INDIAN_STATES.length} states · ${schemesLabel(STATE_SCHEME_COUNT)}`,
+  },
+];
+
+const STATE_OPTIONS = INDIAN_STATES.map((s) => {
+  const depts = STATE_GROUPS[s.id];
+  return {
+    value: s.id,
+    label: s.name,
+    hint: depts.length
+      ? `${depts.length} departments · ${schemesLabel(countSchemes(depts))}`
+      : 'No schemes listed yet',
+  };
+});
+
+const groupOption = (g) => ({
+  value: g.id,
+  label: g.name,
+  hint: [g.abbr, schemesLabel(g.schemes.length)].filter(Boolean).join(' · '),
+});
+
+// `controlId` is the id of the dropdown in that card; the step title labels it.
 const STEPS = [
   {
     key: 'level',
@@ -143,28 +181,21 @@ const withBreaks = (lines) =>
     </React.Fragment>
   ));
 
-const Select = ({ children, ...props }) => (
-  <span className="kys-select">
-    <select {...props}>{children}</select>
-    <ChevronDown strokeWidth={2.2} aria-hidden="true" />
-  </span>
-);
-
-// The same card as the Loans & Finance "Explore your finance needs" grid: inset photo, title,
-// benefit line and an accent tag with the scheme type. The whole card opens the details dialog.
+// Laid out like the Loans & Finance "Explore your finance needs" cards: an inset panel with the
+// scheme's icon, title, benefit line and an accent tag with the scheme type. The whole card opens
+// the details dialog.
 const SchemeCard = ({ scheme, onOpen }) => {
-  const { Icon, tone, image } = schemeTheme(scheme);
+  const { icon, tone } = schemeTheme(scheme);
   return (
     <li className={`kys-scheme kys-tone--${tone}`}>
       <div className="kys-scheme-media">
-        <img className="kys-scheme-img" src={image} alt="" loading="lazy" decoding="async" draggable="false" />
+        <SchemeIcon name={icon} className="kys-scheme-art" />
       </div>
       <div className="kys-scheme-body">
         <h3 className="kys-scheme-title">{scheme.name}</h3>
         <p className="kys-scheme-desc">{scheme.benefit}</p>
         {scheme.type && (
           <span className="kys-scheme-tag">
-            <Icon strokeWidth={2} aria-hidden="true" />
             <span className="kys-scheme-tag-text">{scheme.type}</span>
           </span>
         )}
@@ -191,6 +222,9 @@ const SchemeDetails = ({ scheme, group, onClosed }) => {
 
   const close = () => dialogRef.current.close();
   const theme = scheme && schemeTheme(scheme);
+  // Only the sheet's guidelines landing page (the scheme's, else its ministry's); rows the sheet
+  // leaves blank get no link.
+  const website = scheme && (scheme.landing || group.landing);
 
   return (
     <dialog
@@ -202,15 +236,14 @@ const SchemeDetails = ({ scheme, group, onClosed }) => {
     >
       {scheme && (
         <div className={`kys-dialog-inner kys-tone--${theme.tone}`}>
-          <img className="kys-dialog-img" src={theme.image} alt="" />
+          <div className="kys-scheme-media kys-dialog-media">
+            <SchemeIcon name={theme.icon} className="kys-scheme-art" />
+          </div>
           <button type="button" className="kys-dialog-close" onClick={close} aria-label="Close">
             <X strokeWidth={2.4} />
           </button>
           <div className="kys-dialog-body">
-            <div className="kys-dialog-head">
-              <span className="kys-scheme-icon" aria-hidden="true"><theme.Icon strokeWidth={2} /></span>
-              <p className="kys-dialog-place">{group.place} · {group.name}</p>
-            </div>
+            <p className="kys-dialog-place">{group.place} · {group.name}</p>
             <h2 id="kys-dialog-title" className="kys-dialog-title">{scheme.name}</h2>
             {scheme.type && scheme.type !== 'State scheme' && <span className="kys-dialog-type">{scheme.type}</span>}
             <dl className="kys-dialog-facts">
@@ -221,14 +254,19 @@ const SchemeDetails = ({ scheme, group, onClosed }) => {
                 </div>
               ))}
             </dl>
-            <div className="kys-dialog-foot">
-              <a className="kys-dialog-apply" href={scheme.url} target="_blank" rel="noopener noreferrer">
-                Visit official website <ExternalLink strokeWidth={2.4} />
-              </a>
-              <span className="kys-dialog-host">{hostOf(scheme.url)}</span>
-            </div>
+            {website ? (
+              <div className="kys-dialog-foot">
+                <a className="kys-dialog-apply" href={website} target="_blank" rel="noopener noreferrer">
+                  Visit official website <ExternalLink strokeWidth={2.4} />
+                </a>
+                <span className="kys-dialog-host">{hostOf(website)}</span>
+              </div>
+            ) : (
+              <p className="kys-dialog-foot kys-dialog-nolink">Official website link not available yet.</p>
+            )}
             <p className="kys-dialog-note">
-              Rates, limits and deadlines change, so confirm on the official website before applying.
+              Rates, limits and deadlines change, so confirm {website ? 'on the official website' : 'with the nodal agency'}
+              {' '}before applying.
             </p>
           </div>
         </div>
@@ -239,37 +277,61 @@ const SchemeDetails = ({ scheme, group, onClosed }) => {
 
 const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
   const [level, setLevel] = useState('central');
-  const [groupId, setGroupId] = useState(GROUPS.central[0].id);
+  const [stateId, setStateId] = useState(DEFAULT_STATE);
+  const [groupId, setGroupId] = useState(CENTRAL_GROUPS[0].id);
   const [openScheme, setOpenScheme] = useState(null);
 
-  const group = GROUPS[level].find((g) => g.id === groupId);
-  const schemeCount = group.schemes.length;
+  const groups = groupsFor(level, stateId);
+  const group = groups.find((g) => g.id === groupId); // none for a state with no departments yet
+  const place = level === 'central' ? 'Central Government' : `${stateName(stateId)} Government`;
+  const schemeCount = group ? group.schemes.length : 0;
 
-  // A new level starts on its first ministry / department, so there is always a list to show.
-  const handleLevelChange = (e) => {
-    const nextLevel = e.target.value;
+  // A new level or state starts on its first ministry / department, when it has any.
+  const showFirstGroupOf = (nextLevel, nextState) => {
+    setGroupId(groupsFor(nextLevel, nextState)[0]?.id ?? null);
+  };
+
+  const handleLevelChange = (nextLevel) => {
     setLevel(nextLevel);
-    setGroupId(GROUPS[nextLevel][0].id);
+    showFirstGroupOf(nextLevel, stateId);
+  };
+
+  const handleStateChange = (nextState) => {
+    setStateId(nextState);
+    showFirstGroupOf('state', nextState);
   };
 
   const stepControls = {
     level: (
-      <Select id="kys-level" value={level} onChange={handleLevelChange}>
-        {LEVELS.map((l) => (
-          <option key={l.value} value={l.value}>{l.label}</option>
-        ))}
-      </Select>
+      <>
+        <StepDropdown
+          id="kys-level"
+          labelledBy="kys-level-label"
+          value={level}
+          options={LEVEL_OPTIONS}
+          onChange={handleLevelChange}
+        />
+        {level === 'state' && (
+          <StepDropdown
+            id="kys-state"
+            label="State"
+            className="kys-dd--sub"
+            value={stateId}
+            options={STATE_OPTIONS}
+            onChange={handleStateChange}
+          />
+        )}
+      </>
     ),
     group: (
-      <Select id="kys-group" value={groupId} onChange={(e) => setGroupId(e.target.value)}>
-        {level === 'central'
-          ? CENTRAL_MINISTRIES.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)
-          : STATES.map((s) => (
-            <optgroup key={s.id} label={s.name}>
-              {s.depts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-            </optgroup>
-          ))}
-      </Select>
+      <StepDropdown
+        id="kys-group"
+        labelledBy="kys-group-label"
+        value={groupId}
+        options={groups.map(groupOption)}
+        placeholder="No departments listed yet"
+        onChange={setGroupId}
+      />
     ),
     count: (
       <p className="kys-step-count" aria-live="polite">
@@ -369,26 +431,25 @@ const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
 
             {/* THREE-STEP FLOW */}
             <ol className="kys-steps">
-              {STEPS.map((step, i) => {
-                const Title = step.controlId ? 'label' : 'span';
-                return (
-                  <li key={step.key} className={`kys-step kys-step--${step.tone}`}>
-                    <div className="kys-step-card">
-                      <StepWave id={`kys-wave-${step.tone}`} />
-                      <span className="kys-step-num">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="kys-step-icon">{step.icon}</span>
-                      <span className="kys-step-text">
-                        <Title className="kys-step-title" htmlFor={step.controlId}>{withBreaks(step.title)}</Title>
-                        <span className="kys-step-desc">{withBreaks(step.text)}</span>
+              {STEPS.map((step, i) => (
+                <li key={step.key} className={`kys-step kys-step--${step.tone}`}>
+                  <div className="kys-step-card">
+                    <StepWave id={`kys-wave-${step.tone}`} />
+                    <span className="kys-step-num">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="kys-step-icon">{step.icon}</span>
+                    <span className="kys-step-text">
+                      <span className="kys-step-title" id={step.controlId && `${step.controlId}-label`}>
+                        {withBreaks(step.title)}
                       </span>
-                      {stepControls[step.key]}
-                    </div>
-                    {i < STEPS.length - 1 && (
-                      <span className="kys-step-connector" aria-hidden="true"><ChevronRight strokeWidth={2.8} /></span>
-                    )}
-                  </li>
-                );
-              })}
+                      <span className="kys-step-desc">{withBreaks(step.text)}</span>
+                    </span>
+                    {stepControls[step.key]}
+                  </div>
+                  {i < STEPS.length - 1 && (
+                    <span className="kys-step-connector" aria-hidden="true"><ChevronRight strokeWidth={2.8} /></span>
+                  )}
+                </li>
+              ))}
             </ol>
 
             {/* SCHEMES OF THE SELECTED MINISTRY / DEPARTMENT */}
@@ -396,17 +457,35 @@ const KnowYourSchemes = ({ onNavigate, isLoggedIn, user, onLogout }) => {
               <header className="kys-schemes-head">
                 <h2 id="kys-schemes-title" className="kys-schemes-title">
                   <span>Schemes for</span>{' '}
-                  <span className="kys-schemes-place">{group.place}</span>{' '}
-                  <ArrowRight className="kys-schemes-sep" strokeWidth={2.4} aria-hidden="true" />{' '}
-                  <span className="kys-schemes-place">{group.name}</span>
+                  <span className="kys-schemes-place">{place}</span>
+                  {group && (
+                    <>
+                      {' '}
+                      <ArrowRight className="kys-schemes-sep" strokeWidth={2.4} aria-hidden="true" />{' '}
+                      <span className="kys-schemes-place">{group.name}</span>
+                    </>
+                  )}
                 </h2>
                 <p className="kys-schemes-desc">Explore the available schemes, view details, eligibility criteria and apply.</p>
               </header>
-              <ul className="kys-scheme-grid">
-                {group.schemes.map((scheme) => (
-                  <SchemeCard key={scheme.name} scheme={scheme} onOpen={() => setOpenScheme(scheme)} />
-                ))}
-              </ul>
+              {group ? (
+                <ul className="kys-scheme-grid">
+                  {group.schemes.map((scheme) => (
+                    <SchemeCard key={scheme.name} scheme={scheme} onOpen={() => setOpenScheme(scheme)} />
+                  ))}
+                </ul>
+              ) : (
+                <div className="kys-schemes-empty">
+                  <h3 className="kys-schemes-empty-title">{stateName(stateId)} schemes are coming soon</h3>
+                  <p className="kys-schemes-empty-text">
+                    We haven&rsquo;t listed {stateName(stateId)} Government departments and schemes yet. Meanwhile,
+                    you can find them on myScheme, the Government of India&rsquo;s scheme finder.
+                  </p>
+                  <a className="kys-dialog-apply" href={MYSCHEME_SEARCH} target="_blank" rel="noopener noreferrer">
+                    Search on myScheme <ExternalLink strokeWidth={2.4} />
+                  </a>
+                </div>
+              )}
             </section>
             <SchemeDetails scheme={openScheme} group={group} onClosed={() => setOpenScheme(null)} />
 

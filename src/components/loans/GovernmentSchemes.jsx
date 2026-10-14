@@ -104,9 +104,10 @@ const SCHEMES = {
 
 const TABS = Object.keys(SCHEMES);
 
-// Accent colour (icon circle + figure) cycles by grid position in CSS: blue / orange / violet / green
-const SchemeCard = ({ scheme }) => (
-  <article className="finance-scheme-card">
+// Accent colour (icon circle + figure) cycles by grid position in CSS: blue / orange / violet / green.
+// The whole card opens the Know Your Schemes page; a click on its "View Details" link bubbles up to here.
+const SchemeCard = ({ scheme, onOpen }) => (
+  <article className="finance-scheme-card" onClick={onOpen}>
     <div className="finance-scheme-card__top">
       <span className="finance-scheme-card__icon">
         <FinanceIcon name={scheme.icon} size={18} />
@@ -135,8 +136,9 @@ const SchemeCard = ({ scheme }) => (
   </article>
 );
 
-export const GovernmentSchemes = () => {
+export const GovernmentSchemes = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
+  const openKnowYourSchemes = () => onNavigate?.('schemes');
 
   return (
     <section id="government-schemes" className="finance-schemes">
@@ -146,7 +148,7 @@ export const GovernmentSchemes = () => {
           title="Government Schemes & Subsidies"
           icon="Institution"
           rightElement={
-            <a href="#" className="finance-schemes__view-all">
+            <a href="#" className="finance-schemes__view-all" onClick={openKnowYourSchemes}>
               View All <FinanceIcon name="ArrowRight" size={16} />
             </a>
           }
@@ -169,7 +171,7 @@ export const GovernmentSchemes = () => {
 
         {/* Scheme Cards for the selected tab */}
         <div className="finance-schemes__grid">
-          {SCHEMES[activeTab].map((scheme) => <SchemeCard key={scheme.title} scheme={scheme} />)}
+          {SCHEMES[activeTab].map((scheme) => <SchemeCard key={scheme.title} scheme={scheme} onOpen={openKnowYourSchemes} />)}
         </div>
       </div>
     </section>
