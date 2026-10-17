@@ -27,8 +27,9 @@ import EpmRegister from './pages/EpmRegister';
 import EpmVolunteer from './pages/EpmVolunteer';
 import EpmEventDetails from './pages/EpmEventDetails';
 import SafeMission from './pages/SafeMission';
-import TradeFairs from './pages/TradeFairs';
+import TradeFairs from './pages/trade-fairs/TradeFairs';
 import KnowYourSchemes from './pages/know-your-schemes/KnowYourSchemes';
+import Kyj from './pages/kyj/Kyj';
 import LoansFinance from './pages/LoansFinance';
 import AdminPortal from './pages/admin/AdminPortal';
 import MyBusinessLayout from './components/MyBusinessLayout';
@@ -289,7 +290,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'schemes', 'TradeFairs', 'loans-finance'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'schemes', 'TradeFairs', 'loans-finance', 'kyj'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -358,7 +359,10 @@ function App() {
           <SafeMission onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'schemes' ? (
           <KnowYourSchemes onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-        ) : currentPage === 'loans-finance' ? (
+        ) : currentPage === 'kyj' ? (
+          // navState.screen is the open KYJ screen; none shows the KYJ home.
+          <Kyj onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} screenId={navState.screen} />
+        ) :currentPage === 'loans-finance' ? (
           // Signed-in users only (see the guard above); admins open it from their own panel.
           !isLoggedIn ? null : <LoansFinance onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : ['business-profile', 'compliances', 'loans-schemes', 'marketing', 'reports', 'connect'].includes(currentPage) ? (

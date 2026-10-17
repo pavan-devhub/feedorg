@@ -112,7 +112,8 @@ const sidebarMenu = [
           {
             id: 'trade-plans', title: 'My Plans', icon: ClipboardList,
             subItems: [
-              { id: 'trade-plans-export', title: 'Export - KYJ with FEED', icon: Ship },
+              // `page` items open a site page instead of a dashboard section.
+              { id: 'trade-plans-export', title: 'Export - KYJ with FEED', icon: Ship, page: 'kyj' },
               {
                 id: 'trade-plans-domestic', title: 'Domestic Trade', icon: Store,
                 subItems: [
@@ -354,7 +355,9 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout, navState }) => {
                 // Any sidebar choice leaves the ERS / Plans panels, so e.g. Home always lands home.
                 setErsPanelOpen(false);
                 setPlansPanelOpen(false);
-                if (hasSubItems) {
+                if (item.page) {
+                  onNavigate(item.page);
+                } else if (hasSubItems) {
                   toggleMenu(depth, item.id);
                   setActiveTab(firstLeafId(item));
                 } else {

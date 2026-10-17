@@ -1,0 +1,93 @@
+/* ==========================================================================
+   Modern reset
+   ========================================================================== */
+
+.kyj *,
+.kyj *::before,
+.kyj *::after {
+  box-sizing: border-box;
+}
+
+/* The site's global reset (src/index.css) gives every element padding: 0 and the Outfit font;
+   KYJ was designed on the browser defaults, so put those back inside .kyj. */
+.kyj * {
+  margin: 0;
+  padding: revert;
+  font-family: revert;
+}
+
+.kyj {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--topbar-h) + 16px);
+}
+
+.kyj {
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.kyj img,
+.kyj picture,
+.kyj svg,
+.kyj video,
+.kyj canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.kyj input,
+.kyj button,
+.kyj textarea,
+.kyj select {
+  font: inherit;
+  color: inherit;
+}
+
+.kyj button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.kyj a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* :where() keeps specificity at zero so component classes can set padding */
+.kyj :where(ul[role="list"], ol[role="list"]) {
+  list-style: none;
+  padding: 0;
+}
+
+.kyj p,
+.kyj h1,
+.kyj h2,
+.kyj h3,
+.kyj h4,
+.kyj h5,
+.kyj h6 {
+  overflow-wrap: break-word;
+}
+
+.kyj :focus-visible {
+  outline: 2.5px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kyj *,
+  .kyj *::before,
+  .kyj *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

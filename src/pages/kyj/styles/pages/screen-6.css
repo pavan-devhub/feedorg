@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Screen 6 — GAP Activity Log (90-day streak)
+   ========================================================================== */
+
+/* ---- Hero: streak ------------------------------------------------------- */
+
+.kyj .streak {
+  align-items: stretch;
+  gap: 14px;
+}
+
+.kyj .streak .hero-metric {
+  justify-content: center;
+  min-width: 190px;
+  max-width: 260px;
+  padding: 18px 22px;
+}
+
+.kyj .streak__done .hero-metric__value {
+  font-size: 52px;
+}
+
+.kyj .streak__left {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.kyj .streak__left .hero-metric__value {
+  font-size: var(--fs-2xl);
+  color: #fff;
+}
+
+/* Progress track (23 / 90 days) */
+.kyj .streak-track {
+  height: 8px;
+  border-radius: var(--r-pill);
+  background:
+    linear-gradient(90deg, var(--accent-2), var(--accent)) 0 0 / var(--fill, 0%) 100% no-repeat,
+    var(--ink-100);
+}
+
+/* Day dots: done · today · remaining */
+.kyj .streak-dots {
+  display: grid;
+  grid-template-columns: repeat(33, minmax(0, 1fr));
+  gap: clamp(2px, 0.6vw, 6px);
+  margin-top: 16px;
+}
+
+.kyj .streak-dot {
+  justify-self: center;
+  width: 100%;
+  max-width: 18px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink-100);
+  box-shadow: inset 0 0 0 1px var(--ink-200);
+}
+
+.kyj .streak-dot.is-done {
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent-2) 45%, #fff), var(--accent) 75%);
+  box-shadow: 0 2px 5px -2px var(--accent-glow);
+}
+
+.kyj .streak-dot.is-today {
+  background: #ffeb3b;
+  box-shadow: 0 0 0 2.5px #f9a825, 0 0 16px 2px rgba(255, 235, 59, 0.55);
+  animation: kyj-today-glow 2s var(--ease-in-out) infinite;
+}
+
+@keyframes kyj-today-glow {
+  0%, 100% { box-shadow: 0 0 0 2.5px #f9a825, 0 0 10px 1px rgba(255, 235, 59, 0.4); }
+  50%      { box-shadow: 0 0 0 2.5px #f9a825, 0 0 20px 5px rgba(255, 235, 59, 0.7); }
+}
+
+/* ---- Activity picker ---------------------------------------------------- */
+
+.kyj .today-label {
+  font-size: var(--fs-xs);
+}
+
+.kyj .activity-tiles {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kyj .activity-tiles .tile {
+  position: relative;
+  gap: 6px;
+  padding: 24px 16px 20px;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.kyj .activity-tiles .tile__icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  font-size: 28px;
+  background: var(--ink-50);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.kyj .activity-tiles .tile__title {
+  font-size: var(--fs-base);
+}
+
+.kyj .activity-tiles .tile__sub {
+  font-size: var(--fs-xs);
+}
+
+.kyj .activity-tiles .tile.is-selected .tile__icon {
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--accent-line), 0 8px 18px -10px var(--accent-glow);
+}
+
+/* CSS-drawn tick on the selected tile (no text added) */
+.kyj .activity-tiles .tile.is-selected::before,
+.kyj .activity-tiles .tile.is-selected::after {
+  content: "";
+  position: absolute;
+}
+
+.kyj .activity-tiles .tile.is-selected::before {
+  top: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 4px 10px -4px var(--accent-glow);
+}
+
+.kyj .activity-tiles .tile.is-selected::after {
+  top: 16.5px;
+  right: 19.5px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ---- Log details -------------------------------------------------------- */
+
+.kyj .log-form {
+  padding: 28px;
+}
+
+.kyj .log-form__adorn {
+  color: var(--ink-400);
+}
+
+.kyj .notes-control {
+  align-items: flex-start;
+  min-height: 96px;
+  padding-top: 14px;
+}
+
+/* ---- MRL check + reward ------------------------------------------------- */
+
+.kyj .mrl-safe {
+  flex: 1;
+  align-items: center;
+  font-size: var(--fs-base);
+}
+
+.kyj .mrl-safe .callout__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 22px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--tone-line);
+}
+
+.kyj .log-coins {
+  gap: 14px;
+}
+
+.kyj .log-coins__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.kyj .log-coins__title {
+  font-size: var(--fs-base);
+  font-weight: 750;
+  color: #c2410c;
+}
+
+.kyj .log-coins__sub {
+  font-size: var(--fs-xs);
+  color: #b45309;
+}
+
+/* ---- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+  .kyj .streak .hero-metric {
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 900px) {
+  .kyj .streak {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 720px) {
+  .kyj .activity-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .kyj .streak .hero-metric {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+}

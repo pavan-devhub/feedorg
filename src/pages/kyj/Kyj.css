@@ -1,0 +1,53 @@
+/* KYJ page: the site navbar and footer around the KYJ screens (pages/kyj, styles in styles/). */
+.kyj-page {
+  /* The site navbar is fixed 10px from the top and 68px tall; leave 10px clear below it. */
+  --kyj-nav-offset: 88px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Matches the navbar's own breakpoint, where it drops to 60px (Navbar.css). */
+@media (max-width: 1200px) {
+  .kyj-page {
+    --kyj-nav-offset: 80px;
+  }
+}
+
+.kyj {
+  flex: 1 0 auto;
+}
+
+/* Screens: room for the site navbar above the KYJ sidebar and top bar. */
+.kyj--screen {
+  padding-top: var(--kyj-nav-offset);
+}
+
+/* The site navbar hides while scrolling down and comes back when scrolling up. While it shows,
+   the sticky KYJ top bar and sidebar stop just below it instead of sliding underneath. */
+.kyj .topbar,
+.kyj .sidebar {
+  transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1), height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kyj-page:has(.fw-nav-root:not(.fw-nav-hidden)) .kyj .topbar {
+  top: var(--kyj-nav-offset);
+}
+
+@media (min-width: 1101px) {
+  .kyj-page:has(.fw-nav-root:not(.fw-nav-hidden)) .kyj .sidebar {
+    top: var(--kyj-nav-offset);
+    height: calc(100vh - var(--kyj-nav-offset));
+  }
+}
+
+/* Below 1101px the KYJ sidebar is a slide-in drawer; it opens over the site navbar. */
+@media (max-width: 1100px) {
+  .kyj .scrim {
+    z-index: 1001;
+  }
+
+  .kyj .sidebar {
+    z-index: 1002;
+  }
+}

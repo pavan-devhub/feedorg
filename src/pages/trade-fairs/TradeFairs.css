@@ -1,0 +1,904 @@
+/* TRADE FAIRS page: the site navbar and footer around the Trade Fairs portal (pages/trade-fairs). */
+.tf-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f7f6f3;
+}
+
+/* ==========================================================================
+   Base for the portal (.tf-content, plus the filter lists, which render into <body>)
+   The portal comes from the Tradeafairs project, which was built on Tailwind. Rather than add
+   Tailwind here (its reset would restyle every other page), the parts of its reset the markup
+   relies on are below, wrapped in :where() so they add no specificity, and every class is
+   tf-* so nothing clashes with this site's own class names.
+   ========================================================================== */
+.tf-content {
+  flex: 1 0 auto;
+  padding-bottom: 48px;
+  background: #f7f6f3;
+  color: #1e2939;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* The site's global reset sets its own font on every element, so inheriting it isn't enough. */
+.tf-content,
+.tf-content *,
+.tf-dropdown-list,
+.tf-dropdown-list * {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:where(.tf-content, .tf-dropdown-list) *,
+:where(.tf-content, .tf-dropdown-list) ::before,
+:where(.tf-content, .tf-dropdown-list) ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+
+:where(.tf-content) :where(h1, h2, h3, h4, h5, h6) { font-size: inherit; font-weight: inherit; }
+:where(.tf-content) :where(ol, ul, menu) { list-style: none; }
+:where(.tf-content) :where(a) { color: inherit; text-decoration: inherit; }
+:where(.tf-content) :where(b, strong) { font-weight: bolder; }
+:where(.tf-content) :where(table) { text-indent: 0; border-color: inherit; border-collapse: collapse; }
+
+:where(.tf-content) :where(img, svg, video, canvas) {
+  display: block;
+  vertical-align: middle;
+}
+:where(.tf-content) :where(img, video) { max-width: 100%; height: auto; }
+
+:where(.tf-content) :where(button, input, select, textarea) {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  border-radius: 0;
+  background-color: transparent;
+  opacity: 1;
+}
+:where(.tf-content) :where(button) { cursor: pointer; }
+:where(.tf-content) ::placeholder { opacity: 1; }
+
+/* Page-width wrapper shared by the hero and the cards */
+.tf-shell {
+  width: 100%;
+  max-width: 1476px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.tf-section {
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.tf-hero {
+  width: 100%;
+}
+
+.tf-hero__clip {
+  position: relative;
+  overflow-x: clip;
+}
+
+/* 115px clears the site's fixed navbar, which floats over the backdrop */
+.tf-hero__inner {
+  position: relative;
+  z-index: 10;
+  padding-top: 115px;
+  padding-bottom: 25px;
+}
+
+.tf-hero__text {
+  padding-left: 9px;
+}
+
+.tf-hero__title {
+  font-size: 45px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  word-spacing: 0.12em;
+}
+
+.tf-hero__title-trade {
+  color: #061a42;
+}
+
+.tf-hero__title-fairs {
+  background: linear-gradient(180deg, #0152ff, #0249e2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tf-hero__tricolour {
+  display: flex;
+  width: 153px;
+  height: 4px;
+  margin-top: 6px;
+  margin-left: -1px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+.tf-hero__tricolour span:nth-child(1) { width: 62px; background: #ff7b1a; }
+.tf-hero__tricolour span:nth-child(2) { width: 27px; background: #fff; }
+.tf-hero__tricolour span:nth-child(3) { flex: 1; background: #00996d; }
+
+/* National / International toggle */
+.tf-scope {
+  display: flex;
+  width: 100%;
+  max-width: 414px;
+  height: 50px;
+  margin-top: 82px;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  background: #deeafe;
+  box-shadow: 0 5px 14px rgba(31, 64, 120, 0.08);
+}
+
+.tf-scope__option {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0e1a3d;
+}
+.tf-scope__option--national { gap: 23px; }
+.tf-scope__option--international { gap: 22px; }
+
+.tf-scope__option:not(.is-active):hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.tf-scope__option.is-active {
+  flex: none;
+  width: 51.5%;
+  border: 1px solid rgba(61, 139, 255, 0.4);
+  background: linear-gradient(90deg, #0050fe, #0174fe);
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 98, 254, 0.35);
+}
+
+.tf-scope__icon {
+  display: flex;
+  flex-shrink: 0;
+  color: #4073b6;
+}
+.tf-scope__option.is-active .tf-scope__icon {
+  color: inherit;
+}
+
+.tf-scope__india {
+  width: 25px;
+  height: 30px;
+}
+
+/* Backdrop layers */
+.tf-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tf-backdrop__gradient,
+.tf-backdrop__fade {
+  position: absolute;
+  inset: 0;
+}
+
+.tf-backdrop__gradient {
+  background: linear-gradient(90deg, #fef3e4 0%, #fdf2e3 5%, #fef2e6 13.5%, #f9f4ec 21.5%, #f1f3f2 29.5%, #e7f0f4 37.5%, #ddebf6 46%, #d2e6f8 54%, #cbe3fb 62%, #cae3fd 70%, #cbe4fe 100%);
+}
+
+.tf-backdrop__fade {
+  background: linear-gradient(180deg, rgba(247, 246, 242, 0) 62%, rgba(247, 246, 242, 0.75) 100%);
+}
+
+.tf-backdrop__ribbon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 132px;
+  height: 52px;
+}
+
+.tf-backdrop__map {
+  position: absolute;
+  top: 42px;
+  left: calc(50% - 265px);
+  width: 595px;
+  height: 307px;
+}
+
+.tf-backdrop__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* The photo runs below the hero and fades out beside the filter card; wide screens only */
+.tf-backdrop__photo {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(50% - 30px);
+  height: 404px;
+}
+
+.tf-backdrop__photo-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: url(#tf-hero-photo-clip);
+  -webkit-mask-image: linear-gradient(180deg, #000 87%, transparent 99%);
+  mask-image: linear-gradient(180deg, #000 87%, transparent 99%);
+}
+
+.tf-backdrop__photo-clip img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transform-origin: 89% 58%;
+  transform: scale(1.095);
+}
+
+.tf-backdrop__rim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   Find a fair
+   ========================================================================== */
+.tf-finder-wrap {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tf-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ebe9e4;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(60, 50, 30, 0.05);
+}
+
+.tf-finder {
+  padding: 15px 24px 12px 19px;
+}
+
+.tf-finder__wave {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 272px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.tf-finder__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 26px;
+}
+
+.tf-finder__accent {
+  width: 4px;
+  height: 26px;
+  border-radius: 999px;
+  background: #ff881e;
+}
+
+.tf-finder__icon {
+  margin-left: 15px;
+  color: #1a60e3;
+}
+
+.tf-finder__title {
+  margin-left: 14px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111c3a;
+}
+
+.tf-filters {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px 19px;
+  margin-top: 11px;
+}
+
+.tf-filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.tf-filter__label {
+  font-size: 14px;
+  line-height: 20px;
+  color: #4a5180;
+}
+
+.tf-control {
+  width: 100%;
+  height: 38px;
+  margin-top: 7px;
+  padding-left: 14px;
+  border: 1px solid #dee4ed;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1b2240;
+  outline: none;
+}
+.tf-control:focus {
+  border-color: #51a2ff;
+}
+
+.tf-control--text {
+  padding-right: 12px;
+}
+.tf-control--text::placeholder {
+  color: #6b7898;
+}
+
+.tf-dropdown {
+  position: relative;
+}
+
+.tf-dropdown__button {
+  padding-right: 32px;
+  text-align: left;
+}
+
+.tf-dropdown__value {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tf-dropdown__chevron {
+  position: absolute;
+  top: calc(50% + 3.5px);
+  right: 11px;
+  transform: translateY(-50%);
+  color: #1e2a4f;
+  pointer-events: none;
+}
+
+/* The open list, rendered into <body> */
+.tf-dropdown-list {
+  position: absolute;
+  z-index: 50;
+  box-sizing: border-box;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  border: 1px solid #dee4ed;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1b2240;
+  box-shadow: 0 8px 24px rgba(17, 28, 58, 0.12);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tf-dropdown-list__option {
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.tf-dropdown-list__option.is-active {
+  background: #e6f1fe;
+}
+.tf-dropdown-list__option.is-selected {
+  font-weight: 600;
+  color: #1a60e3;
+}
+
+.tf-clear {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 150px;
+  height: 38px;
+  margin-top: 16px;
+  border: 1px solid #cddff8;
+  border-radius: 8px;
+  background: #e6f1fe;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e1a3d;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tf-clear:hover {
+  background: #dbe9fc;
+}
+
+/* ==========================================================================
+   Fairs table
+   ========================================================================== */
+.tf-fairs {
+  overflow: hidden;
+  /* Page changes scroll the card to the top of the screen, below the fixed navbar */
+  scroll-margin-top: 96px;
+  border: 1px solid #ebe9e4;
+  border-radius: 12px;
+  background: #f5f6f8;
+  box-shadow: 0 4px 16px rgba(60, 50, 30, 0.05);
+}
+
+.tf-fairs__banner {
+  position: relative;
+  height: 119px;
+  background: #fdfdfd;
+}
+
+.tf-fairs__art {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 330px;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 80px);
+  mask-image: linear-gradient(90deg, transparent, #000 80px);
+}
+
+.tf-fairs__art img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  height: 100%;
+  max-width: none;
+}
+
+.tf-fairs__title {
+  position: relative;
+  padding: 21px 0 0 20px;
+}
+
+.tf-fairs__scope {
+  display: block;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 40px;
+  color: #333754;
+}
+
+.tf-fairs__label {
+  display: block;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 40px;
+  color: #d4a227;
+}
+
+.tf-fairs__tab {
+  display: none;
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  width: 251px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px 22px 0 0;
+  background: #d4a227;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.tf-fairs__rule {
+  height: 5px;
+  background: #d4a227;
+}
+
+.tf-fairs__body {
+  padding: 0 28px 14px 27px;
+}
+
+.tf-fairs__empty {
+  margin-top: 14px;
+  padding: 24px 16px;
+  border: 1px solid #ebecee;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+}
+.tf-fairs__empty h3 {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #15173a;
+}
+.tf-fairs__empty p {
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 17px;
+  color: #5f6070;
+}
+.tf-fairs__empty .tf-page-btn {
+  margin-top: 12px;
+}
+
+.tf-fairs__scroller {
+  overflow-x: auto;
+}
+/* Clip the incoming text instead of showing a scrollbar for it while it rains in */
+.tf-fairs__scroller.is-raining {
+  overflow-x: hidden;
+}
+
+.tf-table {
+  width: 100%;
+  min-width: 1100px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tf-table th {
+  height: 42px;
+  background: #f2f2f3;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1c1f3d;
+}
+.tf-table th.is-centered {
+  text-align: center;
+}
+
+.tf-table__cell {
+  padding: 6px 12px 6px 0;
+  border-right: 1px solid #ebecee;
+  border-bottom: 1px solid #ebecee;
+  vertical-align: middle;
+  background: #fdfdfd;
+}
+.tf-table tr.is-odd .tf-table__cell {
+  background: #f8f8fa;
+}
+
+/* One continuous navy strip, rounded at its first and last row */
+.tf-table__num {
+  background: #0a3260;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+.tf-table__num.is-first {
+  border-top-left-radius: 27px;
+  border-top-right-radius: 27px;
+}
+.tf-table__num.is-last {
+  border-bottom-left-radius: 27px;
+  border-bottom-right-radius: 27px;
+}
+
+.tf-table__text {
+  font-size: 14.5px;
+  line-height: 20px;
+  color: #3f4055;
+}
+
+.tf-table__dates {
+  white-space: nowrap;
+}
+
+.tf-table__fair-name {
+  display: block;
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 21px;
+  color: #15173a;
+}
+
+.tf-table__fair-city {
+  display: block;
+  font-size: 12.5px;
+  line-height: 17px;
+  color: #5f6070;
+}
+
+.tf-table__source {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  line-height: 17px;
+  color: #6b6c7c;
+}
+
+.tf-chip {
+  display: inline-block;
+  max-width: 205px;
+  padding: 5px 11px;
+  border-radius: 14px;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+}
+
+/* "View details" turns purple once this person has opened that fair's link */
+.tf-details-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border: 1px solid #2343c9;
+  border-radius: 8px;
+  background: #2343c9;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: #fff;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tf-details-link:hover {
+  border-color: #16309c;
+  background: #16309c;
+}
+.tf-details-link.is-visited {
+  border-color: #6d3fc0;
+  background: #6d3fc0;
+}
+.tf-details-link.is-visited:hover {
+  border-color: #55309a;
+  background: #55309a;
+}
+
+.tf-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tf-pager__pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tf-page-btn {
+  height: 32px;
+  min-width: 32px;
+  padding: 0 12px;
+  border: 1px solid #e1e3e8;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1c1f3d;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tf-page-btn:enabled:hover {
+  background: #f2f2f3;
+}
+.tf-page-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.tf-page-btn.is-current,
+.tf-page-btn.is-current:enabled:hover {
+  border-color: #0a3260;
+  background: #0a3260;
+  color: #fff;
+}
+
+/* ==========================================================================
+   Official sources
+   ========================================================================== */
+.tf-sources {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 16px 28px;
+  border: 1px solid #ebe9e4;
+  border-radius: 12px;
+  background: linear-gradient(100deg, #fff3ec 0%, #fbf0ed 25%, #f8edf0 50%, #f5ecf4 72%, #f2e9f8 100%);
+  box-shadow: 0 4px 16px rgba(60, 50, 30, 0.05);
+}
+
+.tf-sources__ring {
+  position: absolute;
+  top: -160px;
+  left: -120px;
+  width: 420px;
+  height: 420px;
+  border: 46px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tf-sources__title {
+  position: relative;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  color: #2a2e37;
+}
+
+.tf-sources__list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 480px;
+  margin: 16px auto 0;
+}
+
+.tf-sources__column {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* On hover the card lifts, turns light pink and glows with a soft dark pink shade */
+.tf-source-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(110, 90, 150, 0.1);
+  transition: transform 0.3s ease-out, background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+.tf-source-card:hover {
+  transform: translateY(-6px);
+  background: #fde2ec;
+  box-shadow: 0 0 22px 4px rgba(190, 24, 93, 0.45), 0 18px 40px rgba(110, 90, 150, 0.18);
+}
+
+.tf-source-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tf-source-card__badge {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #eceef4;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(40, 40, 80, 0.06);
+}
+
+.tf-source-card__name {
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 22px;
+  color: #2a2e37;
+}
+
+.tf-source-card__desc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #eef1fd;
+}
+
+.tf-source-card__row {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 19px;
+  color: #3b3f48;
+}
+
+.tf-source-card__icon {
+  flex-shrink: 0;
+  margin-top: 1.5px;
+  color: #4a4e57;
+}
+
+.tf-source-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+/* "View details" turns from the blue gradient to a purple one once opened */
+.tf-source-card__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7783fc, #4b65e9);
+  box-shadow: 0 6px 16px rgba(75, 101, 233, 0.3);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+  transition: filter 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tf-source-card__link:hover {
+  filter: brightness(1.05);
+}
+.tf-source-card__link.is-visited {
+  background: linear-gradient(90deg, #9a6cf0, #6d3fc0);
+  box-shadow: 0 6px 16px rgba(109, 63, 192, 0.3);
+}
+
+/* ==========================================================================
+   Wider screens
+   ========================================================================== */
+@media (min-width: 640px) {
+  .tf-hero__title { font-size: 67px; }
+  .tf-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tf-fairs__title { padding-left: 55px; }
+  .tf-fairs__scope { font-size: 36px; }
+  .tf-fairs__label { font-size: 37.5px; }
+  .tf-fairs__tab { display: flex; }
+  .tf-sources { padding-inline: 24px; }
+}
+
+@media (min-width: 1024px) {
+  .tf-filters { grid-template-columns: 296fr 233fr 222fr 225fr 316fr; }
+  .tf-fairs__art { display: block; }
+  .tf-sources__list {
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: 1060px;
+  }
+  /* The middle column starts higher */
+  .tf-sources__column--side { padding-top: 90px; }
+}
+
+@media (min-width: 1280px) {
+  .tf-backdrop__photo { display: block; }
+}

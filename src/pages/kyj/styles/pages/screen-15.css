@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Screen 15 — PHRT Sample Result · Stage 4 Gate (2 of 3)
+   ========================================================================== */
+
+/* ---- PASS result inside the hero ---------------------------------------- */
+
+.kyj .pass-title {
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--success-ink);
+  text-wrap: balance;
+}
+
+.kyj .ref-chip {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--ink-600);
+  background: var(--ink-50);
+  border: 1px solid var(--line);
+}
+
+.kyj .pass-seal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 156px;
+  height: 156px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4), transparent 55%),
+    rgba(255, 255, 255, 0.14);
+  border: 3px solid rgba(185, 246, 202, 0.75);
+  box-shadow:
+    0 0 0 10px rgba(255, 255, 255, 0.07),
+    0 0 0 22px rgba(255, 255, 255, 0.035),
+    0 24px 48px -16px rgba(0, 0, 0, 0.45);
+  animation: kyj-seal-in 900ms var(--ease-out) both 150ms;
+}
+
+.kyj .pass-seal::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255, 255, 255, 0.35);
+}
+
+.kyj .pass-seal__icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+@keyframes kyj-seal-in {
+  0%   { opacity: 0; transform: scale(0.6); }
+  60%  { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ---- Residue results table --------------------------------------------- */
+
+.kyj .residue {
+  box-shadow: var(--shadow-md);
+}
+
+.kyj .residue__table {
+  font-size: var(--fs-sm);
+}
+
+.kyj .residue__table thead th {
+  padding: 14px 18px;
+  font-size: var(--fs-2xs);
+  color: #fff;
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  border-bottom: 0;
+}
+
+.kyj .residue__table td {
+  padding: 14px 18px;
+  vertical-align: middle;
+}
+
+.kyj .residue__table tbody tr {
+  transition: background var(--dur-fast);
+}
+
+.kyj .residue__table tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+.kyj .residue__table tbody tr:last-child td {
+  border-bottom: 1px solid var(--line);
+}
+
+.kyj .residue__compound {
+  font-weight: 650;
+  color: var(--ink-900);
+}
+
+.kyj .residue__num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-800);
+  white-space: nowrap;
+}
+
+.kyj .residue__limit {
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.kyj .residue__table th:last-child,
+.kyj .residue__status {
+  text-align: right;
+}
+
+.kyj .residue__status .tag {
+  font-size: var(--fs-2xs);
+}
+
+/* Summary row */
+.kyj .residue__summary td {
+  background: var(--accent-soft);
+}
+
+.kyj .residue__summary .residue__compound,
+.kyj .residue__summary .residue__num {
+  font-weight: 700;
+  color: var(--success-ink);
+}
+
+.kyj .residue__summary .residue__num {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+}
+
+/* ---- Stage 4 status (code block) --------------------------------------- */
+
+.kyj .gate__title {
+  margin-bottom: 14px;
+  font-size: var(--fs-md);
+  font-weight: 750;
+  text-align: center;
+  color: var(--tone-ink);
+}
+
+.kyj .gate__code {
+  position: relative;
+  padding: 38px 18px 16px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  line-height: 1.8;
+  color: #a5d6a7;
+  background:
+    radial-gradient(200px 120px at 100% 0%, rgba(165, 214, 167, 0.16), transparent 70%),
+    linear-gradient(160deg, #0c3311, #1b5e20);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 28px -18px rgba(27, 94, 32, 0.9);
+}
+
+/* terminal window dots, drawn in CSS */
+.kyj .gate__code::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  width: 44px;
+  height: 10px;
+  background:
+    radial-gradient(circle 5px at 5px 5px, rgba(255, 255, 255, 0.35) 98%, transparent),
+    radial-gradient(circle 5px at 22px 5px, rgba(255, 255, 255, 0.25) 98%, transparent),
+    radial-gradient(circle 5px at 39px 5px, rgba(255, 255, 255, 0.15) 98%, transparent);
+}
+
+/* ---- Next step checklist ----------------------------------------------- */
+
+.kyj .next .list__item {
+  align-items: center;
+  padding: 10px 0;
+}
+
+.kyj .next .list__item:first-child {
+  padding-top: 0;
+}
+
+.kyj .next .list__item:last-child {
+  padding-bottom: 0;
+}
+
+.kyj .next .list__title {
+  font-size: var(--fs-sm);
+  color: var(--tone-ink);
+}
+
+.kyj .next .list__item.is-next .list__icon {
+  background: var(--tone-ink);
+}
+
+.kyj .next .list__item.is-next .list__title {
+  font-weight: 750;
+}
+
+@media (max-width: 600px) {
+  .kyj .pass-seal {
+    width: 120px;
+    height: 120px;
+  }
+
+  .kyj .pass-seal__icon {
+    font-size: 48px;
+  }
+
+  .kyj .residue__table thead th,
+  .kyj .residue__table td {
+    padding-inline: 14px;
+  }
+}

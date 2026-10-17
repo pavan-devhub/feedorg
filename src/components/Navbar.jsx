@@ -46,6 +46,7 @@ export const servicesMegaMenu = [
 // the set of live destinations the mega menu already supported before this redesign). Home's
 // Services Ecosystem grid shares it, so both menus always open the same pages.
 export const SERVICE_ROUTES = {
+  'KRUSHI YEVA JAYATE': 'kyj',
   'PRODUCT 360': 'product360',
   'MY EXPORTS': 'exports',
   'LOANS & FINANCE': 'loans-finance',

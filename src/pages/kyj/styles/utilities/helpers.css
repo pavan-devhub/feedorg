@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Helpers — small single-purpose classes. Keep this list short.
+   ========================================================================== */
+
+.kyj .mt-0  { margin-top: 0 !important; }
+.kyj .mt-4  { margin-top: 4px !important; }
+.kyj .mt-8  { margin-top: 8px !important; }
+.kyj .mt-12 { margin-top: 12px !important; }
+.kyj .mt-16 { margin-top: 16px !important; }
+.kyj .mt-24 { margin-top: 24px !important; }
+
+.kyj .text-center { text-align: center; }
+.kyj .text-right  { text-align: right; }
+.kyj .text-muted  { color: var(--ink-500); }
+.kyj .text-ok     { color: var(--success-ink) !important; }
+.kyj .text-warn   { color: var(--warning-ink) !important; }
+.kyj .text-bad    { color: var(--danger-ink) !important; }
+.kyj .text-info   { color: var(--info-ink) !important; }
+.kyj .text-tone   { color: var(--tone-ink) !important; }
+.kyj .fw-600      { font-weight: 600; }
+.kyj .fw-700      { font-weight: 700; }
+.kyj .nowrap      { white-space: nowrap; }
+
+.kyj .flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kyj .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
