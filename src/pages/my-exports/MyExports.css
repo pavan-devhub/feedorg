@@ -1,0 +1,348 @@
+/* ==========================================================================
+   Design tokens & Scoped styles for My Exports Page
+   ========================================================================== */
+
+.my-exports-page {
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Surfaces & ink — light (mint scheme from the reference design) */
+  --bg: #f0fcfa;
+  --bg-alt: #e8f8f4;
+  --bg-elev: #ffffff;
+  --surface-2: #f7fdfb;
+  --ink: #0b0d18;
+  --ink-2: #2b3340;
+  --muted: #5b6270;
+  --eyebrow: #4f535b;
+  --line: #dcefea;
+  --line-strong: #c3dad4;
+
+  /* Teal brand */
+  --teal: #2cc3b0;
+  --teal-ink: #08696d;
+  --teal-deep: #05302b;
+  --teal-icon: #109a7b;
+  --teal-line: #5a9b97;
+  --teal-grad: linear-gradient(90deg, #58e0c9 0%, #3fd2bc 50%, #2cc3b0 100%);
+  --mint: #e3f6f4;
+  --mint-2: #e2faf4;
+
+  /* Phase accents: fill, text ink, pastel surface, badge and progress track */
+  --p1: #f5a623;
+  --p1-ink: #c46a0a;
+  --p1-soft: #fef8e8;
+  --p1-badge: #ffe494;
+  --p1-track: #fdebb4;
+  --p2: #2cc3a6;
+  --p2-ink: #0b7f5c;
+  --p2-soft: #e9fcf7;
+  --p2-badge: #b3f6e2;
+  --p2-track: #baf3e5;
+  --p3: #3384ef;
+  --p3-ink: #1554d8;
+  --p3-soft: #e7f4fd;
+  --p3-badge: #bfe0ff;
+  --p3-track: #b6dcfc;
+  --p4: #a86afc;
+  --p4-ink: #7a38d8;
+  --p4-soft: #f3effe;
+  --p4-badge: #ddc2fb;
+  --p4-track: #e2d2fe;
+
+  --success: #12a585;
+  --focus: #0c7d80;
+  --brand-grad: linear-gradient(135deg, #fcc72c 0%, #f9a825 55%, #ff9417 100%);
+
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 1px 2px rgba(15, 50, 50, 0.05), 0 1px 1px rgba(15, 50, 50, 0.03);
+  --shadow: 0 1px 2px rgba(15, 50, 50, 0.04), 0 16px 34px -22px rgba(15, 60, 60, 0.32);
+  --shadow-lg: 0 30px 60px -30px rgba(15, 60, 60, 0.38);
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  color-scheme: light;
+}
+
+.my-exports-page[data-theme='dark'] {
+  --bg: #08151a;
+  --bg-alt: #0a1a1f;
+  --bg-elev: #0f2228;
+  --surface-2: #0c1d22;
+  --ink: #eef6f5;
+  --ink-2: #c7d6d6;
+  --muted: #93a6a8;
+  --eyebrow: #93a6a8;
+  --line: #1b3339;
+  --line-strong: #27464d;
+
+  --teal-ink: #5eead4;
+  --teal-icon: #5eead4;
+  --teal-line: #3c8d86;
+  --mint: rgba(94, 234, 212, 0.1);
+  --mint-2: rgba(45, 212, 191, 0.12);
+
+  --p1: #f5b041;
+  --p1-ink: #fbbf24;
+  --p1-soft: rgba(245, 166, 35, 0.09);
+  --p1-badge: rgba(245, 166, 35, 0.22);
+  --p1-track: rgba(245, 166, 35, 0.2);
+  --p2: #34d3b4;
+  --p2-ink: #5eead4;
+  --p2-soft: rgba(44, 195, 166, 0.09);
+  --p2-badge: rgba(44, 195, 166, 0.22);
+  --p2-track: rgba(44, 195, 166, 0.2);
+  --p3: #5b9cf5;
+  --p3-ink: #93c5fd;
+  --p3-soft: rgba(51, 132, 239, 0.1);
+  --p3-badge: rgba(51, 132, 239, 0.24);
+  --p3-track: rgba(51, 132, 239, 0.22);
+  --p4: #b98afc;
+  --p4-ink: #c4b5fd;
+  --p4-soft: rgba(168, 106, 252, 0.1);
+  --p4-badge: rgba(168, 106, 252, 0.24);
+  --p4-track: rgba(168, 106, 252, 0.22);
+
+  --success: #2dd4a7;
+  --focus: #5eead4;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow: 0 16px 36px -16px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 30px 60px -22px rgba(0, 0, 0, 0.75);
+  color-scheme: dark;
+}
+
+/* Per-phase accent scoping: any element with .phase-N exposes the phase palette */
+.phase-1 { --accent: var(--p1); --accent-ink: var(--p1-ink); --accent-soft: var(--p1-soft); --accent-badge: var(--p1-badge); --accent-track: var(--p1-track); }
+.phase-2 { --accent: var(--p2); --accent-ink: var(--p2-ink); --accent-soft: var(--p2-soft); --accent-badge: var(--p2-badge); --accent-track: var(--p2-track); }
+.phase-3 { --accent: var(--p3); --accent-ink: var(--p3-ink); --accent-soft: var(--p3-soft); --accent-badge: var(--p3-badge); --accent-track: var(--p3-track); }
+.phase-4 { --accent: var(--p4); --accent-ink: var(--p4-ink); --accent-soft: var(--p4-soft); --accent-badge: var(--p4-badge); --accent-track: var(--p4-track); }
+
+/* ==========================================================================
+   Page layout & scoped resets
+   ========================================================================== */
+.my-exports-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--bg, #f0fcfa);
+}
+
+.my-exports-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: auto;
+}
+
+/* The app's index.css gives every element (*) its Outfit font; here text inherits the page font
+   instead, as on the static page. Zero specificity, so any font a component sets still wins. */
+:where(.my-exports-page) * {
+  font-family: inherit;
+}
+
+.my-exports-page h1,
+.my-exports-page h2,
+.my-exports-page h3,
+.my-exports-page .tree-head h2,
+.my-exports-page .tree-phase-copy h3,
+.my-exports-page .cta-copy h2,
+.my-exports-page .section-head h2 {
+  font-family: var(--font-display);
+}
+
+.my-exports-page img,
+.my-exports-page svg {
+  display: block;
+  max-width: 100%;
+}
+
+.my-exports-page button,
+.my-exports-page input {
+  font: inherit;
+  color: inherit;
+}
+
+.my-exports-page a {
+  color: inherit;
+}
+
+.my-exports-page h1,
+.my-exports-page h2,
+.my-exports-page h3,
+.my-exports-page h4,
+.my-exports-page p {
+  overflow-wrap: break-word;
+}
+
+/* Ampersand inside display headings (see common/Amp.jsx) */
+.my-exports-page .amp {
+  font-family: var(--font-body) !important;
+  font-weight: 700;
+  font-size: 0.86em;
+  letter-spacing: 0;
+}
+
+/* ==========================================================================
+   Layout utilities
+   ========================================================================== */
+.my-exports-page .container {
+  width: min(1200px, 100% - 32px);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .my-exports-page .container {
+    width: min(1200px, 100% - 64px);
+  }
+}
+
+.my-exports-page .section {
+  position: relative;
+  padding-block: clamp(72px, 9vw, 120px);
+}
+
+.my-exports-page .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Shared components
+   ========================================================================== */
+.my-exports-page .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.27em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.my-exports-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, background-color 0.2s,
+    border-color 0.2s, color 0.2s;
+}
+
+.my-exports-page .btn svg {
+  flex: none;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.my-exports-page .btn:hover svg:last-child {
+  transform: translateX(3px);
+}
+
+.my-exports-page .btn:active {
+  transform: translateY(1px);
+}
+
+.my-exports-page .btn-primary {
+  border: 0;
+  background: var(--teal-grad);
+  color: var(--teal-deep);
+  box-shadow: 0 12px 26px -14px rgba(20, 170, 150, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.my-exports-page .btn-primary:hover {
+  box-shadow: 0 16px 32px -14px rgba(20, 170, 150, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.my-exports-page .btn-ghost,
+.my-exports-page .btn-outline {
+  background: var(--bg-elev);
+  border-color: var(--teal-line);
+  color: var(--ink);
+}
+
+.my-exports-page .btn-ghost:hover,
+.my-exports-page .btn-outline:hover {
+  border-color: var(--teal-ink);
+  box-shadow: 0 10px 24px -16px rgba(15, 110, 110, 0.6);
+}
+
+.my-exports-page .btn-ghost:hover svg:last-child,
+.my-exports-page .btn-outline:hover svg:last-child {
+  transform: none;
+}
+
+.my-exports-page .btn-outline {
+  min-height: 46px;
+  padding: 0 22px;
+  font-size: 0.94rem;
+}
+
+:root[data-theme='dark'] .my-exports-page .btn-ghost,
+:root[data-theme='dark'] .my-exports-page .btn-outline {
+  background: transparent;
+}
+
+.my-exports-page .bar {
+  position: relative;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent-track, var(--line));
+  overflow: hidden;
+}
+
+.my-exports-page .bar > i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--accent, var(--teal));
+  transition: width 0.6s var(--ease-out);
+}
+
+/* Scroll reveal */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

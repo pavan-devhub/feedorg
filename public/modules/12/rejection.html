@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Destination Rejection Protocol (గమ్యస్థాన తిరస్కరణ Protocol) · Module 12 – Risk Management | My Exports</title>
+  <meta name="description" content="Module 12 · Risk Management — Destination Rejection Protocol (గమ్యస్థాన తిరస్కరణ Protocol). Topic 12.1 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/12/rejection.css">
+</head>
+<body class="tp-body tp-phase-4" data-root="../../" data-topic-path="modules/12/rejection.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-12">Module 12 · Risk Management</a></li>
+          <li><span aria-current="page">Rejection</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-4">Phase 04 · Payments &amp; Protection</a>
+          <span class="tp-chip">Module 12 · Risk Management</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Destination Rejection Protocol</h1>
+        <p class="tp-hero__subtitle">గమ్యస్థాన తిరస్కరణ Protocol</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>12.1</strong> · 1 of 9 in this module</p>
+            <ol class="tp-steps__list">
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="12.1" title="12.1 Rejection">1</span></li>
+              <li><a class="tp-steps__item" href="buyer-dispute.html" data-topic-id="12.2" title="12.2 Buyer Dispute" aria-label="Topic 12.2 Buyer Dispute">2</a></li>
+              <li><a class="tp-steps__item" href="quality.html" data-topic-id="12.3" title="12.3 Quality" aria-label="Topic 12.3 Quality">3</a></li>
+              <li><a class="tp-steps__item" href="docs.html" data-topic-id="12.4" title="12.4 Documents" aria-label="Topic 12.4 Documents">4</a></li>
+              <li><a class="tp-steps__item" href="customs.html" data-topic-id="12.5" title="12.5 Customs" aria-label="Topic 12.5 Customs">5</a></li>
+              <li><a class="tp-steps__item" href="rasff.html" data-topic-id="12.6" title="12.6 RASFF" aria-label="Topic 12.6 RASFF">6</a></li>
+              <li><a class="tp-steps__item" href="force-majeure.html" data-topic-id="12.7" title="12.7 Force Majeure" aria-label="Topic 12.7 Force Majeure">7</a></li>
+              <li><a class="tp-steps__item" href="arbitration.html" data-topic-id="12.8" title="12.8 Arbitration" aria-label="Topic 12.8 Arbitration">8</a></li>
+              <li><a class="tp-steps__item" href="insurance.html" data-topic-id="12.9" title="12.9 Insurance" aria-label="Topic 12.9 Insurance">9</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">12</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph"><div class="access-strip expandable">
+<div class="access-expand-head">
+<div style="flex:1;min-width:0;">
+<div class="access-name">🌾 రామయ్య గారు</div>
+<div class="expand-content">
+<div class="access-sub">FEED-ANT-2026-047 · రాప్తాడు మండలం · KC 6,000/12,500</div>
+</div>
+</div>
+<div class="gold-badge">⭐ GOLD</div>
+</div>
+</div><div class="web-flow screen-scroll"><div class="status-banner red">
+<div class="status-icon">🔴</div>
+<div class="status-text-block">
+<div class="status-label">Protocol Ready · Shipment Pending</div>
+<div class="status-desc">రామయ్య గారికి ఇంకా reject జరగలేదు. కానీ ఈ protocol డిసెంబర్ 2026 Jebel Ali consignment కి ముందే సిద్ధంగా ఉండాలి. ముందస్తు అవగాహన = panic లేకుండా వ్యవహరించగలగడం.</div>
+</div>
+</div><div class="hero-card expandable">
+<div class="hero-icon">🚫🚢</div>
+<div class="hero-expand-head">
+<div class="hero-title">గమ్యస్థాన Port లో Container Reject అయింది — ఇప్పుడు ఏమి చేయాలి?</div>
+</div>
+<div class="expand-content">
+<div class="hero-sub">Jebel Ali UAE లో MRL fail అయితే, Customs hold అయితే — panic కాకూడదు. నాలుగు options ఉన్నాయి. ప్రతి option కి clear protocol ఉంది. ECGC umbrella ఉంది. APEDA support ఉంది.</div>
+<div class="hero-ref-box">
+        📦 Container: MRKU3456789 · BL: MAEU2026DEC001847<br/>
+        🛳️ Route: KPCT → Jebel Ali UAE (Maersk · Dec 2026)<br/>
+        🏪 Buyer: Al Barakat LLC Dubai · Trust Score 7.4/10<br/>
+        💰 FOB: ₹34,56,000 · HS: 0803 90 10 (Banana Grand Naine)
+      </div>
+</div>
+</div><div class="section-label">📋 నాలుగు Options — Rejection Response Protocol</div><div class="expandable rejection-actions-group">
+<div class="option-header expand-title-row">
+<span>⚡ Rejection Report వచ్చిన వెంటనే — 24 గంటలలో చేయవలసినవి</span>
+<button aria-expanded="true" aria-label="Collapse rejection report actions" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="expand-content">
+<!-- OPTION 1 -->
+<div class="protocol-card expandable">
+<div class="protocol-header">
+<div class="step-num" style="background:#1565C0;">1</div>
+<div class="protocol-step-title">🔄 Re-dispatch to Alternative Buyer</div>
+<span class="protocol-step-badge" style="background:#e3f2fd;color:#1565C0;">Option A</span>
+<button aria-expanded="true" aria-label="Collapse Option A" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="protocol-body expand-content">
+<div class="proto-detail">
+<div class="proto-dot" style="background:#1565C0;"></div>
+<div class="proto-text">Jebel Ali reject అయినా container EU/UAE కి arrive కాలేదు — పోర్టులోనే ఉంది. మరొక buyer కి Re-dispatch చేయవచ్చు.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#1565C0;"></div>
+<div class="proto-text">FEED contact: Turkey, Egypt, లేదా India back re-import options confirm చేయడం. Maersk తో alternative vessel/destination booking.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#1565C0;"></div>
+<div class="proto-text">అదనపు freight ఖర్చు: Exporter (రామయ్య → FEED) చెల్లించాలి. ECGC claim parallel గా file చేయడం.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#ff9800;"></div>
+<div class="proto-text">⚠️ BULLKART domestic fallback: India కి తిరిగి వస్తే 40-60% FOB value recover చేయవచ్చు. నష్టం minimize అవుతుంది.</div>
+</div>
+</div>
+</div>
+<!-- OPTION 2 -->
+<div class="protocol-card expandable">
+<div class="protocol-header">
+<div class="step-num" style="background:#C62828;">2</div>
+<div class="protocol-step-title">💥 Port Destruction — Last Resort</div>
+<span class="protocol-step-badge" style="background:#ffebee;color:#C62828;">Option B</span>
+<button aria-expanded="true" aria-label="Collapse Option B" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="protocol-body expand-content">
+<div class="proto-detail">
+<div class="proto-dot" style="background:#C62828;"></div>
+<div class="proto-text">Severely non-compliant (very high MRL violation) అయితే UAE Customs supervised destruction order.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#C62828;"></div>
+<div class="proto-text">Destruction fees: Exporter చెల్లించాలి (ECGC claim లో separate గా count అవుతుంది).</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#C62828;"></div>
+<div class="proto-text">⚡ ECGC 30-day notification IMMEDIATELY trigger చేయండి — delay = claim reject.</div>
+</div>
+</div>
+</div>
+<!-- OPTION 3 -->
+<div class="protocol-card expandable">
+<div class="protocol-header">
+<div class="step-num" style="background:#2e7d32;">3</div>
+<div class="protocol-step-title">🔧 Treatment / Fumigation</div>
+<span class="protocol-step-badge" style="background:#e8f5e9;color:#2e7d32;">Option C</span>
+<button aria-expanded="true" aria-label="Collapse Option C" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="protocol-body expand-content">
+<div class="proto-detail">
+<div class="proto-dot" style="background:#2e7d32;"></div>
+<div class="proto-text">Pest issue → Fumigation (Jebel Ali JAFZA పోర్టులో సదుపాయం ఉంది.). Packaging issue → Re-packing option.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#2e7d32;"></div>
+<div class="proto-text">MRL violation లో treatment పని చేయదు — physical issues కి మాత్రమే treatment useful.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#2e7d32;"></div>
+<div class="proto-text">Treatment తర్వాత UAE Customs re-inspection: fee + 3-5 days delay. Demurrage clock నడుస్తుంది.</div>
+</div>
+</div>
+</div>
+<!-- OPTION 4 -->
+<div class="protocol-card expandable">
+<div class="protocol-header">
+<div class="step-num" style="background:#6a1b9a;">4</div>
+<div class="protocol-step-title">⚖️ Appeal / Lab Re-test</div>
+<span class="protocol-step-badge" style="background:#f3e5f5;color:#6a1b9a;">Option D</span>
+<button aria-expanded="true" aria-label="Collapse Option D" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="protocol-body expand-content">
+<div class="proto-detail">
+<div class="proto-dot" style="background:#6a1b9a;"></div>
+<div class="proto-text">UAE/EU lab result తప్పు అని నమ్మితే: Independent NABL/ISO 17025 lab counter test request. Eureka Analytical archived sample re-test.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#6a1b9a;"></div>
+<div class="proto-text">Appeal process: UAE Customs authority కి formal appeal. Timeline: 5-10 working days. ఖర్చు ఎక్కువ కానీ చాలా cases లో exporter గెలుస్తారు.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#6a1b9a;"></div>
+<div class="proto-text">APEDA RP Naidu 0891-2536940 తో coordinate — India official support.</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="section-label" style="margin-top:6px;">⚡ Parallel గా చేయవలసినవి (అన్ని Options లో)</div><div class="protocol-card expandable">
+<div class="protocol-header">
+<div class="step-num" style="background:#bf360c;">★</div>
+<div class="protocol-step-title">APEDA Mandatory Reporting</div>
+<span class="protocol-step-badge" style="background:#fff3e0;color:#e65100;">తప్పనిసరి</span>
+<button aria-expanded="true" aria-label="Collapse APEDA reporting" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="protocol-body expand-content">
+<div class="proto-detail">
+<div class="proto-dot" style="background:#bf360c;"></div>
+<div class="proto-text">Rejection 30 రోజులలో APEDA Vizag కి mandatory report: Shri RP Naidu · 0891-2536940 · apedavizag@apeda.gov.in</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#bf360c;"></div>
+<div class="proto-text">⚠️ Report fail = RCMC suspension risk. Future shipments blocked. Industry pattern identification కి miss అవుతుంది.</div>
+</div>
+<div class="proto-detail">
+<div class="proto-dot" style="background:#bf360c;"></div>
+<div class="proto-text">Maersk container demurrage clock: Free period తర్వాత $150-300/day నడుస్తుంది. వేగంగా decision తీసుకోవాలి.</div>
+</div>
+</div>
+</div><div class="key-numbers expandable">
+<div class="expand-title-row">
+<div class="kn-title">📊 కీలక సంఖ్యలు — Rejection Numbers</div>
+<button aria-expanded="true" aria-label="Collapse key numbers" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="kn-grid expand-content">
+<div class="kn-item">
+<div class="kn-val">24 గంటలు</div>
+<div class="kn-label">Rejection report FEED కి చేరాలి</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">30 రోజులు</div>
+<div class="kn-label">ECGC notification deadline (strict)</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">$150-300</div>
+<div class="kn-label">/రోజు Demurrage (free period తర్వాత)</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">40-60%</div>
+<div class="kn-label">BULLKART domestic fallback FOB value</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">60-90%</div>
+<div class="kn-label">ECGC loss coverage (NEVER 100%)</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">4-6 నెలలు</div>
+<div class="kn-label">ECGC claim settlement timeline</div>
+</div>
+</div>
+</div><div class="flags-card expandable">
+<div class="expand-title-row">
+<div class="flags-title">🚦 Honest Status Flags — S-81</div>
+<button aria-expanded="true" aria-label="Collapse status flags" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="expand-content">
+<div class="flag-row">
+<span class="flag-aspect">PHRT Pass Status</span>
+<span class="flag-status flag-green">🟢 PASS · EAG-BAN-2026-0184</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">Reefer Temperature Protocol</span>
+<span class="flag-status flag-green">🟢 13°C ±1°C Confirmed</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">Dec 2026 Consignment Risk</span>
+<span class="flag-status flag-amber">🟠 First timer risk</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">ECGC Coverage Active</span>
+<span class="flag-status flag-amber">🟠  Post FIRC (Feb 2027)</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">APEDA Report SOP</span>
+<span class="flag-status flag-red">🔴 ఇంకా file చేయలేదు (trigger pending)</span>
+</div>
+</div>
+</div><div class="doctrine-box expandable">
+<div class="expand-title-row">
+<div class="doctrine-title">⛔ ఇవి చేయకూడదు — Forbidden Actions</div>
+<button aria-expanded="true" aria-label="Collapse forbidden actions" class="expand-btn" type="button">⏶</button>
+</div>
+<div class="expand-content">
+<div class="doctrine-item">
+<span class="doctrine-x">✖</span>
+<span class="doctrine-text">"Low MRL violation is okay" — అసలు MRL violation = తీవ్రమైన సమస్య. Never minimize.</span>
+</div>
+<div class="doctrine-item">
+<span class="doctrine-x">✖</span>
+<span class="doctrine-text">30 రోజుల ECGC notification miss చేయడం — ఇది claim తిరస్కరణకు direct కారణం.</span>
+</div>
+<div class="doctrine-item">
+<span class="doctrine-x">✖</span>
+<span class="doctrine-text">APEDA reporting skip చేయడం — RCMC suspension + industry pattern miss.</span>
+</div>
+<div class="doctrine-item">
+<span class="doctrine-x">✖</span>
+<span class="doctrine-text">ECGC 100% coverage expect చేయడం — always 60-90% మాత్రమే.</span>
+</div>
+<div class="doctrine-item">
+<span class="doctrine-x">✖</span>
+<span class="doctrine-text">Demurrage ignore చేయడం — $150-300/day నష్టం. వేగంగా decide చేయాలి.</span>
+</div>
+</div>
+</div></div></div><!-- end .ph -->
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="../11/edpms-monitor.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">EDPMS Monitor</span>
+          <span class="tp-pager__meta">Module 11 · Government Schemes · Topic 11.5</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="buyer-dispute.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Buyer Dispute Tracker</span>
+          <span class="tp-pager__meta">Module 12 · Risk Management · Topic 12.2</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/12/rejection.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

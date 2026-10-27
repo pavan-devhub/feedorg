@@ -1,0 +1,313 @@
+/* Topic 1.1 · Income Gap (Module 01 – Why Exports?)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  :where(.tp-article) * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    background: #FAFAFA;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.2);
+  }
+  /* QUOTE HERO */
+  :where(.tp-article) .quote {
+    background: linear-gradient(135deg,#FFF9C4,#FFF8E1);
+    padding: 18px 16px;
+    margin: 0;
+    text-align: center;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  :where(.tp-article) .q-icon {
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    margin-bottom: 6px;
+  }
+  :where(.tp-article) .q-text {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    color: #5D4037;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  :where(.tp-article) .q-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #8D6E63;
+    margin-top: 7px;
+    letter-spacing: .3px;
+  }
+  /* SECTION HEADER */
+  :where(.tp-article) .sec {
+    padding: 18px 14px 8px;
+  }
+  :where(.tp-article) .sec-t {
+    font-size: calc(13.5px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1B5E20;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .sec-s {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: .2px;
+  }
+  /* HERO COMPARISON CARD */
+  :where(.tp-article) .hero {
+    margin: 0 14px 8px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border: 1px solid #EEEEEE;
+  }
+  :where(.tp-article) .hero-top {
+    padding: 11px 14px;
+    background: linear-gradient(135deg,#FFF3E0,#fff);
+    border-bottom: 1px solid #EEEEEE;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #212121;
+  }
+  :where(.tp-article) .hero-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .hero-comp {
+    display: flex;
+  }
+  :where(.tp-article) .hero-side {
+    flex: 1;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  :where(.tp-article) .hero-side.mandi {
+    background: #FFEBEE;
+    border-right: 1px solid #EEEEEE;
+  }
+  :where(.tp-article) .hero-side.export {
+    background: #E8F5E9;
+  }
+  :where(.tp-article) .hs-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .hs-icon {
+    font-size: calc(26px * var(--tp-type-scale, 1));
+    margin-bottom: 6px;
+  }
+  :where(.tp-article) .hs-amount {
+    font-size: calc(20px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1;
+  }
+  :where(.tp-article) .hs-amount.mandi {
+    color: #C62828;
+  }
+  :where(.tp-article) .hs-amount.export {
+    color: #2E7D32;
+  }
+  :where(.tp-article) .hs-unit {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    margin-top: 3px;
+  }
+  :where(.tp-article) .hero-diff {
+    background: #1B5E20;
+    color: #fff;
+    padding: 11px 14px;
+    text-align: center;
+  }
+  :where(.tp-article) .diff-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    letter-spacing: .5px;
+    color: #A5D6A7;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .diff-v {
+    font-size: calc(24px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #FFC107;
+    line-height: 1;
+    margin-top: 4px;
+  }
+  :where(.tp-article) .diff-s {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.85);
+    margin-top: 4px;
+  }
+  /* PARAGRAPH BLOCK */
+  :where(.tp-article) .para {
+    margin: 0 14px 12px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 13px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border: 1px solid #EEEEEE;
+  }
+  :where(.tp-article) .para-body {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #424242;
+    line-height: 1.7;
+  }
+  /* CROP TABLE */
+  :where(.tp-article) .tbl {
+    margin: 0 14px 12px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border: 1px solid #EEEEEE;
+  }
+  :where(.tp-article) .tbl-hd {
+    background: #E8F5E9;
+    padding: 9px 11px;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .tbl-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 0.7fr;
+    gap: 6px;
+    padding: 8px 10px;
+    border-bottom: .5px solid #F0F0F0;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    align-items: center;
+  }
+  :where(.tp-article) .tbl-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .tbl-row.header {
+    background: #FAFAFA;
+    font-weight: 700;
+    color: #616161;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    letter-spacing: .2px;
+  }
+  :where(.tp-article) .tbl-crop {
+    color: #212121;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .tbl-crop span {
+    display: block;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #9E9E9E;
+    font-weight: 400;
+    margin-top: 1px;
+  }
+  :where(.tp-article) .tbl-num {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #424242;
+  }
+  :where(.tp-article) .tbl-num.red {
+    color: #C62828;
+  }
+  :where(.tp-article) .tbl-num.green {
+    color: #2E7D32;
+    font-weight: 600;
+  }
+  :where(.tp-article) .tbl-mult {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #F57C00;
+    text-align: right;
+  }
+  /* WHY CARDS */
+  :where(.tp-article) .why-grid {
+    margin: 0 14px 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  :where(.tp-article) .why-card {
+    background: #fff;
+    border-radius: 11px;
+    padding: 11px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    border: 1px solid #EEEEEE;
+  }
+  :where(.tp-article) .why-num {
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #BDBDBD;
+    line-height: 1;
+    font-family: inherit;
+  }
+  :where(.tp-article) .why-t {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #212121;
+    margin-top: 5px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .why-d {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #616161;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  /* FEED PROMISE CARD */
+  :where(.tp-article) .promise {
+    margin: 0 14px 12px;
+    background: linear-gradient(135deg,#2E7D32,#1B5E20);
+    color: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 2px 6px rgba(46,125,50,.25);
+  }
+  :where(.tp-article) .promise-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #FFC107;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .promise-t {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  :where(.tp-article) .promise-body {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.9);
+    line-height: 1.65;
+    margin-bottom: 11px;
+  }
+  :where(.tp-article) .promise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  :where(.tp-article) .promise-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #fff;
+  }
+  :where(.tp-article) .promise-tick {
+    color: #FFC107;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .promise-item b {
+    color: #FFC107;
+  }
+}

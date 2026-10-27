@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cold Chain Break Protocol (ఉష్ణోగ్రత విఫలత నిర్వహణ) · Module 09 – Transport &amp; Shipping | My Exports</title>
+  <meta name="description" content="Module 09 · Transport &amp; Shipping — Cold Chain Break Protocol (ఉష్ణోగ్రత విఫలత నిర్వహణ). Topic 9.10 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/09/cold-chain.css">
+</head>
+<body class="tp-body tp-phase-3" data-root="../../" data-topic-path="modules/09/cold-chain.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-9">Module 09 · Transport &amp; Shipping</a></li>
+          <li><span aria-current="page">Cold Chain</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-3">Phase 03 · Documents &amp; Delivery</a>
+          <span class="tp-chip">Module 09 · Transport &amp; Shipping</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Cold Chain Break Protocol</h1>
+        <p class="tp-hero__subtitle">ఉష్ణోగ్రత విఫలత నిర్వహణ</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>9.10</strong> · 10 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="kpct.html" data-topic-id="9.1" title="9.1 KPCT" aria-label="Topic 9.1 KPCT">1</a></li>
+              <li><a class="tp-steps__item" href="vizag.html" data-topic-id="9.2" title="9.2 Vizag Port" aria-label="Topic 9.2 Vizag Port">2</a></li>
+              <li><a class="tp-steps__item" href="container.html" data-topic-id="9.3" title="9.3 Container" aria-label="Topic 9.3 Container">3</a></li>
+              <li><a class="tp-steps__item" href="port-guide.html" data-topic-id="9.4" title="9.4 Port Guide" aria-label="Topic 9.4 Port Guide">4</a></li>
+              <li><a class="tp-steps__item" href="sb-leo.html" data-topic-id="9.5" title="9.5 Shipping Bill &amp; LEO" aria-label="Topic 9.5 Shipping Bill &amp; LEO">5</a></li>
+              <li><a class="tp-steps__item" href="cha.html" data-topic-id="9.6" title="9.6 CHA" aria-label="Topic 9.6 CHA">6</a></li>
+              <li><a class="tp-steps__item" href="freight.html" data-topic-id="9.7" title="9.7 Freight" aria-label="Topic 9.7 Freight">7</a></li>
+              <li><a class="tp-steps__item" href="vessel.html" data-topic-id="9.8" title="9.8 Vessel" aria-label="Topic 9.8 Vessel">8</a></li>
+              <li><a class="tp-steps__item" href="air-cargo.html" data-topic-id="9.9" title="9.9 Air Cargo" aria-label="Topic 9.9 Air Cargo">9</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="9.10" title="9.10 Cold Chain">10</span></li>
+              <li><a class="tp-steps__item" href="demurrage.html" data-topic-id="9.11" title="9.11 Demurrage" aria-label="Topic 9.11 Demurrage">11</a></li>
+              <li><a class="tp-steps__item" href="sagar-setu.html" data-topic-id="9.12" title="9.12 Sagar Setu" aria-label="Topic 9.12 Sagar Setu">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">09</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph"><div class="web-flow"><div class="alert-hero">
+<div class="ah-title-row">
+<div class="ah-title">Cold Chain విఫలత అంటే ఏమిటి? రైతు ఏమి చేయాలి?</div>
+<button aria-label="Collapse section" class="mobile-expand-btn hero-toggle" type="button">⏶</button>
+</div>
+<div class="ah-tag">🔒 SOP: Cold-Chain-Break-01 · ICC-A Marine Insurance Active</div>
+<div class="ah-desc">13°C ±1°C పరిధి దాటినప్పుడు — Cold Chain Breach అవుతుంది. రెండు రకాల breach ఉంటాయి. ఒక్కో రకానికి వేరే protocol. ఏది జరిగినా — FCDA వెంటనే FEED platform లో report చేస్తారు. రైతు panic అవ్వకుండా — FEED రక్షణ వ్యవస్థ activate అవుతుంది.</div>
+<div class="ah-two-types">
+<div class="at-card">
+<div class="at-icon">🏭</div>
+<div class="at-title">రకం 1 — Loading కి ముందు</div>
+<div class="at-desc">గొరంట్ల TC-6 లో లేదా reefer truck లో 13°C దాటినప్పుడు. Container loading కి ముందే detect అవుతుంది.</div>
+<div><span class="at-badge badge-pre">⚠️ PRE-LOADING</span></div>
+</div>
+<div class="at-card">
+<div class="at-icon">🚢</div>
+<div class="at-title">రకం 2 — సముద్రంలో</div>
+<div class="at-desc">Maersk vessel లో reefer unit malfunction. KPCT నుండి Jebel Ali మధ్య GPS alert trigger.</div>
+<div><span class="at-badge badge-voyage">🚨 VOYAGE</span></div>
+</div>
+</div>
+</div><div class="sec">
+<div class="sec-head sh-purple">
+<span class="sec-head-icon">⚡</span>
+<div class="sec-head-text">ఉష్ణోగ్రత Thresholds — ఏది breach? ఏది OK?</div>
+</div>
+<div class="sec-body">
+<div class="threshold-cards">
+<div class="th-card thc-cold">
+<div class="th-icon">🧊</div>
+<div class="th-content">
+<div class="th-range">≤12°C</div>
+<div class="th-name">🚨 CRITICAL — Chilling Injury</div>
+<div class="th-desc">అరటి తొక్క నల్లగా మారుతుంది (Brown Spots). Cellular damage జరుగుతుంది. Jebel Ali buyer reject చేస్తాడు. &gt;30 నిమిషాలు ఉంటే irreversible damage.</div>
+<div class="th-action">🚨 FCDA + ECGC — వెంటనే</div>
+<div class="th-timer">⏱️ Response: 0 నిమిషాలు</div>
+</div>
+</div>
+<div class="th-card thc-safe">
+<div class="th-icon">✅</div>
+<div class="th-content">
+<div class="th-range">13°C – 14°C</div>
+<div class="th-name">✅ SAFE ZONE </div>
+<div class="th-desc">ఆదర్శ పరిధి. Banana నిల్వకు perfect. GPS log continue. ఎటువంటి action అవసరం లేదు. 7-8 రోజుల voyage లో ఇక్కడే ఉండాలి.</div>
+<div class="th-action">✅ Normal — 30-min logging continue</div>
+</div>
+</div>
+<div class="th-card thc-hot">
+<div class="th-icon">🔥</div>
+<div class="th-content">
+<div class="th-range">≥15°C</div>
+<div class="th-name">🚨 CRITICAL — వేగవంతమైన పండు</div>
+<div class="th-desc">Banana Jebel Ali చేరేలోపే overripe అయిపోతుంది. Ethylene gas release పెరుగుతుంది. Buyer reject చేస్తాడు. ECGC cargo insurance claim trigger.</div>
+<div class="th-action">🚨 SMS instant → ECGC → Buyer 30 min లోపు</div>
+<div class="th-timer">⏱️ Response: 30 నిమిషాల లోపు</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="protocol-box">
+<div class="pb-header pbh-pre">
+<div class="pb-header-icon">🏭</div>
+<div class="pb-header-text">
+<div class="pb-header-title">రకం 1 — Loading కి ముందు Breach Protocol</div>
+<div class="pb-header-sub">TC-6 లేదా Reefer Truck లో breach · BULLKART fallback activate</div>
+</div>
+<button aria-label="Collapse section" class="mobile-expand-btn protocol-toggle" type="button">⏶</button>
+</div>
+<div class="pb-steps collapsible-content">
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-pre1">1</div>
+<div class="pbs-line line-pre"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-pre">⏱️ 0 నిమిషాలు — Instant</div>
+<div class="step-title stt-pre">FEED Platform Automatic Alert</div>
+<div class="step-desc">GPS + Bluetooth Datalogger breach detect అవగానే FEED platform auto-alert. FCDA కి SMS. రైతు రామయ్య గారికి WhatsApp. ≤12°C లేదా ≥15°C for &gt;15 minutes = trigger.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-pre2">2</div>
+<div class="pbs-line line-pre"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-pre">⏱️ 30 నిమిషాల లోపు</div>
+<div class="step-title stt-pre">Assess — Severity &amp; Reversibility</div>
+<div class="step-desc">FCDA + FEED team: ఎంత సమయం breach? ఎంత degrees? Pre-cool unit failure లేదా truck failure? Temporary lapse (15 min) vs Extended breach (60+ min) = different response. Brief temperature log review.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-pre3">3</div>
+<div class="pbs-line line-pre"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-pre">⏱️ 2 గంటల లోపు — Temporary breach</div>
+<div class="step-title stt-pre">TC-6 Repair / Alternative Pre-cooling</div>
+<div class="step-desc">Temporary equipment failure (15-30 min): repair attempt. Alternative CFC booking if TC-6 down. Backup empanelled cold storage identify. Banana lot in shade + ice packs temporary. Reschedule stuffing 24-48 hours.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-pre4">4</div>
+<div class="pbs-line line-pre"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-pre">⏱️ 4 గంటల లోపు — Extended breach</div>
+<div class="step-title stt-pre">BULLKART Domestic Channel Activate</div>
+<div class="step-desc"><strong>Extended breach ≥ 60 minutes OR visible damage:</strong> BULLKART domestic T4 activate. SOP PHRT-FAIL-01 protocol. Domestic mandi sale at current price — distress sale కాదు, T4 managed sale. Banana chips processing (₹180/kg margin) బదులు export FOB ₹172/kg compare.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-pre5">5</div>
+<div class="pbs-line" style="background:transparent;min-height:0;"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-pre">⏱️ 24 గంటల లోపు</div>
+<div class="step-title stt-pre">Incident Log + Next Vessel Re-Plan</div>
+<div class="step-desc">MY EXPORTS లో incident log record. FEED platform lot-level evidence archive. Next available vessel booking start. ECGC Whole Turnover Policy — pre-loading loss cover check. Root cause analysis report FCDA prepare.</div>
+</div>
+</div>
+</div>
+</div><div class="protocol-box">
+<div class="pb-header pbh-voyage">
+<div class="pb-header-icon">🚢</div>
+<div class="pb-header-text">
+<div class="pb-header-title">రకం 2 — సముద్రంలో Breach Protocol</div>
+<div class="pb-header-sub">Maersk vessel reefer malfunction · ECGC ICC-A claim chain</div>
+</div>
+<button aria-label="Collapse section" class="mobile-expand-btn protocol-toggle" type="button">⏶</button>
+</div>
+<div class="pb-steps collapsible-content">
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-voy1">1</div>
+<div class="pbs-line line-voyage"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-voyage">⏱️ 0 నిమిషాలు — GPS Alert</div>
+<div class="step-title stt-voyage">Satellite GPS Alert — Arabian Sea</div>
+<div class="step-desc">Maersk GPS platform: container MRKU3456789 temperature ≥15°C లేదా ≤12°C for &gt;30 minutes. FEED platform auto-receive. FCDA + Chairman SMS instant. 24×7 monitoring active.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-voy2">2</div>
+<div class="pbs-line line-voyage"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-voyage">⏱️ 30 నిమిషాల లోపు</div>
+<div class="step-title stt-voyage">Maersk Vessel Captain Alert</div>
+<div class="step-desc">FCDA ద్వారా Maersk India emergency contact. Vessel captain ని reefer unit malfunction report. Reefer repair request — vessel engineer check. Temperature set point re-verify. Captain response confirm.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-voy3">3</div>
+<div class="pbs-line line-voyage"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-voyage">⏱️ 30 నిమిషాల లోపు</div>
+<div class="step-title stt-voyage">Jebel Ali Buyer Notification</div>
+<div class="step-desc">Buyer UAE కి: "Container MRKU3456789 temporary temperature fluctuation — investigation in progress. Maersk addressing. Temperature log evidence provide చేస్తాం. Quality certificate at destination." — UNCITRAL notice template.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-voy4">4</div>
+<div class="pbs-line line-voyage"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-voyage">⏱️ 24 గంటల లోపు</div>
+<div class="step-title stt-voyage">ECGC Cargo Insurance Claim — Surveyor</div>
+<div class="step-desc">Marine surveyor Jebel Ali లో నియమించాలి (24 గంటల లోపు mandatory). Survey report = ECGC claim evidence. ICC-A policy = "All Risks" cover. Surveyor independent confirmation = claim valid. ECGC Hyderabad Anand Singh notify.</div>
+</div>
+</div>
+<div class="pb-step">
+<div class="pbs-left">
+<div class="pbs-dot dot-voy5">5</div>
+<div class="pbs-line" style="background:transparent;min-height:0;"></div>
+</div>
+<div class="pbs-right">
+<div class="step-time st-voyage">⏱️ Jebel Ali arrival తర్వాత</div>
+<div class="step-title stt-voyage">Joint Inspection + Salvage Decision</div>
+<div class="step-desc">Jebel Ali లో joint inspection: FEED FCDA + Buyer + Marine Surveyor. Lot-wise assessment: salvageable (partial payment) vs total loss (full claim). ECGC 60-90% loss recover. Remainder: Maersk liability claim.</div>
+</div>
+</div>
+</div>
+</div><div class="bullkart-card">
+<div class="bullkart-title-row">
+<div class="bc-title">🌿 BULLKART Domestic Fallback — రైతుకు రక్షణ</div>
+<button aria-label="Collapse section" class="mobile-expand-btn collapsible-toggle" type="button">⏶</button>
+</div>
+<div class="bc-main">Pre-loading breach అయినా రైతుకు నష్టం minimum</div>
+<div class="collapsible-content">
+<div class="bc-grid">
+<div class="bc-item">
+<div class="bc-item-label">అరటి chips</div>
+<div class="bc-item-val gold">₹180/kg margin</div>
+</div>
+<div class="bc-item">
+<div class="bc-item-label">Mandi direct</div>
+<div class="bc-item-val">₹12-15/kg</div>
+</div>
+<div class="bc-item">
+<div class="bc-item-label">Export FOB (missed)</div>
+<div class="bc-item-val">₹172/kg</div>
+</div>
+<div class="bc-item">
+<div class="bc-item-label">BULLKART vs Mandi</div>
+<div class="bc-item-val gold">10× better</div>
+</div>
+</div>
+<div class="bc-compare">
+<div class="bcc-title">ఒక్కో రకానికి రైతుకు ఏమి వస్తుంది?</div>
+<div class="bcc-row"><span class="bcc-key">Export (normal)</span><span class="bcc-val ok">₹32,14,080 (93% FOB)</span></div>
+<div class="bcc-row"><span class="bcc-key">Voyage breach + ECGC claim</span><span class="bcc-val" style="color:#FFB74D;">₹19-28 లక్షలు (60-90%)</span></div>
+<div class="bcc-row"><span class="bcc-key">BULLKART chips (pre-loading)</span><span class="bcc-val" style="color:#FFB74D;">₹36 లక్షలు (20 MT × ₹180)</span></div>
+<div class="bcc-row"><span class="bcc-key">Mandi distress sale</span><span class="bcc-val bad">₹2.4-3 లక్షలు (loss)</span></div>
+</div>
+</div>
+</div><div class="ecgc-card">
+<div class="ecgc-title-row">
+<div class="ecgc-title">🛡️ ECGC Cargo Insurance Claim Process</div>
+<button aria-label="Collapse section" class="mobile-expand-btn collapsible-toggle" type="button">⏶</button>
+</div>
+<div class="collapsible-content">
+<div class="ecgc-steps">
+<div class="ecgc-step">
+<div class="ecgc-num">1</div>
+<div class="ecgc-content">
+<div class="ecgc-name">Marine Surveyor నియమించడం</div>
+<div class="ecgc-desc">Jebel Ali లో ECGC empanelled marine surveyor contact. Damage assessment — lot-by-lot. Survey report = claim foundation document.</div>
+<div class="ecgc-deadline">🚨 24 గంటల లోపు — mandatory</div>
+</div>
+</div>
+<div class="ecgc-step">
+<div class="ecgc-num">2</div>
+<div class="ecgc-content">
+<div class="ecgc-name">ECGC Hyderabad కి Notification</div>
+<div class="ecgc-desc">Anand Singh GM (+91-8373912942) కి formal claim notification. Policy number, shipment details, loss estimate. ECGC investigation team assign అవుతారు.</div>
+<div class="ecgc-deadline">⏰ 30 రోజుల లోపు — claim file చేయాలి</div>
+</div>
+</div>
+<div class="ecgc-step">
+<div class="ecgc-num">3</div>
+<div class="ecgc-content">
+<div class="ecgc-name">Documents Package</div>
+<div class="ecgc-desc">Insurance Policy copy · Invoice · BL (MAEU2026DEC001847) · Temperature log (Bluetooth datalogger evidence) · Survey Report · Buyer rejection letter · PHRT certificate.</div>
+<div class="ecgc-deadline">⏰ 4 నెలల లోపు — full package</div>
+</div>
+</div>
+<div class="ecgc-step">
+<div class="ecgc-num">4</div>
+<div class="ecgc-content">
+<div class="ecgc-name">ECGC Settlement</div>
+<div class="ecgc-desc">ECGC investigation complete. Claim approve → 60-90% loss cover. Balance 10-40% = Maersk reefer malfunction claim (shipping line liability separate). Timeline: 30-90 రోజులు settlement.</div>
+<div class="ecgc-deadline">✅ 30-90 రోజులు — settlement</div>
+</div>
+</div>
+</div>
+<div class="ecgc-coverage">
+<div class="ecgc-cov-amt">60–90%</div>
+<div class="ecgc-cov-label">ICC-A Marine Insurance Loss Coverage · రైతు FOB లో ₹19-28 లక్షలు recover</div>
+</div>
+</div>
+</div><div class="impact-box">
+<div class="impact-title">💰 Cold Chain Breach — రైతు ఆదాయ impact</div>
+<div class="impact-row">
+<span class="impact-label">Normal export (no breach)</span>
+<span class="impact-val save">₹32,14,080</span>
+</div>
+<div class="impact-row">
+<span class="impact-label">Voyage breach — ECGC claim (60%)</span>
+<span class="impact-val partial">₹19,28,448</span>
+</div>
+<div class="impact-row">
+<span class="impact-label">Voyage breach — ECGC claim (90%)</span>
+<span class="impact-val partial">₹28,92,672</span>
+</div>
+<div class="impact-row">
+<span class="impact-label">Pre-loading breach — BULLKART chips</span>
+<span class="impact-val partial">~₹36,00,000 (better than mandi!)</span>
+</div>
+<div class="impact-row">
+<span class="impact-label">No ECGC, No BULLKART (worst case)</span>
+<span class="impact-val loss">₹2,40,000 (mandi only)</span>
+</div>
+<div style="background:#B71C1C;border-radius:6px;padding:8px;margin-top:8px;font-size:calc(11px * var(--tp-type-scale, 1));color:#FFCDD2;line-height:1.4;">
+    🛡️ <strong>FEED రక్షణ కవచం:</strong> ECGC Marine Insurance (ICC-A) + BULLKART fallback = రైతుకు ఎట్టి పరిస్థితిలోనూ mandi కంటే తక్కువ రాదు. Zero distress sale guarantee.
+  </div>
+</div><div class="sec">
+<div class="sec-head sh-green">
+<span class="sec-head-icon">🛡️</span>
+<div class="sec-head-text">Cold Chain Breach నివారణ — 5 జాగ్రత్తలు</div>
+</div>
+<div class="sec-body">
+<div class="prevention-steps">
+<div class="prev-step">
+<div class="prev-num">1</div>
+<div class="prev-content">
+<div class="prev-title">TC-6 Equipment ముందే verify</div>
+<div class="prev-desc">Loading కి 48 గంటల ముందు గొరంట్ల TC-6 equipment health check. Cold room temp log verify. Power supply backup check. Generator fuel ≥80%. FCDA confirmed ok before harvest.</div>
+</div>
+</div>
+<div class="prev-step">
+<div class="prev-num">2</div>
+<div class="prev-content">
+<div class="prev-title">Bluetooth Datalogger Container లో set చేయడం</div>
+<div class="prev-desc">Stuffing రోజు Bluetooth datalogger container లోపల initialize. 15-min record interval confirm. 30-day battery check. Seal చేసే ముందే datalogger active confirm — ఆ తర్వాత seal. Voyage evidence mandatory.</div>
+</div>
+</div>
+<div class="prev-step">
+<div class="prev-num">3</div>
+<div class="prev-content">
+<div class="prev-title">KPCT Reefer Plug Advance Booking</div>
+<div class="prev-desc">Container arrive కి 24 గంటల ముందే KPCT reefer plug booking confirm. Power connection available? 13°C loading కి ముందే achieve అయిందా? Plug active నిర్ధారించిన తర్వాతే stuffing.</div>
+</div>
+</div>
+<div class="prev-step">
+<div class="prev-num">4</div>
+<div class="prev-content">
+<div class="prev-title">Maersk Reefer Spec verify</div>
+<div class="prev-desc">Container booking లో 13°C set point written confirmation పొందాలి. Maersk booking receipt లో reefer specs print చేయాలి. Vessel captain pre-departure reefer check confirm. BL లో "13°C" mention.</div>
+</div>
+</div>
+<div class="prev-step">
+<div class="prev-num">5</div>
+<div class="prev-content">
+<div class="prev-title">ECGC Policy Documents Ready</div>
+<div class="prev-desc">Marine Insurance Policy (ICC-A) — loading కంటే ముందే take చేయాలి. Policy number + Anand Singh GM contact FEED platform లో register. Surveyor contact list Jebel Ali లో ready.</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="sec">
+<div class="sec-head sh-purple">
+<span class="sec-head-icon">📱</span>
+<div class="sec-head-text">FEED Platform — Cold Chain Automation</div>
+</div>
+<div class="sec-body">
+<div class="platform-list">
+<div class="platform-item">
+<div class="platform-num">1</div>
+<div class="platform-text"><span class="platform-bold">GPS + BLE Dual Alert:</span> GPS satellite (30-min) + Bluetooth datalogger (15-min) రెండూ parallel monitor. ≤12°C లేదా ≥15°C for &gt;15 minutes → FCDA + Chairman + Buyer 3-way SMS instant.</div>
+</div>
+<div class="platform-item">
+<div class="platform-num">2</div>
+<div class="platform-text"><span class="platform-bold">BULLKART Auto-Route:</span> Pre-loading breach confirm అయిన తర్వాత FEED platform లో BULLKART lot routing auto-trigger. Domestic price compare: mandi vs chips — best option suggest. Zero distress sale guarantee.</div>
+</div>
+<div class="platform-item">
+<div class="platform-num">3</div>
+<div class="platform-text"><span class="platform-bold">ECGC Claim Document Package:</span> Voyage breach అయినప్పుడు FEED platform automatically: temperature log PDF + invoice + BL copy + incident report = complete document package generate. ECGC submit ready.</div>
+</div>
+<div class="platform-item">
+<div class="platform-num">4</div>
+<div class="platform-text"><span class="platform-bold">Incident Log Archive:</span> ప్రతి breach — timestamp, temperature, duration, action taken, outcome — lot-level archive. RASFF compliance. Future audit evidence. Root cause analysis feed.</div>
+</div>
+</div>
+</div>
+</div><div class="contact-card">
+<div class="contact-title">📞 Cold Chain Emergency — Key Contacts</div>
+<div class="contact-row">
+<div class="contact-icon">🛡️</div>
+<div class="contact-detail">
+<div class="contact-name">Anand Singh GM — ECGC Hyderabad</div>
+<div class="contact-num">+91-8373912942 · ecgchyd@ecgc.in · 24-hr claim initiation</div>
+</div>
+</div>
+<div class="contact-row">
+<div class="contact-icon">🚢</div>
+<div class="contact-detail">
+<div class="contact-name">Maersk India Emergency Cargo</div>
+<div class="contact-num">1800-209-0590 (toll-free) · maersk.com/tracking</div>
+</div>
+</div>
+<div class="contact-row">
+<div class="contact-icon">🏗️</div>
+<div class="contact-detail">
+<div class="contact-name">M భాను ప్రకాష్ — KPCT Port</div>
+<div class="contact-num">+91-9100066327 · Pre-loading breach — port cold storage backup</div>
+</div>
+</div>
+<div class="contact-row">
+<div class="contact-icon">🔬</div>
+<div class="contact-detail">
+<div class="contact-name">Eureka Analytical Guntur — Re-testing</div>
+<div class="contact-num">+91-8748037689 · bhemalatha@eurekaserv.com · NABL</div>
+</div>
+</div>
+</div><div class="sec">
+<div class="sec-head sh-red">
+<span class="sec-head-icon">⚠️</span>
+<div class="sec-head-text">సాధారణ తప్పులు — జాగ్రత్తలు</div>
+</div>
+<div class="sec-body">
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">Breach అయినా loading continue చేయడం:</span> "కొంచెం breach అయినా OK అవుతుంది" అని container load చేస్తే — Jebel Ali లో complete rejection. ₹32 లక్షలు పోతాయి + ECGC claim complex. Pre-loading breach = stop immediately + assess.</div>
+</div>
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">Marine Surveyor 24 గంటల లోపు నియమించకపోవడం:</span> Voyage breach అయినప్పుడు Jebel Ali లో surveyor 24 గంటల లోపు నియమించాలి. Miss అయితే ECGC claim invalid. "Damage verify చేయడానికి surveyor లేడు" = claim reject.</div>
+</div>
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">Datalogger container లో పెట్టకపోవడం:</span> Temperature breach prove చేయడానికి Bluetooth datalogger record mandatory. Log లేకపోతే ECGC claim evidence లేదు. Maersk responsibility prove చేయడం impossible. Datalogger = crucial evidence.</div>
+</div>
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">BULLKART బదులు మందీ లో distress sale:</span> Pre-loading breach అయినా panic అవ్వి mandi లో ₹12-15/kg కి అమ్మకూడదు. BULLKART chips ₹180/kg margin, managed domestic sale ₹36 లక్షలు possible. FEED platform contact చేయాలి first.</div>
+</div>
+</div>
+</div><div class="faq-wrap">
+<div class="faq-title">❓ తరచు అడిగే ప్రశ్నలు</div>
+<div class="faq-item">
+<div class="faq-q">ప్ర: 14.1°C ఒకసారి వచ్చినా claim చేయవచ్చా?</div>
+<div class="faq-a">జ: కాదు. ఒక్కసారి 30 నిమిషాల కంటే తక్కువ 14-15°C = CAUTION, breach కాదు. Reefer unit auto-correct చేసి 13°C కి వస్తుంది (S-48 log లో Dec 16, 00:30 incident వరకు). ECGC claim కి: ≤12°C లేదా ≥15°C for sustained time + visible damage + surveyor confirmation కావాలి.</div>
+</div>
+<div class="faq-item">
+<div class="faq-q">ప్ర: Voyage breach అయినా buyer payment చేస్తాడా?</div>
+<div class="faq-a">జ: Buyer joint inspection report బట్టి నిర్ణయిస్తాడు. Partial damage (10-20% lots) = partial payment + ECGC balance. Total loss = ECGC full claim. Buyer reject + ECGC + Maersk liability combination = coverage. "అన్నీ పోయాయి" scenario FEED + ECGC system లో impossible గా design చేయబడింది.</div>
+</div>
+</div><div class="kyj-strip">
+<div style="font-size:calc(24px * var(--tp-type-scale, 1));">🛡️</div>
+<div style="flex:1;">
+<div class="kyj-stage">KYJ — రైతు ఎప్పుడూ distress sale చేయడు</div>
+<div class="kyj-text">Cold chain break అయినా — BULLKART fallback + ECGC cover + Maersk liability = రైతుకు protection. FEED "Zero distress sale guarantee" = రైతు ఎల్లప్పుడూ mandi కంటే ఎక్కువ పొందుతాడు.</div>
+</div>
+</div></div></div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="air-cargo.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">Air Cargo</span>
+          <span class="tp-pager__meta">Module 09 · Transport &amp; Shipping · Topic 9.9</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="demurrage.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Demurrage Management</span>
+          <span class="tp-pager__meta">Module 09 · Transport &amp; Shipping · Topic 9.11</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/09/cold-chain.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

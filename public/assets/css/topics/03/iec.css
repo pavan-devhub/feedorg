@@ -1,0 +1,647 @@
+/* Topic 3.1 · IEC Registration (Module 03 – Registration & Licences)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  :where(.tp-article) * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    background: #FAFAFA;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.2);
+  }
+  /* HERO — IEC big card */
+  :where(.tp-article) .hero {
+    margin: 14px 14px 0;
+    background: linear-gradient(135deg,#1976D2 0%,#0D47A1 100%);
+    color: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(13,71,161,.25);
+  }
+  :where(.tp-article) .hero::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 130px;
+    height: 130px;
+    background: rgba(255,255,255,.1);
+    border-radius: 50%;
+  }
+  :where(.tp-article) .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: -40px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255,255,255,.06);
+    border-radius: 50%;
+  }
+  :where(.tp-article) .hero-band {
+    padding: 11px 14px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  :where(.tp-article) .hero-tag {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #FFC107;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .hero-rank {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+    background: rgba(0,0,0,.25);
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+  :where(.tp-article) .hero-body {
+    padding: 0 14px 14px;
+    position: relative;
+  }
+  :where(.tp-article) .hero-t {
+    font-size: calc(28px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    text-shadow: 0 1px 3px rgba(0,0,0,.18);
+  }
+  :where(.tp-article) .hero-st {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    color: #FFC107;
+    font-weight: 700;
+    margin-top: 3px;
+  }
+  :where(.tp-article) .hero-s {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.92);
+    margin-top: 8px;
+    line-height: 1.55;
+  }
+  :where(.tp-article) .hero-s b {
+    color: #fff;
+    background: rgba(255,255,255,.18);
+    padding: 1px 6px;
+    border-radius: 5px;
+  }
+  :where(.tp-article) .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-top: 11px;
+    position: relative;
+  }
+  :where(.tp-article) .hg {
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px;
+    padding: 7px 5px;
+    text-align: center;
+  }
+  :where(.tp-article) .hg-v {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #FFC107;
+    line-height: 1;
+  }
+  :where(.tp-article) .hg-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.78);
+    margin-top: 3px;
+    font-weight: 600;
+    letter-spacing: .2px;
+  }
+  /* LIVE STATUS CARD */
+  :where(.tp-article) .live {
+    margin: 14px 14px 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 13px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    border-left: 5px solid #43A047;
+  }
+  :where(.tp-article) .live-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .live-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #43A047;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  :where(.tp-article) .live-l::before {
+    content: '●';
+    color: #43A047;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: .5; }
+  }
+  :where(.tp-article) .live-pill {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    background: #E8F5E9;
+    color: #2E7D32;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+  :where(.tp-article) .live-t {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #212121;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .live-s {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #616161;
+    margin-top: 6px;
+    line-height: 1.55;
+  }
+  :where(.tp-article) .live-s b {
+    color: #1565C0;
+  }
+  :where(.tp-article) .live-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-top: 9px;
+  }
+  :where(.tp-article) .lg {
+    background: #F1F8E9;
+    border-radius: 8px;
+    padding: 7px 9px;
+  }
+  :where(.tp-article) .lg-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #43A047;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+  :where(.tp-article) .lg-v {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #212121;
+    margin-top: 2px;
+  }
+  /* SECTION */
+  :where(.tp-article) .sec {
+    padding: 18px 14px 8px;
+  }
+  :where(.tp-article) .sec-t {
+    font-size: calc(13.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #0D47A1;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .sec-s {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  /* WHAT IS IEC card */
+  :where(.tp-article) .what {
+    margin: 0 14px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 13px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  :where(.tp-article) .what-q {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1565C0;
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .what-a {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #424242;
+    line-height: 1.65;
+  }
+  :where(.tp-article) .what-a b {
+    color: #0D47A1;
+  }
+  :where(.tp-article) .what-a u {
+    text-decoration: none;
+    background: #FFF8E1;
+    padding: 0 3px;
+    border-radius: 3px;
+    font-weight: 600;
+    color: #E65100;
+  }
+  /* ARCHITECTURE — Big explanation */
+  :where(.tp-article) .arch {
+    margin: 0 14px;
+    background: linear-gradient(135deg,#FFF8E1 0%,#FFE082 100%);
+    border-radius: 14px;
+    padding: 14px;
+    border: 2px solid #FFC107;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .arch::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -15px;
+    width: 80px;
+    height: 80px;
+    background: rgba(255,193,7,.18);
+    border-radius: 50%;
+  }
+  :where(.tp-article) .arch-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #E65100;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+  }
+  :where(.tp-article) .arch-t {
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1B5E20;
+    margin-top: 5px;
+    line-height: 1.2;
+    position: relative;
+  }
+  :where(.tp-article) .arch-body {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #3E2723;
+    line-height: 1.65;
+    margin-top: 8px;
+    position: relative;
+  }
+  :where(.tp-article) .arch-body b {
+    color: #1B5E20;
+  }
+  :where(.tp-article) .arch-diag {
+    margin-top: 11px;
+    background: rgba(255,255,255,.7);
+    border-radius: 10px;
+    padding: 11px;
+    position: relative;
+  }
+  :where(.tp-article) .arch-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 5px 0;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    border-bottom: 1px dashed #FFB300;
+  }
+  :where(.tp-article) .arch-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .arch-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .arch-icon.f {
+    background: #1B5E20;
+    color: #FFC107;
+  }
+  :where(.tp-article) .arch-icon.r {
+    background: #FFB300;
+    color: #fff;
+  }
+  :where(.tp-article) .arch-icon.a {
+    background: #1565C0;
+    color: #fff;
+  }
+  :where(.tp-article) .arch-text {
+    flex: 1;
+    color: #424242;
+  }
+  :where(.tp-article) .arch-text b {
+    color: #1B5E20;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .arch-tag {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 8px;
+    background: #fff;
+  }
+  :where(.tp-article) .arch-tag.green {
+    color: #2E7D32;
+    background: #E8F5E9;
+  }
+  :where(.tp-article) .arch-tag.gold {
+    color: #E65100;
+    background: #FFE082;
+  }
+  :where(.tp-article) .arch-tag.blue {
+    color: #0D47A1;
+    background: #E3F2FD;
+  }
+  /* 7-STEP WORKFLOW VISUALIZATION */
+  :where(.tp-article) .workflow {
+    margin: 0 14px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  :where(.tp-article) .wf-summary {
+    background: linear-gradient(90deg,#1565C0,#1976D2);
+    color: #fff;
+    padding: 10px 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  :where(.tp-article) .wf-sum-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+  :where(.tp-article) .wf-sum-r {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #FFC107;
+    font-weight: 700;
+  }
+  :where(.tp-article) .wf-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 11px 13px;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  :where(.tp-article) .wf-step:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .wf-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #E3F2FD;
+    color: #0D47A1;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid #BBDEFB;
+  }
+  :where(.tp-article) .wf-mid {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .wf-t {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #0D47A1;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .wf-d {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #616161;
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .wf-d b {
+    color: #0D47A1;
+  }
+  /* CRITICAL ANNUAL UPDATE ALERT */
+  :where(.tp-article) .alert {
+    margin: 0 14px;
+    background: #FFEBEE;
+    border: 2px solid #C62828;
+    border-radius: 12px;
+    padding: 13px;
+    position: relative;
+  }
+  :where(.tp-article) .alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: #C62828;
+    border-radius: 12px 0 0 12px;
+  }
+  :where(.tp-article) .alert-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #B71C1C;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 5px;
+  }
+  :where(.tp-article) .alert-t {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #212121;
+    margin-top: 5px;
+    line-height: 1.2;
+    margin-left: 5px;
+  }
+  :where(.tp-article) .alert-body {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #424242;
+    line-height: 1.6;
+    margin-top: 7px;
+    margin-left: 5px;
+  }
+  :where(.tp-article) .alert-body b {
+    color: #B71C1C;
+  }
+  :where(.tp-article) .alert-cal {
+    margin-top: 9px;
+    margin-left: 5px;
+    background: #fff;
+    border: 1.5px solid #FFCDD2;
+    border-radius: 9px;
+    padding: 8px 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .alert-cal-l {
+    color: #757575;
+    font-weight: 600;
+  }
+  :where(.tp-article) .alert-cal-v {
+    color: #B71C1C;
+    font-weight: 800;
+  }
+  /* CONTACT CARD — Ashwini Ji */
+  :where(.tp-article) .contact {
+    margin: 0 14px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(13,71,161,.12);
+    border: 1px solid #E3F2FD;
+  }
+  :where(.tp-article) .contact-band {
+    background: linear-gradient(135deg,#0D47A1,#1565C0);
+    color: #fff;
+    padding: 11px 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  :where(.tp-article) .cb-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #FFC107;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .cb-r {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: rgba(255,255,255,.8);
+  }
+  :where(.tp-article) .contact-body {
+    padding: 13px;
+  }
+  :where(.tp-article) .contact-row {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .contact-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#1976D2,#0D47A1);
+    color: #fff;
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid #BBDEFB;
+  }
+  :where(.tp-article) .contact-info {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .contact-name {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #0D47A1;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .contact-title {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #1565C0;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .contact-dept {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .contact-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 11px;
+  }
+  :where(.tp-article) .cch {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    background: #F5F9FF;
+    border-radius: 8px;
+    border: 1px solid #E3F2FD;
+  }
+  :where(.tp-article) .cch-i {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .cch-mid {
+    flex: 1;
+  }
+  :where(.tp-article) .cch-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    font-weight: 600;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .cch-v {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #0D47A1;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  :where(.tp-article) .cch-btn {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+    background: #1565C0;
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+  /* DOCTRINE NOTE */
+  :where(.tp-article) .note {
+    margin: 0 14px;
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .note-icon {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .note-body {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #1B5E20;
+    line-height: 1.55;
+  }
+  :where(.tp-article) .note-body b {
+    color: #2E7D32;
+  }
+}

@@ -1,0 +1,841 @@
+/* ==========================================================================
+   Program tree — "Export Program" banner and four phase columns.
+   One unit (--u) equals one pixel of the 1787px-wide design, so the block keeps
+   the design's proportions from laptops up to large desktops. It is also capped
+   by the viewport height so the whole block fits one screen; the phase columns
+   then stretch to fill whatever height is left.
+   ========================================================================== */
+.tree-section {
+  scroll-margin-top: 80px;
+  --u: clamp(0.66px, min(100vw / 1787, 100svh / 1016), 1.12px);
+  --tree-ink: #0b0d18;
+  --tree-text: #232731;
+  --tree-muted: #4e5360;
+  --tree-line: #e2e6eb;
+  --tree-card: #ffffff;
+  --tree-card-border: #e2e6eb;
+  --tree-badge: #eceef2;
+  /* Content column, and how far the heading and cards sit inside it */
+  --inner-w: min(1680px, calc(100% - 2 * clamp(16px, 3.5vw, 48px)));
+  --inset: 0px;
+
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: calc(60 * var(--u)) 0 calc(60 * var(--u));
+  background: linear-gradient(180deg, #f5f9fc 0, #fafcfe calc(420 * var(--u)), #fcfdfe 100%);
+  color: var(--tree-ink);
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: auto;
+}
+
+.tree-section,
+.tree-section * {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+}
+
+/* Per-phase palette */
+.tree-phase.phase-1 {
+  --tp-bar: #eeb85c;
+  --tp-bar-end: #f7e7c9;
+  --tp-tint: #fdf6ea;
+  --tp-icon: #a5670f;
+  --tp-kicker: #a8762c;
+  --tp-open-bg: #fdf9f1;
+  --tp-open-border: #f1e3c4;
+  --tp-badge: #f9e8c8;
+  --tp-spine: #e4e6ea;
+  --tp-dot: #9a9ea7;
+  --tp-id: #1d2230;
+}
+
+.tree-phase.phase-2 {
+  --tp-bar: #45b59e;
+  --tp-bar-end: #c3ebe0;
+  --tp-tint: #eefaf6;
+  --tp-icon: #127b6a;
+  --tp-kicker: #1f8a70;
+  --tp-open-bg: #f3fbf8;
+  --tp-open-border: #cbeee3;
+  --tp-badge: #d2f0e7;
+  --tp-spine: #bfe7dc;
+  --tp-dot: #3fb59d;
+  --tp-id: #1d8a72;
+}
+
+.tree-phase.phase-3 {
+  --tp-bar: #2170e0;
+  --tp-bar-end: #bcd6f7;
+  --tp-tint: #eef5ff;
+  --tp-icon: #1a6be4;
+  --tp-kicker: #1c5fc7;
+  --tp-open-bg: #f4f8fe;
+  --tp-open-border: #cfe0f7;
+  --tp-badge: #d6e6fb;
+  --tp-spine: #c8defa;
+  --tp-dot: #2a7de8;
+  --tp-id: #2368d6;
+}
+
+.tree-phase.phase-4 {
+  --tp-bar: #8b5bdd;
+  --tp-bar-end: #dccdf6;
+  --tp-tint: #f6f2fd;
+  --tp-icon: #5a21b9;
+  --tp-kicker: #4b2f96;
+  --tp-open-bg: #f9f6fe;
+  --tp-open-border: #e2d7f7;
+  --tp-badge: #e6dcfb;
+  --tp-spine: #ddd3f3;
+  --tp-dot: #8d5ce6;
+  --tp-id: #6c3fc4;
+}
+
+/* ---------- Banner art: right edge lines up with the cards so the block is centred ----------
+   Fades into the page on the left; short bottom fade keeps the ships and cranes crisp */
+.tree-banner-art {
+  position: absolute;
+  top: calc(24 * var(--u));
+  right: calc((100% - var(--inner-w)) / 2 + var(--inset));
+  width: min(calc(1100 * var(--u)), 60vw);
+  height: calc(300 * var(--u));
+  overflow: hidden;
+  border-radius: calc(18 * var(--u));
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.7) 12%, #000 22%),
+    linear-gradient(180deg, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.7) 12%, #000 22%),
+    linear-gradient(180deg, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Slightly above centre so the aircraft and the ships' hulls both stay in frame */
+.tree-banner-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right 40%;
+}
+
+/* ---------- Heading ---------- */
+.tree-section .tree-inner {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: var(--inner-w);
+  margin-inline: auto;
+}
+
+.tree-head {
+  flex: none;
+  padding-left: var(--inset);
+  margin-bottom: calc(34 * var(--u));
+}
+
+.tree-eyebrow {
+  position: relative;
+  display: inline-block;
+  padding-bottom: calc(10 * var(--u));
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #2b303a;
+}
+
+/* Short accent bar that runs on as a hairline */
+.tree-eyebrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(196 * var(--u));
+  height: max(2px, calc(3 * var(--u)));
+  border-radius: 2px;
+  background: linear-gradient(90deg, #e69e29 0 46%, #e8ebee 46% 100%);
+}
+
+.tree-head h2 {
+  margin: calc(16 * var(--u)) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(38px, calc(58 * var(--u)), 56px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #0b0d18;
+}
+
+.tree-lead {
+  max-width: calc(680 * var(--u));
+  margin: calc(14 * var(--u)) 0 0;
+  font-size: clamp(15px, calc(17 * var(--u)), 17px);
+  line-height: 1.55;
+  color: #262a33;
+  font-weight: 450;
+}
+
+.tree-stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin: calc(30 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tree-stats li {
+  display: flex;
+  align-items: center;
+  gap: calc(19 * var(--u));
+  padding: 0 calc(30 * var(--u));
+}
+
+.tree-stats li:first-child {
+  padding-left: calc(6 * var(--u));
+}
+
+.tree-stats li + li {
+  border-left: 1px solid #e2e5e9;
+}
+
+.tree-stat-icon {
+  flex: none;
+  width: max(26px, calc(34 * var(--u)));
+  height: max(26px, calc(34 * var(--u)));
+  color: #24262b;
+}
+
+.tree-stat-text {
+  display: grid;
+}
+
+.tree-stat-text strong {
+  font-family: var(--font-display);
+  font-size: max(17px, calc(20 * var(--u)));
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--tree-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.tree-stat-text span {
+  font-size: max(11.5px, calc(12.5 * var(--u)));
+  line-height: 1.3;
+  color: #5a5d63;
+}
+
+/* ---------- Phase columns ---------- */
+/* Takes the rest of the screen; the columns stretch down to the section's bottom edge.
+   Inset to line up with the heading, with wide gutters so the cards stay narrow and airy */
+.tree-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(24 * var(--u));
+  padding-inline: var(--inset);
+}
+
+/* Columns stretch to equal height, as in the design */
+.tree-phase {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: calc(22 * var(--u));
+  border: 1px solid var(--tree-card-border);
+  border-radius: calc(14 * var(--u));
+  background: var(--tree-card);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 18px 40px -28px rgba(16, 24, 40, 0.24);
+}
+
+/* Accent bar along the top edge, fading out towards the right */
+.tree-phase::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: max(2px, calc(3.5 * var(--u)));
+  background: linear-gradient(90deg, var(--tp-bar) 0, var(--tp-bar) 62%, var(--tp-bar-end) 100%);
+}
+
+/* Photo across the top of the card; the copy sits below it on plain white, never over the art */
+.tree-phase-head {
+  position: relative;
+  padding: calc(18 * var(--u)) calc(17 * var(--u)) 0;
+  background: var(--tree-card);
+}
+
+.tree-phase-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.1;
+  object-fit: cover;
+  object-position: 50% 40%;
+  border-radius: calc(10 * var(--u));
+  background: var(--tp-tint);
+}
+
+/* Keeps the tip of the growth arrow in frame */
+.phase-2 .tree-phase-art {
+  object-position: 50% 30%;
+}
+
+.tree-phase-copy {
+  min-width: 0;
+  padding-top: calc(20 * var(--u));
+}
+
+.tree-phase-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tp-kicker);
+}
+
+.tree-phase-copy h3 {
+  margin: calc(8 * var(--u)) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(18px, calc(21 * var(--u)), 22px);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: #0b0d18;
+}
+
+.tree-phase-copy p {
+  margin: calc(8 * var(--u)) 0 0;
+  font-size: clamp(12px, calc(13 * var(--u)), 13px);
+  line-height: 1.55;
+  color: #404552;
+}
+
+.tree-phase-meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  margin: 0;
+  padding: calc(18 * var(--u)) 0 0;
+  font-size: clamp(13px, calc(14 * var(--u)), 14px);
+  line-height: 1.4;
+  color: #232731;
+}
+
+.tree-phase-meta strong {
+  font-weight: 700;
+  color: var(--tree-ink);
+}
+
+.tree-phase-sep {
+  width: 1px;
+  height: calc(15 * var(--u));
+  background: #d3d6dc;
+}
+
+/* ---------- Module accordions ---------- */
+/* minmax(0, 1fr) lets long module titles truncate instead of pushing rows past the card edge */
+.tree-modules {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(15 * var(--u));
+  padding: calc(25 * var(--u)) calc(17 * var(--u)) 0;
+}
+
+.tree-module {
+  scroll-margin-top: 16px;
+}
+
+.tree-module-head {
+  width: 100%;
+  min-height: calc(49 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(14 * var(--u));
+  padding: calc(8 * var(--u)) calc(15 * var(--u)) calc(8 * var(--u)) calc(13 * var(--u));
+  border: 1px solid var(--tree-line);
+  border-radius: calc(11 * var(--u));
+  background: var(--tree-card);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.tree-module-head:hover {
+  border-color: var(--tp-open-border);
+  box-shadow: 0 6px 16px -12px rgba(16, 24, 40, 0.3);
+}
+
+.tree-module.is-open .tree-module-head {
+  border-color: var(--tp-open-border);
+  background: var(--tp-open-bg);
+}
+
+.tree-module-num {
+  flex: none;
+  width: calc(32 * var(--u));
+  height: calc(32 * var(--u));
+  margin-right: calc(6 * var(--u));
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--tree-badge);
+  font-size: clamp(12px, calc(13 * var(--u)), 13px);
+  font-weight: 700;
+  color: #11141d;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.2s;
+}
+
+.tree-module.is-open .tree-module-num {
+  background: var(--tp-badge);
+}
+
+/* Wraps onto a second line in the narrow columns rather than truncating */
+.tree-module-title {
+  flex: 1;
+  min-width: 0;
+  font-size: clamp(13px, calc(14 * var(--u)), 14px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: #0e111a;
+}
+
+.tree-module-count {
+  flex: none;
+  font-size: clamp(11px, calc(12 * var(--u)), 12px);
+  white-space: nowrap;
+  color: #505664;
+}
+
+.tree-module-chev {
+  flex: none;
+  width: max(15px, calc(17 * var(--u)));
+  height: max(15px, calc(17 * var(--u)));
+  color: #1f232b;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.tree-module.is-open .tree-module-chev {
+  transform: rotate(180deg);
+}
+
+/* ---------- Topics: dots on a vertical spine ---------- */
+.tree-module-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+}
+
+.tree-module.is-open .tree-module-body {
+  grid-template-rows: 1fr;
+}
+
+.tree-module-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tree-topics {
+  --spine: calc(40 * var(--u));
+  --dot: max(4px, calc(5 * var(--u)));
+
+  position: relative;
+  margin: 0;
+  padding: calc(8 * var(--u)) 0 calc(6 * var(--u));
+  list-style: none;
+}
+
+.tree-topics::before {
+  content: '';
+  position: absolute;
+  left: var(--spine);
+  top: 0;
+  bottom: calc(10 * var(--u));
+  width: 1px;
+  background: var(--tp-spine);
+}
+
+.tree-topic-row {
+  position: relative;
+  width: 100%;
+  min-height: calc(24.5 * var(--u));
+  display: flex;
+  align-items: center;
+  padding: 0 calc(8 * var(--u)) 0 calc(65 * var(--u));
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+.tree-topic-row::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--spine) + 0.5px - var(--dot) / 2);
+  top: 50%;
+  width: var(--dot);
+  height: var(--dot);
+  margin-top: calc(var(--dot) / -2);
+  border-radius: 50%;
+  background: var(--tp-dot);
+}
+
+.tree-topic-row:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.tree-topic-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  padding: calc(3 * var(--u)) 0;
+  color: inherit;
+}
+
+.tree-topic-id {
+  flex: none;
+  width: calc(48 * var(--u));
+  font-size: clamp(12px, calc(13 * var(--u)), 13px);
+  font-weight: 600;
+  color: var(--tp-id);
+  font-variant-numeric: tabular-nums;
+}
+
+.tree-topic-name {
+  min-width: 0;
+  font-size: clamp(13px, calc(14 * var(--u)), 14px);
+  line-height: 1.35;
+  color: #1a1e26;
+  transition: color 0.15s;
+}
+
+.tree-topic,
+.tree-topic * {
+  text-decoration: none !important;
+}
+
+.tree-topic-btn:hover .tree-topic-name {
+  color: var(--tp-icon);
+  text-decoration: none !important;
+}
+
+.tree-topic.is-done .tree-topic-name {
+  text-decoration: none !important;
+  color: #2b2f38;
+}
+
+.tree-topic-check-btn,
+.tree-topic-check-wrap {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 4px;
+}
+
+.tree-topic-check-btn:hover,
+.tree-topic-btn:hover .tree-topic-check-wrap {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.tree-topic-check {
+  width: 14px;
+  height: 14px;
+  color: var(--tp-dot);
+}
+
+.tree-topic-check-empty {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--tp-dot);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tree-topic-row:hover .tree-topic-check-empty,
+.tree-topic-btn:hover .tree-topic-check-empty {
+  opacity: 0.5;
+}
+
+/* ---------- Responsive ---------- */
+/* Short laptop screens (1280–1536 wide, ~650–800 tall): trim the spacing, keep the intro to two
+   lines and use slightly wider photos so the whole block still fits one screen */
+@media (min-width: 1181px) and (max-height: 820px) {
+  .tree-section {
+    padding: calc(44 * var(--u)) 0 calc(34 * var(--u));
+  }
+
+  .tree-head {
+    margin-bottom: calc(32 * var(--u));
+  }
+
+  .tree-head h2 {
+    margin-top: calc(10 * var(--u));
+  }
+
+  .tree-lead {
+    max-width: max(calc(650 * var(--u)), 500px);
+    font-size: 14px;
+  }
+
+  .tree-stats {
+    margin-top: calc(20 * var(--u));
+  }
+
+  .tree-banner-art {
+    top: calc(18 * var(--u));
+    height: calc(262 * var(--u));
+  }
+
+  .tree-phase {
+    padding-bottom: calc(16 * var(--u));
+  }
+
+  .tree-phase-art {
+    aspect-ratio: 2.6;
+  }
+
+  .tree-phase-copy {
+    padding-top: calc(14 * var(--u));
+  }
+
+  .tree-phase-meta {
+    padding-top: calc(12 * var(--u));
+  }
+
+  .tree-modules {
+    gap: calc(10 * var(--u));
+    padding-top: calc(16 * var(--u));
+  }
+}
+
+@media (max-width: 1180px) {
+  .tree-section {
+    --u: 1px;
+    --inner-w: min(100% - 2 * clamp(16px, 3.5vw, 32px), 1180px);
+    --inset: 0px;
+  }
+
+  .tree-lead br {
+    display: none;
+  }
+
+  /* Keep the banner art clear of the intro text on narrower screens */
+  .tree-banner-art {
+    width: 45vw;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%), linear-gradient(180deg, #000 74%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 45%), linear-gradient(180deg, #000 74%, transparent 100%);
+  }
+
+  .tree-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+}
+
+@media (max-width: 680px) {
+  .tree-section {
+    --u: 0.92px;
+    padding-top: 0;
+  }
+
+  .tree-banner-art {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: 150px;
+    margin-bottom: -28px;
+    border-radius: 0;
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+  }
+
+  .tree-banner-art img {
+    object-position: 72% center;
+  }
+
+  .tree-head h2 {
+    font-size: 42px;
+  }
+
+  .tree-stats {
+    flex-wrap: nowrap;
+  }
+
+  .tree-stats li {
+    gap: 10px;
+    padding: 0 12px;
+  }
+
+  .tree-stats li:first-child {
+    padding-left: 0;
+  }
+
+  .tree-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tree-phase-copy h3 {
+    white-space: normal;
+  }
+}
+
+/* ---------- Dark theme ---------- */
+:root[data-theme='dark'] .tree-section {
+  --tree-ink: #eef6f5;
+  --tree-text: #a9b9ba;
+  --tree-muted: #93a6a8;
+  --tree-line: #1f3a40;
+  --tree-card: #0f2228;
+  --tree-card-border: #1b3339;
+  --tree-badge: #18323a;
+  background: var(--bg);
+}
+
+:root[data-theme='dark'] .tree-eyebrow,
+:root[data-theme='dark'] .tree-lead,
+:root[data-theme='dark'] .tree-phase-meta,
+:root[data-theme='dark'] .tree-topic-name {
+  color: #c7d6d6;
+}
+
+:root[data-theme='dark'] .tree-stat-icon,
+:root[data-theme='dark'] .tree-module-num,
+:root[data-theme='dark'] .tree-module-chev {
+  color: #eef6f5;
+}
+
+:root[data-theme='dark'] .tree-phase {
+  --tp-tint: color-mix(in srgb, var(--tp-bar) 14%, #0f2228);
+  --tp-icon: color-mix(in srgb, var(--tp-bar) 70%, #ffffff);
+  --tp-kicker: color-mix(in srgb, var(--tp-bar) 75%, #ffffff);
+  --tp-id: color-mix(in srgb, var(--tp-bar) 75%, #ffffff);
+  --tp-open-bg: color-mix(in srgb, var(--tp-bar) 10%, #0f2228);
+  --tp-open-border: color-mix(in srgb, var(--tp-bar) 35%, #0f2228);
+  --tp-badge: color-mix(in srgb, var(--tp-bar) 28%, #0f2228);
+  --tp-spine: color-mix(in srgb, var(--tp-bar) 35%, #0f2228);
+}
+
+/* ==========================================================================
+   Directional scroll-reveal entrance animations
+   Content flies in from different directions and aligns in position
+   ========================================================================== */
+.tree-banner-art[data-reveal] {
+  opacity: 0;
+  transform: translateY(-50px) scale(0.96);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tree-banner-art[data-reveal].is-visible {
+  opacity: 1;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+.tree-head[data-reveal] {
+  opacity: 0;
+  transform: translateX(-70px) translateY(-20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 80ms;
+}
+.tree-head[data-reveal].is-visible {
+  opacity: 1;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Phase 1: flies in from the left */
+.tree-phase[data-reveal='phase-1'] {
+  opacity: 0;
+  transform: translateX(-100px) translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 120ms;
+}
+.tree-phase[data-reveal='phase-1'].is-visible {
+  opacity: 1;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Phase 2: flies in from bottom-left */
+.tree-phase[data-reveal='phase-2'] {
+  opacity: 0;
+  transform: translateY(90px) translateX(-35px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 200ms;
+}
+.tree-phase[data-reveal='phase-2'].is-visible {
+  opacity: 1;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Phase 3: flies in from bottom-right */
+.tree-phase[data-reveal='phase-3'] {
+  opacity: 0;
+  transform: translateY(90px) translateX(35px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 280ms;
+}
+.tree-phase[data-reveal='phase-3'].is-visible {
+  opacity: 1;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Phase 4: flies in from the right */
+.tree-phase[data-reveal='phase-4'] {
+  opacity: 0;
+  transform: translateX(100px) translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 360ms;
+}
+.tree-phase[data-reveal='phase-4'].is-visible {
+  opacity: 1;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Once entrance animation has completed, completely remove transition so elements
+   render in native root pixel grid without any compositor layer overhead */
+.tree-banner-art[data-reveal].is-settled,
+.tree-head[data-reveal].is-settled,
+.tree-phase[data-reveal].is-settled {
+  transition: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-banner-art[data-reveal],
+  .tree-head[data-reveal],
+  .tree-phase[data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

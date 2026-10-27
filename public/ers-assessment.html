@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ERS Assessment · FEED MSCS LTD</title>
+    <script>
+      // The My Exports topic pages (modules/) come from the static HTML site, where the ERS
+      // assessment is this file. In this app it is the React 'ers-assessment' page, so open that:
+      // App restores the page stored under this key on load.
+      try {
+        sessionStorage.setItem('feed_current_page', 'ers-assessment');
+      } catch (e) {
+        // sessionStorage unavailable - the app opens on its home page instead
+      }
+      location.replace('./');
+    </script>
+  </head>
+  <body></body>
+</html>

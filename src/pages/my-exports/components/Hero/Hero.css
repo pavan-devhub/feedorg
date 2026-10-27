@@ -1,0 +1,501 @@
+.hero {
+  --hero-panel: linear-gradient(180deg, #f1f9f5 0%, #f8fcfc 28%, #fafdfd 62%, #f2faf6 100%);
+  --hero-ink: #071a36;
+  --hero-em: #07806a;
+  --hero-green: #01856d;
+  --hero-green-hover: #017560;
+  --hero-green-deep: #0e6d5d;
+  --hero-sun: #dcbc3a;
+  --hero-lead: #5f6670;
+  --hero-pill-bg: #e9f7f2;
+  --hero-pill-icon-bg: #c3efd0;
+  --hero-pill-icon: #0a4a33;
+  --hero-line-bg: #ffffff;
+  --hero-line-border: #c2d6cf;
+  --hero-tile: #e1f4f0;
+  --hero-tile-hi: #f4fbf8;
+  --hero-label: #232b36;
+  --hero-col-divider: #e3eeec;
+
+  /* Illustration palette */
+  --art-ink: #0b6b55;
+  --art-mid: #2e9c74;
+  --art-light: #7fcf9b;
+  --art-leaf: #9fd36c;
+  --art-sun: #f0b429;
+
+  /* Stats strip */
+  --hero-strip: #ffffff;
+  --hero-divider: #e9eeed;
+  --hero-tile-ink: #109a7b;
+  --hero-stat-ink: #0b0d18;
+  --hero-stat-label: #6b7079;
+
+  position: relative;
+  color: var(--hero-ink);
+}
+
+:root[data-theme='dark'] .hero {
+  --hero-panel: linear-gradient(180deg, #0c1e23 0%, #08151a 100%);
+  --hero-ink: #f2f8f7;
+  --hero-em: #5eead4;
+  --hero-green: #0f9d80;
+  --hero-green-hover: #12b08f;
+  --hero-green-deep: #2dd4a7;
+  --hero-lead: #a6b7b8;
+  --hero-pill-bg: rgba(94, 234, 212, 0.1);
+  --hero-pill-icon-bg: rgba(94, 234, 212, 0.18);
+  --hero-pill-icon: #99f6e4;
+  --hero-line-bg: transparent;
+  --hero-line-border: #3c8d86;
+  --hero-tile: rgba(45, 212, 191, 0.12);
+  --hero-tile-hi: #12302f;
+  --hero-label: #d6e4e3;
+  --hero-col-divider: var(--line);
+
+  --art-ink: #5eead4;
+  --art-mid: #2cc3a6;
+  --art-light: #8de4c1;
+
+  --hero-strip: var(--bg-elev);
+  --hero-divider: var(--line);
+  --hero-tile-ink: #5eead4;
+  --hero-stat-ink: #f2f8f7;
+  --hero-stat-label: #93a6a8;
+}
+
+/* ==========================================================================
+   Full-screen stage. One unit (--u) equals one pixel of the 1672×941 design,
+   scaled so the whole composition fits the viewport without scrolling.
+   The copy column takes 35% of the width (--panel); the photo fills the other 65%.
+   ========================================================================== */
+.hero-stage {
+  --u: min(100cqw / 1672, 100cqh / 941);
+  --panel: 36cqw;
+
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 540px;
+  container-type: size;
+  overflow: hidden;
+  background: var(--hero-panel);
+}
+
+/* ---------- Photo: fills the area right of the panel, top to bottom ---------- */
+.hero-media {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--panel);
+  overflow: hidden;
+}
+
+/* Cover the whole area so the artwork always touches the top and bottom of the
+   first screen; when the area is narrower than the 3:2 artwork, the outer left
+   and right edges are trimmed evenly. */
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* ---------- Copy: centred in the 35% panel ---------- */
+.hero-inner {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Vertically centred in the panel */
+.hero-copy {
+  position: relative;
+  width: calc(500 * var(--u));
+}
+
+.hero-pill {
+  --pill-h: max(36px, calc(48 * var(--u)));
+  display: inline-flex;
+  align-items: center;
+  gap: calc(19 * var(--u));
+  height: var(--pill-h);
+  padding-right: calc(23 * var(--u));
+  border-radius: 999px;
+  background: var(--hero-pill-bg);
+  color: var(--hero-ink);
+  font-size: max(13px, calc(16 * var(--u)));
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+.hero-pill-icon {
+  width: var(--pill-h);
+  height: var(--pill-h);
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--hero-pill-icon-bg);
+  color: var(--hero-pill-icon);
+}
+
+.hero-pill-icon svg {
+  width: 54%;
+  height: 54%;
+}
+
+.hero h1 {
+  margin: calc(41 * var(--u)) 0 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: calc(64 * var(--u));
+  line-height: calc(69 * var(--u));
+  letter-spacing: -0.02em;
+  color: var(--hero-ink);
+  white-space: nowrap;
+}
+
+.hero h1 em {
+  font-style: italic;
+  letter-spacing: -0.015em;
+  color: var(--hero-em);
+}
+
+.hero-rule {
+  display: block;
+  width: calc(106 * var(--u));
+  height: max(3px, calc(4 * var(--u)));
+  margin-top: calc(34 * var(--u));
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--hero-green-deep) 0 58%, var(--hero-sun) 58% 100%);
+}
+
+.hero-lead {
+  max-width: calc(460 * var(--u));
+  margin: calc(26 * var(--u)) 0 0;
+  font-size: max(15px, calc(19 * var(--u)));
+  line-height: 1.45;
+  color: var(--hero-lead);
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(16 * var(--u));
+  margin-top: calc(33 * var(--u));
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  height: max(44px, calc(52 * var(--u)));
+  padding: 0 calc(20 * var(--u));
+  border-radius: 999px;
+  font-size: max(12.5px, calc(17 * var(--u)));
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.hero-btn svg {
+  flex: none;
+  width: max(14px, calc(19 * var(--u)));
+  height: max(14px, calc(19 * var(--u)));
+  transition: transform 0.2s var(--ease-out);
+}
+
+.hero-btn:active {
+  transform: translateY(1px);
+}
+
+.hero-btn-primary {
+  min-width: calc(222 * var(--u));
+  background: var(--hero-green);
+  color: #fff;
+  box-shadow: 0 12px 24px -14px rgba(1, 133, 109, 0.75);
+}
+
+.hero-btn-primary:hover {
+  background: var(--hero-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px -14px rgba(1, 133, 109, 0.85);
+}
+
+.hero-btn-primary:hover svg {
+  transform: translateX(3px);
+}
+
+.hero-btn-line {
+  min-width: calc(219 * var(--u));
+  background: var(--hero-line-bg);
+  border: 1.5px solid var(--hero-line-border);
+  color: var(--hero-ink);
+}
+
+.hero-btn-line:hover {
+  border-color: var(--hero-green);
+  box-shadow: 0 10px 24px -16px rgba(15, 110, 110, 0.6);
+}
+
+/* ---------- Phase row: four columns spanning the whole panel ---------- */
+.hero-phases {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: calc(540 * var(--u));
+  margin: calc(45 * var(--u)) 0 0 calc(-20 * var(--u));
+  padding: 0;
+  list-style: none;
+}
+
+.hero-phases li {
+  position: relative;
+}
+
+.hero-phases li + li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(30 * var(--u));
+  height: calc(80 * var(--u));
+  width: 1px;
+  background: var(--hero-col-divider);
+}
+
+.hero-phase {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--hero-label);
+  cursor: pointer;
+}
+
+.hero-phase-tile {
+  width: calc(68 * var(--u));
+  height: calc(68 * var(--u));
+  display: grid;
+  place-items: center;
+  border-radius: calc(16 * var(--u));
+  background: var(--hero-tile);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+
+.hero-phase-tile svg {
+  width: calc(44 * var(--u));
+  height: calc(44 * var(--u));
+}
+
+.hero-phase-label {
+  max-width: max(84px, calc(100 * var(--u)));
+  font-size: max(12px, calc(13 * var(--u)));
+  font-weight: 500;
+  line-height: 1.38;
+  text-align: center;
+  text-wrap: balance;
+  transition: color 0.2s;
+}
+
+.hero-phase:hover .hero-phase-tile {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -12px rgba(1, 133, 109, 0.55);
+}
+
+.hero-phase:hover .hero-phase-label {
+  color: var(--hero-green);
+}
+
+/* ---------- Stats strip (just below the fold) ---------- */
+.hero-stats {
+  position: relative;
+  background: var(--hero-strip);
+  border-block: 1px solid var(--hero-divider);
+  margin-bottom: clamp(48px, 6vh, 72px);
+  scroll-margin-top: 16px;
+}
+
+.hero .hero-stats-list {
+  width: min(1400px, 100% - 2 * clamp(16px, 4vw, 60px));
+  display: flex;
+  margin-block: 0;
+  padding: 0 16px 0 44px;
+  list-style: none;
+}
+
+.hero-stat {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  min-height: 78px;
+}
+
+.hero-stat + .hero-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15px;
+  bottom: 15px;
+  width: 1px;
+  background: var(--hero-divider);
+}
+
+.hero-stat-icon {
+  width: 58px;
+  height: 56px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--hero-tile);
+  color: var(--hero-tile-ink);
+}
+
+.hero-stat-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hero-stat-text strong {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--hero-stat-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-stat-text span {
+  font-size: 0.875rem;
+  line-height: 20px;
+  color: var(--hero-stat-label);
+}
+
+@media (max-width: 1180px) {
+  .hero-stat {
+    gap: 16px;
+  }
+}
+
+/* ==========================================================================
+   Phones and portrait tablets: copy first, photo underneath at its own 3:2
+   shape (a tall column beside the copy would crop away most of the artwork)
+   ========================================================================== */
+@media (max-width: 768px), (max-aspect-ratio: 1/1) {
+  .hero-stage {
+    --u: min(1px, (100vw - 32px) / 509);
+
+    height: auto;
+    min-height: 0;
+    container-type: normal;
+    display: flex;
+    flex-direction: column;
+    padding-top: 88px;
+  }
+
+  .hero-inner {
+    order: 1;
+    position: relative;
+    inset: auto;
+    display: block;
+    width: min(1200px, 100% - 32px);
+    margin-inline: auto;
+    padding: 0;
+  }
+
+  .hero-copy {
+    width: auto;
+    max-width: calc(509 * var(--u));
+  }
+
+  .hero h1 {
+    white-space: normal;
+  }
+
+  .hero-phases {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .hero-media {
+    order: 2;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1536 / 1024;
+    margin-top: 32px;
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+@media (max-width: 960px), (max-aspect-ratio: 1/1) {
+  .hero .hero-stats-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0;
+  }
+
+  .hero-stat {
+    justify-content: flex-start;
+    padding: 12px 0 12px 8px;
+  }
+
+  .hero-stat + .hero-stat::before {
+    display: none;
+  }
+
+  .hero-stat:nth-child(n + 3) {
+    border-top: 1px solid var(--hero-divider);
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-ctas {
+    flex-direction: column;
+  }
+
+  .hero-btn {
+    width: 100%;
+  }
+
+  .hero-stat {
+    gap: 12px;
+    padding-left: 0;
+  }
+
+  .hero-stat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 11px;
+  }
+
+  .hero-stat-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}

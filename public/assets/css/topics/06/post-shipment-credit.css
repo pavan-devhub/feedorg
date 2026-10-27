@@ -1,0 +1,679 @@
+/* Topic 6.12 · Post-Shipment Credit (Module 06 – Market Intelligence)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600;700&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 390px;
+    max-width: 390px;
+    height: 840px;
+    margin: 30px auto 0;
+    display: flex;
+    flex-direction: column;
+    background: #f9f9f9;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+  :where(.tp-article) .app-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  :where(.tp-article) .app-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  :where(.tp-article) .app-scroll {
+    scrollbar-width: none;
+  }
+  /* HERO */
+  :where(.tp-article) .hero-card {
+    background: #fff;
+    padding: 16px;
+    border-bottom: none;
+  }
+  :where(.tp-article) .hero-tag {
+    background: #880E4F;
+    color: #fff;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(19px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .hero-sub {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #555;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .hero-badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  :where(.tp-article) .hbr {
+    background: #FCE4EC;
+    border: 1px solid #F8BBD0;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #560027;
+    font-weight: 600;
+  }
+  :where(.tp-article) .hbr.green {
+    background: #E8F5E9;
+    border-color: #A5D6A7;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .hbr.gold {
+    background: #FFF8E1;
+    border-color: #FFD54F;
+    color: #E65100;
+  }
+  :where(.tp-article) .sec-div {
+    background: #fff;
+    margin: 8px 0 0;
+    border-top: 8px solid #f0f2f5;
+    padding: 12px 14px 4px;
+  }
+  :where(.tp-article) .sec-label {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .sec-sub {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #666;
+  }
+  /* STORY */
+  :where(.tp-article) .story {
+    background: #fff;
+    padding: 0 14px 12px;
+  }
+  :where(.tp-article) .story-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f2f5;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .story-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .story-dot {
+    width: 7px;
+    height: 7px;
+    background: #880E4F;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .story-tx {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.6;
+  }
+  :where(.tp-article) .story-tx b {
+    color: #38001B;
+  }
+  /* FIRC JOURNEY — Amazon timeline */
+  :where(.tp-article) .journey-card {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .jc-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .journey-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  :where(.tp-article) .js-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding-bottom: 12px;
+    position: relative;
+  }
+  :where(.tp-article) .js-item::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 28px;
+    bottom: 0;
+    width: 2px;
+    background: #F8BBD0;
+  }
+  :where(.tp-article) .js-item:last-child::before {
+    display: none;
+  }
+  :where(.tp-article) .js-item:last-child {
+    padding-bottom: 0;
+  }
+  :where(.tp-article) .js-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  :where(.tp-article) .jd-ship {
+    background: #0277BD;
+  }
+  :where(.tp-article) .jd-firc {
+    background: #880E4F;
+  }
+  :where(.tp-article) .jd-eefc {
+    background: #00695C;
+  }
+  :where(.tp-article) .jd-ccs {
+    background: #4A148C;
+  }
+  :where(.tp-article) .jd-nbfc {
+    background: #E65100;
+  }
+  :where(.tp-article) .jd-next {
+    background: #2E7D32;
+  }
+  :where(.tp-article) .js-content {
+    flex: 1;
+    padding-top: 4px;
+  }
+  :where(.tp-article) .js-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .js-desc {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .js-timing {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #880E4F;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .js-unlock {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    background: #FCE4EC;
+    color: #880E4F;
+    border-radius: 4px;
+    padding: 2px 6px;
+    display: inline-block;
+    margin-top: 3px;
+    font-weight: 700;
+  }
+  /* CCS BANDS — Amazon product tier comparison */
+  :where(.tp-article) .ccs-card {
+    background: #fff;
+  }
+  :where(.tp-article) .ccs-head {
+    background: #F3F3F3;
+    padding: 10px 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  :where(.tp-article) .ccs-head-t {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+  }
+  :where(.tp-article) .ccs-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    border-bottom: 1px solid #f0f2f5;
+  }
+  :where(.tp-article) .ccs-item:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .ccs-badge {
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+    min-width: 70px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .b-c {
+    background: #78909C;
+  }
+  :where(.tp-article) .b-a {
+    background: #880E4F;
+  }
+  :where(.tp-article) .b-aa {
+    background: #560027;
+  }
+  :where(.tp-article) .b-aaa {
+    background: linear-gradient(90deg,#38001B,#560027);
+  }
+  :where(.tp-article) .ccs-info {
+    flex: 1;
+  }
+  :where(.tp-article) .ccs-name {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .ccs-trigger {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #777;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .ccs-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  :where(.tp-article) .ccs-pill {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-weight: 600;
+  }
+  :where(.tp-article) .cp-green {
+    background: #E8F5E9;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .cp-blue {
+    background: #E3F2FD;
+    color: #1565C0;
+  }
+  :where(.tp-article) .cp-purple {
+    background: #F3E5F5;
+    color: #6A1B9A;
+  }
+  :where(.tp-article) .cp-amber {
+    background: #FFF8E1;
+    color: #E65100;
+  }
+  :where(.tp-article) .ccs-score {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    min-width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  /* EEFC STRATEGY — Amazon product specs */
+  :where(.tp-article) .eefc-card {
+    background: #fff;
+  }
+  :where(.tp-article) .eefc-head {
+    background: #F3F3F3;
+    padding: 10px 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  :where(.tp-article) .eefc-head-t {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+  }
+  :where(.tp-article) .eefc-row {
+    display: flex;
+    padding: 9px 14px;
+    border-bottom: 1px solid #f0f2f5;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .eefc-row:nth-child(even) {
+    background: #FAFAFA;
+  }
+  :where(.tp-article) .eefc-key {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #555;
+    flex: 1;
+    font-weight: 600;
+  }
+  :where(.tp-article) .eefc-val {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    text-align: right;
+  }
+  :where(.tp-article) .eefc-val.green {
+    color: #00695C;
+  }
+  :where(.tp-article) .eefc-val.red {
+    color: #C62828;
+  }
+  /* LOAN PRODUCTS TABLE */
+  :where(.tp-article) .loan-card {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .loan-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .loan-item {
+    border: 1.5px solid #FCE4EC;
+    border-radius: 10px;
+    padding: 11px 12px;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .loan-item:last-child {
+    margin-bottom: 0;
+  }
+  :where(.tp-article) .loan-item.featured {
+    border-color: #880E4F;
+    background: #FFF8FA;
+  }
+  :where(.tp-article) .loan-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  :where(.tp-article) .loan-num {
+    background: #880E4F;
+    color: #fff;
+    border-radius: 6px;
+    padding: 3px 7px;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+  }
+  :where(.tp-article) .loan-name {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+  }
+  :where(.tp-article) .loan-band {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-weight: 700;
+  }
+  :where(.tp-article) .lb-a {
+    background: #FCE4EC;
+    color: #880E4F;
+  }
+  :where(.tp-article) .lb-aa {
+    background: #E8EAF6;
+    color: #311B92;
+  }
+  :where(.tp-article) .lb-aaa {
+    background: #FFF8E1;
+    color: #E65100;
+  }
+  :where(.tp-article) .loan-specs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .ls-pill {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    background: #F5F5F5;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: #333;
+  }
+  :where(.tp-article) .loan-desc {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.5;
+  }
+  /* NEXT CONSIGNMENT CALCULATOR */
+  :where(.tp-article) .next-card {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .next-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .next-box {
+    background: linear-gradient(135deg,#880E4F,#38001B);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  :where(.tp-article) .next-label {
+    color: #F8BBD0;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .next-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    align-items: center;
+  }
+  :where(.tp-article) .next-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .next-key {
+    color: #F8BBD0;
+  }
+  :where(.tp-article) .next-val {
+    color: #fff;
+    font-weight: 700;
+  }
+  :where(.tp-article) .next-val.gold {
+    color: #FFD54F;
+  }
+  :where(.tp-article) .next-val.green {
+    color: #69F0AE;
+  }
+  /* RAMAYYA DASHBOARD */
+  :where(.tp-article) .rama-card {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .rama-box {
+    background: linear-gradient(90deg,#38001B,#560027);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  :where(.tp-article) .rama-title {
+    color: #fff;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .rama-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    align-items: center;
+  }
+  :where(.tp-article) .rama-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .rama-key {
+    color: #F8BBD0;
+  }
+  :where(.tp-article) .rama-val {
+    color: #fff;
+    font-weight: 700;
+  }
+  :where(.tp-article) .rama-val.amber {
+    color: #FFB74D;
+  }
+  :where(.tp-article) .rama-val.green {
+    color: #69F0AE;
+  }
+  :where(.tp-article) .rama-val.red {
+    color: #FF8A80;
+  }
+  :where(.tp-article) .sec-div {
+    position: relative;
+    padding-right: 52px!important;
+  }
+  :where(.tp-article) .sec-div .sec-label {
+    display: block;
+    padding-right: 2px;
+  }
+  :where(.tp-article) .sec-div .sec-sub {
+    display: block;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .expand-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #880E4F;
+    background: #fff;
+    color: #880E4F;
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+    position: absolute;
+    right: 14px;
+    top: 10px;
+  }
+  :where(.tp-article) .collapsed {
+    display: none!important;
+  }
+  :where(.tp-article) .hero-card {
+    padding: 14px!important;
+  }
+  :where(.tp-article) .sec-div {
+    padding: 10px 14px 4px!important;
+  }
+  :where(.tp-article) .sec-label {
+    font-size: calc(16px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .sec-sub {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .hero-tag {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(21px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .hero-sub {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .hbr {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .story-tx {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .jc-title {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .js-title {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .js-desc {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .js-timing {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .js-unlock {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ccs-head-t,
+  :where(.tp-article) .eefc-head-t,
+  :where(.tp-article) .loan-title {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ccs-name {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ccs-trigger {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ccs-pill {
+    font-size: calc(10px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ccs-score {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ccs-badge {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .eefc-key,
+  :where(.tp-article) .eefc-val {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .loan-name {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .loan-num {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .loan-band {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .ls-pill {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .loan-desc {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .next-title {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .next-label {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .next-row {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .rama-title {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .rama-row {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .expand-btn {
+    font-size: calc(18px * var(--tp-type-scale, 1))!important;
+  }
+}

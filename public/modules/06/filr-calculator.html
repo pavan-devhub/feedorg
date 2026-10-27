@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FILR Calculator (రైతు ఆదాయ నిష్పత్తి) · Module 06 – Market Intelligence | My Exports</title>
+  <meta name="description" content="Module 06 · Market Intelligence — FILR Calculator (రైతు ఆదాయ నిష్పత్తి). Topic 6.11 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/06/filr-calculator.css">
+</head>
+<body class="tp-body tp-phase-2" data-root="../../" data-topic-path="modules/06/filr-calculator.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-6">Module 06 · Market Intelligence</a></li>
+          <li><span aria-current="page">FILR Calculator</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-2">Phase 02 · Market Readiness</a>
+          <span class="tp-chip">Module 06 · Market Intelligence</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">FILR Calculator</h1>
+        <p class="tp-hero__subtitle">రైతు ఆదాయ నిష్పత్తి</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>6.11</strong> · 11 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="cost-plus-calculator.html" data-topic-id="6.1" title="6.1 Cost-Plus Calculator" aria-label="Topic 6.1 Cost-Plus Calculator">1</a></li>
+              <li><a class="tp-steps__item" href="break-even-fob.html" data-topic-id="6.2" title="6.2 Break-even FOB" aria-label="Topic 6.2 Break-even FOB">2</a></li>
+              <li><a class="tp-steps__item" href="volume-discount.html" data-topic-id="6.3" title="6.3 Volume Discount" aria-label="Topic 6.3 Volume Discount">3</a></li>
+              <li><a class="tp-steps__item" href="trade-map.html" data-topic-id="6.4" title="6.4 Trade Map" aria-label="Topic 6.4 Trade Map">4</a></li>
+              <li><a class="tp-steps__item" href="exim-pcfc.html" data-topic-id="6.5" title="6.5 EXIM PCFC" aria-label="Topic 6.5 EXIM PCFC">5</a></li>
+              <li><a class="tp-steps__item" href="ecgc.html" data-topic-id="6.6" title="6.6 ECGC" aria-label="Topic 6.6 ECGC">6</a></li>
+              <li><a class="tp-steps__item" href="forward-contract.html" data-topic-id="6.7" title="6.7 Forward Contract" aria-label="Topic 6.7 Forward Contract">7</a></li>
+              <li><a class="tp-steps__item" href="aif-subsidy.html" data-topic-id="6.8" title="6.8 AIF Subsidy" aria-label="Topic 6.8 AIF Subsidy">8</a></li>
+              <li><a class="tp-steps__item" href="lc-checker.html" data-topic-id="6.9" title="6.9 LC Checker" aria-label="Topic 6.9 LC Checker">9</a></li>
+              <li><a class="tp-steps__item" href="payment-terms.html" data-topic-id="6.10" title="6.10 Payment Terms" aria-label="Topic 6.10 Payment Terms">10</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="6.11" title="6.11 FILR Calculator">11</span></li>
+              <li><a class="tp-steps__item" href="post-shipment-credit.html" data-topic-id="6.12" title="6.12 Post-shipment Credit" aria-label="Topic 6.12 Post-shipment Credit">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">06</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph">
+
+
+
+<div class="app-scroll">
+<!-- HERO -->
+<div class="hero-card">
+<div class="hero-tag">⚖️ ఆదాయ నిష్పత్తి · Anchor #3</div>
+<div class="hero-title">FEED Rs.1 సంపాదిస్తే<br/>రైతు Rs.10 సంపాదిస్తాడు</div>
+<div class="hero-sub">Farmer Income Leverage Ratio — FIRC-verified records మాత్రమే</div>
+<div class="hero-price-row">
+<span class="hp-ratio">10:1</span>
+<span class="hp-unit">FILR · FIRC-verified మాత్రమే</span>
+</div>
+<div class="hero-badge-row">
+
+<div class="hbr green">✅ FIRC-verified only</div>
+<div class="hbr">93% రైతుకు</div>
+<div class="hbr">7% FEED</div>
+</div>
+</div>
+<!-- ABOUT -->
+<div class="sec-div"><div class="sec-head"><div class="sec-label">ఇది ఏమిటి?</div></div><button aria-expanded="true" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="section-content"><div class="story">
+<div class="story-row">
+<div class="story-dot"></div>
+<div class="story-tx"><b>FILR</b> (Farmer Income Leverage Ratio) అంటే — FEED Rs.1 సంపాదించినప్పుడు రైతు Rs.10 సంపాదిస్తాడు అని నిరూపించే అంకె</div>
+</div>
+<div class="story-row">
+<div class="story-dot"></div>
+<div class="story-tx"><b>FIRC-verified మాత్రమే</b> — ఇది అంచనా కాదు, projection కాదు — FIRC (Foreign Inward Remittance Certificate) వచ్చిన తర్వాత మాత్రమే లెక్కిస్తారు</div>
+</div>
+<div class="story-row">
+<div class="story-dot"></div>
+<div class="story-tx">Chilli: FEED fee 7% → రైతు 93%. Banana: FEED fee 5% → రైతు 95%. <b>10:1 కంటే ఎక్కువ వస్తుంది</b> (USA/Japan 13:1+ కూడా)</div>
+</div>
+<div class="story-row">
+<div class="story-dot"></div>
+<div class="story-tx">ఇది <b>FEED MSCS LTD యొక్క mission proof</b> — FEED లాభం కోసం కాదు, రైతు ఆదాయం కోసం పని చేస్తుందని నిరూపించే అంకె</div>
+</div>
+</div></div>
+
+<!-- LIVE FILR DASHBOARD — Amazon product configurator -->
+<div class="sec-div"><div class="sec-head"><div class="sec-label">రామయ్య గారి FILR Dashboard</div><div class="sec-sub">December 2026 మొదటి FIRC తర్వాత ఇలా కనిపిస్తుంది</div></div><button aria-expanded="true" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="section-content"><div class="calc-card">
+<div class="calc-title">📊 FILR Live Calculator · రామయ్య గారి Banana </div>
+<!-- Live FILR dashboard -->
+<div class="filr-live">
+<div class="fl-header">
+<div class="fl-farmer">
+<div>రైతు పేరు</div>
+<b>రామయ్య గారు · FEED-ANT-2026-047</b>
+</div>
+<div class="fl-status">🔴 FIRC నిరీక్షణలో</div>
+</div>
+<!-- 93% / 7% bar -->
+<div class="fl-bar-section">
+<div class="fl-bar-label">
+<span class="fl-bar-l">FOB పంపిణీ</span>
+<span class="fl-bar-r">రైతు 93% + FEED 7%</span>
+</div>
+<div class="fl-bar-wrap">
+<div class="fl-bar-farmer" style="width:93%">
+<span class="fl-bar-text">రైతు 93%</span>
+</div>
+<div class="fl-bar-feed" style="width:7%">
+<span class="fl-bar-text">7%</span>
+</div>
+</div>
+</div>
+<!-- 3 numbers -->
+<div class="fl-numbers">
+<div class="fl-num">
+<div class="fl-num-v">₹34.56L</div>
+<div class="fl-num-l">FOB విలువ (20 MT)</div>
+</div>
+<div class="fl-num">
+<div class="fl-num-v">₹32.13L</div>
+<div class="fl-num-l">రైతుకు (93%)</div>
+</div>
+<div class="fl-num">
+<div class="fl-num-v">₹2.43L</div>
+<div class="fl-num-l">FEED fee (7%)</div>
+</div>
+</div>
+</div>
+<!-- FIRC verification indicator -->
+<div class="firc-bar">
+<div class="firc-ic">🔒</div>
+<div class="firc-tx">
+
+     </div>
+<div class="firc-lock">Dec 2026</div>
+</div>
+</div></div>
+
+<!-- MANDI vs FOB COMPARISON -->
+<div class="sec-div"><div class="sec-head"><div class="sec-label">మండి vs ఎగుమతి ఆదాయం</div><div class="sec-sub">ఒకే పంట — రెండు వేర్వేరు ఫలితాలు</div></div><button aria-expanded="true" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="section-content"><div class="mandi-card">
+<div class="mandi-title">💰 రామయ్య గారి 2 ఎకరాల Banana · 10 మె.టన్. పంట</div>
+<div class="mandi-two">
+<div class="mandi-col">
+<div class="mandi-head mh-before">❌ మండి మార్గం</div>
+<div class="mandi-cell mc-before">ధర: ₹15/కె.జి.</div>
+<div class="mandi-cell mc-before">10,000 kg × ₹15</div>
+<div class="mandi-cell mc-before">దళారీ: ₹15,000</div>
+<div class="mandi-cell mc-before">రవాణా: ₹5,000</div>
+<div class="mandi-total mt-before">₹1,30,000</div>
+</div>
+<div class="mandi-col">
+<div class="mandi-head mh-after">✅ FEED KYJ మార్గం</div>
+<div class="mandi-cell mc-after">FOB: ₹172.80/కె.జి.</div>
+<div class="mandi-cell mc-after">10,000 kg × ₹172.80</div>
+<div class="mandi-cell mc-after">FEED 5%: ₹86,400</div>
+<div class="mandi-cell mc-after">రవాణా వగైరా: ₹80,000</div>
+<div class="mandi-total mt-after">₹15,61,600</div>
+</div>
+</div>
+<div class="mandi-verdict">🚀 FEED KYJ తో: మండి కంటే 12× అదనపు ఆదాయం — 10 మె.టన్. కి!</div>
+</div></div>
+
+<!-- FILR FORMULA -->
+<div class="sec-div"><div class="sec-head"><div class="sec-label">FILR లెక్క ఎలా వేస్తారు?</div></div><button aria-expanded="true" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="section-content"><div class="formula-card">
+<div class="formula-title">📐 FILR Formula · FIRC-verified data మాత్రమే</div>
+<div class="formula-box">
+<div class="formula-eq">
+        FILR = <span class="hl">రైతు ఆదాయం ÷ FEED ఆదాయం</span>
+<br/>
+<span class="em">Chilli: ₹93 (రైతు) ÷ ₹7 (FEED) = <span style="color:#FFD54F;font-size:calc(16px * var(--tp-type-scale, 1))">13.3:1</span></span>
+<br/>
+<span class="em">Banana: ₹95 (రైతు) ÷ ₹5 (FEED) = <span style="color:#FFD54F;font-size:calc(16px * var(--tp-type-scale, 1))">19:1</span></span>
+<br/>
+<span class="em">Weighted  Average ≈ <span style="color:#FFD54F;font-size:calc(18px * var(--tp-type-scale, 1))">10:1+</span></span>
+</div>
+<div class="formula-note">గమనిక: 10:1 అనేది minimum target. Chilli 7% fee = 13.3:1, Banana 5% fee = 19:1 వస్తుంది. FIRC-verified records ద్వారా మాత్రమే confirm అవుతుంది.</div>
+</div>
+</div></div>
+
+<!-- MULTI-CROP SCENARIOS -->
+<div class="sec-div"><div class="sec-head"><div class="sec-label">వివిధ పంటలకు FILR లెక్క</div><div class="sec-sub"> Anantapur commodities +  targets</div></div><button aria-expanded="true" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="section-content"><div class="scenarios-card">
+<div class="sc-head">
+<div class="sc-head-t">📦 FILR · పంట వారీగా ఆదాయ మార్పు</div>
+</div>
+<!-- Banana -->
+<div class="sc-item">
+<div class="sc-crop">🍌</div>
+<div class="sc-info">
+<div class="sc-name">Banana Grand Naine · రామయ్య గారు · 20 MT </div>
+<div class="sc-numbers">
+<span class="sc-pill sp-mandi">మండి ₹15/కె.జి.</span>
+<span class="sc-pill sp-fob">FOB ₹172.80/కె.జి.</span>
+<span class="sc-pill sp-feed">FEED 5%</span>
+<span class="sc-pill sp-farmer">రైతు 95%</span>
+</div>
+<div class="sc-filr">FILR: <span class="sc-mult">19:1</span> · మండి కంటే 11.5× ఎక్కువ</div>
+</div>
+</div>
+<!-- Chilli -->
+<div class="sc-item">
+<div class="sc-crop">🌶️</div>
+<div class="sc-info">
+<div class="sc-name">Chilli Guntur Sannam S4 · Anantapur · 20 MT</div>
+<div class="sc-numbers">
+<span class="sc-pill sp-mandi">మండి ₹120/కె.జి.</span>
+<span class="sc-pill sp-fob">FOB ₹207/కె.జి. ($2.50)</span>
+<span class="sc-pill sp-feed">FEED 7%</span>
+<span class="sc-pill sp-farmer">రైతు 93%</span>
+</div>
+<div class="sc-filr">FILR: <span class="sc-mult">13.3:1</span> · మండి కంటే 1.6× ఎక్కువ</div>
+</div>
+</div>
+<!-- Chilli  Value-Based -->
+<div class="sc-item">
+<div class="sc-crop">🌶️✨</div>
+<div class="sc-info">
+<div class="sc-name">Chilli GI Tag + BharatGAP · Premium · EU</div>
+<div class="sc-numbers">
+<span class="sc-pill sp-mandi">మండి ₹120/కె.జి.</span>
+<span class="sc-pill sp-fob">FOB ₹332/కె.జి. ($4.00)</span>
+<span class="sc-pill sp-feed">FEED 7%</span>
+<span class="sc-pill sp-farmer">రైతు ₹308/కె.జి.</span>
+</div>
+<div class="sc-filr">FILR: <span class="sc-mult">13.3:1</span> · మండి కంటే 2.6× ఎక్కువ</div>
+</div>
+</div>
+<!-- Groundnut (Guntur Phase 2) -->
+<div class="sc-item">
+<div class="sc-crop">🥜</div>
+<div class="sc-info">
+<div class="sc-name">Groundnut HPS Bold · Guntur Phase 2 · +</div>
+<div class="sc-numbers">
+<span class="sc-pill sp-mandi">మండి ₹60/కె.జి.</span>
+<span class="sc-pill sp-fob">FOB ₹170/కె.జి. ($2.05)</span>
+<span class="sc-pill sp-feed">FEED 7%</span>
+<span class="sc-pill sp-farmer">రైతు ₹158/కె.జి.</span>
+</div>
+<div class="sc-filr">FILR: <span class="sc-mult">13.3:1</span> · (Anantapur కాదు — Guntur Phase 2)</div>
+</div>
+</div>
+</div><div class="not-proj">
+<div class="np-title">⚠️ ముఖ్యమైన నిజం</div>
+<div class="np-body">FILR లెక్కలు ఇప్పుడు చూపిస్తున్నవి  completion తర్వాత ఉండే target values. <b>FIRC వచ్చే వరకు ఇవి confirmed కావు.</b> June 2026 స్థితి: FIRCs = 0. December 2026 మొదటి FIRC target. FEED ఏ figure ని FIRC లేకుండా "achieved" అని claim చేయదు.</div>
+</div></div>
+
+
+
+</div>
+
+</div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="payment-terms.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">Payment Terms &amp; INCOTERMS</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.10</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="post-shipment-credit.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Post-Shipment Credit</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.12</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/06/filr-calculator.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

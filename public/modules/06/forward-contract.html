@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Forward Contract (డాలర్ రేటు లాక్) · Module 06 – Market Intelligence | My Exports</title>
+  <meta name="description" content="Module 06 · Market Intelligence — Forward Contract (డాలర్ రేటు లాక్). Topic 6.7 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/06/forward-contract.css">
+</head>
+<body class="tp-body tp-phase-2" data-root="../../" data-topic-path="modules/06/forward-contract.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-6">Module 06 · Market Intelligence</a></li>
+          <li><span aria-current="page">Forward Contract</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-2">Phase 02 · Market Readiness</a>
+          <span class="tp-chip">Module 06 · Market Intelligence</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Forward Contract</h1>
+        <p class="tp-hero__subtitle">డాలర్ రేటు లాక్</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>6.7</strong> · 7 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="cost-plus-calculator.html" data-topic-id="6.1" title="6.1 Cost-Plus Calculator" aria-label="Topic 6.1 Cost-Plus Calculator">1</a></li>
+              <li><a class="tp-steps__item" href="break-even-fob.html" data-topic-id="6.2" title="6.2 Break-even FOB" aria-label="Topic 6.2 Break-even FOB">2</a></li>
+              <li><a class="tp-steps__item" href="volume-discount.html" data-topic-id="6.3" title="6.3 Volume Discount" aria-label="Topic 6.3 Volume Discount">3</a></li>
+              <li><a class="tp-steps__item" href="trade-map.html" data-topic-id="6.4" title="6.4 Trade Map" aria-label="Topic 6.4 Trade Map">4</a></li>
+              <li><a class="tp-steps__item" href="exim-pcfc.html" data-topic-id="6.5" title="6.5 EXIM PCFC" aria-label="Topic 6.5 EXIM PCFC">5</a></li>
+              <li><a class="tp-steps__item" href="ecgc.html" data-topic-id="6.6" title="6.6 ECGC" aria-label="Topic 6.6 ECGC">6</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="6.7" title="6.7 Forward Contract">7</span></li>
+              <li><a class="tp-steps__item" href="aif-subsidy.html" data-topic-id="6.8" title="6.8 AIF Subsidy" aria-label="Topic 6.8 AIF Subsidy">8</a></li>
+              <li><a class="tp-steps__item" href="lc-checker.html" data-topic-id="6.9" title="6.9 LC Checker" aria-label="Topic 6.9 LC Checker">9</a></li>
+              <li><a class="tp-steps__item" href="payment-terms.html" data-topic-id="6.10" title="6.10 Payment Terms" aria-label="Topic 6.10 Payment Terms">10</a></li>
+              <li><a class="tp-steps__item" href="filr-calculator.html" data-topic-id="6.11" title="6.11 FILR Calculator" aria-label="Topic 6.11 FILR Calculator">11</a></li>
+              <li><a class="tp-steps__item" href="post-shipment-credit.html" data-topic-id="6.12" title="6.12 Post-shipment Credit" aria-label="Topic 6.12 Post-shipment Credit">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">06</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph">
+
+  
+
+  
+
+  
+
+  <div class="scroll-content">
+<!-- HERO -->
+  <div class="hero-card">
+    <div class="hero-tag">💱 విదేశీ కరెన్సీ రక్షణ</div>
+    <div class="hero-title">ఈ రోజే Dollar Rate<br>నిర్ణయించి Lock చేయండి</div>
+    <div class="hero-sub">90 రోజుల తర్వాత Dollar Rate తగ్గినా — ఈ రోజు lock చేసిన rate తోనే డబ్బు వస్తుంది — ₹3.5 లక్షల నష్టం నివారణ</div>
+    <div class="hero-price-row">
+      <span class="hp-save">₹3.5 లక్షలు</span>
+      <span class="hp-unit">₹1 కోటి order పై 3.5% INR rise scenario</span>
+    </div>
+    <div class="hero-badge-row">
+      <div class="hbr green">💰 ₹3.5L ఆదా</div>
+      <div class="hbr">SBI AD Bank</div>
+      <div class="hbr">PCFC stage లో lock</div>
+      <div class="hbr">0.5–1% cost మాత్రమే</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">ఇది ఏమిటి?</div>
+  </div>
+  <div class="story">
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx"><b>Forex Risk</b> అంటే — LC తీసుకున్నప్పుడు Dollar rate ₹84 ఉన్నది, FIRC వచ్చేసరికి ₹82 అయ్యింది — ₹2 తేడాతో ₹2 లక్షలు మాయమవుతుంది</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx"><b>Forward Contract</b> పరిష్కారం: ఈ రోజే SBI Anantapur వద్ద "90 రోజుల తర్వాత $1,20,000 ఈ rate కే అమ్ముతాను" అని ఒప్పందం చేసుకోవడం — rate lock అవుతుంది</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">FEED PCFC తీసుకున్న వెంటనే — ఆ రోజే AD Bank వద్ద Forward Contract కూడా lock చేస్తుంది — <b>రైతుకు 93% FOB అన్న మాట నిలబెట్టడానికి ఇది తప్పనిసరి</b></div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">ఖర్చు కేవలం <b>0.5–1% Forward Premium</b> — ₹1 కోటి order పై ₹50,000–1,00,000 — కానీ ₹3.5 లక్షల నష్టం నివారణ</div>
+    </div>
+  </div>
+
+  <!-- REAL STORY -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">ఒక FPO అనుభవం</div>
+    <div class="sec-sub">Forward Contract లేకుండా ఏమైందో చూడండి</div>
+  </div>
+  <div class="story-box">
+    
+  </div>
+
+  <!-- WITHOUT vs WITH -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">Forward Contract ఉంటే vs లేకుంటే</div>
+  </div>
+  <div class="compare-wrap">
+    <div class="cmp-title">📊 ₹1 కోటి Order · 90 రోజుల అంతరం</div>
+    <div class="cmp-two">
+      <div class="cmp-col cmp-col-without">
+        <div class="cmp-col-head head-without">❌ Forward లేకుండా</div>
+        <div class="cmp-cell">October rate ₹83 అనుకున్నారు</div>
+        <div class="cmp-cell">January లో ₹79.50 అయింది</div>
+        <div class="cmp-cell">$1,20,482 × ₹79.50</div>
+        <div class="cmp-cell">వచ్చింది: <b>₹95.78L</b></div>
+      </div>
+      <div class="cmp-col cmp-col-with">
+        <div class="cmp-col-head head-with">✅ Forward తో</div>
+        <div class="cmp-cell">October లోనే ₹83 lock</div>
+        <div class="cmp-cell">January rate ₹79.50 అయినా</div>
+        <div class="cmp-cell">$1,20,482 × ₹83 </div>
+        <div class="cmp-cell">వచ్చింది: <b>₹1,00,00,000</b></div>
+      </div>
+    </div>
+    <div class="cmp-verdict">
+      <div class="cmp-verdict-t">Forward Contract వల్ల ఆదా: ₹3,50,000+</div>
+      <div class="cmp-verdict-s">FEED ₹1 కోటి order పై ₹3.5L forward contract వల్ల ఆదా</div>
+    </div>
+  </div>
+
+  <!-- WORKED EXAMPLE SPECS -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">రామయ్య గారి Banana · Forward Contract లెక్క</div>
+    <div class="sec-sub">20 MT · ₹34.56L FOB · UAE Jebel Ali</div>
+  </div>
+  <div class="specs-card">
+    <div class="specs-head">
+      <div class="specs-head-t">🍌 Forward Contract లెక్కింపు · మొదటి Consignment</div>
+    </div>
+    <div class="specs-row">
+      <div class="specs-key">FOB విలువ</div>
+      <div class="specs-val">₹34,56,000 ($41,638)</div>
+    </div>
+    <div class="specs-row">
+      <div class="specs-key">Forward Contract చేసిన రోజు rate</div>
+      <div class="specs-val blue">₹83/$1 </div>
+    </div>
+    <div class="specs-row">
+      <div class="specs-key">Forward Premium (0.7% · 90 రోజులు)</div>
+      <div class="specs-val red">- ₹24,192</div>
+    </div>
+    <div class="specs-row">
+      <div class="specs-key">FIRC date rate (ఉదాహరణ: ₹80)</div>
+      <div class="specs-val red">రిస్కు rate</div>
+    </div>
+    <div class="specs-row">
+      <div class="specs-key">Forward లేకుండా వచ్చేది (₹80)</div>
+      <div class="specs-val red">₹33,31,040</div>
+    </div>
+    <div class="specs-row">
+      <div class="specs-key">Forward తో వచ్చింది (₹83)</div>
+      <div class="specs-val green">₹34,55,954</div>
+    </div>
+    <div class="specs-total-row">
+      <span class="specs-total-key">Forward Contract వల్ల ఆదా</span>
+      <span class="specs-total-val green">₹1,24,914 ✓</span>
+    </div>
+  </div>
+
+  <!-- HOW TO GET FC -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">Forward Contract ఎలా తీసుకోవాలి?</div>
+    <div class="sec-sub">4 దశలు · PCFC తో ఒకే రోజు</div>
+  </div>
+  <div class="howto-card">
+    <div class="ht-title">🏦 SBI Anantapur వద్ద Forward Contract — ఈ 4 దశలు</div>
+    <div class="ht-step">
+      <div class="ht-num">1</div>
+      <div class="ht-tx"><b>LC వచ్చిన వెంటనే</b> — SBI Anantapur Export Desk కి వెళ్ళండి — PCFC Application తో పాటు Forward Contract కూడా apply చేయండి <span class="ht-timing">· Day 1</span></div>
+    </div>
+    <div class="ht-step">
+      <div class="ht-num">2</div>
+      <div class="ht-tx"><b>FIRC target date చెప్పండి</b> — "90 రోజుల తర్వాత $41,638 sell చేస్తాను" అని confirm చేయండి — Bank forward rate quote చేస్తుంది <span class="ht-timing">· Day 1–2</span></div>
+    </div>
+    <div class="ht-step">
+      <div class="ht-num">3</div>
+      <div class="ht-tx"><b>Rate accept చేయండి</b> — Forward rate lock అవుతుంది — Bank contract letter ఇస్తుంది — FEED platform లో register అవుతుంది <span class="ht-timing">· Day 2</span></div>
+    </div>
+    <div class="ht-step">
+      <div class="ht-num">4</div>
+      <div class="ht-tx"><b>FIRC వచ్చినప్పుడు</b> — Bank locked rate తోనే INR convert చేస్తుంది — మీకు guarantee చేసిన amount వస్తుంది — రైతుకు 93% నేరుగా PACS కి <span class="ht-timing">· Day 55–60</span></div>
+    </div>
+  </div>
+
+  <!-- 3 RATE SCENARIOS -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">Dollar Rate ఎటు వెళ్ళినా మీకు మంచిదే</div>
+    <div class="sec-sub">3 scenarios · ₹83 lock చేశారు అనుకుంటే</div>
+  </div>
+  <div class="scenarios-card">
+    <div class="sc-title">📈📉 3 Scenarios · Forward Contract ₹83/$1 locked</div>
+    <div class="sc-grid">
+      <div class="sc-item fall">
+        <div class="sc-ic">📉</div>
+        <div class="sc-content">
+          <div class="sc-label">Dollar తగ్గింది (₹80)</div>
+          <div class="sc-detail">Market rate ₹80 అయింది. Forward Contract లేకుంటే ₹3 తక్కువ వచ్చేది. కానీ lock ₹83 ఉంది.</div>
+          <div class="sc-result green">✅ ₹83 రేటుతో full amount వచ్చింది — ₹1.24L ఆదా</div>
+        </div>
+      </div>
+      <div class="sc-item same">
+        <div class="sc-ic">➡️</div>
+        <div class="sc-content">
+          <div class="sc-label">Rate అదే ఉంది (₹83)</div>
+          <div class="sc-detail">Rate change లేదు. Forward Premium (0.7%) cost మాత్రమే. Zero uncertainty.</div>
+          <div class="sc-result blue">✅ Guarantee — Forward Premium ₹24K మాత్రమే cost</div>
+        </div>
+      </div>
+      <div class="sc-item rise">
+        <div class="sc-ic">📈</div>
+        <div class="sc-content">
+          <div class="sc-label">Dollar పెరిగింది (₹86)</div>
+          <div class="sc-detail">Market rate ₹86 అయింది. Forward ₹83 lock ఉంది కాబట్టి ₹3 opportunity miss. కానీ —</div>
+          <div class="sc-result amber">⚠️ Opportunity cost మాత్రమే — నష్టం కాదు.security > opportunity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EEFC STRATEGY -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">EEFC Account — అదనపు వ్యూహం</div>
+    <div class="sec-sub">Dollar rate పెరిగినప్పుడు convert చేయడం</div>
+  </div>
+  <div class="eefc-card">
+    <div class="eefc-box">
+      <div class="eefc-title">💵 విదేశీ కరెన్సీ ఖాతా (EEFC) వ్యూహం</div>
+      <div class="eefc-row">
+        <span class="eefc-key">EEFC అంటే</span>
+        <span class="eefc-val">Dollar ని Dollar గా నిల్వ ఉంచే ఖాతా</span>
+      </div>
+      <div class="eefc-row">
+        <span class="eefc-key">Dollar ₹82 కి వచ్చినప్పుడు</span>
+        <span class="eefc-val">EEFC లో hold చేయండి</span>
+      </div>
+      <div class="eefc-row">
+        <span class="eefc-key">Dollar ₹85 కి పెరిగినప్పుడు</span>
+        <span class="eefc-val gold">₹85 rate తో convert — ₹3L అదనపు ఆదా</span>
+      </div>
+      <div class="eefc-row">
+        <span class="eefc-key">Forward Contract + EEFC కలిపితే</span>
+        <span class="eefc-val gold">Maximum Forex protection</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="ecgc.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">ECGC Insurance</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.6</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="aif-subsidy.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">AIF Subsidy</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.8</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/06/forward-contract.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

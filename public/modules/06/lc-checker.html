@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LC Checker (కొనుగోలు పత్రం తనిఖీ) · Module 06 – Market Intelligence | My Exports</title>
+  <meta name="description" content="Module 06 · Market Intelligence — LC Checker (కొనుగోలు పత్రం తనిఖీ). Topic 6.9 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/06/lc-checker.css">
+</head>
+<body class="tp-body tp-phase-2" data-root="../../" data-topic-path="modules/06/lc-checker.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-6">Module 06 · Market Intelligence</a></li>
+          <li><span aria-current="page">LC Checker</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-2">Phase 02 · Market Readiness</a>
+          <span class="tp-chip">Module 06 · Market Intelligence</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">LC Checker</h1>
+        <p class="tp-hero__subtitle">కొనుగోలు పత్రం తనిఖీ</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>6.9</strong> · 9 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="cost-plus-calculator.html" data-topic-id="6.1" title="6.1 Cost-Plus Calculator" aria-label="Topic 6.1 Cost-Plus Calculator">1</a></li>
+              <li><a class="tp-steps__item" href="break-even-fob.html" data-topic-id="6.2" title="6.2 Break-even FOB" aria-label="Topic 6.2 Break-even FOB">2</a></li>
+              <li><a class="tp-steps__item" href="volume-discount.html" data-topic-id="6.3" title="6.3 Volume Discount" aria-label="Topic 6.3 Volume Discount">3</a></li>
+              <li><a class="tp-steps__item" href="trade-map.html" data-topic-id="6.4" title="6.4 Trade Map" aria-label="Topic 6.4 Trade Map">4</a></li>
+              <li><a class="tp-steps__item" href="exim-pcfc.html" data-topic-id="6.5" title="6.5 EXIM PCFC" aria-label="Topic 6.5 EXIM PCFC">5</a></li>
+              <li><a class="tp-steps__item" href="ecgc.html" data-topic-id="6.6" title="6.6 ECGC" aria-label="Topic 6.6 ECGC">6</a></li>
+              <li><a class="tp-steps__item" href="forward-contract.html" data-topic-id="6.7" title="6.7 Forward Contract" aria-label="Topic 6.7 Forward Contract">7</a></li>
+              <li><a class="tp-steps__item" href="aif-subsidy.html" data-topic-id="6.8" title="6.8 AIF Subsidy" aria-label="Topic 6.8 AIF Subsidy">8</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="6.9" title="6.9 LC Checker">9</span></li>
+              <li><a class="tp-steps__item" href="payment-terms.html" data-topic-id="6.10" title="6.10 Payment Terms" aria-label="Topic 6.10 Payment Terms">10</a></li>
+              <li><a class="tp-steps__item" href="filr-calculator.html" data-topic-id="6.11" title="6.11 FILR Calculator" aria-label="Topic 6.11 FILR Calculator">11</a></li>
+              <li><a class="tp-steps__item" href="post-shipment-credit.html" data-topic-id="6.12" title="6.12 Post-shipment Credit" aria-label="Topic 6.12 Post-shipment Credit">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">06</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph">
+
+  
+
+  
+
+  
+
+  <!-- HERO -->
+  <div class="app-scroll">
+  <div class="hero-card">
+    <div class="hero-tag">📋 పత్ర భద్రత</div>
+    <div class="hero-title">Letter of Credit తప్పు ఉంటే<br>చెల్లింపు ఆగిపోతుంది</div>
+    <div class="hero-sub">Buyer పంపిన LC లో ఒక్క తప్పు ఉన్నా Bank payment block చేస్తుంది — 28-Point UCP 600 checklist తో FEED రక్షిస్తుంది</div>
+    <div class="hero-badge-row">
+      <div class="hbr ucp">✅ UCP 600 · 39 అధ్యాయాలు</div>
+      <div class="hbr">28 తనిఖీ అంశాలు</div>
+      <div class="hbr warn">⚡ ఒక తప్పు = చెల్లింపు ఆగుతుంది</div>
+      <div class="hbr">5 Banking Days</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="sec-div">
+    <div class="sec-label">ఇది ఏమిటి?</div>
+  </div>
+  <div class="story">
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx"><b>Letter of Credit (LC)</b> అంటే — Buyer వారి Bank ద్వారా "సరుకు సరిగ్గా వస్తే నేను చెల్లిస్తాను" అని Bank Guarantee ఇవ్వడం — ఇది మీకు అత్యంత సురక్షితమైన payment method</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx"><b>UCP 600</b> అంటే — ICC (International Chamber of Commerce) వారి 39 Articles తో రూపొందించిన ప్రపంచ standard — 175 దేశాలు పాటిస్తాయి</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">Bank <b>Documents మాత్రమే</b> చూస్తుంది — సరుకు quality కాదు — ఒక అక్షర తప్పు కూడా Discrepancy అవుతుంది — చెల్లింపు block అవుతుంది</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">FEED LC అందిన వెంటనే <b>28-Point checklist</b> run చేస్తుంది — తప్పు ఉంటే Buyer కి amendment అడుగుతుంది — సరుకు పంపే ముందే resolve అవుతుంది</div>
+    </div>
+  </div>
+
+  <!-- LC TYPE VARIANT SELECTOR -->
+  <div class="sec-div">
+    <div class="sec-label">కొనుగోలు పత్రం రకాలు</div>
+    <div class="sec-sub">FEED కి ఏది ఉత్తమం?</div>
+  </div>
+  <div class="lc-types">
+    <div class="lc-title">📦 4 రకాల LC — మీకు ఏది వస్తుందో తెలుసుకోండి</div>
+
+    <div class="lc-card preferred">
+      <div class="lc-head">
+        <div class="lc-name">Irrevocable Confirmed LC</div>
+        <div class="lc-verdict v-green">FEED ఉత్తమం</div>
+      </div>
+      <div class="lc-body"><b>రెండు Banks Guarantee ఇస్తాయి</b> — Buyer bank + FEED AD bank (SBI). Buyer default అయినా, Buyer Bank collapse అయినా — SBI చెల్లిస్తుంది. కొత్త Buyer, Gulf/Africa bank తో use చేయండి. Extra cost 0.1–0.5%.</div>
+    </div>
+
+    <div class="lc-card">
+      <div class="lc-head">
+        <div class="lc-name">Irrevocable Unconfirmed LC</div>
+        <div class="lc-verdict v-amber">విశ్వసనీయ Buyer కి</div>
+      </div>
+      <div class="lc-body">Buyer Bank మాత్రమే guarantee. FEED AD bank confirm చేయదు. Dubai/Saudi established buyers కి acceptable. Buyer Trust Score ≥8/10 అయితే OK.</div>
+    </div>
+
+    <div class="lc-card">
+      <div class="lc-head">
+        <div class="lc-name">Usance LC (30/60/90 రోజులు)</div>
+        <div class="lc-verdict v-amber">Deferred payment</div>
+      </div>
+      <div class="lc-body">BL date తర్వాత 30/60/90 రోజులకు payment. Gulf buyers prefer చేస్తారు. PCFC + Forward Contract తో manage చేయవచ్చు. Y1 లో వద్దు — At-Sight preferred.</div>
+    </div>
+
+    <div class="lc-card">
+      <div class="lc-head">
+        <div class="lc-badge badge-grey">❌</div>
+        <div class="lc-name">Revocable LC</div>
+        <div class="lc-verdict v-red">వద్దు</div>
+      </div>
+      <div class="lc-body">Bank ఎప్పుడైనా cancel చేయవచ్చు — Buyer protection zero. UCP 600 కింద revocable LC అంగీకరించకూడదు. కానీ LC లో "Irrevocable" అని లేకుంటే UCP 600 automatically irrevocable గా పరిగణిస్తుంది.</div>
+    </div>
+  </div>
+
+  <!-- 28-POINT CHECKLIST -->
+  <div class="sec-div">
+    <div class="sec-label">28-Point LC తనిఖీ జాబితా</div>
+    <div class="sec-sub">FEED LC అందినప్పుడు ఇవి check చేస్తుంది</div>
+  </div>
+  <div class="checklist-card">
+    <div class="cl-head">
+      <div class="cl-head-t">📋 UCP 600 ఆధారిత 28-Point FEED LC Checker</div>
+    </div>
+
+    <!-- GROUP A: Basic LC details -->
+    <div class="cl-section"><div class="cl-section-t">A · మూలభూత వివరాలు (1–7)</div></div>
+    <div class="cl-item">
+      <div class="cl-num">1</div>
+      <div class="cl-text">
+        <div class="cl-point">LC లో "Subject to UCP 600" ఉందా?</div>
+        <div class="cl-detail">ఈ phrase లేకుంటే UCP 600 protection వర్తించదు</div>
+        <div class="cl-fail">లేకుంటే: Amendment అడగండి</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">2</div>
+      <div class="cl-text">
+        <div class="cl-point">LC Type "Irrevocable" అని ఉందా?</div>
+        <div class="cl-detail">Revocable LC = అంగీకరించకూడదు</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">3</div>
+      <div class="cl-text">
+        <div class="cl-point">Beneficiary పేరు సరిగ్గా ఉందా?</div>
+        <div class="cl-detail">"FEED MSCS LTD" — ఒక్క అక్షరం తేడా = Discrepancy. "FEED MSCS" vs "FEED MSCS LTD" = different</div>
+        <div class="cl-fail">అక్షరాల తేడా = BLOCK</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">4</div>
+      <div class="cl-text">
+        <div class="cl-point">LC గడువు తేదీ (Expiry Date) చాలు అని నిర్ధారించుకోండి</div>
+        <div class="cl-detail">Shipment date + Document preparation + Bank submission — ఆ అన్నిటికీ కాలం ఉందా?</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">5</div>
+      <div class="cl-text">
+        <div class="cl-point">LC India లో expire అవుతుందా లేక Buyer దేశంలో?</div>
+        <div class="cl-detail">Buyer దేశంలో expire అంటే documents courier పంపాలి — 5 రోజుల ముందే present చేయాలి</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">6</div>
+      <div class="cl-text">
+        <div class="cl-point">LC విలువ సరిగ్గా ఉందా?</div>
+        <div class="cl-detail">FOB × quantity సరిగ్గా మ్యాచ్ అవుతుందా? ₹1 తేడా కూడా discrepancy</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">7</div>
+      <div class="cl-text">
+        <div class="cl-point">Currency (USD/EUR/AED) సరిగ్గా ఉందా?</div>
+        <div class="cl-detail">ఒప్పందంలో USD అన్నారా, LC లో AED ఉందా? = Amendment</div>
+      </div>
+    </div>
+
+    <!-- GROUP B: Commodity & Shipment -->
+    <div class="cl-section"><div class="cl-section-t">B · సరుకు & రవాణా వివరాలు (8–16)</div></div>
+    <div class="cl-item">
+      <div class="cl-num warn">8</div>
+      <div class="cl-text">
+        <div class="cl-point">Commodity description LC లో ఉన్నట్టే Invoice లో ఉందా?</div>
+        <div class="cl-detail">LC: "Guntur Dried Red Chilli Sannam S4 (Capsicum annuum)" — Invoice: "Dried Chilli" = DISCREPANCY</div>
+        <div class="cl-fail">అత్యంత సాధారణ తప్పు #5</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">9</div>
+      <div class="cl-text">
+        <div class="cl-point">HS Code LC లో సరిగ్గా ఉందా?</div>
+        <div class="cl-detail">Banana: 0803 90 10 · Chilli: 0904 21 00 — తప్పు HS = Customs rejection</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">10</div>
+      <div class="cl-text">
+        <div class="cl-point">Quantity మరియు weight tolerance ఉందా?</div>
+        <div class="cl-detail">LC "20,000 kg" అంటే exactly 20,000 కావాలి. "+/- 5%" tolerance LC లో లేకుంటే — 19,900 kg = DISCREPANCY</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">11</div>
+      <div class="cl-text">
+        <div class="cl-point">Port of Loading: INKRI1 (Krishnapatnam) సరైనదా?</div>
+        <div class="cl-detail">Banana: KPCT Krishnapatnam. Chilli: Vizag. LC లో తప్పు port = BL reject</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">12</div>
+      <div class="cl-text">
+        <div class="cl-point">Port of Discharge: Jebel Ali (AEJEA) సరైనదా?</div>
+        <div class="cl-detail">Buyer దేశం, port అన్నీ match అవాలి. Dubai vs Sharjah = different ports</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">13</div>
+      <div class="cl-text">
+        <div class="cl-point">Shipment deadline — LC గడువు కంటే 5 రోజులు ముందు ఉందా?</div>
+        <div class="cl-detail">BL date must be on or before LC shipment deadline. Vessel delay buffer 5 రోజులు ఉండాలి</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num warn">14</div>
+      <div class="cl-text">
+        <div class="cl-point">Presentation Period: BL తర్వాత 21 రోజులలోపు documents present చేయాలా?</div>
+        <div class="cl-detail">UCP 600 Art 14c: 21 రోజుల తర్వాత present చేస్తే LATE = DISCREPANCY. FEED: BL తర్వాత 10–14 రోజులలో present చేయాలి</div>
+        <div class="cl-fail">అత్యంత సాధారణ తప్పు #1</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">15</div>
+      <div class="cl-text">
+        <div class="cl-point">Partial shipments అనుమతించబడుతున్నాయా?</div>
+        <div class="cl-detail">Single shipment preferred. Instalment LC లో వద్దు</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">16</div>
+      <div class="cl-text">
+        <div class="cl-point">Transhipment అనుమతించబడుతున్నాయా?</div>
+        <div class="cl-detail">Colombo → Rotterdam transhipment అయితే LC లో "Transhipment allowed" ఉండాలి</div>
+      </div>
+    </div>
+
+    <!-- GROUP C: Documents Required -->
+    <div class="cl-section"><div class="cl-section-t">C · అవసరమైన పత్రాల జాబితా (17–24)</div></div>
+    <div class="cl-item">
+      <div class="cl-num warn">17</div>
+      <div class="cl-text">
+        <div class="cl-point">Bill of Lading: "On Board" notation ఉందా?</div>
+        <div class="cl-detail">"Received for Shipment" BL కాదు — "On Board" BL తప్పనిసరి. CHA తో confirm చేయండి</div>
+        <div class="cl-fail">అత్యంత సాధారణ తప్పు #2</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">18</div>
+      <div class="cl-text">
+        <div class="cl-point">Commercial Invoice format LC requirements తో match అవుతుందా?</div>
+        <div class="cl-detail">Invoice amount = LC value exactly. Commodity description = LC description exactly</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">19</div>
+      <div class="cl-text">
+        <div class="cl-point">Packing List — ప్రతి box వివరాలు correct గా ఉన్నాయా?</div>
+        <div class="cl-detail">Packing List weight = Invoice weight = BL weight. ₹1 kg తేడా = discrepancy</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">20</div>
+      <div class="cl-text">
+        <div class="cl-point">Phytosanitary Certificate — DPPQS seal + date సరైనదా?</div>
+        <div class="cl-detail">Export date కంటే ముందు issued అయి ఉండాలి. LC లో "Government Phytosanitary Certificate" అంటే specific format</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">21</div>
+      <div class="cl-text">
+        <div class="cl-point">Certificate of Origin (e-CoO) LC specifications తో match అవుతుందా?</div>
+        <div class="cl-detail">UAE CEPA CoO: DGFT ద్వారా. Non-preferential CoO: Chamber of Commerce ద్వారా. LC లో ఏది అడిగారో అది</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">22</div>
+      <div class="cl-text">
+        <div class="cl-point">NABL Lab Test Report — LC లో అడిగిన parameters cover అయ్యాయా?</div>
+        <div class="cl-detail">EU LC: EU 396/2005 panel. Gulf LC: Codex MRL panel. LC లో "NABL accredited" అంటే Eureka Analytical Guntur report</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num warn">23</div>
+      <div class="cl-text">
+        <div class="cl-point">Insurance Certificate — BL date కంటే ముందు date ఉందా?</div>
+        <div class="cl-detail">Insurance dated AFTER BL = DISCREPANCY. Marine insurance BL date కంటే ముందే తీసుకోవాలి</div>
+        <div class="cl-fail">అత్యంత సాధారణ తప్పు #4</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">24</div>
+      <div class="cl-text">
+        <div class="cl-point">Insurance amount: CIF value × 110% minimum ఉందా?</div>
+        <div class="cl-detail">కొన్ని LCs 110–120% specify చేస్తాయి. LC లో ఉన్నది సరిగ్గా follow చేయాలి</div>
+      </div>
+    </div>
+
+    <!-- GROUP D: Compliance -->
+    <div class="cl-section"><div class="cl-section-t">D · Compliance పత్రాలు (25–28)</div></div>
+    <div class="cl-item">
+      <div class="cl-num">25</div>
+      <div class="cl-text">
+        <div class="cl-point">APEDA RCMC Certificate — valid గా ఉందా?</div>
+        <div class="cl-detail">RCMC renewal annual. Expired RCMC = export block. APEDA Vizag: Shri RP Naidu 0891-2536940</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">26</div>
+      <div class="cl-text">
+        <div class="cl-point">ECGC Declaration — 48 గంటల ముందు Anand Singh GM కి పంపారా?</div>
+        <div class="cl-detail">KYJ SOP: ECGC WTP per-consignment declaration loading కి 48 గంటల ముందు mandatory</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">27</div>
+      <div class="cl-text">
+        <div class="cl-point">ICEGATE Shipping Bill filed & LEO (Let Export Order) వచ్చిందా?</div>
+        <div class="cl-detail">LEO without RoDTEP, eBRC, FIRC miss అవుతాయి. CHA SAGAR SETU ONOP ద్వారా file చేశారా?</div>
+      </div>
+    </div>
+    <div class="cl-item">
+      <div class="cl-num">28</div>
+      <div class="cl-text">
+        <div class="cl-point">GACC Decree 280 (China exports) — registration number packaging పై ఉందా?</div>
+        <div class="cl-detail">June 1, 2026 నుండి mandatory. China LC అయితే GACC number LC లో + packaging పై తప్పనిసరి</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP 5 DISCREPANCIES -->
+  <div class="sec-div">
+    <div class="sec-label">అత్యంత సాధారణ 5 తప్పులు</div>
+    <div class="sec-sub">ఇవి payment block చేస్తాయి — జాగ్రత్తగా ఉండండి</div>
+  </div>
+  <div class="disc-card">
+    <div class="disc-title">🚨 FEED MSCS LTD Top 5 Discrepancy నివారణ జాబితా</div>
+    <div class="disc-item">
+      <div class="disc-rank">1</div>
+      <div class="disc-content">
+        <div class="disc-name">Late Document Presentation</div>
+        <div class="disc-rule">BL date తర్వాత 21 రోజులలోపు present చేయాలి (UCP 600 Art 14c). Late = payment blocked.</div>
+        <div class="disc-fix">✅ Fix: BL అందిన 10–14 రోజులలో bank కి present చేయండి</div>
+      </div>
+    </div>
+    <div class="disc-item">
+      <div class="disc-rank">2</div>
+      <div class="disc-content">
+        <div class="disc-name">BL "On Board" కాదు</div>
+        <div class="disc-rule">"Received for Shipment" BL తో LC payment రాదు. "On Board" BL కావాలి.</div>
+        <div class="disc-fix">✅ Fix: CHA కి "On Board BL" issue చేయమని specify చేయండి</div>
+      </div>
+    </div>
+    <div class="disc-item">
+      <div class="disc-rank">3</div>
+      <div class="disc-content">
+        <div class="disc-name">Invoice amount LC తో match కాలేదు</div>
+        <div class="disc-rule">Invoice ₹34,56,000 vs LC ₹34,55,999 = DISCREPANCY. ₹1 తేడా కూడా.</div>
+        <div class="disc-fix">✅ Fix: Invoice generate చేసిన తర్వాత LC value తో exactly compare చేయండి</div>
+      </div>
+    </div>
+    <div class="disc-item">
+      <div class="disc-rank">4</div>
+      <div class="disc-content">
+        <div class="disc-name">Insurance after BL date</div>
+        <div class="disc-rule">Insurance certificate date BL date కంటే తర్వాత ఉంటే = DISCREPANCY.</div>
+        <div class="disc-fix">✅ Fix: Container book చేసిన రోజే Marine Insurance తీసుకోండి</div>
+      </div>
+    </div>
+    <div class="disc-item">
+      <div class="disc-rank">5</div>
+      <div class="disc-content">
+        <div class="disc-name">Commodity Description Mismatch</div>
+        <div class="disc-rule">LC "Guntur Dried Red Chilli Sannam S4" vs Invoice "Dried Chilli" = DISCREPANCY.</div>
+        <div class="disc-fix">✅ Fix: Invoice description = LC description — word-for-word copy చేయండి</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY UCP 600 ARTICLES -->
+  <div class="sec-div">
+    <div class="sec-label">ముఖ్యమైన UCP 600 అధ్యాయాలు</div>
+    <div class="sec-sub">FEED రైతుకు అర్థమయ్యే Telugu లో</div>
+  </div>
+  <div class="ucp-card">
+    <div class="ucp-title">📖 UCP 600 — 5 ముఖ్యమైన అధ్యాయాలు</div>
+    <div class="ucp-item">
+      <div class="ucp-art">Article 4</div>
+      <div class="ucp-name">Bank Documents మాత్రమే చూస్తుంది</div>
+      <div class="ucp-body">Buyer "సరుకు quality బాగా లేదు" అన్నా — FEED documents correct అయితే <b>Bank తప్పనిసరిగా చెల్లిస్తుంది</b>. Quality dispute = separate issue. Documents = Bank కి సర్వస్వం.</div>
+    </div>
+    <div class="ucp-item">
+      <div class="ucp-art">Article 14</div>
+      <div class="ucp-name">Bank 5 Banking Days లోపు నిర్ణయించాలి</div>
+      <div class="ucp-body">Documents present చేసిన తర్వాత Bank 5 days లోపు "accept" లేదా "refuse" చెప్పాలి. 5 రోజులు దాటితే <b>Bank automatically accept చేసినట్టే</b> — payment తప్పనిసరి.</div>
+    </div>
+    <div class="ucp-item">
+      <div class="ucp-art">Article 16</div>
+      <div class="ucp-name">Bank ఒకే ఒక్కసారి అన్ని తప్పులు చెప్పాలి</div>
+      <div class="ucp-body">Bank refuse చేస్తే — <b>ఒక్కసారే అన్ని discrepancies list చేయాలి</b>. తర్వాత "ఇంకొక తప్పు కనిపించింది" అని రాదు. ఇది FEED కి protection.</div>
+    </div>
+    <div class="ucp-item">
+      <div class="ucp-art">Article 10</div>
+      <div class="ucp-name">LC Amendment కి FEED అంగీకారం తప్పనిసరి</div>
+      <div class="ucp-body">Buyer LC reduce చేయాలనుకున్నా, commodity మార్చాలనుకున్నా — <b>FEED అంగీకారం లేకుండా amendment valid కాదు</b>. FEED "No" చెప్పవచ్చు.</div>
+    </div>
+    <div class="ucp-item">
+      <div class="ucp-art">Article 20</div>
+      <div class="ucp-name">Bill of Lading నిబంధనలు</div>
+      <div class="ucp-body">BL: carrier name, <b>"On Board" notation</b>, port of loading, port of discharge, date — అన్నీ ఉండాలి. "Clean BL" = సరుకు packaging defect notation లేకుండా.</div>
+    </div>
+  </div>
+
+  <!-- RAMAYYA DASHBOARD -->
+  <div class="sec-div">
+    <div class="sec-label">రామయ్య గారి LC Status</div>
+  </div>
+  <div class="rama-card">
+    <div class="rama-box">
+      <div class="rama-title">🍌 రామయ్య గారి Banana Consignment · LC Checker Status</div>
+      <div class="rama-row">
+        <span class="rama-key">LC Type</span>
+        <span class="rama-val green">Irrevocable Confirmed ✓</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">Buyer</span>
+        <span class="rama-val">UAE Jebel Ali Importer</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">LC విలువ</span>
+        <span class="rama-val">$41,638 (₹34,56,000)</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">28-Point Check</span>
+        <span class="rama-val amber">⏳ Pending (LC వచ్చిన తర్వాత)</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">Shipment Deadline</span>
+        <span class="rama-val">December 2026</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">Port of Loading</span>
+        <span class="rama-val green">INKRI1 · Krishnapatnam ✓</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">FEED LC Support</span>
+        <span class="rama-val green">SBI Anantapur AD Bank ✓</span>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="aif-subsidy.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">AIF Subsidy</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.8</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="payment-terms.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Payment Terms &amp; INCOTERMS</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.10</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/06/lc-checker.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

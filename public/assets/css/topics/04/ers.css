@@ -1,0 +1,245 @@
+/* Topic 4.1 · ERS Readiness Score (Module 04 – Production & Quality)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;500;600;700;800;900&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    min-height: 800px;
+    background: #ffffff;
+    border-radius: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 8px #1a1a1a, 0 0 0 10px #333;
+    overflow: hidden;
+    position: relative;
+  }
+  /* BODY */
+  :where(.tp-article) .body {
+    padding: 14px;
+  }
+  /* ERS HERO — Rainbow Spectrum */
+  :where(.tp-article) .ers-hero {
+    background: linear-gradient(135deg, #7b2d8b 0%, #1a5fa8 25%, #1a9b4a 50%, #d4a017 75%, #c0392b 100%);
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .ers-hero::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  :where(.tp-article) .ers-hero-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .ers-hero-title {
+    font-size: calc(17px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .ers-stat-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  :where(.tp-article) .ers-stat {
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  :where(.tp-article) .ers-stat-num {
+    font-size: calc(20px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  :where(.tp-article) .ers-stat-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,0.85);
+    margin-top: 3px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .cat-section-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #1a6b3c;
+  }
+  :where(.tp-article) .cat-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .cat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e8e8e8;
+  }
+  :where(.tp-article) .cat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .cat-info {
+    flex: 1;
+  }
+  :where(.tp-article) .cat-name {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .cat-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #666;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .cat-score-wrap {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .cat-score {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    line-height: 1;
+  }
+  :where(.tp-article) .mini-bar {
+    width: 50px;
+    height: 5px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    margin-top: 3px;
+    overflow: hidden;
+  }
+  :where(.tp-article) .mini-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  /* TIERS */
+  :where(.tp-article) .tier-section {
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .tier-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+  }
+  :where(.tp-article) .tier-card {
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  :where(.tp-article) .tier-card .tier-desc {
+    display: none;
+    margin-top: 8px;
+  }
+  :where(.tp-article) .tier-card.active .tier-desc {
+    display: block;
+  }
+  :where(.tp-article) .tier-a {
+    background: #e8f5e9;
+    border-color: #2e7d32;
+  }
+  :where(.tp-article) .tier-b {
+    background: #fff8e1;
+    border-color: #f9a825;
+  }
+  :where(.tp-article) .tier-c {
+    background: #ffeaea;
+    border-color: #c62828;
+  }
+  :where(.tp-article) .tier-label {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .tier-a .tier-label {
+    color: #2e7d32;
+  }
+  :where(.tp-article) .tier-b .tier-label {
+    color: #f57f17;
+  }
+  :where(.tp-article) .tier-c .tier-label {
+    color: #c62828;
+  }
+  :where(.tp-article) .tier-range {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .tier-desc {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.3;
+  }
+  /* WHAT IS ERS */
+  :where(.tp-article) .explain-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  :where(.tp-article) .explain-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #1a6b3c;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .explain-body {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.7;
+  }
+  :where(.tp-article) .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+    margin: 12px 0;
+  }
+}

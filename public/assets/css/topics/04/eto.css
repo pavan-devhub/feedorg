@@ -1,0 +1,316 @@
+/* Topic 4.9 · ETO Zero Tolerance (Module 04 – Production & Quality)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;500;600;700;800;900&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    min-height: 800px;
+    background: #f5f5f5;
+    border-radius: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 8px #1a1a1a, 0 0 0 10px #333;
+    overflow: hidden;
+    position: relative;
+  }
+  :where(.tp-article) .body {
+    padding: 14px;
+  }
+  /* ETO HERO — Warning Red + Black (danger zone) */
+  :where(.tp-article) .eto-hero {
+    background: linear-gradient(135deg, #7a1414 0%, #b71c1c 100%);
+    border-radius: 16px;
+    padding: 18px 16px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .eto-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffe0b2;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+  :where(.tp-article) .eto-title {
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .eto-subtitle {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,0.85);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  /* WHAT IS ETO CARD */
+  :where(.tp-article) .explain-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  :where(.tp-article) .explain-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #c62828;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .explain-body {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.7;
+  }
+  /* SECTION TITLE */
+  :where(.tp-article) .section-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 4px 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  :where(.tp-article) .section-title .count {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-weight: 600;
+  }
+  /* MRL TABLE */
+  :where(.tp-article) .mrl-table-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  :where(.tp-article) .mrl-th {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    background: #1a1a1a;
+    color: #ffd600;
+    padding: 8px 8px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    text-align: center;
+  }
+  :where(.tp-article) .mrl-tr {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    padding: 8px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    align-items: center;
+  }
+  :where(.tp-article) .mrl-tr:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .mrl-tr:nth-child(even) {
+    background: #fafafa;
+  }
+  :where(.tp-article) .mrl-cmd {
+    font-weight: 700;
+    color: #1a1a1a;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .mrl-val {
+    text-align: center;
+    font-weight: 800;
+  }
+  :where(.tp-article) .mrl-val.danger {
+    color: #b71c1c;
+  }
+  :where(.tp-article) .mrl-val.warning {
+    color: #e65100;
+  }
+  /* STEAM STERILIZATION CARD */
+  :where(.tp-article) .steam-card {
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+    border: 2px solid #00838f;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .steam-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #006064;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .steam-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .steam-stat {
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 7px;
+    text-align: center;
+  }
+  :where(.tp-article) .steam-num {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #006064;
+  }
+  :where(.tp-article) .steam-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #00838f;
+    margin-top: 2px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .steam-body {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #004d40;
+    line-height: 1.6;
+  }
+  /* PROTOCOL CHECKLIST */
+  :where(.tp-article) .protocol-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  :where(.tp-article) .protocol-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #2e7d32;
+    padding-bottom: 6px;
+  }
+  :where(.tp-article) .check-row {
+    display: flex;
+    gap: 8px;
+    padding: 7px 8px;
+    margin-bottom: 5px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #2e7d32;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .check-row:last-child {
+    margin-bottom: 0;
+  }
+  :where(.tp-article) .check-emoji {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .check-content {
+    flex: 1;
+  }
+  :where(.tp-article) .check-stage {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1b5e20;
+  }
+  :where(.tp-article) .check-desc {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+  /* CONSEQUENCE BLOCK */
+  :where(.tp-article) .consequence-card {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #1a1a1a;
+    border: 2px solid #c62828;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .conseq-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #b71c1c;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .conseq-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  :where(.tp-article) .conseq-list li {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #1a1a1a;
+    line-height: 1.5;
+    display: flex;
+    gap: 7px;
+    align-items: flex-start;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    padding: 7px 9px;
+  }
+  :where(.tp-article) .conseq-list li::before {
+    content: '🚫';
+    flex-shrink: 0;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+  }
+  /* SECTION TOGGLE */
+  :where(.tp-article) .sec {
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .sec-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  :where(.tp-article) .sec-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1a6b3c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  :where(.tp-article) .sec-toggle-btn .arrow {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    transition: transform 0.2s ease;
+  }
+  :where(.tp-article) .sec.collapsed .sec-toggle-btn .arrow {
+    transform: rotate(-90deg);
+  }
+  :where(.tp-article) .sec-body {
+    overflow: hidden;
+  }
+  :where(.tp-article) .sec.collapsed .sec-body {
+    display: none;
+  }
+}

@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Trade Map (పోటీ విశ్లేషణ) · Module 06 – Market Intelligence | My Exports</title>
+  <meta name="description" content="Module 06 · Market Intelligence — Trade Map (పోటీ విశ్లేషణ). Topic 6.4 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/06/trade-map.css">
+</head>
+<body class="tp-body tp-phase-2" data-root="../../" data-topic-path="modules/06/trade-map.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-6">Module 06 · Market Intelligence</a></li>
+          <li><span aria-current="page">Trade Map</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-2">Phase 02 · Market Readiness</a>
+          <span class="tp-chip">Module 06 · Market Intelligence</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Trade Map</h1>
+        <p class="tp-hero__subtitle">పోటీ విశ్లేషణ</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>6.4</strong> · 4 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="cost-plus-calculator.html" data-topic-id="6.1" title="6.1 Cost-Plus Calculator" aria-label="Topic 6.1 Cost-Plus Calculator">1</a></li>
+              <li><a class="tp-steps__item" href="break-even-fob.html" data-topic-id="6.2" title="6.2 Break-even FOB" aria-label="Topic 6.2 Break-even FOB">2</a></li>
+              <li><a class="tp-steps__item" href="volume-discount.html" data-topic-id="6.3" title="6.3 Volume Discount" aria-label="Topic 6.3 Volume Discount">3</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="6.4" title="6.4 Trade Map">4</span></li>
+              <li><a class="tp-steps__item" href="exim-pcfc.html" data-topic-id="6.5" title="6.5 EXIM PCFC" aria-label="Topic 6.5 EXIM PCFC">5</a></li>
+              <li><a class="tp-steps__item" href="ecgc.html" data-topic-id="6.6" title="6.6 ECGC" aria-label="Topic 6.6 ECGC">6</a></li>
+              <li><a class="tp-steps__item" href="forward-contract.html" data-topic-id="6.7" title="6.7 Forward Contract" aria-label="Topic 6.7 Forward Contract">7</a></li>
+              <li><a class="tp-steps__item" href="aif-subsidy.html" data-topic-id="6.8" title="6.8 AIF Subsidy" aria-label="Topic 6.8 AIF Subsidy">8</a></li>
+              <li><a class="tp-steps__item" href="lc-checker.html" data-topic-id="6.9" title="6.9 LC Checker" aria-label="Topic 6.9 LC Checker">9</a></li>
+              <li><a class="tp-steps__item" href="payment-terms.html" data-topic-id="6.10" title="6.10 Payment Terms" aria-label="Topic 6.10 Payment Terms">10</a></li>
+              <li><a class="tp-steps__item" href="filr-calculator.html" data-topic-id="6.11" title="6.11 FILR Calculator" aria-label="Topic 6.11 FILR Calculator">11</a></li>
+              <li><a class="tp-steps__item" href="post-shipment-credit.html" data-topic-id="6.12" title="6.12 Post-shipment Credit" aria-label="Topic 6.12 Post-shipment Credit">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">06</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph">
+
+  
+
+  
+
+  
+
+  <div class="scroll-content">
+<!-- HERO PRODUCT CARD -->
+  <div class="hero-card">
+    <div class="hero-tag">🌍 మార్కెట్ పరిశోధన</div>
+    <div class="hero-title">మీ పోటీదారులు ఎంత ధరకు అమ్ముతున్నారో తెలుసుకోండి</div>
+    <div class="hero-sub">ప్రపంచ వ్యాపార గణాంకాల ఆధారంగా — మీ ధర సరైనదో, ఎక్కువో, తక్కువో అర్థం చేసుకోండి</div>
+    <div class="hero-badge-row">
+      <div class="hbr gold">5 పోటీ దేశాలు</div>
+      <div class="hbr">🌶️ Chilli + 🍌 Banana</div>
+      <div class="hbr">38–94% Premium</div>
+    </div>
+  </div>
+
+  <!-- ABOUT THIS SCREEN -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">ఇది ఏమిటి?</div>
+  </div>
+  <div class="story">
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx"><b>Trade Map</b> అంటే ITC Geneva (International Trade Centre) నిర్వహించే ప్రపంచ వ్యాపార సంఖ్యల వేదిక — ఉచితంగా access చేయవచ్చు</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">ఏ దేశం EU కి ఎంత Chilli అమ్ముతుందో, ఏ ధరకో — ఈ data చదివి <b>మీ ధర సరిగ్గా ఉందా</b> అని నిర్ణయించవచ్చు</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">Pakistan $1.80/కె.జి. vs Guntur $2.50–3.50/కె.జి. — <b>38–94% premium</b> అంటే Guntur నాణ్యత కారణంగా మీరు ఎక్కువ అడగవచ్చు</div>
+    </div>
+    <div class="story-row">
+      <div class="story-dot"></div>
+      <div class="story-tx">FEED ఈ data ని STARTUP SERVICES లో <b>స్వయంచాలకంగా</b> సేకరించి మీ FEED Pricing Calculator తో అనుసంధానిస్తుంది</div>
+    </div>
+  </div>
+
+  <!-- CHILLI COMPETITORS — Amazon product listing style -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">🌶️ Chilli · EU మార్కెట్లో పోటీ దేశాలు</div>
+    <div class="sec-sub">Guntur Sannam S4 · EU మార్కెట్ FOB పోలిక</div>
+  </div>
+  <div class="comp-list">
+    <div class="comp-head">
+      <div class="comp-head-t">📦 EU మార్కెట్లో మీ 5 ప్రధాన పోటీదారులు</div>
+    </div>
+
+    <!-- India #1 -->
+    <div class="comp-item">
+      <div class="comp-rank gold">🥇</div>
+      <div class="comp-flag">🇮🇳</div>
+      <div class="comp-info">
+        <div class="comp-name">భారతదేశం — గుంటూరు మిరప</div>
+        <div class="comp-price india">$2.50 – $3.50/కె.జి.</div>
+        <div class="comp-detail">ASTA Units అత్యధికం · GI Tag · BharatGAP · NABL ధృవీకరణ · Ethnic Food EU demand · ₹207–290/కె.జి.</div>
+        <div class="comp-badge badge-green">✅ మీరు ఇక్కడ ఉన్నారు</div>
+      </div>
+    </div>
+
+    <!-- Pakistan #2 -->
+    <div class="comp-item">
+      <div class="comp-rank silver">2</div>
+      <div class="comp-flag">🇵🇰</div>
+      <div class="comp-info">
+        <div class="comp-name">పాకిస్తాన్ — Chilli</div>
+        <div class="comp-price red">$1.80/కె.జి.</div>
+        <div class="comp-detail">తక్కువ ధర · Quality తక్కువ · EU MRL సమస్యలు ఉన్నాయి · RASFF alerts 2022–2024</div>
+        <div class="comp-badge badge-red">⚠️ MRL సమస్యలు · Buyer switch చేస్తున్నారు</div>
+      </div>
+    </div>
+
+    <!-- Vietnam #3 -->
+    <div class="comp-item">
+      <div class="comp-rank bronze">3</div>
+      <div class="comp-flag">🇻🇳</div>
+      <div class="comp-info">
+        <div class="comp-name">వియత్నాం — Capsicum</div>
+        <div class="comp-price amber">$2.20/కె.జి.</div>
+        <div class="comp-detail">తక్కువ pungency · ఎక్కువగా processed food కి వాడతారు · Ethnic food కి demand తక్కువ</div>
+        <div class="comp-badge badge-amber">📊 వేరే market segment</div>
+      </div>
+    </div>
+
+    <!-- Spain #4 -->
+    <div class="comp-item">
+      <div class="comp-rank r4">4</div>
+      <div class="comp-flag">🇪🇸</div>
+      <div class="comp-info">
+        <div class="comp-name">స్పెయిన్ — Paprika</div>
+        <div class="comp-price" style="color:#1565C0">$4.00+/కె.జి.</div>
+        <div class="comp-detail">EU Domestic · High Quality · Pimenton de la Vera GI · High Price · Paprika variety — different market</div>
+        <div class="comp-badge badge-blue">🏛️ వేరే ఉత్పత్తి రకం</div>
+      </div>
+    </div>
+
+    <!-- Peru #5 -->
+    <div class="comp-item">
+      <div class="comp-rank r5">5</div>
+      <div class="comp-flag">🇵🇪</div>
+      <div class="comp-info">
+        <div class="comp-name">పెరూ — Paprika</div>
+        <div class="comp-price amber">$2.30/కె.జి.</div>
+        <div class="comp-detail">Competitive · Aji Amarillo variety · EU లో నెమ్మదిగా పెరుగుతున్న presence · Guntur pungency తో match కాదు</div>
+        <div class="comp-badge badge-amber">📈 పెరుగుతున్న పోటీ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICE BAR CHART -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">ధర పోలిక చార్ట్</div>
+    <div class="sec-sub">EU మార్కెట్ FOB · కె.జి. కు</div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">📊 మీ ధర vs పోటీదారులు</div>
+    <div class="chart-row">
+      <div class="chart-label">🇮🇳 భారతదేశం</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="width:85%;background:linear-gradient(90deg,#2E7D32,#1B5E20)">
+          <span class="chart-val">$3.00 avg</span>
+        </div>
+      </div>
+      <div class="chart-usd" style="color:#2E7D32;font-weight:700">🥇 అత్యుత్తమం</div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">🇪🇸 స్పెయిన్</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="width:100%;background:linear-gradient(90deg,#1565C0,#0D47A1)">
+          <span class="chart-val">$4.00+</span>
+        </div>
+      </div>
+      <div class="chart-usd" style="color:#1565C0">వేరే రకం</div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">🇵🇪 పెరూ</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="width:57%;background:#FF8F00">
+          <span class="chart-val">$2.30</span>
+        </div>
+      </div>
+      <div class="chart-usd" style="color:#E65100">పోటీ</div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">🇻🇳 వియత్నాం</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="width:55%;background:#FF8F00">
+          <span class="chart-val">$2.20</span>
+        </div>
+      </div>
+      <div class="chart-usd" style="color:#E65100">వేరే segment</div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">🇵🇰 పాకిస్తాన్</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="width:45%;background:#C62828">
+          <span class="chart-val">$1.80</span>
+        </div>
+      </div>
+      <div class="chart-usd" style="color:#C62828">⚠️ MRL నష్టం</div>
+    </div>
+    <div style="padding:8px 0 0;font-size:calc(10px * var(--tp-type-scale, 1));color:#777">Pakistan తో పోలిస్తే మీ premium: <b style="color:#2E7D32">38–94%</b> · BharatGAP + GI Tag + NABL వల్ల justify అవుతుంది</div>
+  </div>
+
+  <!-- BANANA COMPETITOR SECTION -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">🍌 Banana · Gulf మార్కెట్లో పోటీ</div>
+    <div class="sec-sub">Grand Naine · UAE Jebel Ali · HS 0803 90 10</div>
+  </div>
+  <div class="banana-card">
+    <div class="ban-title">🌍 Gulf మార్కెట్లో మీ పోటీదారులు</div>
+    <div class="ban-row">
+      <div class="ban-flag">🇮🇳</div>
+      <div class="ban-info">
+        <div class="ban-name">భారతదేశం — Grand Naine 🥇</div>
+        <div class="ban-detail">Gulf #1 Banana supplier · UAE, Oman, Bahrain, Qatar · BharatGAP · APEDA certified · రామయ్య గారి target market</div>
+        <div class="comp-badge badge-green" style="margin-top:4px">✅ Gulf లో అగ్రగామి</div>
+      </div>
+      <div class="ban-price" style="color:#2E7D32">₹55–70<br><span style="font-size:calc(10px * var(--tp-type-scale, 1));color:#777">/కె.జి.</span></div>
+    </div>
+    <div class="ban-row">
+      <div class="ban-flag">🇵🇭</div>
+      <div class="ban-info">
+        <div class="ban-name">Philippines — Cavendish</div>
+        <div class="ban-detail">East Asia మరియు Japan కి focus · Gulf లో తక్కువ presence · Dole, Del Monte brands · భారతదేశం ప్రత్యక్ష పోటీదారు కాదు</div>
+        <div class="comp-badge badge-blue" style="margin-top:4px">📊 వేరే market</div>
+      </div>
+      <div class="ban-price" style="color:#1565C0">$0.90–1.10<br><span style="font-size:calc(10px * var(--tp-type-scale, 1));color:#777">/కె.జి.</span></div>
+    </div>
+    <div class="ban-row">
+      <div class="ban-flag">🇪🇨</div>
+      <div class="ban-info">
+        <div class="ban-name">Ecuador — Grand Cavendish</div>
+        <div class="ban-detail">EU మరియు USA కి focus · Gulf కి తక్కువ · Shipping cost ఎక్కువ · India FOB price competitive · CEPA advantage</div>
+        <div class="comp-badge badge-amber" style="margin-top:4px">🚢 Distance advantage India కి</div>
+      </div>
+      <div class="ban-price" style="color:#E65100">$0.85–1.00<br><span style="font-size:calc(10px * var(--tp-type-scale, 1));color:#777">/కె.జి.</span></div>
+    </div>
+  </div>
+
+  <!-- INDIA ADVANTAGE CARD -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">భారతదేశం Premium ఎందుకు?</div>
+  </div>
+  <div class="adv-card">
+    <div class="adv-box">
+      <div class="adv-title">🏆 Pakistan కంటే 38–94% ఎక్కువ ధర ఎందుకు?</div>
+      <div class="adv-row">
+        <div class="adv-ic">🧪</div>
+        <div class="adv-tx"><b>NABL ధృవీకరణ:</b> EU 396/2005 panel · Eureka Analytical Guntur · 500+ pesticide test · Pakistan కి ఈ స్థాయి testing లేదు</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-ic">🏷️</div>
+        <div class="adv-tx"><b>GI Tag:</b> గుంటూరు మిరప భౌగోళిక గుర్తింపు · Authentic Guntur Chilli · EU Ethnic Food market కి ప్రత్యేక demand</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-ic">🌿</div>
+        <div class="adv-tx"><b>BharatGAP:</b> Government of India certified GAP · Traceability farm-to-port · EU buyer confidence పెరుగుతుంది</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-ic">🌶️</div>
+        <div class="adv-tx"><b>ASTA Units:</b> గుంటూరు మిరప pungency ప్రపంచంలో అత్యధికం · EU Ethnic Food buyers Guntur మాత్రమే కొంటారు</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-ic">📉</div>
+        <div class="adv-tx"><b>Pakistan RASFF:</b> 2022–2024 లో EU alerts అనేకం · Buyers risk కారణంగా Pakistan నుండి India కి switch చేస్తున్నారు</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADEMAP EXPLAINER -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">Trade Map ఎలా వాడాలి?</div>
+    <div class="sec-sub">ITC Geneva · ఉచిత వేదిక</div>
+  </div>
+  <div class="trademap-card">
+    <div class="tm-title">🖥️ trademap.org — స్వయంగా పరిశోధన చేయండి</div>
+    <div class="tm-box">
+      <div class="tm-url">🌐 trademap.org (ఉచిత · Login అవసరం లేదు)</div>
+      <div class="tm-body">ITC Geneva (International Trade Centre) నిర్వహించే ప్రపంచ వ్యాపార సంఖ్యల వేదిక. India నుండి EU కి Chilli ఎంత ఎగుమతి అవుతుందో, పోటీ దేశాల ధరలు, demand trends — అన్నీ ఇక్కడ దొరుకుతాయి.</div>
+      <div class="tm-steps">
+        <div class="tm-step">
+          <div class="tm-step-no">1</div>
+          <div>trademap.org తెరవండి → "Product" select చేయండి → "HS Code" లో 0904 (Chilli) type చేయండి</div>
+        </div>
+        <div class="tm-step">
+          <div class="tm-step-no">2</div>
+          <div>"Exporting countries" select చేయండి → India, Pakistan, Vietnam compare చేయండి</div>
+        </div>
+        <div class="tm-step">
+          <div class="tm-step-no">3</div>
+          <div>"Importing market" EU (27 దేశాలు) select చేయండి → per unit value (FOB) column చూడండి</div>
+        </div>
+        <div class="tm-step">
+          <div class="tm-step-no">4</div>
+          <div>India FOB vs Pakistan FOB తేడా confirm చేయండి → మీ Quote justify చేయడానికి data use చేయండి</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAMAYYA DASHBOARD -->
+  <div class="sec-div"><button class="expand-btn" type="button" aria-expanded="true">⏷</button>
+    <div class="sec-label">రామయ్య గారి Pricing Strategy</div>
+  </div>
+  <div class="rama-wrap">
+    <div class="rama-box">
+      <div class="rama-title">🌾 Trade Map Data ఆధారంగా రామయ్య గారి స్థానం</div>
+      <div class="rama-row">
+        <span class="rama-key">పంట</span>
+        <span class="rama-val">Banana Grand Naine · HS 0803 90 10</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">మార్కెట్</span>
+        <span class="rama-val">UAE Jebel Ali (Gulf #1)</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">India Gulf మార్కెట్ స్థానం</span>
+        <span class="rama-val gold">🥇 #1 Supplier</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">Ecuador/Philippines పోటీ</span>
+        <span class="rama-val green">Gulf లో తక్కువ — India అనుకూలం</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">రామయ్య గారి FOB target</span>
+        <span class="rama-val gold">₹172.80/కె.జి. (Cost-Plus)</span>
+      </div>
+      <div class="rama-row">
+        <span class="rama-key">Farmer కి దక్కేది (93%)</span>
+        <span class="rama-val green">₹160.70/కె.జి. per FIRC</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="volume-discount.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">Volume Discount</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.3</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="exim-pcfc.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">EXIM PCFC</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.5</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/06/trade-map.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

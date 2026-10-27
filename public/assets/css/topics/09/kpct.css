@@ -1,0 +1,411 @@
+/* Topic 9.1 · Sea Route — KPCT (Module 09 – Transport & Shipping)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  :where(.tp-article) * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  :where(.tp-article) .ph {
+    position: relative;
+    width: 390px;
+    min-width: 390px;
+    height: 840px;
+    overflow: hidden;
+    background: #F0F4F8;
+    border: 4px solid #222;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  :where(.tp-article) .screen-scroll {
+    position: absolute;
+    inset: 0 0 70px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  :where(.tp-article) .screen-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  /* HEADER */
+  :where(.tp-article) .header {
+    padding: 14px;
+    color: #fff;
+    background: linear-gradient(135deg,#006064,#00838F,#0097A7);
+  }
+  /* BLUE KPCT BANNER */
+  :where(.tp-article) .hero {
+    position: relative;
+    margin: 10px;
+    padding: 16px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: linear-gradient(125deg,#202B87,#293895);
+    color: #fff;
+  }
+  :where(.tp-article) .hero-title {
+    max-width: 90%;
+    margin-bottom: 3px;
+    font-size: calc(23px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .hero-desc {
+    color: #D6DCFF;
+    font-size: calc(15px * var(--tp-type-scale, 1));
+    line-height: 1.7;
+  }
+  :where(.tp-article) .hero-route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 15px 11px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.11);
+  }
+  :where(.tp-article) .route-port {
+    flex-shrink: 0;
+    min-width: 69px;
+    padding: 8px 5px;
+    border-radius: 7px;
+    background: rgba(190,202,255,.32);
+    color: #fff;
+    text-align: center;
+    font: 800 calc(13px * var(--tp-type-scale, 1)) "Noto Sans",sans-serif;
+  }
+  :where(.tp-article) .route-port small {
+    display: block;
+    margin-top: 4px;
+    font: 700 calc(10px * var(--tp-type-scale, 1)) "Noto Sans Telugu",sans-serif;
+  }
+  :where(.tp-article) .route-arrow {
+    flex: 1;
+    min-width: 20px;
+    color: #D6DCFF;
+    text-align: center;
+    font-size: calc(17px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .route-days {
+    flex-shrink: 0;
+    padding: 7px 8px;
+    border-radius: 7px;
+    background: #FF9800;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+  }
+  /* CONSIGNMENT DETAILS */
+  :where(.tp-article) .realdata {
+    margin: 0 10px 12px;
+    padding: 10px;
+    border-radius: 9px;
+    background: #E8EAF6;
+  }
+  :where(.tp-article) .realdata-title {
+    margin-bottom: 6px;
+    color: #3949AB;
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .realdata-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid #C5CAE9;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    line-height: 1.5;
+  }
+  :where(.tp-article) .realdata-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .realdata-key {
+    flex-shrink: 0;
+    color: #607D8B;
+  }
+  :where(.tp-article) .realdata-val {
+    color: #1A237E;
+    font-weight: 700;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+  /* CONTENT SECTIONS */
+  :where(.tp-article) .section {
+    margin: 10px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  :where(.tp-article) .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 11px 12px;
+    background: #E0F7FA;
+  }
+  :where(.tp-article) .sec-head > span {
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .sec-head-text {
+    flex: 1;
+    min-width: 0;
+    color: #006064;
+    font-size: calc(17px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .sec-body {
+    padding: 13px;
+  }
+  :where(.tp-article) .section-toggle {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    border: 1px solid #1976D2;
+    border-radius: 50%;
+    background: #fff;
+    color: #006064;
+    font: 700 calc(19px * var(--tp-type-scale, 1)) Arial,sans-serif;
+    cursor: pointer;
+  }
+  :where(.tp-article) .section-body-collapsed {
+    display: none !important;
+  }
+  /* STORY ROWS */
+  :where(.tp-article) .story-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #F0F4F8;
+  }
+  :where(.tp-article) .story-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .story-dot {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #006064;
+    color: #fff;
+    font: 700 calc(13px * var(--tp-type-scale, 1)) "Noto Sans",sans-serif;
+  }
+  :where(.tp-article) .story-text {
+    color: #37474F;
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    line-height: 1.7;
+  }
+  :where(.tp-article) .story-bold {
+    color: #006064;
+    font-weight: 700;
+  }
+  /* TABLES */
+  :where(.tp-article) .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  :where(.tp-article) .spec-table tr {
+    border-bottom: 1px solid #F0F4F8;
+  }
+  :where(.tp-article) .spec-table tr:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .spec-table td {
+    padding: 8px 5px;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    line-height: 1.6;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+  :where(.tp-article) .spec-label {
+    width: 43%;
+    color: #607D8B;
+  }
+  :where(.tp-article) .spec-value {
+    color: #1A237E;
+    font-weight: 700;
+  }
+  /* GATE-IN STEPS */
+  :where(.tp-article) .step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #F0F4F8;
+  }
+  :where(.tp-article) .step-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .step-num {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: #1A237E;
+    color: #fff;
+    font: 700 calc(13px * var(--tp-type-scale, 1)) "Noto Sans",sans-serif;
+  }
+  :where(.tp-article) .step-content {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .step-title {
+    color: #1A237E;
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .step-desc {
+    margin-top: 3px;
+    color: #546E7A;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    line-height: 1.65;
+  }
+  /* TEMPERATURE / ALERTS */
+  :where(.tp-article) .temp-panel {
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #E3F2FD;
+    text-align: center;
+  }
+  :where(.tp-article) .temp-value {
+    color: #1A237E;
+    font: 800 calc(32px * var(--tp-type-scale, 1)) "Noto Sans",sans-serif;
+  }
+  :where(.tp-article) .temp-caption {
+    color: #1565C0;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    line-height: 1.6;
+  }
+  /* CHIPS */
+  :where(.tp-article) .chip {
+    display: inline-block;
+    margin: 2px;
+    padding: 5px 8px;
+    border-radius: 12px;
+    background: #E0F7FA;
+    color: #006064;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+  }
+  /* MISTAKES */
+  :where(.tp-article) .mistake-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 9px 0;
+    border-bottom: 1px solid #F0F4F8;
+  }
+  :where(.tp-article) .mistake-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .mistake-icon {
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .mistake-text {
+    color: #37474F;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    line-height: 1.7;
+  }
+  :where(.tp-article) .mistake-bold {
+    color: #C62828;
+    font-weight: 700;
+  }
+  /* SAGAR SETU */
+  :where(.tp-article) .sagar-benefits,
+  :where(.tp-article) .faq-benefits {
+    margin: 0;
+    padding-left: 23px;
+    color: #37474F;
+  }
+  :where(.tp-article) .sagar-benefits li,
+  :where(.tp-article) .faq-benefits li {
+    padding: 4px 0;
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    line-height: 1.65;
+  }
+  :where(.tp-article) .official-link {
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #F5F7FA;
+    color: #000;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+  }
+  :where(.tp-article) .official-link strong {
+    color: #000;
+  }
+  :where(.tp-article) .official-link a {
+    color: #000;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  /* FAQ */
+  :where(.tp-article) .faq-item {
+    padding: 12px;
+    border-radius: 8px;
+    background: #F8F9FA;
+  }
+  :where(.tp-article) .faq-q {
+    margin-bottom: 8px;
+    color: #1A237E;
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1.6;
+  }
+  @media (max-width: 390px) {
+    :where(.tp-article) .ph {
+      width: 100%;
+      min-width: 0;
+      border-radius: 0;
+      border-width: 0;
+    }
+    :where(.tp-article) .hero-title {
+      font-size: calc(21px * var(--tp-type-scale, 1));
+    }
+    :where(.tp-article) .hero-desc {
+      font-size: calc(14px * var(--tp-type-scale, 1));
+    }
+    :where(.tp-article) .hero-route {
+      gap: 6px;
+      padding: 13px 8px;
+    }
+    :where(.tp-article) .route-port {
+      min-width: 61px;
+      padding: 7px 4px;
+      font-size: calc(12px * var(--tp-type-scale, 1));
+    }
+    :where(.tp-article) .route-days {
+      padding: 6px;
+      font-size: calc(11px * var(--tp-type-scale, 1));
+    }
+  }
+}

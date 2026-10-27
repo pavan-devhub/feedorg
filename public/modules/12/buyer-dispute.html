@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Buyer Dispute Tracker (Buyer వివాద ట్రాకర్) · Module 12 – Risk Management | My Exports</title>
+  <meta name="description" content="Module 12 · Risk Management — Buyer Dispute Tracker (Buyer వివాద ట్రాకర్). Topic 12.2 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/12/buyer-dispute.css">
+</head>
+<body class="tp-body tp-phase-4" data-root="../../" data-topic-path="modules/12/buyer-dispute.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-12">Module 12 · Risk Management</a></li>
+          <li><span aria-current="page">Buyer Dispute</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-4">Phase 04 · Payments &amp; Protection</a>
+          <span class="tp-chip">Module 12 · Risk Management</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Buyer Dispute Tracker</h1>
+        <p class="tp-hero__subtitle">Buyer వివాద ట్రాకర్</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>12.2</strong> · 2 of 9 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="rejection.html" data-topic-id="12.1" title="12.1 Rejection" aria-label="Topic 12.1 Rejection">1</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="12.2" title="12.2 Buyer Dispute">2</span></li>
+              <li><a class="tp-steps__item" href="quality.html" data-topic-id="12.3" title="12.3 Quality" aria-label="Topic 12.3 Quality">3</a></li>
+              <li><a class="tp-steps__item" href="docs.html" data-topic-id="12.4" title="12.4 Documents" aria-label="Topic 12.4 Documents">4</a></li>
+              <li><a class="tp-steps__item" href="customs.html" data-topic-id="12.5" title="12.5 Customs" aria-label="Topic 12.5 Customs">5</a></li>
+              <li><a class="tp-steps__item" href="rasff.html" data-topic-id="12.6" title="12.6 RASFF" aria-label="Topic 12.6 RASFF">6</a></li>
+              <li><a class="tp-steps__item" href="force-majeure.html" data-topic-id="12.7" title="12.7 Force Majeure" aria-label="Topic 12.7 Force Majeure">7</a></li>
+              <li><a class="tp-steps__item" href="arbitration.html" data-topic-id="12.8" title="12.8 Arbitration" aria-label="Topic 12.8 Arbitration">8</a></li>
+              <li><a class="tp-steps__item" href="insurance.html" data-topic-id="12.9" title="12.9 Insurance" aria-label="Topic 12.9 Insurance">9</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">12</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph"><div class="access-strip">
+<div class="access-left">
+<div class="access-name">🌾 రామయ్య గారు</div>
+<div class="access-sub">FEED-ANT-2026-047 · రాప్తాడు మండలం · KC 6,000/12,500</div>
+</div>
+<div class="gold-chip">⭐ GOLD</div>
+</div><div class="web-flow screen-scroll"><div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">🟠 Buyer స్థితి — రైతు ముందుగా తెలుసుకోవాల్సింది</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+<!-- HONEST STATUS BANNER -->
+<div class="status-banner amber">
+<div class="s-icon">🟠</div>
+<div>
+<div class="s-label">🟠 జాగ్రత్త స్థితి — Al Barakat 7.4/10 · రిస్కు తక్కువ · విధానం సిద్ధంగా ఉంది</div>
+<div class="s-desc">Al Barakat LLC Dubai Trust Score 7.4/10 — UAE Country Risk GREEN. రిస్కు తక్కువే. కానీ payment dispute వస్తే step-by-step protocol తెలిసి ఉండాలి. LC at Sight = సురక్షిత option. ECGC umbrella ready.</div>
+</div>
+</div>
+</div>
+</div><div class="acc-section web-split">
+<div class="acc-head">
+<div class="acc-title">🏪 Buyer వివరాలు — రామయ్య గారి ఎగుమతి</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+<!-- BUYER TRUST CARD -->
+<div class="buyer-trust-card">
+<div class="btc-row1">
+<div class="btc-left">
+<div class="btc-buyer-name">🏪 Al Barakat LLC</div>
+<div class="btc-buyer-sub">Dubai, UAE · Import Partner · Dec 2026 Consignment</div>
+</div>
+<div class="trust-score-badge">
+<div class="ts-val">7.4</div>
+<div class="ts-sub">Trust Score /10</div>
+</div>
+</div>
+<div class="btc-details">
+<div class="btc-det-item">
+<div class="btc-det-val">₹34,56,000</div>
+<div class="btc-det-label">FOB Value</div>
+</div>
+<div class="btc-det-item">
+<div class="btc-det-val">LC at Sight</div>
+<div class="btc-det-label">Payment Term</div>
+</div>
+<div class="btc-det-item">
+<div class="btc-det-val">20 MT</div>
+<div class="btc-det-label">Banana Grand Naine</div>
+</div>
+</div>
+<div class="country-risk-chip">
+      🟢 UAE Country Risk: GREEN · New York Convention signatory · ECGC covered
+    </div>
+</div>
+<div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">⚡ Payment సమస్య వచ్చినప్పుడు — 4 పరిస్థితులు &amp; చేయాల్సిన పని</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+</div>
+</div>
+<!-- SECTION: 4 PAYMENT DEFAULT SCENARIOS -->
+<div class="sec-label">⚡ Payment Default — 4 Scenarios &amp; Protocol</div>
+<div class="sec-divider"></div>
+<!-- SCENARIO 1: LC DEFAULT -->
+<div class="scenario-card">
+<div class="sc-header">
+<div class="sc-num" style="background:#1565C0;">1</div>
+<div class="sc-title">💳 LC Default — Bank Payment Refuse</div>
+<span class="sc-risk-tag" style="background:#e3f2fd;color:#1565C0;">High Risk</span>
+</div>
+<div class="sc-body">
+<div class="sc-row">
+<div class="sc-dot" style="background:#1565C0;"></div>
+<div class="sc-text">Al Barakat bank LC dishonour చేసింది — document discrepancy claim లేదా bank insolvency. FEED AD Bank కి immediately notify చేయాలి.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#1565C0;"></div>
+<div class="sc-text">UCP 600 Article 16: Bank 5 banking days లోపు refusal notice ఇవ్వాలి. ఈ deadline miss చేస్తే — bank payment చేయవలసిందే.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#e65100;"></div>
+<div class="sc-text">⚠️ Confirming Bank ఉంటే: Al Barakat bank default అయినా confirming bank (SBI/Canara) పూర్తి payment guarantee ఇస్తుంది.</div>
+</div>
+<div class="sc-action-chip">⚡ వెంటనే: ECGC Anand Singh +91-8373912942 · 30-day notification clock start</div>
+</div>
+</div>
+<!-- SCENARIO 2: TT NON-RECEIPT -->
+<div class="scenario-card">
+<div class="sc-header">
+<div class="sc-num" style="background:#2e7d32;">2</div>
+<div class="sc-title">🏦 TT Non-Receipt — Wire Transfer Delay</div>
+<span class="sc-risk-tag" style="background:#e8f5e9;color:#2e7d32;">Medium Risk</span>
+</div>
+<div class="sc-body">
+<div class="sc-row">
+<div class="sc-dot" style="background:#2e7d32;"></div>
+<div class="sc-text">TT payment due date మించింది. దశ 1 (7-15 రోజులు): Email + WhatsApp + Phone — friendly కానీ firm reminder.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#2e7d32;"></div>
+<div class="sc-text">దశ 2 (15-30 రోజులు): Formal demand notice — India Advocate ద్వారా. Registered post + email with read receipt.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#2e7d32;"></div>
+<div class="sc-text">దశ 3 (Due date + 30 రోజులు): ECGC notification MANDATORY. ఆలస్యం = claim reject.</div>
+</div>
+<div class="sc-action-chip">📋 SWIFT MT 103 trace request via AD Bank</div>
+</div>
+</div>
+<!-- SCENARIO 3: DA DISHONOR -->
+<div class="scenario-card">
+<div class="sc-header">
+<div class="sc-num" style="background:#6a1b9a;">3</div>
+<div class="sc-title">📄 DA Dishonour — Bill of Exchange Reject</div>
+<span class="sc-risk-tag" style="background:#f3e5f5;color:#6a1b9a;">High Risk</span>
+</div>
+<div class="sc-body">
+<div class="sc-row">
+<div class="sc-dot" style="background:#6a1b9a;"></div>
+<div class="sc-text">DA (Documents against Acceptance) — buyer bill of exchange accept చేసి pay చేయలేదు. Al Barakat కి DA offer వద్దు — LC at Sight మాత్రమే.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#6a1b9a;"></div>
+<div class="sc-text">If DA dispute: collecting bank ద్వారా protest notice. UAE court లో dishonour suit. ECGC commercial risk claim trigger.</div>
+</div>
+</div>
+</div>
+<!-- SCENARIO 4: QUALITY DISPUTE -->
+<div class="scenario-card">
+<div class="sc-header">
+<div class="sc-num" style="background:#bf360c;">4</div>
+<div class="sc-title">🍌 Quality Dispute — Payment Withhold</div>
+<span class="sc-risk-tag" style="background:#fff3e0;color:#bf360c;">Medium Risk</span>
+</div>
+<div class="sc-body">
+<div class="sc-row">
+<div class="sc-dot" style="background:#bf360c;"></div>
+<div class="sc-text">Al Barakat "quality not as per contract" అని payment withhold చేసింది. LC at Sight ఉంటే: documents compliant అయితే bank pay చేయవలసిందే.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#bf360c;"></div>
+<div class="sc-text">Quality dispute → third-party survey demand: SGS / Cotecna / Bureau Veritas Dubai. Independent report = final. PHRT EAG-BAN-2026-0184 pre-evidence ఉంది.</div>
+</div>
+<div class="sc-row">
+<div class="sc-dot" style="background:#bf360c;"></div>
+<div class="sc-text">Partial credit option: maximum 2-5% on invoice — relationship preserve చేయడానికి. లేదా SIAC arbitration (S-108).</div>
+</div>
+<div class="sc-action-chip">📋 UCP 600 Art 4: Bank documents మాత్రమే చూస్తుంది, goods quality కాదు</div>
+</div>
+</div>
+<div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">🛡️ ECGC Claim — 5 దశల్లో ప్రక్రియ</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+</div>
+</div>
+<!-- ECGC CLAIM TIMELINE -->
+<div class="sec-label" style="margin-top:4px;">🛡️ ECGC WTP Claim — 5-Stage Process</div>
+<div class="ecgc-timeline">
+<div class="ecgc-header">
+<span class="ecgc-head-title">🛡️ ECGC Whole Turnover Policy — Claim Process</span>
+<span class="ecgc-head-badge">60-90% Coverage</span>
+</div>
+<div class="ecgc-body">
+<div class="tl-step">
+<div class="tl-left">
+<div class="tl-circle" style="background:#C62828;">1</div>
+<div class="tl-line"></div>
+</div>
+<div class="tl-content">
+<div class="tl-title">⚡ Immediate Notification</div>
+<div class="tl-sub">Payment due date మించిన వెంటనే ECGC కి notify చేయాలి. Anand Singh GM: +91-8373912942</div>
+<div class="tl-deadline">⏰ Deadline: Payment due + 30 రోజులు (STRICT)</div>
+</div>
+</div>
+<div class="tl-step">
+<div class="tl-left">
+<div class="tl-circle" style="background:#e65100;">2</div>
+<div class="tl-line"></div>
+</div>
+<div class="tl-content">
+<div class="tl-title">⏳ Waiting Period</div>
+<div class="tl-sub">Commercial Risk: 4 నెలలు వేచి ఉండాలి. Political Risk: 3 నెలలు. ఆ వ్యవధిలో payment రాకపోతే — claim file.</div>
+<div class="tl-deadline">📅 Commercial: 4 నెలలు · Political: 3 నెలలు</div>
+</div>
+</div>
+<div class="tl-step">
+<div class="tl-left">
+<div class="tl-circle" style="background:#1565C0;">3</div>
+<div class="tl-line"></div>
+</div>
+<div class="tl-content">
+<div class="tl-title">📋 Claim Documents Submit</div>
+<div class="tl-sub">8 documents bundle: పూర్తి list కింద చూడండి. Documents incomplete = claim reject.</div>
+<div class="tl-deadline">🗂️ 8 Documents mandatory</div>
+</div>
+</div>
+<div class="tl-step">
+<div class="tl-left">
+<div class="tl-circle" style="background:#6a1b9a;">4</div>
+<div class="tl-line"></div>
+</div>
+<div class="tl-content">
+<div class="tl-title">🔍 ECGC Investigation</div>
+<div class="tl-sub">ECGC Claim Investigation Team. UAE correspondent bank reports. Country risk verification.</div>
+<div class="tl-deadline">⏳ Total timeline: 4-6 నెలలు</div>
+</div>
+</div>
+<div class="tl-step">
+<div class="tl-left">
+<div class="tl-circle" style="background:#2e7d32;">5</div>
+</div>
+<div class="tl-content">
+<div class="tl-title">✅ Settlement — 60-90% Loss Coverage</div>
+<div class="tl-sub">Approve అయితే: 60-90% FOB coverage. Balance 10-40% FEED/farmer భరించాలి. ECGC తర్వాత buyer పై legal action తీసుకుంటుంది — recovered amount లో share.</div>
+<div class="tl-deadline">💰 Settlement: 30 రోజులలో payment</div>
+</div>
+</div>
+</div>
+</div>
+<div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">📂 ECGC Claim కోసం అవసరమైన పత్రాలు</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+</div>
+</div>
+<!-- CLAIM DOCUMENTS -->
+<div class="docs-box">
+<div class="docs-title">📂 ECGC Claim Documents — 8 తప్పనిసరి</div>
+<div class="docs-grid">
+<div class="doc-item">
+<div class="doc-num">1</div>
+<div class="doc-text">Claim Application Form</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">2</div>
+<div class="doc-text">Insurance Policy Copy</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">3</div>
+<div class="doc-text">Commercial Invoice</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">4</div>
+<div class="doc-text">BL / AWB Copy</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">5</div>
+<div class="doc-text">Lab / PHRT Reports</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">6</div>
+<div class="doc-text">Buyer Correspondence</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">7</div>
+<div class="doc-text">Evidence of Loss / Rejection Letter</div>
+</div>
+<div class="doc-item">
+<div class="doc-num">8</div>
+<div class="doc-text">Bank Certificate of Non-Payment</div>
+</div>
+</div>
+</div>
+<div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">📊 కీలక సంఖ్యలు — ఈ సంఖ్యలు ఏమి చెబుతున్నాయి?</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+</div>
+</div>
+<!-- KEY NUMBERS -->
+<div class="key-numbers">
+<div class="kn-title">📊 కీలక సంఖ్యలు — Buyer Dispute Numbers</div>
+<div class="kn-grid">
+<div class="kn-item">
+<div class="kn-val">7.4/10</div>
+<div class="kn-label">Al Barakat Trust Score (LOW risk)</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">30 రోజులు</div>
+<div class="kn-label">ECGC notification strict deadline</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">60-90%</div>
+<div class="kn-label">ECGC coverage (NEVER 100%)</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">4 నెలలు</div>
+<div class="kn-label">Waiting period (commercial risk)</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">8 Docs</div>
+<div class="kn-label">ECGC claim documents bundle</div>
+</div>
+<div class="kn-item">
+<div class="kn-val">4-6 నెలలు</div>
+<div class="kn-label">Total claim settlement timeline</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">⚖️ Legal Options — సమస్య పరిష్కారం కోసం అందుబాటులో ఉన్న మార్గాలు</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+<!-- LEGAL OPTIONS -->
+<div class="legal-card">
+<div class="legal-header">⚖️ Legal Options — Escalation Ladder</div>
+<div class="legal-body">
+<div class="legal-row">
+<div>
+<div class="legal-option">1️⃣ Negotiated Settlement</div>
+<div class="legal-when">మొదటి try — relationship preserve</div>
+</div>
+<span class="legal-badge" style="background:#e8f5e9;color:#2e7d32;">7-30 రోజులు</span>
+</div>
+<div class="legal-row">
+<div>
+<div class="legal-option">2️⃣ FEED Mediation</div>
+<div class="legal-when">3 attempts mandatory</div>
+</div>
+<span class="legal-badge" style="background:#fff8e1;color:#e65100;">30-60 రోజులు</span>
+</div>
+<div class="legal-row">
+<div>
+<div class="legal-option">3️⃣ ECGC Claim (parallel)</div>
+<div class="legal-when">Mediation సమాంతరంగా — 30-day clock</div>
+</div>
+<span class="legal-badge" style="background:#fff3e0;color:#bf360c;">4-6 నెలలు</span>
+</div>
+<div class="legal-row">
+<div>
+<div class="legal-option">4️⃣ SIAC Arbitration</div>
+<div class="legal-when">Amount &gt;$50,000 · Buyer refuses</div>
+</div>
+<span class="legal-badge" style="background:#fce4ec;color:#C62828;">12-18 నెలలు</span>
+</div>
+<div class="legal-row">
+<div>
+<div class="legal-option">5️⃣ UNCITRAL Arbitration</div>
+<div class="legal-when">Last resort · Fraud suspected</div>
+</div>
+<span class="legal-badge" style="background:#ffebee;color:#b71c1c;">18+ నెలలు</span>
+</div>
+</div>
+</div>
+<div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">రైతు సులభంగా తెలుసుకోవాల్సింది:</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+</div>
+</div>
+<!-- STATUS FLAGS -->
+<div class="flags-card">
+<div class="flag-row">
+<span class="flag-aspect">Al Barakat Trust Score</span>
+<span class="flag-tag f-amber">🟠 7.4/10 — (Low risk, not Zero)</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">UAE Country Risk</span>
+<span class="flag-tag f-green">🟢 ECGC category 1</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">Payment Term (మొదటి దశ)</span>
+<span class="flag-tag f-green">🟢 LC at Sight — Safest</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">ECGC WTP Active</span>
+<span class="flag-tag f-amber">🟠 Post first FIRC (Feb 2027)</span>
+</div>
+<div class="flag-row">
+<span class="flag-aspect">ECGC 30-day Clock</span>
+<span class="flag-tag f-red">🔴 గడువు తప్పితే క్లెయిమ్ హక్కు కోల్పోతారు</span>
+</div>
+</div>
+</div>
+</div><div class="acc-section">
+<div class="acc-head">
+<div class="acc-title">⛔ రైతు తప్పక నివారించాల్సిన పొరపాట్లు</div>
+<button aria-expanded="true" aria-label="Collapse section" class="acc-btn" type="button">⏶</button>
+</div>
+<div class="acc-body">
+<!-- DOCTRINE WARNING -->
+<div class="doctrine-box">
+<div class="doc-item-row">
+<span class="dx">✖</span>
+<span class="dt">ECGC 100% coverage expect చేయడం — always 60-90% మాత్రమే. Balance farmer/FEED భరిస్తారు.</span>
+</div>
+<div class="doc-item-row">
+<span class="dx">✖</span>
+<span class="dt">30-day ECGC notification miss చేయడం — 60-70% small FPOs ఇక్కడే చేస్తారు. గడువు తప్పితే క్లెయిమ్ హక్కు కోల్పోతారు.</span>
+</div>
+<div class="doc-item-row">
+<span class="dx">✖</span>
+<span class="dt">ECGC immediately pay చేస్తుందని expect చేయడం — 4-6 నెలల process.</span>
+</div>
+<div class="doc-item-row">
+<span class="dx">✖</span>
+<span class="dt">Quality dispute కి SIAC arbitration first choice చేయడం — negotiation → mediation → ECGC → arbitration.</span>
+</div>
+<div class="doc-item-row">
+<span class="dx">✖</span>
+<span class="dt">Exact claim amount guarantee చేయడం — ECGC verification తర్వాత మాత్రమే తెలుస్తుంది.</span>
+</div>
+</div>
+</div>
+</div></div></div><!-- end .ph -->
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="rejection.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">Destination Rejection Protocol</span>
+          <span class="tp-pager__meta">Module 12 · Risk Management · Topic 12.1</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="quality.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Quality Rejection Response</span>
+          <span class="tp-pager__meta">Module 12 · Risk Management · Topic 12.3</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/12/buyer-dispute.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

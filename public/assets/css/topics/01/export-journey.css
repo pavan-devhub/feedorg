@@ -1,0 +1,473 @@
+/* Topic 1.2 · Export Journey (Module 01 – Why Exports?)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  :where(.tp-article) * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    background: #FAFAFA;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.2);
+  }
+  /* HERO STRIP — bright eye-catch */
+  :where(.tp-article) .hero {
+    background: linear-gradient(135deg,#FFE082 0%,#FF6F00 100%);
+    padding: 18px 16px 14px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .hero::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,.12);
+    border-radius: 50%;
+  }
+  :where(.tp-article) .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: -30px;
+    width: 140px;
+    height: 140px;
+    background: rgba(255,255,255,.08);
+    border-radius: 50%;
+  }
+  :where(.tp-article) .hero-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: rgba(255,255,255,.9);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+  }
+  :where(.tp-article) .hero-t {
+    font-size: calc(19px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+    margin-top: 5px;
+    line-height: 1.15;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+  }
+  :where(.tp-article) .hero-s {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.95);
+    margin-top: 6px;
+    line-height: 1.5;
+    position: relative;
+  }
+  :where(.tp-article) .hero-s b {
+    color: #fff;
+    background: rgba(255,255,255,.2);
+    padding: 1px 6px;
+    border-radius: 6px;
+  }
+  /* TIMELINE STRIP — 6 stage mini-dots at glance */
+  :where(.tp-article) .tl-strip {
+    background: #1B5E20;
+    padding: 14px 12px;
+    position: relative;
+  }
+  :where(.tp-article) .tl-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #A5D6A7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .tl-dots {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 4px;
+  }
+  :where(.tp-article) .tl-dots::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    height: 2.5px;
+    background: rgba(255,255,255,.2);
+    border-radius: 2px;
+    z-index: 0;
+  }
+  :where(.tp-article) .tl-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    border: 2px solid #1B5E20;
+  }
+  :where(.tp-article) .tl-label {
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #A5D6A7;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  :where(.tp-article) .tl-dot-wrap {
+    position: relative;
+  }
+  :where(.tp-article) .tl-dot.s1 {
+    background: #43A047;
+  }
+  :where(.tp-article) .tl-dot.s2 {
+    background: #1976D2;
+  }
+  :where(.tp-article) .tl-dot.s3 {
+    background: #F57C00;
+  }
+  :where(.tp-article) .tl-dot.s4 {
+    background: #7B1FA2;
+  }
+  :where(.tp-article) .tl-dot.s5 {
+    background: #F9A825;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .tl-dot.s6 {
+    background: #C62828;
+  }
+  :where(.tp-article) .tl-time {
+    padding-top: 24px;
+    text-align: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #FFC107;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  :where(.tp-article) .tl-time b {
+    color: #fff;
+  }
+  /* STAGE CARD */
+  :where(.tp-article) .stage {
+    margin: 14px 14px 0;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  :where(.tp-article) .stage-band {
+    padding: 11px 14px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  :where(.tp-article) .stage-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.22);
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,.5);
+  }
+  :where(.tp-article) .stage-tw {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .stage-t {
+    font-size: calc(15px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: .3px;
+  }
+  :where(.tp-article) .stage-s {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.88);
+    margin-top: 2px;
+    letter-spacing: .4px;
+    font-weight: 500;
+  }
+  :where(.tp-article) .stage-icon {
+    font-size: calc(28px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .stage-body {
+    padding: 13px 14px 14px;
+  }
+  :where(.tp-article) .sb-q {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #757575;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .sb-body {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #424242;
+    line-height: 1.7;
+    margin-bottom: 11px;
+  }
+  :where(.tp-article) .sb-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .act {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    padding: 5px 9px;
+    border-radius: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .sb-help {
+    border-radius: 9px;
+    padding: 10px 11px;
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .help-icon {
+    font-size: calc(15px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .help-body {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    line-height: 1.55;
+  }
+  :where(.tp-article) .help-body b {
+    font-weight: 700;
+  }
+  :where(.tp-article) .sb-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #FAFAFA;
+    border: 1px solid #EEEEEE;
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #616161;
+    font-weight: 600;
+  }
+  :where(.tp-article) .sb-time b {
+    color: #212121;
+  }
+  /* connector arrow */
+  :where(.tp-article) .arrow {
+    text-align: center;
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    line-height: 1;
+    margin: 6px 0 -2px;
+    color: #BDBDBD;
+  }
+  /* STAGE COLOR VARIANTS — vibrant material design */
+  :where(.tp-article) .s1 .stage-band {
+    background: linear-gradient(135deg,#43A047,#2E7D32);
+  }
+  :where(.tp-article) .s1 .act {
+    background: #E8F5E9;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .s1 .sb-help {
+    background: #F1F8E9;
+    border-left: 3px solid #43A047;
+  }
+  :where(.tp-article) .s1 .sb-help b {
+    color: #2E7D32;
+  }
+  :where(.tp-article) .s2 .stage-band {
+    background: linear-gradient(135deg,#1976D2,#1565C0);
+  }
+  :where(.tp-article) .s2 .act {
+    background: #E3F2FD;
+    color: #0D47A1;
+  }
+  :where(.tp-article) .s2 .sb-help {
+    background: #E3F2FD;
+    border-left: 3px solid #1976D2;
+  }
+  :where(.tp-article) .s2 .sb-help b {
+    color: #1565C0;
+  }
+  :where(.tp-article) .s3 .stage-band {
+    background: linear-gradient(135deg,#F57C00,#E65100);
+  }
+  :where(.tp-article) .s3 .act {
+    background: #FFF3E0;
+    color: #E65100;
+  }
+  :where(.tp-article) .s3 .sb-help {
+    background: #FFF3E0;
+    border-left: 3px solid #F57C00;
+  }
+  :where(.tp-article) .s3 .sb-help b {
+    color: #E65100;
+  }
+  :where(.tp-article) .s4 .stage-band {
+    background: linear-gradient(135deg,#7B1FA2,#6A1B9A);
+  }
+  :where(.tp-article) .s4 .act {
+    background: #F3E5F5;
+    color: #4A148C;
+  }
+  :where(.tp-article) .s4 .sb-help {
+    background: #F3E5F5;
+    border-left: 3px solid #7B1FA2;
+  }
+  :where(.tp-article) .s4 .sb-help b {
+    color: #6A1B9A;
+  }
+  :where(.tp-article) .s5 .stage-band {
+    background: linear-gradient(135deg,#F9A825,#F57F17);
+    color: #1B5E20;
+  }
+  :where(.tp-article) .s5 .stage-band .stage-s {
+    color: rgba(27,94,32,.85);
+  }
+  :where(.tp-article) .s5 .stage-num {
+    background: rgba(27,94,32,.15);
+    color: #1B5E20;
+    border-color: rgba(27,94,32,.3);
+  }
+  :where(.tp-article) .s5 .act {
+    background: #FFF8E1;
+    color: #E65100;
+  }
+  :where(.tp-article) .s5 .sb-help {
+    background: #FFF8E1;
+    border-left: 3px solid #F9A825;
+  }
+  :where(.tp-article) .s5 .sb-help b {
+    color: #E65100;
+  }
+  :where(.tp-article) .s6 .stage-band {
+    background: linear-gradient(135deg,#C62828,#B71C1C);
+  }
+  :where(.tp-article) .s6 .act {
+    background: #FFEBEE;
+    color: #B71C1C;
+  }
+  :where(.tp-article) .s6 .sb-help {
+    background: #FFEBEE;
+    border-left: 3px solid #C62828;
+  }
+  :where(.tp-article) .s6 .sb-help b {
+    color: #B71C1C;
+  }
+  /* SECTION HEADER */
+  :where(.tp-article) .sec {
+    padding: 20px 14px 8px;
+  }
+  :where(.tp-article) .sec-t {
+    font-size: calc(13.5px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1B5E20;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .sec-s {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #757575;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  /* BRIDGE CARD (6 stages → 8 KYJ) */
+  :where(.tp-article) .bridge {
+    margin: 0 14px;
+    background: linear-gradient(135deg,#2E7D32,#1B5E20);
+    color: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 4px 12px rgba(46,125,50,.3);
+  }
+  :where(.tp-article) .br-l {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #FFC107;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .br-t {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    margin-bottom: 7px;
+  }
+  :where(.tp-article) .br-body {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,.92);
+    line-height: 1.6;
+    margin-bottom: 11px;
+  }
+  :where(.tp-article) .br-map {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,193,7,.3);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  :where(.tp-article) .br-map-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    border-bottom: .5px solid rgba(255,255,255,.1);
+  }
+  :where(.tp-article) .br-map-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .br-six {
+    color: #FFC107;
+    font-weight: 700;
+  }
+  :where(.tp-article) .br-arr {
+    color: rgba(255,255,255,.6);
+    font-size: calc(12px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .br-eight {
+    color: #fff;
+  }
+  :where(.tp-article) .br-eight b {
+    color: #A5D6A7;
+  }
+}
+
+/* ---- Responsive refinements (override the legacy layer) ---- */
+
+/* Timeline: labels flow under each dot instead of overlapping. */
+.tp-article .tl-strip { padding-bottom: 14px; }
+.tp-article .tl-dots { align-items: flex-start; gap: 4px; }
+.tp-article .tl-dots::before,
+.tp-article .tl-dots::after { left: calc(100% / 12); }
+.tp-article .tl-dots::before { right: calc(100% / 12); }
+.tp-article .tl-dot-wrap { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.tp-article .tl-label { position: static; transform: none; white-space: normal; text-align: center; line-height: 1.25; overflow-wrap: break-word; max-width: 100%; }
+@media (max-width: 479.98px) {
+  .tp-article .tl-label { font-size: calc(8.5px * var(--tp-type-scale, 1)); }
+}

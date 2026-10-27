@@ -4,7 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ContactUs from './pages/ContactUs';
-import ExportsPortal from './pages/ExportsPortal';
+import MyExports from './pages/my-exports/MyExports';
 import Product360 from './pages/Product360';
 import FpoPortal from './pages/FpoPortal';
 import HowFeedWorks from './pages/HowFeedWorks';
@@ -32,6 +32,7 @@ import KnowYourSchemes from './pages/know-your-schemes/KnowYourSchemes';
 import Kyj from './pages/kyj/Kyj';
 import LoansFinance from './pages/LoansFinance';
 import AdminPortal from './pages/admin/AdminPortal';
+import ErsAssessment from './pages/ErsAssessment';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 import { API_BASE_URL } from './api/config';
@@ -79,6 +80,18 @@ function roleFromStoredToken() {
   }
 }
 
+// The My Exports topic pages (static HTML under public/modules) link back to index.html, optionally
+// with #tree, #tree-phase-N or #tree-module-N - in the static site that is the My Exports home,
+// which here is the 'exports' page. The ProgramTree reads (and then clears) the hash. Checked once
+// at load, then index.html is dropped from the URL so a later refresh on some other page isn't
+// mistaken for this again.
+const OPENED_FROM_TOPIC_PAGE = (() => {
+  if (!window.location.pathname.endsWith('/index.html')) return false;
+  const base = window.location.pathname.slice(0, -'index.html'.length);
+  window.history.replaceState(window.history.state, '', base + window.location.search + window.location.hash);
+  return true;
+})();
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(() => {
@@ -88,6 +101,7 @@ function App() {
     } catch {
       // sessionStorage unavailable (e.g. private mode) - start from home
     }
+    if (OPENED_FROM_TOPIC_PAGE) page = 'exports';
     return roleFromStoredToken() === 'ADMIN' && !ADMIN_PAGES.includes(page) ? 'admin-dashboard' : page;
   });
 
@@ -290,7 +304,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'schemes', 'TradeFairs', 'loans-finance', 'kyj'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'schemes', 'TradeFairs', 'loans-finance', 'kyj', 'ers', 'ers-assessment'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -298,7 +312,7 @@ function App() {
         {currentPage === 'home' ? (
           <Home onNavigate={handleNavigate} searchQuery={searchQuery} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'exports' ? (
-          <ExportsPortal onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          <MyExports onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'fpo' ? (
           <FpoPortal onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'how' ? (
@@ -362,6 +376,8 @@ function App() {
         ) : currentPage === 'kyj' ? (
           // navState.screen is the open KYJ screen; none shows the KYJ home.
           <Kyj onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} screenId={navState.screen} />
+        ) : currentPage === 'ers' || currentPage === 'ers-assessment' ? (
+          <ErsAssessment onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) :currentPage === 'loans-finance' ? (
           // Signed-in users only (see the guard above); admins open it from their own panel.
           !isLoggedIn ? null : <LoansFinance onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />

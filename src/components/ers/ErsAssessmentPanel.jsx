@@ -26,7 +26,7 @@ function authHeaders(extra = {}) {
   return token ? { Authorization: `Bearer ${token}`, ...extra } : extra;
 }
 
-const ErsAssessmentPanel = ({ onBack, onStatusUpdated }) => {
+const ErsAssessmentPanel = ({ onBack, onStatusUpdated, backLabel = 'Back to Dashboard' }) => {
   const [phase, setPhase] = useState('loading'); // loading | quiz | results
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -150,7 +150,7 @@ const ErsAssessmentPanel = ({ onBack, onStatusUpdated }) => {
   return (
     <div className="ers-view">
       <button className="ers-back-btn" onClick={onBack} type="button">
-        <ArrowLeft size={17} /> Back to Dashboard
+        <ArrowLeft size={17} /> {backLabel}
       </button>
 
       <div className="ers-card">

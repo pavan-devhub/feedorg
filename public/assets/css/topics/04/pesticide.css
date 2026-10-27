@@ -1,0 +1,442 @@
+/* Topic 4.5 · Pesticide Master Guide (Module 04 – Production & Quality)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;500;600;700;800;900&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    min-height: 800px;
+    background: #f5f5f5;
+    border-radius: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 8px #1a1a1a, 0 0 0 10px #333;
+    overflow: hidden;
+    position: relative;
+  }
+  :where(.tp-article) .body {
+    padding: 14px;
+  }
+  /* PESTICIDE HERO — Earth Brown to Forest Green */
+  :where(.tp-article) .pest-hero {
+    background: linear-gradient(135deg, #5c3a1e 0%, #4a5c1e 50%, #2d6b2d 100%);
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .pest-hero::before {
+    content: '🌿';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: calc(44px * var(--tp-type-scale, 1));
+    opacity: 0.25;
+  }
+  :where(.tp-article) .pest-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .pest-title {
+    font-size: calc(17px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .pest-stat-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  :where(.tp-article) .pest-stat {
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  :where(.tp-article) .pest-stat-num {
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  :where(.tp-article) .pest-stat-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,0.9);
+    margin-top: 3px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  /* FILTER PILLS */
+  :where(.tp-article) .filter-pills {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  :where(.tp-article) .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+  :where(.tp-article) .pill {
+    background: #fff;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #444;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .pill-active {
+    background: #2d6b2d;
+    color: #fff;
+    border-color: #2d6b2d;
+  }
+  /* ZONE STATS — Amazon style "shop by zone" */
+  :where(.tp-article) .zone-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .zone-card {
+    border-radius: 14px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 2px solid;
+    cursor: pointer;
+  }
+  :where(.tp-article) .zone-red {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-color: #c62828;
+  }
+  :where(.tp-article) .zone-yellow {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+    border-color: #f9a825;
+  }
+  :where(.tp-article) .zone-green {
+    background: linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 100%);
+    border-color: #2e7d32;
+  }
+  :where(.tp-article) .zone-icon {
+    font-size: calc(26px * var(--tp-type-scale, 1));
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .zone-count {
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    line-height: 1;
+  }
+  :where(.tp-article) .zone-red .zone-count {
+    color: #c62828;
+  }
+  :where(.tp-article) .zone-yellow .zone-count {
+    color: #e65100;
+  }
+  :where(.tp-article) .zone-green .zone-count {
+    color: #1b5e20;
+  }
+  :where(.tp-article) .zone-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #444;
+    margin-top: 4px;
+    line-height: 1.2;
+  }
+  /* COMPOUND CARD — Amazon product card style */
+  :where(.tp-article) .compound-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 5px solid;
+    position: relative;
+  }
+  :where(.tp-article) .compound-card.cc-red {
+    border-left-color: #c62828;
+  }
+  :where(.tp-article) .compound-card.cc-yellow {
+    border-left-color: #f9a825;
+  }
+  :where(.tp-article) .compound-card.cc-green {
+    border-left-color: #2e7d32;
+  }
+  :where(.tp-article) .compound-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .compound-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(20px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+    font-weight: 900;
+  }
+  :where(.tp-article) .ci-red {
+    background: #ffebee;
+    color: #c62828;
+  }
+  :where(.tp-article) .ci-yellow {
+    background: #fff8e1;
+    color: #e65100;
+  }
+  :where(.tp-article) .ci-green {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  :where(.tp-article) .compound-info {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .compound-name {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .compound-trade {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #666;
+    font-style: italic;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .compound-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .compound-badge {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+  }
+  :where(.tp-article) .cb-red {
+    background: #c62828;
+    color: #fff;
+  }
+  :where(.tp-article) .cb-yellow {
+    background: #f9a825;
+    color: #1a1a1a;
+  }
+  :where(.tp-article) .cb-green {
+    background: #2e7d32;
+    color: #fff;
+  }
+  :where(.tp-article) .compound-iarc {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-weight: 600;
+  }
+  /* MRL ROW */
+  :where(.tp-article) .mrl-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: #fafafa;
+    border-radius: 8px;
+  }
+  :where(.tp-article) .mrl-cell {
+    text-align: center;
+  }
+  :where(.tp-article) .mrl-flag {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .mrl-mkt {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .mrl-val {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .mrl-val.danger {
+    color: #c62828;
+  }
+  :where(.tp-article) .mrl-val.warning {
+    color: #e65100;
+  }
+  :where(.tp-article) .mrl-val.ok {
+    color: #2e7d32;
+  }
+  /* WARNING/INFO BAR */
+  :where(.tp-article) .compound-warning {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.5;
+    border-left: 3px solid;
+  }
+  :where(.tp-article) .cw-red {
+    background: #ffebee;
+    border-left-color: #c62828;
+    color: #5d0c0c;
+  }
+  :where(.tp-article) .cw-yellow {
+    background: #fff8e1;
+    border-left-color: #f9a825;
+    color: #5d4037;
+  }
+  :where(.tp-article) .cw-green {
+    background: #e8f5e9;
+    border-left-color: #2e7d32;
+    color: #1b3a1b;
+  }
+  /* ACTION BUTTONS */
+  :where(.tp-article) .compound-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  :where(.tp-article) .comp-btn {
+    padding: 8px 6px;
+    border-radius: 8px;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+  }
+  :where(.tp-article) .btn-detail {
+    background: #fff;
+    color: #1565c0;
+    border: 1.5px solid #1565c0;
+  }
+  :where(.tp-article) .btn-alternative {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(46,125,50,0.3);
+  }
+  :where(.tp-article) .btn-rule {
+    background: linear-gradient(135deg, #c62828 0%, #8b0000 100%);
+    color: #fff;
+  }
+  /* PAL FEED BOX */
+  :where(.tp-article) .pal-box {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border: 2px solid #1565c0;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .pal-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #0d47a1;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .pal-body {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #0d47a1;
+    line-height: 1.6;
+  }
+  /* BHAGAM LIBRARY — Netflix/Amazon scrollable -->
+  .bhagam-library {
+    margin-bottom: 12px;
+  }
+
+  .bhagam-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 8px;
+  }
+
+  .bhagam-scroll::-webkit-scrollbar { height: 4px; }
+  .bhagam-scroll::-webkit-scrollbar-thumb { background: #2d6b2d; border-radius: 2px; }
+
+  .bhagam-card {
+    flex-shrink: 0;
+    width: 140px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+
+  .bhagam-num {
+    font-size: 9px;
+    font-weight: 800;
+    color: #2d6b2d;
+    background: #e8f5e9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .bhagam-title {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .bhagam-topics {
+    font-size: 9px;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  /* EXPLAIN CARD */
+  :where(.tp-article) .explain-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  :where(.tp-article) .explain-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #2d6b2d;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .explain-body {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.7;
+  }
+}

@@ -1,0 +1,684 @@
+/* Topic 9.3 · Reefer Container Tracker (Module 09 – Transport & Shipping)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700;800&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 500px;
+    background: #F0F4F8;
+  }
+  /* Access strip */
+  :where(.tp-article) .access-strip {
+    background: #FFFFFF;
+    border-bottom: 2px solid #E0F7FA;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  :where(.tp-article) .access-name {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1A237E;
+  }
+  :where(.tp-article) .access-id {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #607D8B;
+    font-family: inherit;
+  }
+  :where(.tp-article) .ers-badge {
+    background: #FF8F00;
+    color: #FFFFFF;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-family: inherit;
+    margin-left: auto;
+  }
+  /* Hero */
+  :where(.tp-article) .hero {
+    background: linear-gradient(135deg,#01579B 0%,#0277BD 100%);
+    margin: 12px;
+    border-radius: 14px;
+    padding: 18px;
+    color: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .hero-tag {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #B3E5FC;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-family: inherit;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .hero-desc {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #B3E5FC;
+    line-height: 1.5;
+  }
+  /* Live temperature dashboard */
+  :where(.tp-article) .live-dash {
+    background: linear-gradient(135deg,#0D1B2A,#1A2E45);
+    border-radius: 14px;
+    margin: 12px;
+    padding: 18px;
+    border: 1px solid #1E4976;
+  }
+  :where(.tp-article) .live-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  :where(.tp-article) .live-title {
+    color: #90CAF9;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    font-weight: 600;
+  }
+  :where(.tp-article) .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4CAF50;
+    display: inline-block;
+    margin-right: 4px;
+    animation: pulse 2s infinite;
+  }
+  :where(.tp-article) .live-label {
+    color: #4CAF50;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+  }
+  :where(.tp-article) .temp-display {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  :where(.tp-article) .temp-value {
+    font-size: calc(52px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #4FC3F7;
+    font-family: inherit;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  :where(.tp-article) .temp-unit {
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    color: #90CAF9;
+    font-family: inherit;
+  }
+  :where(.tp-article) .temp-setpoint {
+    background: rgba(79,195,247,0.1);
+    border: 1px solid rgba(79,195,247,0.3);
+    border-radius: 6px;
+    padding: 4px 12px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  :where(.tp-article) .temp-setpoint-text {
+    color: #4FC3F7;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    font-weight: 700;
+  }
+  :where(.tp-article) .temp-status-ok {
+    background: #1B5E20;
+    border-radius: 6px;
+    padding: 6px 14px;
+    display: inline-block;
+    margin-top: 8px;
+  }
+  :where(.tp-article) .temp-status-ok-text {
+    color: #A5D6A7;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+  }
+  /* Temp bar */
+  :where(.tp-article) .temp-bar-wrap {
+    margin: 12px 0 0;
+  }
+  :where(.tp-article) .temp-bar-label {
+    color: #78909C;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .temp-bar {
+    height: 18px;
+    border-radius: 9px;
+    background: linear-gradient(to right, #1565C0 0%, #0288D1 20%, #00BCD4 35%, #4CAF50 45%, #4CAF50 60%, #FFC107 70%, #FF5722 85%, #B71C1C 100%);
+    position: relative;
+    margin: 4px 0 6px;
+  }
+  :where(.tp-article) .temp-marker {
+    position: absolute;
+    top: -3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 3px solid #4FC3F7;
+    box-shadow: 0 0 8px rgba(79,195,247,0.6);
+    left: calc(42% - 12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  :where(.tp-article) .temp-marker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #01579B;
+  }
+  :where(.tp-article) .temp-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #78909C;
+    font-family: inherit;
+    padding: 0 2px;
+  }
+  /* Container info card */
+  :where(.tp-article) .container-card {
+    background: #FFFFFF;
+    border-radius: 12px;
+    margin: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  /* GPS bar */
+  :where(.tp-article) .gps-bar {
+    background: #E3F2FD;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  /* Section */
+  :where(.tp-article) .section {
+    margin: 12px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  :where(.tp-article) .sec-head {
+    background: #E0F7FA;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 4px solid #006064;
+  }
+  :where(.tp-article) .sec-head-text {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #006064;
+  }
+  :where(.tp-article) .sec-body {
+    padding: 14px;
+  }
+  /* Log table */
+  :where(.tp-article) .log-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  :where(.tp-article) .log-table th {
+    background: #E3F2FD;
+    color: #01579B;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    padding: 7px 8px;
+    text-align: left;
+    font-weight: 700;
+    font-family: inherit;
+  }
+  :where(.tp-article) .log-table td {
+    padding: 7px 8px;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    border-bottom: 1px solid #F0F4F8;
+    font-family: inherit;
+  }
+  :where(.tp-article) .log-table tr:last-child td {
+    border-bottom: none;
+  }
+  :where(.tp-article) .log-ok {
+    color: #2E7D32;
+    font-weight: 700;
+  }
+  :where(.tp-article) .log-warn {
+    color: #FF8F00;
+    font-weight: 700;
+  }
+  /* Buyer deliverable */
+  :where(.tp-article) .deliverable-card {
+    background: linear-gradient(135deg,#E8F5E9,#C8E6C9);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px;
+    border: 1px solid #81C784;
+  }
+  :where(.tp-article) .deliverable-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1B5E20;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .deliverable-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(129,199,132,0.4);
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #1B5E20;
+  }
+  :where(.tp-article) .deliverable-item:last-child {
+    border-bottom: none;
+  }
+  /* FEED platform section */
+  :where(.tp-article) .platform-card {
+    background: #F3E5F5;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px;
+    border: 1px solid #CE93D8;
+  }
+  /* FAQ */
+  :where(.tp-article) .faq-item {
+    background: #F8F9FA;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .faq-q {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #01579B;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .faq-a {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #546E7A;
+    line-height: 1.4;
+  }
+  /* KYJ strip */
+  :where(.tp-article) .kyj-strip {
+    margin: 12px;
+    background: linear-gradient(135deg,#01579B,#0277BD);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  :where(.tp-article) .kyj-text {
+    flex: 1;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #B3E5FC;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .kyj-stage {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #E1F5FE;
+  }
+  :where(.tp-article) .phone-frame {
+    width: 390px;
+    height: 840px;
+    margin: 18px auto;
+    border: 4px solid #222;
+    border-radius: 30px;
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,.22);
+    display: flex;
+    flex-direction: column;
+  }
+  :where(.tp-article) .phone-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    background: #F0F4F8;
+    padding-bottom: 8px;
+  }
+  :where(.tp-article) .phone-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+  :where(.tp-article) .ph {
+    width: 100%!important;
+    max-width: 100%!important;
+    background: #F0F4F8;
+  }
+  :where(.tp-article) .access-strip,
+  :where(.tp-article) .hero,
+  :where(.tp-article) .live-dash,
+  :where(.tp-article) .container-card,
+  :where(.tp-article) .gps-bar,
+  :where(.tp-article) .section,
+  :where(.tp-article) .deliverable-card,
+  :where(.tp-article) .platform-card,
+  :where(.tp-article) .kyj-strip {
+    width: auto;
+    max-width: 100%;
+  }
+  :where(.tp-article) .access-strip {
+    padding: 11px 12px;
+  }
+  :where(.tp-article) .access-name {
+    font-size: calc(15px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .access-id {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+    line-height: 1.45;
+  }
+  :where(.tp-article) .ers-badge {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+    white-space: nowrap;
+  }
+  :where(.tp-article) .hero {
+    margin: 10px;
+    padding: 15px;
+    border-radius: 13px;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(20px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .hero-desc {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+    line-height: 1.65;
+  }
+  :where(.tp-article) .live-dash,
+  :where(.tp-article) .container-card,
+  :where(.tp-article) .gps-bar,
+  :where(.tp-article) .section,
+  :where(.tp-article) .deliverable-card,
+  :where(.tp-article) .platform-card,
+  :where(.tp-article) .kyj-strip {
+    margin: 10px;
+  }
+  :where(.tp-article) .live-dash {
+    padding: 15px;
+  }
+  :where(.tp-article) .live-title {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .live-label {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .temp-value {
+    font-size: calc(50px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .temp-unit {
+    font-size: calc(21px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .temp-setpoint-text {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .temp-status-ok-text {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .temp-bar-label {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .temp-ticks {
+    font-size: calc(10px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .container-card {
+    padding: 13px;
+  }
+  :where(.tp-article) .gps-bar {
+    padding: 12px;
+  }
+  :where(.tp-article) .sec-head {
+    padding: 12px 12px;
+    min-height: 52px;
+  }
+  :where(.tp-article) .sec-head-text {
+    font-size: calc(15px * var(--tp-type-scale, 1))!important;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .sec-body {
+    padding: 12px;
+  }
+  :where(.tp-article) .log-table th,
+  :where(.tp-article) .log-table td {
+    font-size: calc(11px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .deliverable-title {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .deliverable-item {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .faq-q {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .faq-a {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+    line-height: 1.6;
+  }
+  :where(.tp-article) .kyj-stage {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .kyj-text {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+    line-height: 1.55;
+  }
+  /* Circular expand/collapse buttons */
+  :where(.tp-article) .toggle-block {
+    position: relative;
+  }
+  :where(.tp-article) .block-toggle {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,.08);
+    color: #006064;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    text-align: center;
+    font-family: inherit;
+    font-size: calc(21px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  }
+  :where(.tp-article) .block-toggle:active {
+    transform: scale(.96);
+  }
+  :where(.tp-article) .block-toggle.light {
+    background: rgba(255,255,255,.18);
+    color: #fff;
+  }
+  :where(.tp-article) .toggle-collapsed {
+    display: none!important;
+  }
+  /* keep the button clear of content */
+  :where(.tp-article) .toggle-block.has-toggle {
+    padding-top: 1px;
+  }
+  :where(.tp-article) .hero.has-toggle,
+  :where(.tp-article) .live-dash.has-toggle,
+  :where(.tp-article) .container-card.has-toggle,
+  :where(.tp-article) .gps-bar.has-toggle,
+  :where(.tp-article) .deliverable-card.has-toggle,
+  :where(.tp-article) .platform-card.has-toggle,
+  :where(.tp-article) .kyj-strip.has-toggle {
+    padding-top: 15px;
+  }
+  /* ===== FAQ — REFERENCE IMAGE FIT ===== */
+  :where(.tp-article) .faq-wrap {
+    margin: 0 12px 12px !important;
+    width: auto !important;
+    max-width: calc(100% - 24px) !important;
+    background: transparent;
+    overflow: hidden !important;
+  }
+  :where(.tp-article) .faq-head {
+    width: 100%;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .faq-title {
+    flex: 1;
+    min-width: 0;
+    color: #006064;
+    font-size: calc(18px * var(--tp-type-scale, 1)) !important;
+    font-weight: 800 !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  :where(.tp-article) .faq-toggle {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: #E0E5E8;
+    color: #006064;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    text-align: center;
+    font-family: inherit;
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  }
+  :where(.tp-article) .faq-toggle:active {
+    transform: scale(.96);
+  }
+  :where(.tp-article) .faq-content {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  :where(.tp-article) .faq-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #F8F9FA;
+    border-radius: 8px;
+    padding: 12px !important;
+    margin: 0 0 8px 0 !important;
+    overflow: hidden;
+  }
+  :where(.tp-article) .faq-item:last-child {
+    margin-bottom: 0 !important;
+  }
+  :where(.tp-article) .faq-q {
+    font-size: calc(16px * var(--tp-type-scale, 1)) !important;
+    font-weight: 800 !important;
+    color: #005A9C;
+    margin: 0 0 5px 0 !important;
+    line-height: 1.5 !important;
+    overflow-wrap: anywhere;
+  }
+  :where(.tp-article) .faq-a {
+    font-size: calc(16px * var(--tp-type-scale, 1)) !important;
+    color: #546E7A;
+    line-height: 1.55 !important;
+    margin: 0 !important;
+    overflow-wrap: anywhere;
+  }
+  :where(.tp-article) .faq-content.faq-collapsed {
+    display: none !important;
+  }
+  /* ===== S-48 requested content ===== */
+  :where(.tp-article) .s48-info {
+    margin: 10px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  :where(.tp-article) .s48-info-head {
+    background: #E0F7FA;
+    padding: 12px 54px 12px 14px;
+    position: relative;
+    border-left: 4px solid #006064;
+    color: #006064;
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    line-height: 1.45;
+  }
+  :where(.tp-article) .s48-info-body {
+    padding: 13px 14px;
+  }
+  :where(.tp-article) .s48-topic {
+    padding: 10px 0;
+    border-bottom: 1px solid #E0F4F5;
+  }
+  :where(.tp-article) .s48-topic:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .s48-topic-title {
+    color: #006064;
+    font-size: calc(15px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .s48-topic-text {
+    color: #546E7A;
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    line-height: 1.7;
+  }
+  :where(.tp-article) .s48-final {
+    margin-top: 10px;
+    padding: 11px 12px;
+    background: #E8F5E9;
+    border-radius: 8px;
+    color: #1B5E20;
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1.65;
+  }
+}

@@ -1,0 +1,523 @@
+/* Topic 4.3 · NABL Labs (Module 04 – Production & Quality)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;500;600;700;800;900&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    min-height: 800px;
+    background: #f5f5f5;
+    border-radius: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 8px #1a1a1a, 0 0 0 10px #333;
+    overflow: hidden;
+    position: relative;
+  }
+  :where(.tp-article) .body {
+    padding: 14px;
+  }
+  /* NABL HERO — Royal Purple */
+  :where(.tp-article) .nabl-hero {
+    background: linear-gradient(135deg, #4a1a6b 0%, #6a1b9a 50%, #8e24aa 100%);
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .nabl-hero::before {
+    content: '🔬';
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: calc(40px * var(--tp-type-scale, 1));
+    opacity: 0.25;
+  }
+  :where(.tp-article) .nabl-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .nabl-title {
+    font-size: calc(17px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .nabl-stat-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  :where(.tp-article) .nabl-stat {
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  :where(.tp-article) .nabl-stat-num {
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  :where(.tp-article) .nabl-stat-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,0.9);
+    margin-top: 3px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  /* SEARCH BAR — Amazon style */
+  :where(.tp-article) .search-bar {
+    background: #fff;
+    border: 2px solid #4a1a6b;
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  :where(.tp-article) .search-icon {
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    color: #4a1a6b;
+  }
+  :where(.tp-article) .search-text {
+    flex: 1;
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #999;
+  }
+  :where(.tp-article) .search-mic {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    color: #6a1b9a;
+  }
+  /* SECTION TITLE */
+  :where(.tp-article) .section-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 4px 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  :where(.tp-article) .section-title .count {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-weight: 600;
+  }
+  /* WHAT IS NABL */
+  :where(.tp-article) .explain-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  :where(.tp-article) .explain-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #6a1b9a;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .explain-body {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.7;
+  }
+  /* BOOKING PROCESS — 5 steps */
+  :where(.tp-article) .process-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid #e8e8e8;
+  }
+  :where(.tp-article) .process-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #4a1a6b;
+    padding-bottom: 6px;
+  }
+  :where(.tp-article) .process-step {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .process-step:last-child {
+    margin-bottom: 0;
+  }
+  :where(.tp-article) .process-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #4a1a6b;
+    color: #fff;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .process-body {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .process-step-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .process-step-desc {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.5;
+  }
+  /* CHECKLIST — lab selection criteria */
+  :where(.tp-article) .checklist-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  :where(.tp-article) .checklist-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #6a1b9a;
+    padding-bottom: 6px;
+  }
+  :where(.tp-article) .checklist-item {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .checklist-item .ci-icon {
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .checklist-note {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #444;
+    background: #f5f0fa;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .checklist-tip {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #5d2c0c;
+    background: #fff8e1;
+    border-left: 3px solid #f9a825;
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    line-height: 1.5;
+  }
+  /* WARNING CARD */
+  :where(.tp-article) .warning-card {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border: 2px solid #e65100;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .warning-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #bf360c;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .warning-body {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #5d2c0c;
+    line-height: 1.6;
+  }
+  /* LAB ROW — 2 labs, side by side, clickable/expandable */
+  :where(.tp-article) .lab-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .lab-card-compact {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border-radius: 14px;
+    border: 2px solid #2e7d32;
+    box-shadow: 0 4px 14px rgba(46,125,50,0.15);
+    overflow: hidden;
+  }
+  :where(.tp-article) .lab-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+  }
+  :where(.tp-article) .lab-summary::-webkit-details-marker {
+    display: none;
+  }
+  :where(.tp-article) .lab-summary::marker {
+    content: '';
+  }
+  :where(.tp-article) .recommended-tag {
+    background: #2e7d32;
+    color: #fff;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.2px;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .lab-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(18px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+    font-weight: 900;
+    color: #fff;
+  }
+  :where(.tp-article) .logo-eureka {
+    background: linear-gradient(135deg, #4a1a6b, #8e24aa);
+  }
+  :where(.tp-article) .logo-tentamus {
+    background: linear-gradient(135deg, #1a5fa8, #2196f3);
+  }
+  :where(.tp-article) .lab-name {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.25;
+  }
+  :where(.tp-article) .lab-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .stars {
+    color: #ff9800;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .rating-num {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #444;
+    font-weight: 700;
+  }
+  :where(.tp-article) .lab-price-teaser {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #c62828;
+  }
+  :where(.tp-article) .lab-toggle-hint {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #6a1b9a;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .lab-card-compact[open] .lab-toggle-hint::after {
+    content: ' ▴ మూసివేయండి';
+  }
+  :where(.tp-article) .lab-card-compact:not([open]) .lab-toggle-hint::after {
+    content: ' ▾ వివరాలు చూడండి';
+  }
+  :where(.tp-article) .lab-expand {
+    padding: 0 10px 12px;
+    border-top: 1px dashed #d8d8d8;
+  }
+  :where(.tp-article) .lab-loc {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #666;
+    margin: 9px 0 8px;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .badges-row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 9px;
+  }
+  :where(.tp-article) .badge {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    padding: 3px 6px;
+    border-radius: 10px;
+    letter-spacing: 0.2px;
+  }
+  :where(.tp-article) .b-apeda {
+    background: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #66bb6a;
+  }
+  :where(.tp-article) .b-nabl {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 1px solid #42a5f5;
+  }
+  :where(.tp-article) .b-eic {
+    background: #f3e5f5;
+    color: #4a148c;
+    border: 1px solid #ab47bc;
+  }
+  :where(.tp-article) .b-iso {
+    background: #fff3e0;
+    color: #bf360c;
+    border: 1px solid #ff7043;
+  }
+  :where(.tp-article) .b-feed {
+    background: #fff8e1;
+    color: #e65100;
+    border: 1px solid #ffa726;
+  }
+  :where(.tp-article) .details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 9px;
+  }
+  :where(.tp-article) .detail-item {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 6px 8px;
+  }
+  :where(.tp-article) .detail-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .detail-val {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #1a1a1a;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .panel-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 9px;
+  }
+  :where(.tp-article) .panel-tag {
+    background: #f0f4f8;
+    border: 1px solid #d0dae5;
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #1a3a6b;
+    font-weight: 700;
+  }
+  :where(.tp-article) .price-strip {
+    display: block;
+    background: linear-gradient(90deg, #fff9c4 0%, #fff59d 100%);
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 9px;
+  }
+  :where(.tp-article) .price-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #5d4037;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .price-val {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #c62828;
+    line-height: 1.3;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .price-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .lab-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  :where(.tp-article) .lab-btn {
+    padding: 9px 8px;
+    border-radius: 8px;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+  }
+  :where(.tp-article) .btn-call {
+    background: #fff;
+    color: #1565c0;
+    border: 1.5px solid #1565c0;
+  }
+  :where(.tp-article) .btn-book {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(255,152,0,0.3);
+  }
+  /* COMPARE CTA */
+  :where(.tp-article) .compare-cta {
+    background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+    border: 1.5px dashed #3949ab;
+    border-radius: 12px;
+    padding: 11px;
+    text-align: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  :where(.tp-article) .compare-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a237e;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .compare-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #3949ab;
+  }
+}

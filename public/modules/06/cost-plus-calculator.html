@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cost-Plus Calculator (ధర లెక్కింపు) · Module 06 – Market Intelligence | My Exports</title>
+  <meta name="description" content="Module 06 · Market Intelligence — Cost-Plus Calculator (ధర లెక్కింపు). Topic 6.1 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/06/cost-plus-calculator.css">
+</head>
+<body class="tp-body tp-phase-2" data-root="../../" data-topic-path="modules/06/cost-plus-calculator.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-6">Module 06 · Market Intelligence</a></li>
+          <li><span aria-current="page">Cost-Plus Calculator</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-2">Phase 02 · Market Readiness</a>
+          <span class="tp-chip">Module 06 · Market Intelligence</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Cost-Plus Calculator</h1>
+        <p class="tp-hero__subtitle">ధర లెక్కింపు</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>6.1</strong> · 1 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="6.1" title="6.1 Cost-Plus Calculator">1</span></li>
+              <li><a class="tp-steps__item" href="break-even-fob.html" data-topic-id="6.2" title="6.2 Break-even FOB" aria-label="Topic 6.2 Break-even FOB">2</a></li>
+              <li><a class="tp-steps__item" href="volume-discount.html" data-topic-id="6.3" title="6.3 Volume Discount" aria-label="Topic 6.3 Volume Discount">3</a></li>
+              <li><a class="tp-steps__item" href="trade-map.html" data-topic-id="6.4" title="6.4 Trade Map" aria-label="Topic 6.4 Trade Map">4</a></li>
+              <li><a class="tp-steps__item" href="exim-pcfc.html" data-topic-id="6.5" title="6.5 EXIM PCFC" aria-label="Topic 6.5 EXIM PCFC">5</a></li>
+              <li><a class="tp-steps__item" href="ecgc.html" data-topic-id="6.6" title="6.6 ECGC" aria-label="Topic 6.6 ECGC">6</a></li>
+              <li><a class="tp-steps__item" href="forward-contract.html" data-topic-id="6.7" title="6.7 Forward Contract" aria-label="Topic 6.7 Forward Contract">7</a></li>
+              <li><a class="tp-steps__item" href="aif-subsidy.html" data-topic-id="6.8" title="6.8 AIF Subsidy" aria-label="Topic 6.8 AIF Subsidy">8</a></li>
+              <li><a class="tp-steps__item" href="lc-checker.html" data-topic-id="6.9" title="6.9 LC Checker" aria-label="Topic 6.9 LC Checker">9</a></li>
+              <li><a class="tp-steps__item" href="payment-terms.html" data-topic-id="6.10" title="6.10 Payment Terms" aria-label="Topic 6.10 Payment Terms">10</a></li>
+              <li><a class="tp-steps__item" href="filr-calculator.html" data-topic-id="6.11" title="6.11 FILR Calculator" aria-label="Topic 6.11 FILR Calculator">11</a></li>
+              <li><a class="tp-steps__item" href="post-shipment-credit.html" data-topic-id="6.12" title="6.12 Post-shipment Credit" aria-label="Topic 6.12 Post-shipment Credit">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">06</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph">
+
+
+<div class="scroll-content"><div class="hero">
+<div class="hero-title">ధర లెక్కింపు</div>
+<div class="hero-sub">10 ఖర్చుల ఆధారంగా సరైన ధర నిర్ణయించండి</div>
+<div class="hero-stats">
+<div class="hs">
+<div class="hs-v">10</div>
+<div class="hs-l">ఖర్చు అంశాలు</div>
+</div>
+<div class="hs">
+<div class="hs-v">+20%</div>
+<div class="hs-l">కనీస లాభం</div>
+</div>
+<div class="hs">
+<div class="hs-v">FOB</div>
+<div class="hs-l">ధర పద్ధతి</div>
+</div>
+</div>
+</div><div class="section-block"><div class="sec-hd">ధర నిర్ణయం అంటే ఏమిటి?<button aria-expanded="true" aria-label="Collapse section" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="card">
+<div class="card-title">🎯 వ్యయ ఆధారిత ధర నిర్ణయం (Cost-Plus Pricing)</div>
+<div class="card-body">మండీలో ధర market decide చేస్తుంది. ఎగుమతిలో మీరే ధర నిర్ణయించవచ్చు — కానీ అన్ని ఖర్చులు లెక్కించిన తర్వాతే. ఒక్క అంశం miss అయినా loss వస్తుంది. FEED లో <strong>Cost-Plus పద్ధతి</strong> ఉపయోగిస్తుంది — అత్యంత సురక్షితమైన పద్ధతి.</div>
+</div></div><div class="section-block"><div class="sec-hd">10 ఖర్చు అంశాలు (Banana Grand Naine · ఉదాహరణ)<button aria-expanded="true" aria-label="Collapse section" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="cost-table">
+<div class="ct-header">
+<div class="ct-h-title">రామయ్య గారి Banana · 2 ఎకరాలు · ఒక Consignment</div>
+<div class="ct-h-sub">HS Code: 0803 90 10</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">① సేకరణ ఖర్చు</div>
+<div class="ct-sub">రైతుల నుండి Banana కొనుగోలు</div>
+</div>
+<div class="ct-val">₹100/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">② Processing ఖర్చు</div>
+<div class="ct-sub">గ్రేడింగ్, కట్టింగ్, ప్యాకింగ్ లైన్</div>
+</div>
+<div class="ct-val">₹15/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">③ Packaging</div>
+<div class="ct-sub">13 కె.జి. corrugated boxes · EU standard</div>
+</div>
+<div class="ct-val">₹8/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">④ NABL Lab పరీక్ష</div>
+<div class="ct-sub">Eureka Analytical Guntur · EU 396/2005 panel</div>
+</div>
+<div class="ct-val">₹3/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">⑤ Phytosanitary Certificate</div>
+<div class="ct-sub">DPPQS · ప్రతి Consignment కి</div>
+</div>
+<div class="ct-val">₹1/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">⑥ RCMC / పత్రాల ఖర్చు</div>
+<div class="ct-sub">APEDA RCMC + documentary costs</div>
+</div>
+<div class="ct-val">₹2/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">⑦ Freight (FOB వరకు)</div>
+<div class="ct-sub">Gorantla → KPCT Krishnapatnam</div>
+</div>
+<div class="ct-val">₹5/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">⑧ Bank Charges</div>
+<div class="ct-sub">SBI Anantapur · LC + PCFC charges</div>
+</div>
+<div class="ct-val">₹2/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">⑨ Overhead</div>
+<div class="ct-sub">Staff · Electricity · Rent (pro-rata)</div>
+</div>
+<div class="ct-val">₹5/కె.జి.</div>
+</div>
+<div class="ct-row">
+<div>
+<div class="ct-label">⑩ Finance Cost</div>
+<div class="ct-sub">Packing Credit 90 రోజులు @ 8% వడ్డీ</div>
+</div>
+<div class="ct-val">₹3/కె.జి.</div>
+</div>
+<div class="ct-total">
+<div class="ct-total-l">మొత్తం వ్యయం (Total Cost)</div>
+<div class="ct-total-v">₹144/కె.జి.</div>
+</div>
+</div></div><div class="section-block"><div class="sec-hd">FOB ధర లెక్కింపు<button aria-expanded="true" aria-label="Collapse section" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="mcalc">
+<div class="mc-header">
+<div class="mc-h-title">💰 మీ కనీస FOB ధర లెక్కింపు (20% లాభం జోడించి)</div>
+</div>
+<div class="mc-body">
+<div class="mc-row">
+<span class="mc-label">మొత్తం వ్యయం</span>
+<span class="mc-val">₹144/కె.జి.</span>
+</div>
+<div class="mc-row">
+<span class="mc-label">కనీస లాభం (Profit Margin)</span>
+<span class="mc-val">× 1.20 (20%)</span>
+</div>
+<div class="mc-row">
+<span class="mc-label">కనీస FOB ధర (రూపాయలు)</span>
+<span class="mc-fob">₹172.80/కె.జి.</span>
+</div>
+<div class="mc-row">
+<span class="mc-label">USD లో (Rate: ₹83/$1)</span>
+<div>
+<div class="mc-fob">$2.08/కె.జి.</div>
+<div class="mc-usd">ఇది Minimum Acceptable FOB Price</div>
+</div>
+</div>
+</div>
+</div></div><div class="section-block"><div class="sec-hd">FEED సేవా రుసుం (పారదర్శకత)<button aria-expanded="true" aria-label="Collapse section" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="fee-card">
+<div class="fee-header">
+<div class="fee-h">🔓 FEED రుసుం సంపూర్ణ పారదర్శకత · రైతుకు 93% FOB</div>
+</div>
+<div class="fee-body">
+<div class="fee-row">
+<div>
+<div class="fee-comm">Banana Grand Naine</div>
+<div class="fee-net">HS Code 0803 90 10 · Anantapur</div>
+</div>
+<div class="fee-pct">5% FOB</div>
+</div>
+<div class="fee-row">
+<div>
+<div class="fee-comm">Chilli Guntur Sannam S4</div>
+<div class="fee-net">HS Code 0904 21 00 · Anantapur</div>
+</div>
+<div class="fee-pct">7% FOB</div>
+</div>
+<div class="fee-row">
+<div>
+<div class="fee-comm">రైతుకు మిగిలేది (FIRC ద్వారా)</div>
+<div class="fee-net">PACS ఖాతాకు నేరుగా · FIRC తర్వాత</div>
+</div>
+<div class="fee-pct" style="color:#2E7D32">93% FOB</div>
+</div>
+</div>
+</div></div><div class="section-block"><div class="sec-hd">Buyer కి Landed Cost ఎంతో అర్థం చేయించండి<button aria-expanded="true" aria-label="Collapse section" class="expand-btn" onclick="toggleSection(this)" type="button">⏷</button></div><div class="land">
+<div class="land-title">🚢 Rotterdam కి Chilli · Landed Cost ఉదాహరణ</div>
+<div class="land-row">
+<span>FOB India (మీ ధర)</span>
+<span>$2.50/కె.జి.</span>
+</div>
+<div class="land-row">
+<span>Ocean Freight</span>
+<span>+$0.30/కె.జి.</span>
+</div>
+<div class="land-row">
+<span>Marine Insurance</span>
+<span>+$0.03/కె.జి.</span>
+</div>
+<div class="land-row">
+<span>Rotterdam Port</span>
+<span>+$0.05/కె.జి.</span>
+</div>
+<div class="land-row">
+<span>EU Customs Duty (India GSP: 0%)</span>
+<span>+$0</span>
+</div>
+<div class="land-row land-total">
+<span>Buyer Landed Cost</span>
+<span>$3.47/కె.జి.</span>
+</div>
+<div style="margin-top:6px;font-size:calc(10px * var(--tp-type-scale, 1));color:#1B5E20">Buyer EU Wholesale: $6.00 · Buyer Margin: 42% — ఇది తెలిసినప్పుడు Negotiation సులభం</div>
+</div></div></div>
+<!-- Hero -->
+
+<!-- Access confirmation -->
+
+<!-- What is section -->
+
+
+<!-- 10-component cost table -->
+
+
+<!-- Margin calculation -->
+
+
+<!-- FEED fee transparent disclosure -->
+
+
+<!-- Pricing progression Y1→Y3→Y5 -->
+
+
+<!-- Landed cost visual -->
+
+
+<!-- Q1 pending flag -->
+
+<!-- KYJ connection -->
+
+<!-- Navigation -->
+
+</div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="../05/sample.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">Sample Dispatch Tracker</span>
+          <span class="tp-pager__meta">Module 05 · Buyer Connection · Topic 5.4</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="break-even-fob.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Break-even FOB</span>
+          <span class="tp-pager__meta">Module 06 · Market Intelligence · Topic 6.2</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/06/cost-plus-calculator.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

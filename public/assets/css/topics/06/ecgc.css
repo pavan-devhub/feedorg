@@ -1,0 +1,553 @@
+/* Topic 6.6 · ECGC Insurance (Module 06 – Market Intelligence)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600;700&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /* HERO */
+  :where(.tp-article) .hero-card {
+    background: #fff;
+    padding: 16px;
+    border-bottom: none;
+  }
+  :where(.tp-article) .hero-tag {
+    background: #388E3C;
+    color: #fff;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(19px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .hero-sub {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #555;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .hero-price-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .hp-pct {
+    font-size: calc(28px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #388E3C;
+    line-height: 1.15;
+  }
+  :where(.tp-article) .hp-unit {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #777;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .hero-badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  :where(.tp-article) .hbr {
+    background: #E8F5E9;
+    border: 1px solid #C8E6C9;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #2E7D32;
+    font-weight: 600;
+  }
+  /* SEC DIV */
+  :where(.tp-article) .sec-div {
+    background: #fff;
+    margin: 8px 0 0;
+    border-top: 8px solid #f0f2f5;
+    padding: 12px 14px 4px;
+  }
+  :where(.tp-article) .sec-label {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .sec-sub {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #666;
+  }
+  /* STORY */
+  :where(.tp-article) .story {
+    background: #fff;
+    padding: 0 14px 12px;
+  }
+  :where(.tp-article) .story-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f2f5;
+    align-items: flex-start;
+  }
+  :where(.tp-article) .story-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .story-dot {
+    width: 7px;
+    height: 7px;
+    background: #388E3C;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .story-tx {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.6;
+  }
+  :where(.tp-article) .story-tx b {
+    color: #1B5E20;
+  }
+  /* RISK SCENARIO CARDS — Amazon "customers also bought" style */
+  :where(.tp-article) .risk-grid {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .risk-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .risk-cards {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  :where(.tp-article) .risk-item {
+    flex: 1;
+    min-width: 80px;
+    border: 1.5px solid #ECEFF1;
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  :where(.tp-article) .risk-ic {
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    display: block;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .risk-name {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #263238;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .risk-desc {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #546E7A;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .risk-covered {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    background: #E8F5E9;
+    color: #2E7D32;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin-top: 4px;
+    display: inline-block;
+  }
+  /* COVERAGE WORKED EXAMPLE */
+  :where(.tp-article) .example-card {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .eg-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .eg-scenario-box {
+    background: #FFF3E0;
+    border-left: 4px solid #FF9800;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .eg-sc-label {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #E65100;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .eg-sc-body {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #5D4037;
+    line-height: 1.6;
+  }
+  :where(.tp-article) .eg-result-box {
+    background: linear-gradient(135deg,#1B5E20,#388E3C);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  :where(.tp-article) .eg-res-label {
+    color: #C8E6C9;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  :where(.tp-article) .eg-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    font-size: calc(12px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .eg-row:last-child {
+    border-bottom: none;
+    padding-top: 8px;
+  }
+  :where(.tp-article) .eg-key {
+    color: #C8E6C9;
+  }
+  :where(.tp-article) .eg-val {
+    color: #fff;
+    font-weight: 700;
+  }
+  :where(.tp-article) .eg-val.gold {
+    color: #FFD54F;
+    font-size: calc(15px * var(--tp-type-scale, 1));
+  }
+  /* COUNTRY RISK TABLE */
+  :where(.tp-article) .country-card {
+    background: #fff;
+  }
+  :where(.tp-article) .country-head {
+    background: #F3F3F3;
+    padding: 10px 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  /* CONTACT CARD */
+  :where(.tp-article) .contact-card {
+    background: #fff;
+    padding: 14px;
+  }
+  :where(.tp-article) .contact-box {
+    background: #F3E5F5;
+    border-radius: 12px;
+    padding: 13px;
+    border-left: 4px solid #7B1FA2;
+  }
+  :where(.tp-article) .contact-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #4A148C;
+    margin-bottom: 8px;
+  }
+  :where(.tp-article) .contact-row {
+    display: flex;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px dashed #CE93D8;
+    align-items: center;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .contact-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .contact-label {
+    color: #6A1B9A;
+    flex: 1;
+  }
+  :where(.tp-article) .contact-val {
+    font-weight: 700;
+    color: #4A148C;
+  }
+  :where(.tp-article) .contact-phone {
+    background: #7B1FA2;
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-top: 8px;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  /* KYJ STRIP */
+  :where(.tp-article) .kyj-strip {
+    background: linear-gradient(90deg,#37474F,#263238);
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  :where(.tp-article) .kyj-ic {
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .kyj-tx {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #B0BEC5;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .kyj-tx b {
+    color: #fff;
+  }
+  :where(.tp-article) .ph::-webkit-scrollbar {
+    width: 0!important;
+    height: 0!important;
+    display: none!important;
+  }
+  :where(.tp-article) .header {
+    position: sticky!important;
+    top: 30px!important;
+    z-index: 999!important;
+  }
+  :where(.tp-article) .sec-div,
+  :where(.tp-article) .hero-card,
+  :where(.tp-article) .kyj-strip {
+    margin-left: 7px!important;
+    margin-right: 7px!important;
+  }
+  :where(.tp-article) .sec-div {
+    margin-top: 9px!important;
+    border-radius: 10px!important;
+  }
+  :where(.tp-article) .sec-label {
+    font-size: calc(17px * var(--tp-type-scale, 1))!important;
+    line-height: 1.45!important;
+  }
+  :where(.tp-article) .sec-sub {
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+    line-height: 1.5!important;
+  }
+  :where(.tp-article) .story-tx {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+    line-height: 1.75!important;
+  }
+  :where(.tp-article) .kyj-tx {
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+    line-height: 1.7!important;
+  }
+  :where(.tp-article) .kyj-tx b {
+    font-size: calc(14px * var(--tp-type-scale, 1))!important;
+  }
+  :where(.tp-article) .section-toggle {
+    width: 36px!important;
+    height: 36px!important;
+    min-width: 36px!important;
+    border: none!important;
+    border-radius: 50%!important;
+    background: rgba(0,0,0,.09)!important;
+    color: #263238!important;
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    padding: 0!important;
+    margin: 0!important;
+    line-height: 1!important;
+    text-align: center!important;
+    font-family: inherit;
+    font-size: calc(21px * var(--tp-type-scale, 1))!important;
+    font-weight: 700!important;
+    cursor: pointer!important;
+    flex-shrink: 0!important;
+    box-shadow: 0 2px 5px rgba(0,0,0,.10)!important;
+  }
+  :where(.tp-article) .sec-div.toggle-header {
+    display: flex!important;
+    align-items: center!important;
+    justify-content: space-between!important;
+    gap: 8px!important;
+    padding-right: 10px!important;
+  }
+  :where(.tp-article) .sec-head-text {
+    flex: 1!important;
+    min-width: 0!important;
+  }
+  :where(.tp-article) .section-body-collapsed {
+    display: none!important;
+  }
+  :where(.tp-article) .country-risk-table {
+    width: calc(100% - 14px)!important;
+    max-width: 100%!important;
+    box-sizing: border-box!important;
+    margin: 9px 7px 0!important;
+    padding: 0!important;
+    overflow: hidden!important;
+    background: #fff!important;
+    border: 1px solid #dfe4e8!important;
+    border-radius: 8px!important;
+    box-shadow: none!important;
+  }
+  :where(.tp-article) .new-country-head {
+    width: 100%!important;
+    min-height: 72px!important;
+    box-sizing: border-box!important;
+    padding: 10px 10px!important;
+    display: grid!important;
+    grid-template-columns: minmax(0,1fr) 82px!important;
+    align-items: center!important;
+    column-gap: 6px!important;
+    border-bottom: 1px solid #dfe4e8!important;
+    background: #fff!important;
+  }
+  :where(.tp-article) .new-country-head-title {
+    min-width: 0!important;
+    font-size: calc(17px * var(--tp-type-scale, 1))!important;
+    font-weight: 800!important;
+    color: #101820!important;
+    line-height: 1.2!important;
+    white-space: normal!important;
+  }
+  :where(.tp-article) .new-country-head-date {
+    min-width: 0!important;
+    text-align: right!important;
+    font-size: calc(10px * var(--tp-type-scale, 1))!important;
+    line-height: 1.25!important;
+    color: #65758a!important;
+    white-space: normal!important;
+  }
+  :where(.tp-article) .new-country-row {
+    width: 100%!important;
+    min-height: 82px!important;
+    box-sizing: border-box!important;
+    display: grid!important;
+    grid-template-columns: 34px minmax(0,1fr) 91px 86px!important;
+    align-items: center!important;
+    column-gap: 5px!important;
+    padding: 8px 8px!important;
+    border-bottom: 1px solid #e5e9ed!important;
+    background: #fff!important;
+  }
+  :where(.tp-article) .new-country-row:last-child {
+    border-bottom: none!important;
+  }
+  :where(.tp-article) .new-country-code {
+    width: 34px!important;
+    font-size: calc(19px * var(--tp-type-scale, 1))!important;
+    font-weight: 500!important;
+    color: #151c28!important;
+    text-align: center!important;
+  }
+  :where(.tp-article) .new-country-name {
+    min-width: 0!important;
+    font-size: calc(16px * var(--tp-type-scale, 1))!important;
+    line-height: 1.25!important;
+    font-weight: 800!important;
+    color: #101820!important;
+    overflow-wrap: anywhere!important;
+    word-break: normal!important;
+  }
+  :where(.tp-article) .new-country-name span {
+    display: block!important;
+    margin-top: 2px!important;
+    font-size: calc(12px * var(--tp-type-scale, 1))!important;
+    line-height: 1.25!important;
+    font-weight: 500!important;
+    color: #68778c!important;
+    overflow-wrap: anywhere!important;
+  }
+  :where(.tp-article) .new-country-risk {
+    width: 91px!important;
+    box-sizing: border-box!important;
+    justify-self: center!important;
+    padding: 7px 3px!important;
+    border-radius: 7px!important;
+    font-size: calc(13px * var(--tp-type-scale, 1))!important;
+    line-height: 1.15!important;
+    font-weight: 800!important;
+    text-align: center!important;
+    white-space: nowrap!important;
+  }
+  :where(.tp-article) .risk-a2 {
+    color: #ef3f18!important;
+    background: #fff2d6!important;
+  }
+  :where(.tp-article) .risk-a1 {
+    color: #14742c!important;
+    background: #dff3df!important;
+  }
+  :where(.tp-article) .new-country-pct {
+    width: 86px!important;
+    box-sizing: border-box!important;
+    font-size: calc(15px * var(--tp-type-scale, 1))!important;
+    line-height: 1.15!important;
+    font-weight: 800!important;
+    color: #14742c!important;
+    white-space: nowrap!important;
+    text-align: left!important;
+  }
+  @media(max-width:370px) {
+    :where(.tp-article) .new-country-head {
+      grid-template-columns: minmax(0,1fr) 70px!important;
+      padding: 9px 8px!important;
+    }
+    :where(.tp-article) .new-country-head-title {
+      font-size: calc(15px * var(--tp-type-scale, 1))!important;
+    }
+    :where(.tp-article) .new-country-head-date {
+      font-size: calc(10px * var(--tp-type-scale, 1))!important;
+    }
+    :where(.tp-article) .new-country-row {
+      grid-template-columns: 31px minmax(0,1fr) 84px 79px!important;
+      column-gap: 4px!important;
+      padding-left: 6px!important;
+      padding-right: 6px!important;
+    }
+    :where(.tp-article) .new-country-code {
+      width: 31px!important;
+      font-size: calc(17px * var(--tp-type-scale, 1))!important;
+    }
+    :where(.tp-article) .new-country-name {
+      font-size: calc(14px * var(--tp-type-scale, 1))!important;
+    }
+    :where(.tp-article) .new-country-name span {
+      font-size: calc(11px * var(--tp-type-scale, 1))!important;
+    }
+    :where(.tp-article) .new-country-risk {
+      width: 84px!important;
+      font-size: calc(12px * var(--tp-type-scale, 1))!important;
+    }
+    :where(.tp-article) .new-country-pct {
+      width: 79px!important;
+      font-size: calc(13px * var(--tp-type-scale, 1))!important;
+    }
+  }
+  :where(.tp-article) .country-risk-table {
+    border-bottom: none!important;
+  }
+  :where(.tp-article) .hero-card {
+    border-bottom: none!important;
+  }
+}
+
+/* ---- Responsive refinements (override the legacy layer) ---- */
+
+@layer tp-reset {
+  /* Country risk rows: let the rating and premium columns size to their text. */
+  .tp-article .new-country-row { grid-template-columns: 44px minmax(0, 1fr) auto auto !important; column-gap: 12px !important; }
+  .tp-article .new-country-code { width: auto !important; white-space: nowrap !important; font-size: calc(16px * var(--tp-type-scale, 1)) !important; }
+  .tp-article .new-country-risk { width: auto !important; white-space: nowrap !important; padding: 6px 10px !important; }
+  .tp-article .new-country-pct { width: auto !important; white-space: nowrap !important; text-align: right !important; }
+  @media (max-width: 479.98px) {
+    .tp-article .new-country-row { grid-template-columns: 36px minmax(0, 1fr) auto !important; row-gap: 6px !important; }
+    .tp-article .new-country-pct { grid-column: 2 / -1 !important; justify-self: start !important; text-align: left !important; }
+  }
+}

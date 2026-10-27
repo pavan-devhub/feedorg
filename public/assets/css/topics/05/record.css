@@ -1,0 +1,670 @@
+/* Topic 5.2 · Buyer Communication Log (Module 05 – Buyer Connection)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Telugu:wght@400;600;700&family=Noto+Sans:wght@400;600;700&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /* =====================================================
+   MOBILE PHONE FRAME
+===================================================== */
+  :where(.tp-article) .ph {
+    width: 390px;
+    height: 844px;
+    max-width: 390px;
+    min-width: 390px;
+    background: #ffffff;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 30px;
+    box-shadow: 0 0 0 4px #222,
+    0 8px 30px rgba(0,0,0,0.25);
+    scrollbar-width: none;
+  }
+  :where(.tp-article) .ph::-webkit-scrollbar {
+    display: none;
+  }
+  /* =====================================================
+   SCREEN PILLS
+===================================================== */
+  :where(.tp-article) .pills-row {
+    background: #E0F2F1;
+    display: flex;
+    gap: 5px;
+    padding: 7px 8px;
+    overflow-x: auto;
+    border-bottom: 2px solid #B2DFDB;
+    scrollbar-width: none;
+  }
+  :where(.tp-article) .pills-row::-webkit-scrollbar {
+    display: none;
+  }
+  :where(.tp-article) .pill {
+    background: white;
+    border: 1.5px solid #00796B;
+    color: #00695C;
+    border-radius: 20px;
+    padding: 3px 9px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    white-space: nowrap;
+    font-family: inherit;
+    font-weight: 600;
+  }
+  :where(.tp-article) .pill.active {
+    background: #00695C;
+    color: white;
+  }
+  /* =====================================================
+   MEMBER STRIP
+===================================================== */
+  :where(.tp-article) .member-strip {
+    background: #E8F5E9;
+    border-left: 4px solid #2E7D32;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px;
+    border-radius: 8px;
+    gap: 6px;
+  }
+  :where(.tp-article) .member-name {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .member-id {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #388E3C;
+    font-family: inherit;
+    margin-top: 2px;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .member-right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .member-stage {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #2E7D32;
+    font-family: inherit;
+    font-weight: 600;
+  }
+  :where(.tp-article) .kc-badge {
+    background: #FFC107;
+    color: #333;
+    border-radius: 12px;
+    padding: 2px 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    font-weight: 700;
+    margin-top: 3px;
+    display: inline-block;
+  }
+  /* =====================================================
+   BUYER HERO CARD
+===================================================== */
+  :where(.tp-article) .buyer-hero {
+    margin: 0 8px 8px;
+    background: linear-gradient(
+      135deg,
+      #00695C,
+      #004D40
+    );
+    border-radius: 11px;
+    padding: 11px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .buyer-hero::before {
+    content: '🤝';
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    font-size: calc(30px * var(--tp-type-scale, 1));
+    opacity: 0.2;
+  }
+  :where(.tp-article) .buyer-hero-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 7px;
+    margin-bottom: 9px;
+    position: relative;
+    z-index: 2;
+  }
+  :where(.tp-article) .buyer-hero-name {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .buyer-hero-location {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    opacity: 0.85;
+    font-family: inherit;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .buyer-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  :where(.tp-article) .bh-item {
+    background: rgba(255,255,255,0.12);
+    border-radius: 7px;
+    padding: 6px 7px;
+  }
+  :where(.tp-article) .bh-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    opacity: 0.8;
+    font-family: inherit;
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .bh-value {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .bh-value.gold {
+    color: #FFD54F;
+  }
+  :where(.tp-article) .bh-value.green {
+    color: #A5D6A7;
+  }
+  :where(.tp-article) .bh-value.white {
+    color: #fff;
+  }
+  :where(.tp-article) .bh-item.full {
+    grid-column: 1 / -1;
+  }
+  /* =====================================================
+   SECTION CARDS
+===================================================== */
+  :where(.tp-article) .card {
+    margin: 0 8px 8px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  :where(.tp-article) .trust-score-card {
+    margin: 0 8px 8px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  /* =====================================================
+   SECTION HEADER
+===================================================== */
+  :where(.tp-article) .section-header {
+    padding: 8px 9px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    min-height: 34px;
+  }
+  :where(.tp-article) .section-header > span:first-child {
+    flex: 1;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .section-header.teal {
+    background: #00695C;
+  }
+  :where(.tp-article) .section-header.blue {
+    background: #1565C0;
+  }
+  :where(.tp-article) .section-header.purple {
+    background: #4A148C;
+  }
+  :where(.tp-article) .section-header.green {
+    background: #1B5E20;
+  }
+  :where(.tp-article) .section-header.amber {
+    background: #F57F17;
+  }
+  :where(.tp-article) .section-header.indigo {
+    background: #283593;
+  }
+  /* =====================================================
+   SECTION EXPAND / COLLAPSE BUTTONS
+===================================================== */
+  :where(.tp-article) .section-toggle {
+    min-width: 78px;
+    height: 27px;
+    border: none;
+    border-radius: 14px;
+    background: rgba(255,255,255,.2);
+    color: white;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0 10px;
+  }
+  :where(.tp-article) .section-toggle:hover {
+    background: rgba(255,255,255,.3);
+  }
+  :where(.tp-article) .section-body.collapsed {
+    display: none;
+  }
+  /* =====================================================
+   SCORE METER
+===================================================== */
+  :where(.tp-article) .score-display {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #F0F0F0;
+  }
+  :where(.tp-article) .score-circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #00695C 0% 74%,
+      #E0F2F1 74% 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  :where(.tp-article) .score-inner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  :where(.tp-article) .score-num {
+    font-size: calc(15px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #00695C;
+    font-family: inherit;
+    line-height: 1;
+  }
+  :where(.tp-article) .score-denom {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-family: inherit;
+  }
+  :where(.tp-article) .score-info {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .score-title {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #00695C;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .score-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.45;
+    font-family: inherit;
+  }
+  :where(.tp-article) .score-pass {
+    display: inline-block;
+    background: #E8F5E9;
+    color: #1B5E20;
+    border-radius: 12px;
+    padding: 2px 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    font-family: inherit;
+    margin-top: 3px;
+  }
+  /* =====================================================
+   TRUST PARAMETER TABLE
+===================================================== */
+  :where(.tp-article) .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  :where(.tp-article) .param-table th {
+    background: #E0F2F1;
+    color: #00695C;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    padding: 5px 6px;
+    text-align: left;
+    font-family: inherit;
+    font-weight: 700;
+    border-bottom: 2px solid #B2DFDB;
+  }
+  :where(.tp-article) .param-table td {
+    padding: 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    border-bottom: 1px solid #F5F5F5;
+    vertical-align: middle;
+    line-height: 1.35;
+    word-break: break-word;
+  }
+  :where(.tp-article) .param-table tr:last-child td {
+    border-bottom: none;
+  }
+  :where(.tp-article) .param-table tr:nth-child(even) td {
+    background: #FAFAFA;
+  }
+  :where(.tp-article) .weight-badge {
+    display: inline-block;
+    background: #E0F2F1;
+    color: #00695C;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    font-weight: 700;
+  }
+  :where(.tp-article) .status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 3px;
+  }
+  :where(.tp-article) .status-dot.green {
+    background: #4CAF50;
+  }
+  :where(.tp-article) .status-dot.amber {
+    background: #FFC107;
+  }
+  /* =====================================================
+   COMMUNICATION TIMELINE
+===================================================== */
+  :where(.tp-article) .timeline-item {
+    display: flex;
+    gap: 7px;
+    padding: 8px 9px;
+    border-bottom: 1px solid #F5F5F5;
+    position: relative;
+  }
+  :where(.tp-article) .timeline-item:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .tl-date {
+    width: 58px;
+    flex-shrink: 0;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    color: #00695C;
+    font-weight: 700;
+    padding-top: 2px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  :where(.tp-article) .tl-dot.done {
+    background: #00695C;
+  }
+  :where(.tp-article) .tl-dot.pending {
+    background: #FFC107;
+    border: 2px solid #F57C00;
+  }
+  :where(.tp-article) .tl-content {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .tl-title {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 2px;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .tl-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.4;
+    font-family: inherit;
+  }
+  /* =====================================================
+   PAYMENT RATCHET
+===================================================== */
+  :where(.tp-article) .ratchet-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 9px;
+    border-bottom: 1px solid #F5F5F5;
+    gap: 7px;
+  }
+  :where(.tp-article) .ratchet-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .ratchet-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    font-family: inherit;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .ratchet-num.active {
+    background: #00695C;
+    color: white;
+  }
+  :where(.tp-article) .ratchet-num.future {
+    background: #E0F2F1;
+    color: #00695C;
+  }
+  :where(.tp-article) .ratchet-info {
+    flex: 1;
+    min-width: 0;
+  }
+  :where(.tp-article) .ratchet-title {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #222;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .ratchet-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    font-family: inherit;
+    margin-top: 2px;
+    line-height: 1.35;
+  }
+  :where(.tp-article) .ratchet-badge {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    padding: 2px 5px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .ratchet-badge.green {
+    background: #E8F5E9;
+    color: #1B5E20;
+  }
+  :where(.tp-article) .ratchet-badge.amber {
+    background: #FFF8E1;
+    color: #F57F17;
+  }
+  :where(.tp-article) .ratchet-badge.grey {
+    background: #F5F5F5;
+    color: #777;
+  }
+  /* =====================================================
+   COUNTRY RISK TABLE
+===================================================== */
+  :where(.tp-article) .risk-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  :where(.tp-article) .risk-table-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  :where(.tp-article) .risk-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+  }
+  :where(.tp-article) .risk-table th {
+    background: #E8EAF6;
+    color: #283593;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    padding: 6px;
+    text-align: left;
+    font-family: inherit;
+    font-weight: 700;
+    border-bottom: 2px solid #C5CAE9;
+  }
+  :where(.tp-article) .risk-table td {
+    padding: 7px 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    border-bottom: 1px solid #F5F5F5;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .risk-table tr:last-child td {
+    border-bottom: none;
+  }
+  :where(.tp-article) .risk-table tr:nth-child(even) td {
+    background: #FAFAFA;
+  }
+  :where(.tp-article) .risk-class {
+    font-family: inherit;
+    font-weight: 800;
+    color: #283593;
+    white-space: nowrap;
+  }
+  /* =====================================================
+   KYJ TRACKER
+===================================================== */
+  :where(.tp-article) .kyj-strip {
+    margin: 0;
+    background: #F3E5F5;
+    padding: 9px 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  :where(.tp-article) .kyj-strip::-webkit-scrollbar {
+    display: none;
+  }
+  :where(.tp-article) .kyj-stages {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    min-width: 350px;
+  }
+  :where(.tp-article) .kyj-stage {
+    flex: 1;
+    text-align: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  :where(.tp-article) .kyj-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    margin: 0 auto 3px;
+    font-family: inherit;
+  }
+  :where(.tp-article) .kyj-circle.done {
+    background: #1B5E20;
+    color: white;
+  }
+  :where(.tp-article) .kyj-circle.current {
+    background: #00695C;
+    color: white;
+    border: 2px solid #FFC107;
+  }
+  :where(.tp-article) .kyj-circle.pending {
+    background: #e0e0e0;
+    color: #999;
+  }
+  :where(.tp-article) .kyj-line {
+    width: 8px;
+    height: 2px;
+    background: #bbb;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .kyj-line.done {
+    background: #1B5E20;
+  }
+  /* =====================================================
+   INFO BOX
+===================================================== */
+  :where(.tp-article) .info-box {
+    background: #E0F2F1;
+    border-left: 4px solid #00695C;
+    padding: 8px 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #004D40;
+    line-height: 1.5;
+  }
+  /* =====================================================
+   REAL MOBILE
+===================================================== */
+  @media (max-width: 500px) {
+    :where(.tp-article) .ph {
+      width: 100vw;
+      min-width: 0;
+      max-width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      max-height: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+/* ---- Responsive refinements (override the legacy layer) ---- */
+
+/* KYJ stage strip: shrink evenly instead of overflowing on phones. */
+.tp-article .kyj-stages { min-width: 0; }
+.tp-article .kyj-stage { min-width: 0; flex: 1 1 0; overflow-wrap: anywhere; }
+@media (max-width: 479.98px) {
+  .tp-article .kyj-stages { gap: 2px; }
+  .tp-article .kyj-line { flex: 0 1 6px; min-width: 2px; }
+  .tp-article .kyj-stage { font-size: calc(8.5px * var(--tp-type-scale, 1)); }
+}
+
+/* Member strip: wrap the stage badges below the name on narrow phones. */
+.tp-article .member-strip { flex-wrap: wrap; gap: 6px 12px; }
+.tp-article .member-strip > * { min-width: 0; }
+.tp-article .member-right { flex-shrink: 1; }
+
+/* Module tabs are real links to the sibling topics. */
+.tp-article a.pill { color: inherit; text-decoration: none; }
+.tp-article a.pill:not(.active):hover { filter: brightness(0.97); }

@@ -1,0 +1,711 @@
+/* ==========================================================================
+   Closing "Ready to make your first shipment?" card.
+   One unit (--k) equals one pixel of the 1840px-wide reference card, so the copy,
+   illustration and ERS card keep the reference proportions at any width.
+   ========================================================================== */
+.cta-section {
+  --cta-ink: #07142b;
+  --cta-text: #5f6573;
+  --cta-teal: #0b7f6c;
+  --cta-eyebrow: #0e8a78;
+  --cta-card: #ffffff;
+  --cta-pill: #ecf4f8;
+  --cta-pill-ink: #555e79;
+  --cta-track: #e9f1f6;
+
+  padding: clamp(64px, 7vw, 104px) 0 clamp(72px, 9vw, 120px);
+  background: var(--bg);
+}
+
+:root[data-theme='dark'] .cta-section {
+  --cta-ink: var(--ink);
+  --cta-text: var(--muted);
+  --cta-teal: var(--teal-ink);
+  --cta-eyebrow: var(--teal-ink);
+  --cta-card: var(--bg-elev);
+  --cta-pill: rgba(94, 234, 212, 0.08);
+  --cta-pill-ink: var(--muted);
+  --cta-track: var(--line);
+}
+
+.cta-section .cta-container {
+  width: min(1400px, 100% - 2 * clamp(16px, 4vw, 60px));
+  container-type: inline-size;
+}
+
+.cta-card {
+  --k: calc(100cqw / 1840);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: calc(600 * var(--k)) minmax(0, 1fr) calc(640 * var(--k));
+  align-items: center;
+  min-height: calc(566 * var(--k));
+  padding: calc(60 * var(--k)) calc(40 * var(--k)) calc(54 * var(--k)) calc(66 * var(--k));
+  border-radius: max(20px, calc(34 * var(--k)));
+  background: var(--cta-card);
+  color: var(--cta-ink);
+  box-shadow: 0 2px 6px rgba(15, 60, 60, 0.04), 0 30px 70px -40px rgba(15, 80, 80, 0.3);
+}
+
+/* Soft teal bands in the top-right and bottom-right corners */
+.cta-card::before,
+.cta-card::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.cta-card::before {
+  top: 0;
+  left: calc(1340 * var(--k));
+  width: calc(500 * var(--k));
+  height: calc(200 * var(--k));
+  background: linear-gradient(115deg, rgba(190, 234, 230, 0.95) 0%, rgba(222, 246, 243, 0.8) 55%, rgba(240, 252, 250, 0) 100%);
+  clip-path: polygon(38% 0, 96% 0, 60% 100%, 2% 100%);
+}
+
+.cta-card::after {
+  right: 0;
+  bottom: 0;
+  width: calc(250 * var(--k));
+  height: calc(110 * var(--k));
+  background: linear-gradient(135deg, rgba(214, 243, 240, 0.9), rgba(190, 236, 231, 0.95));
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+
+:root[data-theme='dark'] .cta-card::before,
+:root[data-theme='dark'] .cta-card::after {
+  opacity: 0.12;
+}
+
+/* ---------- Copy ---------- */
+.cta-copy {
+  position: relative;
+  z-index: 3;
+}
+
+.cta-eyebrow {
+  display: block;
+  font-size: max(11px, calc(15 * var(--k)));
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--cta-eyebrow);
+}
+
+.cta-copy h2 {
+  margin: calc(22 * var(--k)) 0 0;
+  font-family: var(--font-display);
+  font-size: max(30px, calc(64 * var(--k)));
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: var(--cta-ink);
+}
+
+.cta-copy h2 em {
+  font-style: italic;
+  color: var(--cta-teal);
+}
+
+.cta-lead {
+  max-width: calc(560 * var(--k));
+  margin: calc(16 * var(--k)) 0 0;
+  font-size: max(15px, calc(22 * var(--k)));
+  line-height: 1.5;
+  color: var(--cta-text);
+}
+
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(16 * var(--k)) calc(24 * var(--k));
+  margin-top: calc(38 * var(--k));
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(18 * var(--k));
+  min-height: max(46px, calc(70 * var(--k)));
+  padding: 0 max(22px, calc(38 * var(--k)));
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #038a7a 0%, #02756a 100%);
+  color: #ffffff;
+  font-size: max(15px, calc(22 * var(--k)));
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 0 calc(16 * var(--k)) calc(30 * var(--k)) calc(-14 * var(--k)) rgba(2, 121, 108, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+
+.cta-btn-arrow {
+  flex: none;
+  width: max(18px, calc(24 * var(--k)));
+  height: max(18px, calc(24 * var(--k)));
+  transition: transform 0.2s var(--ease-out);
+}
+
+.cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 calc(20 * var(--k)) calc(34 * var(--k)) calc(-14 * var(--k)) rgba(2, 121, 108, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.cta-btn:hover .cta-btn-arrow {
+  transform: translateX(3px);
+}
+
+.cta-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--cta-text);
+  cursor: pointer;
+}
+
+.cta-reset:hover {
+  color: var(--cta-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cta-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--teal-ink);
+  font-weight: 700;
+}
+
+/* ---------- Illustration ---------- */
+.cta-art {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  justify-self: start;
+  width: calc(710 * var(--k));
+  max-width: none;
+  height: auto;
+  margin: 0 0 calc(-54 * var(--k)) calc(-201 * var(--k));
+}
+
+/* ==========================================================================
+   ERS Assessment Card (Replaces old Progress Panel)
+   ========================================================================== */
+.cta-ers-card {
+  position: relative;
+  z-index: 2;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 24px 28px;
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 24px;
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.02);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s ease;
+  user-select: none;
+}
+
+:root[data-theme='dark'] .cta-ers-card {
+  background: #0f2228;
+  border-color: #1b3339;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.4);
+}
+
+.cta-ers-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.1), 0 4px 10px rgba(15, 23, 42, 0.04);
+}
+
+/* 1. Header */
+.cta-ers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cta-ers-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cta-ers-brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #10b981;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.3);
+}
+
+.cta-ers-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-ers-title {
+  margin: 0;
+  font-family: var(--font-body), system-ui, sans-serif !important;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+:root[data-theme='dark'] .cta-ers-title {
+  color: #f1f5f9;
+}
+
+.cta-ers-subtitle {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+:root[data-theme='dark'] .cta-ers-subtitle {
+  color: #94a3b8;
+}
+
+.cta-ers-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e6f9f3;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+:root[data-theme='dark'] .cta-ers-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.cta-ers-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* 2. Body */
+.cta-ers-body {
+  display: grid;
+  grid-template-columns: 140px 1px 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 4px 0;
+}
+
+/* Left Gauge */
+.cta-ers-gauge-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cta-ers-gauge-wrap {
+  position: relative;
+  width: 138px;
+  height: 138px;
+  display: grid;
+  place-items: center;
+}
+
+.cta-ers-gauge-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.cta-ers-gauge-track {
+  fill: none;
+  stroke: #e8eff5;
+  stroke-width: 9;
+}
+
+:root[data-theme='dark'] .cta-ers-gauge-track {
+  stroke: #1b3339;
+}
+
+.cta-ers-gauge-fill {
+  fill: none;
+  stroke: #10b981;
+  stroke-width: 9;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.cta-ers-gauge-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.cta-ers-sprout-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e6f9f3;
+  display: grid;
+  place-items: center;
+}
+
+:root[data-theme='dark'] .cta-ers-sprout-badge {
+  background: rgba(16, 185, 129, 0.16);
+}
+
+.cta-ers-gauge-status {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+:root[data-theme='dark'] .cta-ers-gauge-status {
+  color: #f1f5f9;
+}
+
+/* Divider */
+.cta-ers-divider {
+  width: 1px;
+  height: 100%;
+  min-height: 124px;
+  background: #eef2f6;
+}
+
+:root[data-theme='dark'] .cta-ers-divider {
+  background: #1b3339;
+}
+
+/* Right Column Info */
+.cta-ers-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.cta-ers-status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cta-ers-status-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cta-ers-pulse-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e6f9f3;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+:root[data-theme='dark'] .cta-ers-pulse-icon {
+  background: rgba(16, 185, 129, 0.16);
+}
+
+.cta-ers-status-labels {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-ers-status-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.cta-ers-status-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1e3a8a;
+  line-height: 1.25;
+}
+
+:root[data-theme='dark'] .cta-ers-status-value {
+  color: #60a5fa;
+}
+
+.cta-ers-status-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #e8eff5;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+:root[data-theme='dark'] .cta-ers-status-bar {
+  background: #1b3339;
+}
+
+.cta-ers-status-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #10b981;
+  transition: width 0.6s ease;
+}
+
+.cta-ers-status-desc {
+  font-size: 12.5px;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+:root[data-theme='dark'] .cta-ers-status-desc {
+  color: #94a3b8;
+}
+
+/* Begin Row */
+.cta-ers-begin-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cta-ers-cone-icon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.cta-ers-cone-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fef3c7;
+  display: grid;
+  place-items: center;
+}
+
+.cta-ers-cone-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.cta-ers-cone-label {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  text-align: center;
+}
+
+:root[data-theme='dark'] .cta-ers-cone-label {
+  color: #94a3b8;
+}
+
+.cta-ers-begin-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-ers-begin-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+:root[data-theme='dark'] .cta-ers-begin-title {
+  color: #f1f5f9;
+}
+
+.cta-ers-begin-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+:root[data-theme='dark'] .cta-ers-begin-desc {
+  color: #94a3b8;
+}
+
+/* 3. Bottom Button */
+.cta-ers-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(79, 70, 229, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-ers-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px -6px rgba(79, 70, 229, 0.6);
+}
+
+.cta-ers-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.cta-ers-doc-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.cta-ers-btn-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-ers-btn-text strong {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.cta-ers-btn-text span {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.cta-ers-arrow-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.cta-ers-action-btn:hover .cta-ers-arrow-circle {
+  transform: translateX(2px);
+}
+
+/* ---------- Responsive container queries ---------- */
+@container (max-width: 1100px) {
+  .cta-card {
+    --k: 0.62px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    min-height: 0;
+    padding: 44px 36px 36px;
+  }
+
+  .cta-card::after {
+    display: none;
+  }
+
+  .cta-lead {
+    max-width: 52ch;
+  }
+
+  .cta-art {
+    align-self: auto;
+    justify-self: center;
+    width: min(100%, 520px);
+    margin: 0;
+  }
+
+  .cta-ers-card {
+    align-self: auto;
+    max-width: 620px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@container (max-width: 560px) {
+  .cta-card {
+    gap: 24px;
+    padding: 32px 20px 22px;
+  }
+
+  .cta-btn {
+    white-space: normal;
+    text-align: left;
+  }
+
+  .cta-ers-card {
+    padding: 20px 16px;
+  }
+
+  .cta-ers-body {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cta-ers-divider {
+    display: none;
+  }
+
+  .cta-ers-gauge-col {
+    padding-bottom: 8px;
+  }
+}

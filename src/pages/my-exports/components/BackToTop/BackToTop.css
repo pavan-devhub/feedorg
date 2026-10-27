@@ -1,0 +1,28 @@
+.to-top {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 40;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--teal-grad);
+  color: var(--teal-deep);
+  box-shadow: 0 12px 26px -12px rgba(20, 170, 150, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(0.9);
+  transition: opacity 0.25s, transform 0.3s var(--ease-out), visibility 0.25s;
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.to-top:hover {
+  transform: translateY(-2px);
+}

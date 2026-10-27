@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Freight Cost Calculator (రవాణా ఖర్చుల లెక్క) · Module 09 – Transport &amp; Shipping | My Exports</title>
+  <meta name="description" content="Module 09 · Transport &amp; Shipping — Freight Cost Calculator (రవాణా ఖర్చుల లెక్క). Topic 9.7 of the My Exports step-by-step export learning path by FEED MSCS LTD.">
+  <meta name="theme-color" content="#f3f7f5">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="../../assets/css/layouts/topic.css">
+  <link rel="stylesheet" href="../../assets/css/topics/09/freight.css">
+</head>
+<body class="tp-body tp-phase-3" data-root="../../" data-topic-path="modules/09/freight.html">
+  <a class="tp-skip-link" href="#tp-main" lang="en">Skip to content</a>
+
+  <header class="tp-topbar" lang="en">
+    <div class="tp-container tp-topbar__inner">
+      <a class="tp-brand" href="../../index.html" aria-label="My Exports — program home">
+        <span class="tp-brand__logo"><img src="../../assets/images/dashboard-logo.avif" alt="" width="32" height="32"></span>
+        <span class="tp-brand__text">
+          <span class="tp-brand__title">My <em>Exports</em></span>
+          <span class="tp-brand__tag">FEED MSCS LTD</span>
+        </span>
+      </a>
+      <span class="tp-topbar__divider" aria-hidden="true"></span>
+      <nav class="tp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../index.html#tree-module-9">Module 09 · Transport &amp; Shipping</a></li>
+          <li><span aria-current="page">Freight</span></li>
+        </ol>
+      </nav>
+      <div class="tp-topbar__actions">
+        <button type="button" class="tp-btn tp-btn--ghost tp-toc-toggle" aria-controls="tp-sidebar" aria-expanded="false" aria-label="Program contents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><span class="tp-btn__label">Contents</span>
+        </button>
+        <a class="tp-btn tp-btn--primary" href="../../index.html#tree" aria-label="All modules">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tp-btn__label">All modules</span>
+        </a>
+      </div>
+    </div>
+    <div class="tp-readbar" aria-hidden="true"><span></span></div>
+  </header>
+
+  <div class="tp-container tp-layout">
+    <aside class="tp-sidebar" id="tp-sidebar" aria-label="Program contents" tabindex="-1" lang="en">
+      <div class="tp-sidebar__head">
+        <p class="tp-sidebar__title">Program contents</p>
+        <button type="button" class="tp-btn tp-btn--ghost tp-btn--icon tp-sidebar__close" aria-label="Close contents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="tp-progress-card">
+        <div class="tp-ring">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><circle class="tp-ring__track" cx="28" cy="28" r="24"/><circle class="tp-ring__value" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+          <span class="tp-ring__label">0%</span>
+        </div>
+        <div>
+          <p class="tp-progress-card__title">Your progress</p>
+          <p class="tp-progress-card__meta">Track topics as you learn</p>
+        </div>
+      </div>
+      <nav class="tp-toc" id="tp-toc" aria-label="Program modules"></nav>
+    </aside>
+
+    <main class="tp-main" id="tp-main" tabindex="-1">
+      <header class="tp-hero">
+        <div class="tp-hero__eyebrow" lang="en">
+          <a class="tp-chip tp-chip--accent" href="../../index.html#tree-phase-3">Phase 03 · Documents &amp; Delivery</a>
+          <span class="tp-chip">Module 09 · Transport &amp; Shipping</span>
+        </div>
+        <h1 class="tp-hero__title" id="tp-title" lang="en">Freight Cost Calculator</h1>
+        <p class="tp-hero__subtitle">రవాణా ఖర్చుల లెక్క</p>
+        <div class="tp-hero__footer" lang="en">
+          <div class="tp-steps">
+            <p class="tp-steps__label">Topic <strong>9.7</strong> · 7 of 12 in this module</p>
+            <ol class="tp-steps__list">
+              <li><a class="tp-steps__item" href="kpct.html" data-topic-id="9.1" title="9.1 KPCT" aria-label="Topic 9.1 KPCT">1</a></li>
+              <li><a class="tp-steps__item" href="vizag.html" data-topic-id="9.2" title="9.2 Vizag Port" aria-label="Topic 9.2 Vizag Port">2</a></li>
+              <li><a class="tp-steps__item" href="container.html" data-topic-id="9.3" title="9.3 Container" aria-label="Topic 9.3 Container">3</a></li>
+              <li><a class="tp-steps__item" href="port-guide.html" data-topic-id="9.4" title="9.4 Port Guide" aria-label="Topic 9.4 Port Guide">4</a></li>
+              <li><a class="tp-steps__item" href="sb-leo.html" data-topic-id="9.5" title="9.5 Shipping Bill &amp; LEO" aria-label="Topic 9.5 Shipping Bill &amp; LEO">5</a></li>
+              <li><a class="tp-steps__item" href="cha.html" data-topic-id="9.6" title="9.6 CHA" aria-label="Topic 9.6 CHA">6</a></li>
+              <li><span class="tp-steps__item" aria-current="page" data-topic-id="9.7" title="9.7 Freight">7</span></li>
+              <li><a class="tp-steps__item" href="vessel.html" data-topic-id="9.8" title="9.8 Vessel" aria-label="Topic 9.8 Vessel">8</a></li>
+              <li><a class="tp-steps__item" href="air-cargo.html" data-topic-id="9.9" title="9.9 Air Cargo" aria-label="Topic 9.9 Air Cargo">9</a></li>
+              <li><a class="tp-steps__item" href="cold-chain.html" data-topic-id="9.10" title="9.10 Cold Chain" aria-label="Topic 9.10 Cold Chain">10</a></li>
+              <li><a class="tp-steps__item" href="demurrage.html" data-topic-id="9.11" title="9.11 Demurrage" aria-label="Topic 9.11 Demurrage">11</a></li>
+              <li><a class="tp-steps__item" href="sagar-setu.html" data-topic-id="9.12" title="9.12 Sagar Setu" aria-label="Topic 9.12 Sagar Setu">12</a></li>
+            </ol>
+          </div>
+          <button type="button" class="tp-complete" aria-pressed="false">
+            <span class="tp-complete__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="tp-complete__label">Mark as complete</span>
+          </button>
+        </div>
+        <span class="tp-hero__watermark" aria-hidden="true">09</span>
+      </header>
+
+      <article class="tp-article" aria-labelledby="tp-title">
+<div class="ph"><div class="web-flow scroll-content"><div class="consign-card expandable dark-toggle">
+<div class="consign-tag">📦 డిసెంబర్ 2026 మొదటి రవాణా — రామయ్య గారు</div>
+<div class="consign-title">రవాణా వివరాలు</div>
+<div class="consign-grid">
+<div class="cg"><div class="cg-label">పంట</div><div class="cg-val">అరటి Grand Naine</div></div>
+<div class="cg"><div class="cg-label">బరువు</div><div class="cg-val gold">20 MT (20,000 kg)</div></div>
+<div class="cg"><div class="cg-label">కంటైనర్</div><div class="cg-val">20ft Reefer (20RF)</div></div>
+<div class="cg"><div class="cg-label">మార్గం</div><div class="cg-val">KPCT → Jebel Ali</div></div>
+<div class="cg"><div class="cg-label">Carrier</div><div class="cg-val">Maersk Line</div></div>
+<div class="cg"><div class="cg-label">ప్రయాణ కాలం</div><div class="cg-val gold">7-8 రోజులు</div></div>
+<div class="cg"><div class="cg-label">HS Code</div><div class="cg-val">0803 90 10</div></div>
+<div class="cg"><div class="cg-label">Incoterms</div><div class="cg-val">FOB KPCT</div></div>
+</div>
+</div><div class="fob-banner expandable">
+<div class="fob-label">మొత్తం FOB విలువ (రైతు + FEED కలిసి)</div>
+<div class="fob-amount">₹34,56,000</div>
+<div class="fob-sub">SB 8274651 / INKRI1 · BL MAEU2026DEC001847</div>
+<div class="fob-per">₹1,728/kg · $41,638 USD (₹83/$ rate)</div>
+</div><div class="receipt expandable dark-toggle">
+<div class="receipt-header">
+<div>
+<div class="receipt-header-text">📋 మొత్తం రవాణా ఖర్చుల వివరణ</div>
+<div class="receipt-sub">Anantapur పొలం → Jebel Ali Buyer వరకు అన్ని ఖర్చులు</div>
+</div>
+</div>
+<!-- విభాగం 1: పొలం నుండి పోర్ట్ -->
+<div class="receipt-section">
+<div class="rs-title"><span class="rs-title-icon">🚛</span>విభాగం 1 — పొలం నుండి పోర్ట్ వరకు</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">గొరంట్ల TC-6 Pre-cooling ఖర్చు</div>
+<div class="li-detail">38 km · 20 MT Banana · Forced Air 13-14°C · 4-6 గంటలు</div>
+</div>
+<div class="li-amount">₹18,000</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Reefer Truck అద్దె (KPCT కి)</div>
+<div class="li-detail">180 km · 3.5 గంటలు · Coldstar/empanelled truck · GPS tracked</div>
+</div>
+<div class="li-amount">₹15,000</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Packing + Cartons + ISPM-15 Pallets</div>
+<div class="li-detail">Corrugated cartons 5 kg each · HT wooden pallets · IPPC mark</div>
+</div>
+<div class="li-amount">₹25,000</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Bluetooth Datalogger</div>
+<div class="li-detail">15-min interval · BLE 4.0 · Temperature record entire voyage</div>
+</div>
+<div class="li-amount">₹3,500</div>
+</div>
+<div class="subtotal-row">
+<div class="subtotal-label">సబ్-టోటల్ 1</div>
+<div class="subtotal-amount">₹61,500</div>
+</div>
+</div>
+<!-- విభాగం 2: పోర్ట్ + కస్టమ్స్ -->
+<div class="receipt-section">
+<div class="rs-title"><span class="rs-title-icon">🏗️</span>విభాగం 2 — పోర్ట్ + కస్టమ్స్ ఖర్చులు</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">KPCT Terminal Handling Charge (THC)</div>
+<div class="li-detail">Container terminal loading · 20RF reefer · INKRI1</div>
+</div>
+<div class="li-amount">₹8,500</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Reefer Plug ఖర్చు</div>
+<div class="li-detail">₹600/రోజు × 2 రోజులు · 13°C maintain · KPCT reefer terminal</div>
+</div>
+<div class="li-amount">₹1,200</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">CHA కమీషన్</div>
+<div class="li-detail">0.75% × ₹34,56,000 FOB · SB filing + LEO + EGM · ONOP included</div>
+</div>
+<div class="li-amount">₹25,920</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">DPPQS Phytosanitary Certificate</div>
+<div class="li-detail">Plant Protection Officer fee · Issue at KPCT stuffing · 21-day valid</div>
+</div>
+<div class="li-amount">₹2,500</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">PHRT Certificate (Eureka Analytical)</div>
+<div class="li-detail">EAG-BAN-2026-0184 · NABL lab · Already paid (pre-stuffing)</div>
+</div>
+<div class="li-amount">₹4,000</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Marine Insurance (ICC-A)</div>
+<div class="li-detail">0.25% × ₹34,56,000 · IRMC cover · ECGC Whole Turnover + Marine</div>
+</div>
+<div class="li-amount">₹8,640</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Miscellaneous Port Charges</div>
+<div class="li-detail">Gate entry · Documentation · Seal charges · Port security</div>
+</div>
+<div class="li-amount">₹3,000</div>
+</div>
+<div class="subtotal-row">
+<div class="subtotal-label">సబ్-టోటల్ 2</div>
+<div class="subtotal-amount">₹53,760</div>
+</div>
+</div>
+<!-- విభాగం 3: సముద్ర సరుకు రవాణా -->
+<div class="receipt-section">
+<div class="rs-title"><span class="rs-title-icon">🚢</span>విభాగం 3 — సముద్ర సరుకు రవాణా (Ocean Freight)</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Ocean Freight — KPCT → Jebel Ali</div>
+<div class="li-detail">20RF Reefer · Maersk · 7-8 రోజులు · Annual contract rate</div>
+</div>
+<div class="li-amount">₹90,000</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Reefer Premium (Dry కంటే అదనం)</div>
+<div class="li-detail">Reefer container 50-100% premium · Temperature control power cost</div>
+</div>
+<div class="li-amount">₹4,500</div>
+</div>
+<div class="line-item">
+<div class="li-left">
+<div class="li-name">Bill of Lading (BL) ఇజారా ఖర్చు</div>
+<div class="li-detail">BL MAEU2026DEC001847 · DHL Express document courier to bank</div>
+</div>
+<div class="li-amount">₹2,500</div>
+</div>
+<div class="subtotal-row">
+<div class="subtotal-label">సబ్-టోటల్ 3</div>
+<div class="subtotal-amount">₹97,000</div>
+</div>
+</div>
+<!-- మొత్తం రవాణా ఖర్చు -->
+<div class="grand-total">
+<div>
+<div class="gt-label">మొత్తం రవాణా ఖర్చు (20 MT)</div>
+<div class="gt-percent">FOB ₹34,56,000 లో 6.2% మాత్రమే</div>
+</div>
+<div style="text-align:right;">
+<div class="gt-amount">₹2,12,260</div>
+<div class="gt-percent">₹10.6/kg</div>
+</div>
+</div>
+</div><div class="farmer-net expandable dark-toggle">
+<div class="fn-title">🌾 రామయ్య గారి నికర ఆదాయం — FOB లో రైతు వాటా</div>
+<div class="fn-big">₹32,14,080</div>
+<div class="fn-rule">93% FOB నియమం — ఎప్పుడూ మారదు</div>
+<div class="fn-breakdown">
+<div class="fn-item">
+<div class="fn-item-label">మొత్తం FOB</div>
+<div class="fn-item-val">₹34,56,000</div>
+</div>
+<div class="fn-item">
+<div class="fn-item-label">FEED సేవ రుసుం (5%)</div>
+<div class="fn-item-val yellow">₹1,72,800</div>
+</div>
+<div class="fn-item">
+<div class="fn-item-label">రైతు నికర (93%)</div>
+<div class="fn-item-val" style="color:#FFCA28;font-size:calc(13px * var(--tp-type-scale, 1));">₹32,14,080</div>
+</div>
+<div class="fn-item">
+<div class="fn-item-label">RoDTEP scrip అదనం</div>
+<div class="fn-item-val green">+ ₹17,280</div>
+</div>
+<div class="fn-item">
+<div class="fn-item-label">మండి (వ్యవసాయ మార్కెట్) రేటు (₹12/kg)</div>
+<div class="fn-item-val" style="color:#EF9A9A;">₹2,40,000</div>
+</div>
+<div class="fn-item">
+<div class="fn-item-label">ఎగుమతి ద్వారా అదనపు ఆదాయం</div>
+<div class="fn-item-val yellow">+₹29,74,080</div>
+</div>
+</div>
+</div><div class="sec expandable">
+<div class="sec-head sh-navy">
+<span class="sec-head-icon">📊</span>
+<div class="sec-head-text">కిలో వారీ ఖర్చు లెక్క — 20,000 kg కి</div>
+</div>
+<div class="sec-body">
+<table class="per-kg-tbl">
+<tr>
+<th>ఖర్చు అంశం</th>
+<th>మొత్తం</th>
+<th>కిలోకి</th>
+<th>FOB %</th>
+</tr>
+<tr>
+<td class="pkg-label">పొలం → పోర్ట్ ఖర్చు</td>
+<td class="pkg-val">₹61,500</td>
+<td class="pkg-val">₹3.1</td>
+<td class="pkg-pct">1.8%</td>
+</tr>
+<tr>
+<td class="pkg-label">పోర్ట్ + కస్టమ్స్</td>
+<td class="pkg-val">₹53,760</td>
+<td class="pkg-val">₹2.7</td>
+<td class="pkg-pct">1.6%</td>
+</tr>
+<tr>
+<td class="pkg-label">సముద్ర సరుకు రవాణా</td>
+<td class="pkg-val">₹97,000</td>
+<td class="pkg-val">₹4.9</td>
+<td class="pkg-pct">2.8%</td>
+</tr>
+<tr class="total-row">
+<td>మొత్తం రవాణా ఖర్చు</td>
+<td>₹2,12,260</td>
+<td>₹10.6</td>
+<td>6.2%</td>
+</tr>
+<tr>
+<td class="pkg-label">FOB విలువ (మొత్తం)</td>
+<td class="pkg-val">₹34,56,000</td>
+<td class="pkg-val">₹172.8</td>
+<td class="pkg-pct">100%</td>
+</tr>
+<tr>
+<td class="pkg-label">రైతు నికర (93% FOB)</td>
+<td class="pkg-val" style="color:#1B5E20;">₹32,14,080</td>
+<td class="pkg-val" style="color:#1B5E20;">₹160.7</td>
+<td class="pkg-pct">93%</td>
+</tr>
+</table>
+<div class="note-box">
+      💡 మండి (వ్యవసాయ మార్కెట్) రేటు: ₹12-15/kg = ₹2.4-3 లక్షలు. ఎగుమతి ద్వారా: ₹160.7/kg = ₹32.14 లక్షలు. <strong>తేడా: ₹29.74 లక్షలు అదనపు ఆదాయం</strong> ఒక్క రవాణాలోనే!
+    </div>
+</div>
+</div><div class="sec expandable">
+<div class="sec-head sh-blue">
+<span class="sec-head-icon">🗺️</span>
+<div class="sec-head-text">మార్గ పోలిక — KPCT vs Chennai</div>
+</div>
+<div class="sec-body">
+<div class="route-compare">
+<div class="route-card rc-active">
+<div class="rc-head">
+<div class="rc-route">🍌 KPCT → Jebel Ali </div>
+<div class="rc-badge">✅ FEED ఎంపిక</div>
+</div>
+<div class="rc-details">
+<div class="rc-detail">
+<div class="rc-detail-val">180 km</div>
+<div class="rc-detail-label">రోడ్ దూరం</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val">₹15,000</div>
+<div class="rc-detail-label">రోడ్ రవాణా</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val">₹90,000</div>
+<div class="rc-detail-label">సముద్ర రవాణా</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val">7-8 రోజులు</div>
+<div class="rc-detail-label">ప్రయాణ కాలం</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val" style="color:#1B5E20;">₹2,12,260</div>
+<div class="rc-detail-label">మొత్తం ఖర్చు</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val" style="color:#1B5E20;">6.2% FOB</div>
+<div class="rc-detail-label">FOB శాతం</div>
+</div>
+</div>
+</div>
+<div class="route-card rc-alt">
+<div class="rc-head">
+<div class="rc-route">Chennai → Jebel Ali </div>
+</div>
+<div class="rc-details">
+<div class="rc-detail">
+<div class="rc-detail-val">280 km</div>
+<div class="rc-detail-label">రోడ్ దూరం</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val">₹22,000</div>
+<div class="rc-detail-label">రోడ్ రవాణా</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val">₹87,000</div>
+<div class="rc-detail-label">సముద్ర రవాణా</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val">8-10 రోజులు</div>
+<div class="rc-detail-label">ప్రయాణ కాలం</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val" style="color:#C62828;">₹2,19,000+</div>
+<div class="rc-detail-label">మొత్తం ఖర్చు</div>
+</div>
+<div class="rc-detail">
+<div class="rc-detail-val" style="color:#C62828;">+₹7,000</div>
+<div class="rc-detail-label">KPCT కంటే ఎక్కువ</div>
+</div>
+</div>
+</div>
+</div>
+<div class="note-box" style="margin-top:8px;">
+<strong>KPCT ఎందుకు?</strong><br/>
+      అనంతపురానికి అన్నింటికంటే దగ్గరగా ఉండటం (180 కి.మీ.), రీఫర్ టెర్మినల్ సదుపాయం, జెబెల్ అలీకి 7–8 రోజుల్లో రవాణా (అతి తక్కువ ప్రయాణ సమయం), అదానీ సంస్థ సమర్థవంతమైన కార్యకలాపాలు. చెన్నై పోర్టుతో పోలిస్తే ₹7,000 కంటే ఎక్కువ ఖర్చు ఆదా.
+      <br/><br/><strong>దీని అర్థం:</strong> లాజిస్టిక్స్ ఖర్చులను తగ్గించుకోవడానికి మన ఉత్పత్తి కేంద్రానికి దగ్గరగా ఉన్న పోర్టును ఎంచుకోవాలి. అలాగే, ఆ పోర్టులో మన ఉత్పత్తుల ఎగుమతులకు అవసరమైన కనీస సదుపాయాలు ఉన్నాయో లేదో కూడా పరిశీలించాలి.
+    </div>
+</div>
+</div><div class="sec expandable">
+<div class="sec-head sh-orange">
+<span class="sec-head-icon">📈</span>
+<div class="sec-head-text">Spot Rate vs Annual Contract Rate — తేడా తెలుసా?</div>
+</div>
+<div class="sec-body">
+<div class="rate-compare">
+<div class="rate-card rc-spot">
+<div class="rc-label">⚠️ Spot Rate (మార్కెట్ రేటు)</div>
+<div class="rc-amt">$1,400</div>
+<div class="rc-note">రోజువారీ ధర. పండుగల సీజన్‌లో ₹1.20 లక్షలు దాటవచ్చు. అంచనా వేయడం కష్టం.</div>
+</div>
+<div class="rate-card rc-contract">
+<div class="rc-label">✅ Annual Contract Rate</div>
+<div class="rc-amt">$1,083</div>
+<div class="rc-note">మార్స్క్‌తో 6 నెలల ఒప్పందం. స్థిరమైన ధర. బడ్జెట్ ప్రణాళిక సులభం.</div>
+</div>
+</div>
+<div class="rc-saving">
+<div class="rc-saving-amt">$317/container saving</div>
+<div class="rc-saving-label">≈ ₹26,300 తక్కువ · 12 containers = ₹3.16 లక్షలు saving</div>
+</div>
+<div class="warn-box">
+      ⚠️ <strong>Red Sea / Houthi disruption:</strong> 2024-26 లో Suez Canal route unsafe. Maersk Cape of Good Hope మీదుగా → EU route 30-35 రోజులు (అదనపు 8-12 రోజులు). Gulf route (Jebel Ali) సరాసరి తక్కువగా affected. LC లో 7-10 రోజుల buffer తప్పనిసరి.
+    </div>
+</div>
+</div><div class="red-sea-card expandable">
+<div class="rs-title-box">🌊 Red Sea పరిస్థితి — రైతు తెలుసుకోవాలి</div>
+<div class="rs-row"><span class="rs-key">ప్రభావిత మార్గం</span><span class="rs-val">India → EU (Rotterdam)</span></div>
+<div class="rs-row"><span class="rs-key">Suez Canal route time</span><span class="rs-val">22-28 రోజులు (normal)</span></div>
+<div class="rs-row"><span class="rs-key">Cape of Good Hope route</span><span class="rs-val">30-35 రోజులు (+8-12 days)</span></div>
+<div class="rs-row"><span class="rs-key">అదనపు freight cost</span><span class="rs-val">$200-500/container</span></div>
+<div class="rs-row"><span class="rs-key">Gulf route (Jebel Ali) impact</span><span class="rs-val">తక్కువ impact ✅</span></div>
+<div class="rs-row"><span class="rs-key">రామయ్య గారి route</span><span class="rs-val">KPCT→Jebel Ali 7-8 రోజులు ✅ safe</span></div>
+</div><div class="savings-panel expandable">
+<div class="sp-title">💰 FEED తో రవాణా పొదుపు అవకాశాలు</div>
+<div class="sp-row">
+<div class="sp-icon">🔗</div>
+<div class="sp-content">
+<div class="sp-name">ONOP — ఒకే documentation, 3 పోర్టులు</div>
+<div class="sp-desc">CHA ఖర్చు ₹30K నుండి ₹10K కి తగ్గింపు</div>
+</div>
+<div class="sp-val">₹20,000</div>
+</div>
+<div class="sp-row">
+<div class="sp-icon">📜</div>
+<div class="sp-content">
+<div class="sp-name">Annual Contract vs Spot Rate</div>
+<div class="sp-desc">Maersk 6-month contract rate vs market</div>
+</div>
+<div class="sp-val">₹26,300</div>
+</div>
+<div class="sp-row">
+<div class="sp-icon">🌊</div>
+<div class="sp-content">
+<div class="sp-name">SAGAR SETU (Dec 2026 తర్వాత)</div>
+<div class="sp-desc">Port time 2-3 రోజులు తగ్గింపు · Banana నాణ్యత</div>
+</div>
+<div class="sp-val">₹17,500</div>
+</div>
+<div class="sp-row">
+<div class="sp-icon">🍌</div>
+<div class="sp-content">
+<div class="sp-name">RoDTEP scrip (auto)</div>
+<div class="sp-desc">0.5% × ₹34,56,000 FOB · EGM తర్వాత auto</div>
+</div>
+<div class="sp-val">₹17,280</div>
+</div>
+<div style="background:#FFFFFF;border-radius:8px;padding:10px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+<div style="font-size:calc(12px * var(--tp-type-scale, 1));font-weight:700;color:#1B5E20;">మొత్తం పొదుపు </div>
+<div style="font-size:calc(18px * var(--tp-type-scale, 1));font-weight:800;color:#1B5E20;font-family:'Noto Sans',sans-serif;">₹81,080</div>
+</div>
+</div><div class="sec expandable">
+<div class="sec-head sh-red">
+<span class="sec-head-icon">⚠️</span>
+<div class="sec-head-text">సాధారణ తప్పులు — జాగ్రత్తలు</div>
+</div>
+<div class="sec-body">
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">Spot Rate తో book చేయడం:</span> Annual contract లేకుండా market spot rate కి book చేస్తే — సీజన్ లో freight ₹1.2 లక్షలు పెరుగుతుంది. Maersk/MSC తో 6-నెలల contract = ₹26,300 saving per container.</div>
+</div>
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">Reefer premium budget లేకుండా:</span> Dry container rate కి plan చేసి Reefer premium మర్చిపోతే — అదనపు ₹4,500 surprise. Budget లో Reefer premium 50-100% అదనంగా plan చేయాలి.</div>
+</div>
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">Red Sea buffer లేకపోవడం:</span> EU route LC లో 21-day shipment window తీసుకుంటే — Red Sea disruption తో vessel 10+ రోజులు late అయి LC expire. LC లో minimum 30-day window + 7-10 రోజుల buffer తప్పనిసరి.</div>
+</div>
+<div class="mistake-row">
+<div class="mistake-icon">❌</div>
+<div class="mistake-text"><span class="mistake-bold">RoDTEP claim మర్చిపోవడం:</span> CHA SB filing లో "RoDTEP=Y" declare చేయడం LEO కి ముందు — miss అయితే ₹17,280 శాశ్వతంగా పోతుంది. FEED pre-filing checklist తప్పనిసరి.</div>
+</div>
+</div>
+</div><div class="faq-wrap">
+<div class="faq-title">❓ తరచు అడిగే ప్రశ్నలు</div>
+<div class="faq-item">
+<div class="faq-q">ప్ర: Ocean Freight buyer చెల్లించాలా రైతు చెల్లించాలా?</div>
+<div class="faq-a">జ: FOB Incoterms ప్రకారం — KPCT gate వరకు రైతు (FEED ద్వారా) బాధ్యత. KPCT నుండి Jebel Ali వరకు ocean freight = buyer చెల్లిస్తాడు. రైతు ఖర్చు: truck + packing + port charges + marine insurance మాత్రమే (₹2.12 లక్షలు). Buyer ocean freight: buyer account. ఇందువల్ల రైతు burden తక్కువ.</div>
+</div>
+<div class="faq-item">
+<div class="faq-q">ప్ర: మండి (వ్యవసాయ మార్కెట్) కంటే ఎగుమతిలో ఎంత ఎక్కువ వస్తుంది?</div>
+<div class="faq-a">జ: మండి (వ్యవసాయ మార్కెట్) లో 20 MT అరటి: ₹12/kg × 20,000 = ₹2,40,000. ఎగుమతి ద్వారా రైతు నికర: ₹32,14,080. తేడా: ₹29,74,080 అదనపు ఆదాయం ఒక్క రవాణాలోనే. ₹2.12 లక్షలు రవాణా ఖర్చు పోయినా — ₹29.74 లక్షలు అదనంగా వస్తుంది.</div>
+</div>
+</div><div class="kyj-strip">
+<div style="font-size:calc(24px * var(--tp-type-scale, 1));">💰</div>
+<div style="flex:1;">
+<div class="kyj-stage">KYJ FILR — ₹10:₹1 నిరూపణ</div>
+<div class="kyj-text">FEED ₹1 సేవ రుసుం తీసుకుంటే — రైతుకు ₹10+ వస్తుంది. రైతు నికర ₹32.14 లక్షలు vs FEED రుసుం ₹1.72 లక్షలు = FILR 18.7:1. మండి (వ్యవసాయ మార్కెట్) రేటు ₹2.4 లక్షలు కంటే 13× ఎక్కువ.</div>
+</div>
+</div></div></div>
+      </article>
+
+      <nav class="tp-pager" aria-label="Topic navigation" lang="en">
+        <a class="tp-pager__card tp-pager__card--prev" href="cha.html" rel="prev">
+          <span class="tp-pager__dir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</span>
+          <span class="tp-pager__title">CHA &amp; Freight Forwarder</span>
+          <span class="tp-pager__meta">Module 09 · Transport &amp; Shipping · Topic 9.6</span>
+        </a>
+        <a class="tp-pager__card tp-pager__card--next" href="vessel.html" rel="next">
+          <span class="tp-pager__dir">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          <span class="tp-pager__title">Vessel Schedule &amp; Sailing Calendar</span>
+          <span class="tp-pager__meta">Module 09 · Transport &amp; Shipping · Topic 9.8</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+
+  <button type="button" class="tp-totop" aria-label="Back to top" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="tp-scrim" aria-hidden="true"></div>
+
+  <script src="../../assets/js/data/curriculum.js"></script>
+  <script src="../../assets/js/topics/09/freight.js"></script>
+  <script src="../../assets/js/layouts/topic.js"></script>
+</body>
+</html>

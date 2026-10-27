@@ -1,0 +1,453 @@
+/* Topic 4.8 · Phytosanitary Certificate (Module 04 – Production & Quality)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;500;600;700;800;900&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 360px;
+    min-height: 800px;
+    background: #f5f5f5;
+    border-radius: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 8px #1a1a1a, 0 0 0 10px #333;
+    overflow: hidden;
+    position: relative;
+  }
+  :where(.tp-article) .body {
+    padding: 14px;
+  }
+  /* PHYTO HERO — Plant Gold to Botanical Green */
+  :where(.tp-article) .phyto-hero {
+    background: linear-gradient(135deg, #b8860b 0%, #8b7500 30%, #2d5a2d 70%, #1a4d2e 100%);
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  :where(.tp-article) .phyto-hero::before {
+    content: '🌱';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: calc(44px * var(--tp-type-scale, 1));
+    opacity: 0.3;
+  }
+  :where(.tp-article) .phyto-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  :where(.tp-article) .phyto-title {
+    font-size: calc(17px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .phyto-stat-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  :where(.tp-article) .phyto-stat {
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  :where(.tp-article) .phyto-stat-num {
+    font-size: calc(16px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  :where(.tp-article) .phyto-stat-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: rgba(255,255,255,0.9);
+    margin-top: 3px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  /* SECTION TITLE */
+  :where(.tp-article) .section-title {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 4px 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  :where(.tp-article) .section-title .count {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #888;
+    font-weight: 600;
+  }
+  /* WHAT IS PHYTO */
+  :where(.tp-article) .explain-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  :where(.tp-article) .explain-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #b8860b;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .explain-body {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    color: #333;
+    line-height: 1.7;
+  }
+  /* 7-STEP WORKFLOW */
+  :where(.tp-article) .workflow-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  :where(.tp-article) .step-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #e0e0e0;
+  }
+  :where(.tp-article) .step-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  :where(.tp-article) .step-badge {
+    width: 50px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  :where(.tp-article) .step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b8860b 0%, #2d5a2d 100%);
+    color: #fff;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 4px;
+  }
+  :where(.tp-article) .step-day {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #555;
+  }
+  :where(.tp-article) .step-content {
+    flex: 1;
+  }
+  :where(.tp-article) .step-title {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .step-desc {
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .step-actor {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #1a4d2e;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+  /* TIMELINE */
+  :where(.tp-article) .timeline-bar {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  :where(.tp-article) .timeline-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .timeline-strip {
+    position: relative;
+    height: 50px;
+    background: linear-gradient(90deg, #fff8e1 0%, #f1f8e9 50%, #e8f5e9 100%);
+    border-radius: 10px;
+  }
+  :where(.tp-article) .timeline-markers {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    height: 100%;
+    align-items: center;
+  }
+  :where(.tp-article) .tl-marker {
+    text-align: center;
+    flex: 1;
+  }
+  :where(.tp-article) .tl-day {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1a1a1a;
+  }
+  :where(.tp-article) .tl-event {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    margin-top: 2px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  :where(.tp-article) .tl-icon {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    margin-bottom: 2px;
+  }
+  /* COST/FEE STRIP */
+  :where(.tp-article) .fee-strip {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border: 2px solid #f9a825;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 8px;
+  }
+  :where(.tp-article) .fee-item {
+    text-align: center;
+    flex: 1;
+  }
+  :where(.tp-article) .fee-num {
+    font-size: calc(17px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    color: #e65100;
+    line-height: 1;
+  }
+  :where(.tp-article) .fee-lbl {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #5d4037;
+    margin-top: 3px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  /* ISPM-15 PALLET CARD */
+  :where(.tp-article) .ispm15-card {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border: 2px solid #1565c0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .ispm-title {
+    font-size: calc(12.5px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #0d47a1;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .ispm-body {
+    font-size: calc(11.5px * var(--tp-type-scale, 1));
+    color: #0d47a1;
+    line-height: 1.6;
+  }
+  :where(.tp-article) .ispm-mark {
+    background: rgba(255,255,255,0.8);
+    border: 2px dashed #1565c0;
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 8px;
+    text-align: center;
+    font-family: monospace;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #0d47a1;
+    font-weight: 800;
+  }
+  /* CROPS TABLE */
+  :where(.tp-article) .crops-table-card {
+    background: #fff;
+    border: 1px solid #c8e6c9;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+  :where(.tp-article) .crops-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+  }
+  :where(.tp-article) .crops-table th {
+    background: #e8f5e9;
+    color: #1a6b3c;
+    font-weight: 800;
+    text-align: left;
+    padding: 7px 8px;
+    border-bottom: 2px solid #1a6b3c;
+  }
+  :where(.tp-article) .crops-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .crops-table tr:last-child td {
+    border-bottom: none;
+  }
+  :where(.tp-article) .crops-table tr:nth-child(even) td {
+    background: #fafdfa;
+  }
+  /* CONTACT */
+  :where(.tp-article) .contact-card {
+    background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%);
+    border: 1px solid #689f38;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .contact-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #33691e;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .contact-row:last-child {
+    margin-bottom: 0;
+  }
+  :where(.tp-article) .contact-icon {
+    font-size: calc(14px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .contact-info {
+    flex: 1;
+  }
+  :where(.tp-article) .contact-name {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  :where(.tp-article) .contact-detail {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    line-height: 1.4;
+  }
+  /* APPLY CTA */
+  :where(.tp-article) .apply-cta {
+    background: linear-gradient(135deg, #b8860b 0%, #8b6914 100%);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(184,134,11,0.3);
+  }
+  :where(.tp-article) .apply-cta-title {
+    color: #fff;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .apply-cta-sub {
+    color: rgba(255,255,255,0.9);
+    font-size: calc(10.5px * var(--tp-type-scale, 1));
+    margin-bottom: 10px;
+  }
+  :where(.tp-article) .apply-btn {
+    background: #fff;
+    color: #8b6914;
+    border: none;
+    padding: 9px 24px;
+    border-radius: 10px;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 900;
+    cursor: pointer;
+  }
+  /* COLLAPSIBLE SECTIONS */
+  :where(.tp-article) .collapsible {
+    margin-bottom: 12px;
+  }
+  :where(.tp-article) .collapsible-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  :where(.tp-article) .collapsible-head .section-title,
+  :where(.tp-article) .collapsible-head .explain-title,
+  :where(.tp-article) .collapsible-head .phyto-hero,
+  :where(.tp-article) .collapsible-head .contact-title {
+    margin-bottom: 0;
+    flex: 1;
+  }
+  :where(.tp-article) .toggle-btn {
+    flex-shrink: 0;
+    background: #e8f5e9;
+    color: #1a6b3c;
+    border: 1.5px solid #1a6b3c;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+  :where(.tp-article) .toggle-btn:active {
+    background: #c8e6c9;
+  }
+  :where(.tp-article) .collapsible-body {
+    overflow: hidden;
+    max-height: 3000px;
+    transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.2s ease;
+    margin-top: 10px;
+    opacity: 1;
+  }
+  :where(.tp-article) .collapsible.collapsed .collapsible-body {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+}

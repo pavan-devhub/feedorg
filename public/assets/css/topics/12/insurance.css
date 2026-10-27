@@ -1,0 +1,782 @@
+/* Topic 12.9 · Insurance Claim Process (Module 12 – Risk Management)
+   Component styles for this topic's content. Scoped to .tp-article and kept
+   in the `legacy` cascade layer so the shared layout (layouts/topic.css)
+   always takes precedence. Font sizes scale with --tp-type-scale. */
+
+@layer legacy {
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&display=swap');
+  :where(.tp-article) * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .ph {
+    width: 390px;
+    height: 840px;
+    margin: 0 auto;
+    background: #fafafa;
+    border: 2px solid #111;
+    border-radius: 22px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    scrollbar-width: none;
+  }
+  :where(.tp-article) .ph::-webkit-scrollbar {
+    display: none;
+  }
+  /* ACCESS STRIP */
+  :where(.tp-article) .access-strip {
+    background: linear-gradient(90deg, #1B5E20, #2E7D32);
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  :where(.tp-article) .access-name {
+    color: #fff;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+  }
+  :where(.tp-article) .access-sub {
+    color: #a5d6a7;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .gold-chip {
+    background: linear-gradient(135deg, #FFD700, #FFA000);
+    color: #3e2723;
+    border-radius: 12px;
+    padding: 4px 11px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+  }
+  /* STATUS BANNER */
+  :where(.tp-article) .status-banner {
+    margin: 10px 14px;
+    border-radius: 10px;
+    padding: 10px 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fff8e1;
+    border: 2px solid #ffa000;
+  }
+  :where(.tp-article) .s-icon {
+    font-size: calc(22px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  :where(.tp-article) .s-label {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #e65100;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .s-desc {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #4e342e;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  /* HERO CARD */
+  :where(.tp-article) .hero-card {
+    margin: 0 14px 10px;
+    background: linear-gradient(135deg, #1B5E20, #2E7D32);
+    border-radius: 12px;
+    padding: 14px;
+    color: #fff;
+  }
+  :where(.tp-article) .hero-icon {
+    font-size: calc(28px * var(--tp-type-scale, 1));
+    margin-bottom: 7px;
+  }
+  :where(.tp-article) .hero-title {
+    font-size: calc(15px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .hero-sub {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #c8e6c9;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  :where(.tp-article) .hero-ref {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #a5d6a7;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  /* TWO INSURANCE TYPES */
+  :where(.tp-article) .two-types {
+    margin: 0 14px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  :where(.tp-article) .ins-type {
+    border-radius: 10px;
+    border: 2px solid;
+    overflow: hidden;
+  }
+  :where(.tp-article) .it-header {
+    padding: 9px 10px;
+    text-align: center;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+  }
+  :where(.tp-article) .it-body {
+    padding: 9px 10px;
+    background: #fff;
+  }
+  :where(.tp-article) .it-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 4px;
+  }
+  :where(.tp-article) .it-row:last-child {
+    margin-bottom: 0;
+  }
+  :where(.tp-article) .it-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .it-text {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  /* CRITICAL DISTINCTION */
+  :where(.tp-article) .distinction-box {
+    margin: 0 14px 10px;
+    background: #1a0000;
+    border-radius: 10px;
+    padding: 10px 13px;
+    border: 2px solid #C62828;
+  }
+  :where(.tp-article) .db-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #ef5350;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .db-text {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    color: #ffcdd2;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  :where(.tp-article) .db-highlight {
+    background: rgba(198,40,40,0.2);
+    border-radius: 6px;
+    padding: 5px 9px;
+    margin-top: 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #ef9a9a;
+    font-weight: 700;
+  }
+  /* AT-A-GLANCE HEADING — SAME CARD ROW PATTERN AS THE APPROVED AIF SCREEN */
+  :where(.tp-article) .sec-label {
+    margin: 0 14px 10px;
+    padding: 10px 12px !important;
+    min-height: 48px;
+    background: #f1f8ec;
+    border: 1.5px solid #c8e6c9;
+    border-left: 4px solid #2E7D32;
+    border-radius: 10px;
+    color: #1B5E20;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+  }
+  :where(.tp-article) .sec-label .expand-title-content {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  /* At-a-Glance: one complete card, exactly like the approved AIF cards. */
+  :where(.tp-article) .sec-label.expandable {
+    padding: 0 !important;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .sec-label .sec-label-head {
+    padding: 10px 12px !important;
+    min-height: 48px;
+    box-sizing: border-box;
+    margin: 0 !important;
+    background: #f1f8ec;
+  }
+  :where(.tp-article) .sec-label .expand-body {
+    background: #fff;
+    padding: 0 0 10px;
+  }
+  /* MARINE CLAIM STEPS */
+  :where(.tp-article) .claim-card {
+    margin: 0 14px 10px;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px solid #2E7D32;
+    overflow: hidden;
+  }
+  :where(.tp-article) .cc-header {
+    background: linear-gradient(90deg, #1B5E20, #2E7D32);
+    padding: 10px 13px;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  :where(.tp-article) .cc-badge {
+    background: rgba(255,255,255,0.2);
+    border-radius: 7px;
+    padding: 2px 8px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #fff;
+  }
+  :where(.tp-article) .cc-body {
+    padding: 10px 13px;
+  }
+  :where(.tp-article) .claim-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 9px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #e8f5e9;
+  }
+  :where(.tp-article) .claim-step:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  :where(.tp-article) .cs-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 28px;
+  }
+  :where(.tp-article) .cs-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+  }
+  :where(.tp-article) .cs-line {
+    width: 2px;
+    height: 16px;
+    background: #a5d6a7;
+    margin-top: 2px;
+  }
+  :where(.tp-article) .cs-content {
+    flex: 1;
+    padding-top: 3px;
+  }
+  :where(.tp-article) .cs-title {
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #111;
+  }
+  :where(.tp-article) .cs-time {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #2E7D32;
+    background: #e8f5e9;
+    border-radius: 5px;
+    padding: 1px 7px;
+    display: inline-block;
+    margin-bottom: 3px;
+  }
+  :where(.tp-article) .cs-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #444;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  :where(.tp-article) .cs-note {
+    background: #fff8e1;
+    border-left: 3px solid #ffa000;
+    border-radius: 0 6px 6px 0;
+    padding: 5px 9px;
+    margin-top: 6px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #4e342e;
+    font-weight: 700;
+  }
+  /* MARINE DOCS GRID */
+  :where(.tp-article) .docs-card {
+    margin: 0 14px 10px;
+    background: #e8f5e9;
+    border: 1.5px solid #66bb6a;
+    border-radius: 10px;
+    padding: 10px 13px;
+  }
+  :where(.tp-article) .docs-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #1b5e20;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .docs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  :where(.tp-article) .doc-item {
+    background: #fff;
+    border-radius: 7px;
+    padding: 6px 9px;
+    border: 1px solid #a5d6a7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .doc-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #2E7D32;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .doc-text {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #1b5e20;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  /* ECGC STEPS */
+  :where(.tp-article) .ecgc-card {
+    margin: 0 14px 10px;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px solid #C62828;
+    overflow: hidden;
+  }
+  :where(.tp-article) .ecgc-header {
+    background: linear-gradient(90deg, #B71C1C, #C62828);
+    padding: 10px 13px;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  :where(.tp-article) .ecgc-body {
+    padding: 10px 13px;
+  }
+  :where(.tp-article) .ecgc-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ffebee;
+  }
+  :where(.tp-article) .ecgc-step:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  :where(.tp-article) .es-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #C62828;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .es-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 2px;
+  }
+  :where(.tp-article) .es-sub {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #555;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  :where(.tp-article) .es-deadline {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #C62828;
+    display: inline-block;
+    margin-top: 4px;
+  }
+  /* ECGC DOCS */
+  :where(.tp-article) .ecgc-docs {
+    margin: 0 14px 10px;
+    background: #ffebee;
+    border: 1.5px solid #ef9a9a;
+    border-radius: 10px;
+    padding: 10px 13px;
+  }
+  :where(.tp-article) .ed-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #b71c1c;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .ed-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  :where(.tp-article) .ed-item {
+    background: #fff;
+    border-radius: 7px;
+    padding: 6px 9px;
+    border: 1px solid #ef9a9a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :where(.tp-article) .ed-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #C62828;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .ed-text {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #b71c1c;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  /* COMPARISON TABLE */
+  :where(.tp-article) .compare-card {
+    margin: 0 14px 10px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1.5px solid #e0e0e0;
+    overflow: hidden;
+  }
+  :where(.tp-article) .cmp-header {
+    background: #455A64;
+    padding: 9px 13px;
+    font-size: calc(12px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  :where(.tp-article) .cmp-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  :where(.tp-article) .cmp-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .cmp-label {
+    padding: 7px 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    color: #333;
+    min-width: 120px;
+    border-right: 1px solid #f0f0f0;
+    background: #fafafa;
+  }
+  :where(.tp-article) .cmp-marine {
+    padding: 7px 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    color: #1b5e20;
+    flex: 1;
+    border-right: 1px solid #f0f0f0;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .cmp-ecgc {
+    padding: 7px 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 600;
+    color: #b71c1c;
+    flex: 1;
+    line-height: 1.3;
+  }
+  :where(.tp-article) .cmp-col-header {
+    padding: 6px 10px;
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    text-align: center;
+    flex: 1;
+  }
+  /* KEY NUMBERS */
+  :where(.tp-article) .key-numbers {
+    margin: 0 14px 10px;
+    background: #fff8e1;
+    border: 1.5px solid #ffd54f;
+    border-radius: 10px;
+    padding: 10px 13px;
+  }
+  :where(.tp-article) .kn-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #e65100;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .kn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  :where(.tp-article) .kn-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 7px 9px;
+    border: 1px solid #ffe082;
+  }
+  :where(.tp-article) .kn-val {
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #bf360c;
+  }
+  :where(.tp-article) .kn-label {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #795548;
+    font-weight: 600;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+  /* STATUS FLAGS */
+  :where(.tp-article) .flags-card {
+    margin: 0 14px 10px;
+    background: #fff;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px 13px;
+  }
+  :where(.tp-article) .flags-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .flag-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  :where(.tp-article) .flag-row:last-child {
+    border-bottom: none;
+  }
+  :where(.tp-article) .flag-aspect {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #444;
+    font-weight: 600;
+  }
+  :where(.tp-article) .flag-tag {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 2px 9px;
+  }
+  :where(.tp-article) .f-red {
+    background: #ffebee;
+    color: #C62828;
+  }
+  :where(.tp-article) .f-amber {
+    background: #fff8e1;
+    color: #e65100;
+  }
+  :where(.tp-article) .f-green {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  /* DOCTRINE BOX */
+  :where(.tp-article) .doctrine-box {
+    margin: 0 14px 10px;
+    background: #0a1a0a;
+    border-radius: 10px;
+    padding: 11px 13px;
+    border: 1px solid #2E7D32;
+  }
+  :where(.tp-article) .doctrine-title {
+    font-size: calc(11px * var(--tp-type-scale, 1));
+    font-weight: 800;
+    color: #ef5350;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  :where(.tp-article) .d-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin-bottom: 5px;
+  }
+  :where(.tp-article) .d-row:last-child {
+    margin-bottom: 0;
+  }
+  :where(.tp-article) .dx {
+    color: #ef5350;
+    font-weight: 800;
+    font-size: calc(13px * var(--tp-type-scale, 1));
+    flex-shrink: 0;
+  }
+  :where(.tp-article) .dt {
+    font-size: calc(10px * var(--tp-type-scale, 1));
+    color: #c8e6c9;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  /* FINAL S-109 EXPAND/COLLAPSE — SAME LAYOUT AS APPROVED AIF CARDS */
+  :where(.tp-article) .expandable {
+    position: relative;
+    min-width: 0;
+  }
+  :where(.tp-article) .expand-head {
+    width: 100% !important;
+    min-width: 0;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 32px;
+    align-items: center !important;
+    column-gap: 8px;
+    box-sizing: border-box;
+  }
+  :where(.tp-article) .expand-title-content {
+    grid-column: 1;
+    min-width: 0 !important;
+    max-width: 100%;
+    display: block !important;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  :where(.tp-article) .expand-title-text {
+    display: block;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+  :where(.tp-article) .expand-toggle,
+  :where(.tp-article) .expand-head .expand-toggle {
+    grid-column: 2;
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    align-self: center !important;
+    justify-self: center;
+    flex: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    border: 1.5px solid #1565c0 !important;
+    background: #fff !important;
+    color: #1565c0 !important;
+    font: 800 calc(17px * var(--tp-type-scale, 1))/1 Arial, sans-serif;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    z-index: 5;
+    box-sizing: border-box;
+  }
+  /* Claim cards: title + document badge stay together in column 1;
+     expand button stays at the right, exactly like the AIF cards. */
+  :where(.tp-article) .claim-title-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    min-width: 0 !important;
+  }
+  :where(.tp-article) .claim-title-content .cc-badge,
+  :where(.tp-article) .claim-title-content > span[style] {
+    margin-left: 0 !important;
+    white-space: nowrap;
+  }
+  /* ALL EXPAND BUTTONS — ONE IDENTICAL STYLE */
+  :where(.tp-article) .expand-toggle {
+    border: 1.5px solid #1565c0 !important;
+    background: #fff !important;
+    color: #1565c0 !important;
+  }
+  :where(.tp-article) .expand-body {
+    overflow: hidden;
+    max-height: 3000px;
+    opacity: 1;
+    transition: max-height .25s ease, opacity .2s ease;
+    min-width: 0;
+  }
+  :where(.tp-article) .expandable.collapsed > .expand-body {
+    max-height: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Prevent any section from creating horizontal movement. */
+  :where(.tp-article) .ph,
+  :where(.tp-article) .ph * {
+    max-width: 100%;
+  }
+  :where(.tp-article) .ph {
+    overflow-x: hidden !important;
+  }
+}

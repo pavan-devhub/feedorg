@@ -387,14 +387,15 @@
   gap: 32px;
 }
 
-.hero-stat h3 {
+/* Scoped to this page: My Exports' hero uses .hero-stat too. */
+.fpo-hero-stats .hero-stat h3 {
   margin: 0 0 4px;
   font-size: 24px;
   font-weight: 800;
   color: #28C76F;
 }
 
-.hero-stat span {
+.fpo-hero-stats .hero-stat span {
   font-size: 13px;
   opacity: 0.8;
   text-transform: uppercase;
