@@ -30,15 +30,16 @@ const feedServicesList = [
 ];
 
 // Home "Our Services" cards. Labels follow the icon artwork's names; `menuName` (where the label
-// differs) keys into SERVICE_ROUTES so a card opens the same page as its mega-menu twin.
+// differs) keys into SERVICE_ROUTES so a card opens the same page as its mega-menu twin. `photo`
+// artwork fills its whole box, with the name printed under the box instead of inside it.
 const homeServiceIcons = [
-  { name: 'MY ORG', img: '/icons/services/my-org.webp', desc: 'Complete organizational management covering accounts, compliance, reports, and more' },
-  { name: 'MY BUSINESS', img: '/icons/services/my-business.webp', desc: 'Manage business operations, track performance, and identify growth opportunities' },
+  { name: 'MY ORG', photo: true, img: '/icons/services/my-org.webp', desc: 'Complete organizational management covering accounts, compliance, reports, and more' },
+  { name: 'MY BUSINESS', photo: true, img: '/icons/services/my-business.webp', desc: 'Manage business operations, track performance, and identify growth opportunities' },
   { name: 'MY EXPORTS', img: '/icons/services/my-exports.webp', desc: 'Step-by-step guidance through the complete export process' },
   { name: 'PROJECT KRUSHI YEVA JAYATE', menuName: 'KRUSHI YEVA JAYATE', img: '/icons/services/krushi-yeva-jayate.webp', desc: 'Practical, step-by-step export execution with simplified options and real-time notifications' },
   { name: 'PRODUCT 360', img: '/icons/services/product-360.webp', desc: 'Comprehensive guide of a product—from seed selection to export quality compliance' },
   { name: 'SAFE MISSION', img: '/icons/services/safe-mission.webp', desc: 'A structured pathway to sustainable farming, quality production, export readiness, and market access' },
-  { name: 'MY MARKET', img: '/icons/services/my-market.webp', desc: 'A B2B marketplace that connects businesses with buyers and expands access to new markets' },
+  { name: 'MY MARKET', photo: true, img: '/icons/services/my-market.webp', desc: 'A B2B marketplace that connects businesses with buyers and expands access to new markets' },
   { name: 'EPM', img: '/icons/services/epm.webp', desc: 'A district-level institutional platform that builds export awareness and activates the district’s pathway to global markets' },
   { name: 'TRADE FAIRS', img: '/icons/services/trade-fairs.webp', desc: 'Discover domestic and international trade fairs, buyer–seller meets, and reverse buyer–seller meets worldwide' },
   { name: 'MY EDUCATION', img: '/icons/services/my-education.webp', desc: 'Practical skill oriented courses to make you market-ready entrepreneurs' },
@@ -298,23 +299,27 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
               const target = SERVICE_ROUTES[service.menuName || service.name];
               // Services without a page yet render as plain boxes, matching the mega menu's inert tiles
               const Card = target ? 'button' : 'div';
+              const nameTag = <span className="home-service-name">{service.name}</span>;
               return (
                 <Card
                   key={service.name}
                   {...(target ? { type: 'button', onClick: () => onNavigate(target) } : {})}
-                  className="home-service-card"
+                  className={`home-service-card${service.photo ? ' has-photo' : ''}`}
                   style={{ '--i': idx }}
                 >
                   {/* Both faces share one grid cell, so the box is always tall enough for the
                       description and swapping faces on hover never shifts the grid */}
-                  <span className="home-service-face home-service-front" aria-hidden="true">
-                    <img src={service.img} alt="" className="home-service-icon" loading="lazy" decoding="async" />
-                    <span className="home-service-name">{service.name}</span>
+                  <span className="home-service-box">
+                    <span className="home-service-face home-service-front" aria-hidden="true">
+                      <img src={service.img} alt="" className="home-service-icon" loading="lazy" decoding="async" />
+                      {!service.photo && nameTag}
+                    </span>
+                    <span className="home-service-face home-service-detail">
+                      {!service.photo && nameTag}
+                      <span className="home-service-desc">{service.desc}</span>
+                    </span>
                   </span>
-                  <span className="home-service-face home-service-detail">
-                    <span className="home-service-name">{service.name}</span>
-                    <span className="home-service-desc">{service.desc}</span>
-                  </span>
+                  {service.photo && nameTag}
                 </Card>
               );
             })}
@@ -356,23 +361,35 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
             grid-auto-rows: 1fr;
-            gap: 14px;
+            /* Taller row gap leaves room for the names hung under the photo boxes */
+            gap: 34px 14px;
           }
           .home-service-card {
-            display: grid;
-            place-items: center;
-            padding: 14px 12px 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            border: 0;
+            background: none;
             text-align: center;
             font: inherit;
             color: inherit;
+            opacity: 0;
+          }
+          button.home-service-card { cursor: pointer; }
+          .home-service-box {
+            position: relative;
+            flex: 1;
+            display: grid;
+            place-items: center;
+            padding: 14px 12px 16px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             box-shadow: 0 6px 18px -8px rgba(15, 23, 42, 0.18);
-            opacity: 0;
+            overflow: hidden;
             transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
           }
-          button.home-service-card { cursor: pointer; }
           .home-services.is-visible .home-service-card {
             opacity: 1;
             animation: homeServiceIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 40ms) backwards;
@@ -381,14 +398,15 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
             from { opacity: 0; transform: translateY(24px) scale(0.94); }
             to { opacity: 1; transform: none; }
           }
-          .home-service-card:hover,
-          .home-service-card:focus-visible {
+          .home-service-card:hover .home-service-box,
+          .home-service-card:focus-visible .home-service-box {
             background: #dcfce7;
             border-color: #86efac;
             box-shadow: 0 14px 26px -12px rgba(22, 163, 74, 0.4);
             transform: translateY(-4px);
           }
-          .home-service-card:focus-visible { outline: 2px solid #16a34a; outline-offset: 3px; }
+          .home-service-card:focus-visible { outline: none; }
+          .home-service-card:focus-visible .home-service-box { outline: 2px solid #16a34a; outline-offset: 3px; }
           .home-service-face {
             grid-area: 1 / 1;
             display: flex;
@@ -407,22 +425,21 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
             .home-service-card:hover .home-service-detail,
             .home-service-card:focus-visible .home-service-detail { opacity: 1; transform: none; }
           }
+          .home-service-icon { display: block; width: 84px; aspect-ratio: 1; object-fit: cover; }
+          /* Photo artwork covers the whole box (out of flow, so it never sizes the box) and is
+             contained rather than cropped, so wide artwork always shows in full */
+          .has-photo .home-service-front { position: absolute; inset: 0; grid-area: auto; display: block; }
+          .has-photo .home-service-icon { width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; }
+          /* The name hangs in the row gap under the box, so photo boxes stay the same size as the rest */
+          .has-photo > .home-service-name { position: absolute; top: calc(100% + 6px); left: 0; right: 0; }
           /* Touch screens have no hover to reveal the text, so the description sits under the icon instead */
           @media (hover: none) {
-            .home-service-card { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+            .home-service-box { display: flex; flex-direction: column; align-items: center; gap: 6px; }
             .home-service-detail { opacity: 1; transform: none; }
             .home-service-detail .home-service-name { display: none; }
-          }
-          /* Fixed height, natural width: square icons stay 84px and the wide artwork (MY ORG, MY BUSINESS,
-             MY MARKET) shows whole rather than cropped. It holds a square until the lazy image loads */
-          .home-service-icon {
-            display: block;
-            height: 84px;
-            width: auto;
-            max-width: 100%;
-            aspect-ratio: auto 1 / 1;
-            object-fit: contain;
-            border-radius: 8px;
+            .has-photo .home-service-box { padding: 0 0 14px; }
+            .has-photo .home-service-front { position: static; align-self: stretch; }
+            .has-photo .home-service-detail { padding: 0 10px; }
           }
           .home-service-name { font-size: 14px; font-weight: 800; line-height: 1.25; letter-spacing: 0.3px; color: #0f172a; }
           .home-service-desc { font-size: 11.5px; line-height: 1.4; color: #475569; }
@@ -447,8 +464,8 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
             .home-services-grid { margin: 0 auto; }
           }
           @media (max-width: 719px) {
-            .home-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; gap: 12px; }
-            .home-service-card { padding: 12px 10px 14px; }
+            .home-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; gap: 34px 12px; }
+            .home-service-box { padding: 12px 10px 14px; }
           }
         `}</style>
       </section>
