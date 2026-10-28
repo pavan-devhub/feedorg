@@ -38,8 +38,7 @@ const homeServiceIcons = [
   { name: 'PROJECT KRUSHI YEVA JAYATE', menuName: 'KRUSHI YEVA JAYATE', img: '/icons/services/krushi-yeva-jayate.webp', desc: 'Practical, step-by-step export execution with simplified options and real-time notifications' },
   { name: 'PRODUCT 360', img: '/icons/services/product-360.webp', desc: 'Comprehensive guide of a product—from seed selection to export quality compliance' },
   { name: 'SAFE MISSION', img: '/icons/services/safe-mission.webp', desc: 'A structured pathway to sustainable farming, quality production, export readiness, and market access' },
-  // Same artwork the navbar's Services mega menu uses for MY MARKET
-  { name: 'MY MARKET', img: '/icons/icon-product-selection.avif', desc: 'A B2B marketplace that connects businesses with buyers and expands access to new markets' },
+  { name: 'MY MARKET', img: '/icons/services/my-market.webp', desc: 'A B2B marketplace that connects businesses with buyers and expands access to new markets' },
   { name: 'EPM', img: '/icons/services/epm.webp', desc: 'A district-level institutional platform that builds export awareness and activates the district’s pathway to global markets' },
   { name: 'TRADE FAIRS', img: '/icons/services/trade-fairs.webp', desc: 'Discover domestic and international trade fairs, buyer–seller meets, and reverse buyer–seller meets worldwide' },
   { name: 'MY EDUCATION', img: '/icons/services/my-education.webp', desc: 'Practical skill oriented courses to make you market-ready entrepreneurs' },
@@ -414,7 +413,17 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
             .home-service-detail { opacity: 1; transform: none; }
             .home-service-detail .home-service-name { display: none; }
           }
-          .home-service-icon { display: block; width: 84px; aspect-ratio: 1; object-fit: cover; }
+          /* Fixed height, natural width: square icons stay 84px and the wide artwork (MY ORG, MY BUSINESS,
+             MY MARKET) shows whole rather than cropped. It holds a square until the lazy image loads */
+          .home-service-icon {
+            display: block;
+            height: 84px;
+            width: auto;
+            max-width: 100%;
+            aspect-ratio: auto 1 / 1;
+            object-fit: contain;
+            border-radius: 8px;
+          }
           .home-service-name { font-size: 14px; font-weight: 800; line-height: 1.25; letter-spacing: 0.3px; color: #0f172a; }
           .home-service-desc { font-size: 11.5px; line-height: 1.4; color: #475569; }
 
