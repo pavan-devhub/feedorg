@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, Users, Settings, Calendar, Map, Activity, Users2, Globe2, PhoneCall, Trophy, BadgeCheck, ShieldCheck, Star, User, UserPlus, ChevronDown, ChevronRight, ChevronLeft, ArrowRight, Sprout, Building2, Ship, Coins, Package, TrendingUp, GraduationCap, ClipboardList, Store, HeartHandshake, Wrench, Lightbulb, ShoppingBag, CreditCard, Target, Eye, Rocket, Search, Leaf, Landmark, PieChart, BarChart3, MoreHorizontal, Cloud, Sun } from 'lucide-react';
+import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, Users, Settings, Calendar, Map, Activity, Users2, Globe2, PhoneCall, Trophy, BadgeCheck, ShieldCheck, Star, User, UserPlus, ChevronDown, ChevronRight, ChevronLeft, ArrowRight, Sprout, Building2, Ship, Package, TrendingUp, GraduationCap, ClipboardList, Store, HeartHandshake, Wrench, Lightbulb, ShoppingBag, CreditCard, Target, Eye, Rocket, Search, Leaf, Landmark, PieChart, BarChart3, MoreHorizontal, Cloud, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Footer from '../components/Footer';
 import AboutUs from './AboutUs';
-import Navbar, { servicesMegaMenu, SERVICE_ROUTES } from '../components/Navbar';
+import Navbar, { SERVICE_ROUTES } from '../components/Navbar';
 import '../components/Navbar.css';
 // --- Events & Updates Static Data ---
 const centralStateUpdates = [
@@ -27,6 +27,28 @@ const feedServicesList = [
   { id: 4, title: 'My Exports', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Ship, color: '#6366f1', bg: '#eef2ff' },
   { id: 5, title: 'MY Products', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Package, color: '#f59e0b', bg: '#fffbeb' },
   { id: 6, title: 'My Market', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Store, color: '#ef4444', bg: '#fef2f2' },
+];
+
+// Home "Our Services" cards. Labels follow the icon artwork's names; `menuName` (where the label
+// differs) keys into SERVICE_ROUTES so a card opens the same page as its mega-menu twin.
+const homeServiceIcons = [
+  { name: 'MY ORG', img: '/icons/services/my-org.webp', desc: 'Complete organizational management covering accounts, compliance, reports, and more' },
+  { name: 'MY BUSINESS', img: '/icons/services/my-business.webp', desc: 'Manage business operations, track performance, and identify growth opportunities' },
+  { name: 'MY EXPORTS', img: '/icons/services/my-exports.webp', desc: 'Step-by-step guidance through the complete export process' },
+  { name: 'PROJECT KRUSHI YEVA JAYATE', menuName: 'KRUSHI YEVA JAYATE', img: '/icons/services/krushi-yeva-jayate.webp', desc: 'Practical, step-by-step export execution with simplified options and real-time notifications' },
+  { name: 'PRODUCT 360', img: '/icons/services/product-360.webp', desc: 'Comprehensive guide of a product—from seed selection to export quality compliance' },
+  { name: 'SAFE MISSION', img: '/icons/services/safe-mission.webp', desc: 'A structured pathway to sustainable farming, quality production, export readiness, and market access' },
+  // Same artwork the navbar's Services mega menu uses for MY MARKET
+  { name: 'MY MARKET', img: '/icons/icon-product-selection.avif', desc: 'A B2B marketplace that connects businesses with buyers and expands access to new markets' },
+  { name: 'EPM', img: '/icons/services/epm.webp', desc: 'A district-level institutional platform that builds export awareness and activates the district’s pathway to global markets' },
+  { name: 'TRADE FAIRS', img: '/icons/services/trade-fairs.webp', desc: 'Discover domestic and international trade fairs, buyer–seller meets, and reverse buyer–seller meets worldwide' },
+  { name: 'MY EDUCATION', img: '/icons/services/my-education.webp', desc: 'Practical skill oriented courses to make you market-ready entrepreneurs' },
+  { name: 'FEED WORLD', img: '/icons/services/feed-world.webp', desc: 'A monthly publication covering Indian and international markets, trends, innovations, initiatives, opportunities, and success stories' },
+  { name: 'FEED CARD', img: '/icons/services/feed-card.webp', desc: 'A reward-based discount card offering benefits across multiple categories through Krishi Coins' },
+  { name: 'MY TOOLS', img: '/icons/services/my-tools.webp', desc: 'Handy tools for quick and easy access to essential resources' },
+  { name: 'KNOW YOUR SCHEMES', img: '/icons/services/know-your-schemes.webp', desc: 'Access Central and State Government schemes through one unified platform' },
+  { name: 'LOANS & FINANCE', img: '/icons/services/loans-finance.webp', desc: 'Connect with trusted financial partners and access tailored solutions for every financial need' },
+  { name: 'YUVA KRISHI', menuName: 'YUVA KRUSHI', img: '/icons/services/yuva-krishi.webp', desc: 'A pathway for young professionals to become agripreneurs' },
 ];
 
 const featureTags = [
@@ -260,190 +282,232 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
       {/* 6. About Us Section */}
       <AboutUs />
 
-      {/* Services (Ecosystem) Block */}
-      <div id="services-block" ref={servicesBlockRef} style={{ width: '100%', padding: '60px 20px', background: 'linear-gradient(135deg, #eef2ff 0%, #ede9fe 50%, #f3e8ff 100%)', display: 'flex', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-        
-        {/* Animated Ecosystem Background Objects */}
-        <div className="about-animated-bg">
-          <Globe2 className="eco-obj eco-globe-1" size={140} strokeWidth={1.5} />
-          <Globe2 className="eco-obj eco-globe-2" size={90} strokeWidth={2} />
-          <Ship className="eco-obj eco-ship-1" size={120} strokeWidth={1.5} />
-          <Ship className="eco-obj eco-ship-2" size={80} strokeWidth={2} />
-          <Package className="eco-obj eco-pkg-1" size={75} strokeWidth={2} />
-          <Package className="eco-obj eco-pkg-2" size={55} strokeWidth={2} />
-          <Package className="eco-obj eco-pkg-3" size={65} strokeWidth={2} />
-          <Store className="eco-obj eco-store-1" size={100} strokeWidth={2} />
-          <TrendingUp className="eco-obj eco-trend-1" size={80} strokeWidth={2} />
-          <Coins className="eco-obj eco-coins-1" size={60} strokeWidth={2} />
-          <Coins className="eco-obj eco-coins-2" size={40} strokeWidth={2.5} />
-          <Coins className="eco-obj eco-coins-3" size={50} strokeWidth={2} />
+      {/* Services Block: heading on top, then the ant artwork with the service cards on its right */}
+      <section id="services-block" ref={servicesBlockRef} className={`home-services${isServicesVisible ? ' is-visible' : ''}`}>
+        <div className="home-services-head">
+          <h2 className="home-services-title">Our <span>Services</span></h2>
+          <div className="home-services-divider">
+            <span />
+            <Leaf size={26} color="#16a34a" fill="#16a34a" />
+            <span />
+          </div>
         </div>
 
-        <div style={{
-          width: '100%',
-          maxWidth: '1300px',
-          minHeight: '750px',
-          backgroundImage: 'url(/services-bg.avif)',
-          backgroundSize: '100% 100%',
-          backgroundRepeat: 'no-repeat',
-          borderRadius: '32px',
-          boxShadow: '0 30px 60px -15px rgba(0,0,0,0.4)',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          overflow: 'hidden',
-          zIndex: 2
-        }}>
-          
-          {/* Spacer to push grid down into the white block */}
-          <div style={{ height: '35%', minHeight: '260px', width: '100%' }}></div>
-
-          <style>{`
-            @keyframes flyInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
-            @keyframes flyInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
-            @keyframes flyInTop { from { opacity: 0; transform: translateY(-80px); } to { opacity: 1; transform: translateY(0); } }
-            @keyframes flyInBottom { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: translateY(0); } }
-
-            .eco-obj {
-              position: absolute;
-              animation: eco-float infinite ease-in-out alternate;
-              z-index: 1;
-            }
-
-            .eco-globe-1 { top: 5%; left: 8%; color: #6366f1; animation-duration: 25s; }
-            .eco-globe-2 { top: 60%; right: -2%; color: #6366f1; animation-duration: 32s; animation-delay: -10s; }
-            
-            .eco-ship-1 { top: 20%; right: 10%; color: #0ea5e9; animation-duration: 28s; animation-delay: -5s; transform: rotate(-10deg); }
-            .eco-ship-2 { top: 80%; left: 15%; color: #0ea5e9; animation-duration: 22s; animation-delay: -15s; transform: rotate(15deg); }
-            
-            .eco-pkg-1 { top: 35%; left: 20%; color: #8b5cf6; animation-duration: 18s; animation-delay: -8s; transform: rotate(15deg); }
-            .eco-pkg-2 { top: 12%; right: 25%; color: #8b5cf6; animation-duration: 20s; animation-delay: -3s; transform: rotate(-25deg); }
-            .eco-pkg-3 { top: 85%; right: 30%; color: #8b5cf6; animation-duration: 25s; animation-delay: -12s; transform: rotate(10deg); }
-            
-            .eco-store-1 { top: 45%; left: 5%; color: #d946ef; animation-duration: 35s; animation-delay: -20s; }
-            
-            .eco-trend-1 { top: 10%; left: 45%; color: #10b981; animation-duration: 22s; animation-delay: -7s; }
-            
-            .eco-coins-1 { top: 75%; left: 5%; color: #f59e0b; animation-duration: 16s; }
-            .eco-coins-2 { top: 25%; right: 2%; color: #f59e0b; animation-duration: 14s; animation-delay: -5s; }
-            .eco-coins-3 { top: 50%; right: 15%; color: #f59e0b; animation-duration: 18s; animation-delay: -11s; }
-
-            @keyframes eco-float {
-              0% { transform: translateY(0) translateX(0) rotate(0deg); }
-              33% { transform: translateY(-30px) translateX(20px) rotate(10deg); }
-              66% { transform: translateY(15px) translateX(-15px) rotate(-10deg); }
-              100% { transform: translateY(35px) translateX(10px) rotate(5deg); }
-            }
-          `}</style>
-
-          {/* Buttons Grid container positioned tightly in the white space */}
-          <div style={{ 
-            flex: 1,
-            padding: '0 4% 4% 4%', 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(4, 1fr)', 
-            gridAutoRows: 'min-content',
-            gap: '16px',
-          }}>
-            {servicesMegaMenu.map((service, sIdx) => {
-              const animations = ['flyInLeft', 'flyInTop', 'flyInBottom', 'flyInRight'];
-              const animName = animations[sIdx % 4];
+        <div className="home-services-stage">
+          <div className="home-services-grid">
+            {homeServiceIcons.map((service, idx) => {
+              const target = SERVICE_ROUTES[service.menuName || service.name];
+              // Services without a page yet render as plain boxes, matching the mega menu's inert tiles
+              const Card = target ? 'button' : 'div';
               return (
-              <div key={sIdx} 
-                className="srv-card"
-                style={{ 
-                  // Hidden until the section scrolls into view, then flies in. `backwards` (not
-                  // `forwards`) hands the tile back to its own styles once it lands, so the
-                  // .srv-card:hover lift isn't pinned away by the animation's last frame.
-                  opacity: isServicesVisible ? 1 : 0,
-                  animation: isServicesVisible ? `${animName} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${sIdx * 0.05}s backwards` : 'none',
-                  cursor: SERVICE_ROUTES[service.name] ? 'pointer' : 'default'
-                }}
-                onClick={() => {
-                  const target = SERVICE_ROUTES[service.name];
-                  if (target) onNavigate(target);
-                }}
-              >
-                <div className={`srv-card-badge color-${service.color}`}>{service.num}</div>
-                <div className="srv-card-content">
-                  <div className={`srv-icon-circle color-${service.color}`}>
-                    <img src={service.img} alt={service.name} className="srv-card-image" />
-                  </div>
-                  <div className="srv-card-text-area">
-                    <h3>{service.name}</h3>
-                  </div>
-                </div>
-              </div>
+                <Card
+                  key={service.name}
+                  {...(target ? { type: 'button', onClick: () => onNavigate(target) } : {})}
+                  className="home-service-card"
+                  style={{ '--i': idx }}
+                >
+                  {/* Both faces share one grid cell, so the box is always tall enough for the
+                      description and swapping faces on hover never shifts the grid */}
+                  <span className="home-service-face home-service-front" aria-hidden="true">
+                    <img src={service.img} alt="" className="home-service-icon" loading="lazy" decoding="async" />
+                    <span className="home-service-name">{service.name}</span>
+                  </span>
+                  <span className="home-service-face home-service-detail">
+                    <span className="home-service-name">{service.name}</span>
+                    <span className="home-service-desc">{service.desc}</span>
+                  </span>
+                </Card>
               );
             })}
           </div>
         </div>
-        
+
         <style>{`
-          .events-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1400px; width: 100%; margin-bottom: 32px; }
-          @media (min-width: 1024px) {
-            .events-grid { grid-template-columns: 3.5fr 5.5fr 3.5fr; gap: 32px; }
+          .home-services { width: 100%; background: #fbfaf0; }
+          .home-services-head { padding: clamp(36px, 4vw, 56px) 16px 0; text-align: center; }
+          .home-services-title {
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 900;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
           }
-          
-          .marquee-vertical {
-            animation: marquee 20s linear infinite;
-          }
-          .marquee-vertical:hover {
-            animation-play-state: paused;
-          }
-          @keyframes marquee {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-          }
-          .marquee-container {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: 100%;
-          }
-          
-          .slider-btn {
-            background: rgba(255,255,255,0.9);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+          .home-services-title span { color: #ea580c; }
+          .home-services-divider { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 12px; }
+          .home-services-divider span { width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #ea580c); }
+          .home-services-divider span:last-child { background: linear-gradient(270deg, transparent, #ea580c); }
+
+          .home-services-stage {
+            /* The artwork is sized to the stage's height, so the ant's width is a fixed share of that
+               height: its waving hand ends ~0.52x the height in from the left edge */
+            --stage-h: 880px;
+            min-height: var(--stage-h);
+            padding: 32px 3% 40px calc(var(--stage-h) * 0.55 + 24px);
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: all 0.2s;
-            color: #1e3a8a;
-            backdrop-filter: blur(10px);
+            background:
+              linear-gradient(to bottom, #fbfaf0, rgba(251, 250, 240, 0) 80px),
+              url('/services-ant.webp') left bottom / auto 100% no-repeat,
+              linear-gradient(to bottom, #f6f8ea, #fcfaeb 50%, #edf0cf);
           }
-          .slider-btn:hover {
-            background: #fff;
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+          .home-services-grid {
+            width: 100%;
+            max-width: 1080px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-auto-rows: 1fr;
+            gap: 14px;
           }
-
-          /* Premium List Item Hover Effects */
-          .premium-list-item {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          .home-service-card {
+            display: grid;
+            place-items: center;
+            padding: 14px 12px 16px;
+            text-align: center;
+            font: inherit;
+            color: inherit;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
-            margin: 0 12px;
+            box-shadow: 0 6px 18px -8px rgba(15, 23, 42, 0.18);
+            opacity: 0;
+            transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
           }
-          .premium-list-item:hover {
-            background-color: #ffffff;
-            transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
-            border-bottom-color: transparent;
-            z-index: 10;
-            position: relative;
+          button.home-service-card { cursor: pointer; }
+          .home-services.is-visible .home-service-card {
+            opacity: 1;
+            animation: homeServiceIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 40ms) backwards;
+          }
+          @keyframes homeServiceIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.94); }
+            to { opacity: 1; transform: none; }
+          }
+          .home-service-card:hover,
+          .home-service-card:focus-visible {
+            background: #dcfce7;
+            border-color: #86efac;
+            box-shadow: 0 14px 26px -12px rgba(22, 163, 74, 0.4);
+            transform: translateY(-4px);
+          }
+          .home-service-card:focus-visible { outline: 2px solid #16a34a; outline-offset: 3px; }
+          .home-service-face {
+            grid-area: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            /* The artwork has a white backdrop; multiply lets it take on the box colour, green on hover.
+               It sits on the face (not the img) because the face's fade makes it its own layer */
+            mix-blend-mode: multiply;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+          }
+          .home-service-detail { opacity: 0; transform: translateY(8px); }
+          @media (hover: hover) {
+            .home-service-card:hover .home-service-front,
+            .home-service-card:focus-visible .home-service-front { opacity: 0; transform: translateY(-8px); }
+            .home-service-card:hover .home-service-detail,
+            .home-service-card:focus-visible .home-service-detail { opacity: 1; transform: none; }
+          }
+          /* Touch screens have no hover to reveal the text, so the description sits under the icon instead */
+          @media (hover: none) {
+            .home-service-card { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+            .home-service-detail { opacity: 1; transform: none; }
+            .home-service-detail .home-service-name { display: none; }
+          }
+          .home-service-icon { display: block; width: 84px; aspect-ratio: 1; object-fit: cover; }
+          .home-service-name { font-size: 14px; font-weight: 800; line-height: 1.25; letter-spacing: 0.3px; color: #0f172a; }
+          .home-service-desc { font-size: 11.5px; line-height: 1.4; color: #475569; }
+
+          /* Narrower screens: the artwork becomes a full-width banner under the heading, cards below it */
+          @media (max-width: 1199px) {
+            .home-services-stage {
+              min-height: 0;
+              padding: 0 16px 40px;
+              display: block;
+              background: #fbfaf0;
+            }
+            .home-services-stage::before {
+              content: '';
+              display: block;
+              aspect-ratio: 1852 / 849;
+              margin: 0 -16px 16px;
+              background:
+                linear-gradient(to bottom, #fbfaf0, rgba(251, 250, 240, 0) 15%, rgba(251, 250, 240, 0) 85%, #fbfaf0),
+                url('/services-ant.webp') center / 100% auto no-repeat;
+            }
+            .home-services-grid { margin: 0 auto; }
+          }
+          @media (max-width: 719px) {
+            .home-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; gap: 12px; }
+            .home-service-card { padding: 12px 10px 14px; }
           }
         `}</style>
-      </div>
+      </section>
+
+      <style>{`
+        .events-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1400px; width: 100%; margin-bottom: 32px; }
+        @media (min-width: 1024px) {
+          .events-grid { grid-template-columns: 3.5fr 5.5fr 3.5fr; gap: 32px; }
+        }
+        
+        .marquee-vertical {
+          animation: marquee 20s linear infinite;
+        }
+        .marquee-vertical:hover {
+          animation-play-state: paused;
+        }
+        @keyframes marquee {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        .marquee-container {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          height: 100%;
+        }
+        
+        .slider-btn {
+          background: rgba(255,255,255,0.9);
+          border: none;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+          transition: all 0.2s;
+          color: #1e3a8a;
+          backdrop-filter: blur(10px);
+        }
+        .slider-btn:hover {
+          background: #fff;
+          transform: scale(1.1);
+          box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Premium List Item Hover Effects */
+        .premium-list-item {
+          padding: 24px 20px;
+          border-bottom: 1px solid rgba(0,0,0,0.04);
+          display: flex;
+          gap: 16px;
+          align-items: flex-start;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 12px;
+          margin: 0 12px;
+        }
+        .premium-list-item:hover {
+          background-color: #ffffff;
+          transform: translateY(-2px) scale(1.01);
+          box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+          border-bottom-color: transparent;
+          z-index: 10;
+          position: relative;
+        }
+      `}</style>
 
       {/* Events & Updates Section */}
       <div id="events-updates" style={{ position: 'relative', width: '100%', padding: '32px 20px 40px', backgroundColor: '#fff7ed', backgroundImage: 'radial-gradient(at 0% 0%, rgba(244, 114, 182, 0.2) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(251, 146, 60, 0.2) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(250, 204, 21, 0.2) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(52, 211, 153, 0.15) 0px, transparent 50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
