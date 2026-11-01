@@ -8,7 +8,7 @@ import MyExports from './pages/my-exports/MyExports';
 import Product360 from './pages/Product360';
 import FpoPortal from './pages/FpoPortal';
 import HowFeedWorks from './pages/HowFeedWorks';
-import ToolsServices from './pages/ToolsServices';
+import MyTools from './pages/my-tools/MyTools';
 import MyBusiness from './pages/MyBusiness';
 import BusinessAccount from './pages/BusinessAccount';
 import AgmBoard from './pages/AgmBoard';
@@ -26,7 +26,9 @@ import EpmInvitees from './pages/EpmInvitees';
 import EpmRegister from './pages/EpmRegister';
 import EpmVolunteer from './pages/EpmVolunteer';
 import EpmEventDetails from './pages/EpmEventDetails';
-import SafeMission from './pages/SafeMission';
+import SafeMission from './pages/safe-mission/SafeMission';
+import YuvaKrushi from './pages/yuva-krushi/YuvaKrushi';
+import FeedCard from './pages/feed-card/FeedCard';
 import TradeFairs from './pages/trade-fairs/TradeFairs';
 import KnowYourSchemes from './pages/know-your-schemes/KnowYourSchemes';
 import Kyj from './pages/kyj/Kyj';
@@ -304,7 +306,7 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'schemes', 'TradeFairs', 'loans-finance', 'kyj', 'ers', 'ers-assessment'].includes(currentPage) ? 'is-home' : ''}`}>
+    <div className={`app-container ${['home', 'exports', 'fpo', 'how', 'dashboard', 'admin-dashboard', 'tools', 'mybusiness', 'business-account', 'business-profile', 'compliances', 'agm-board', 'business-plan', 'loans-schemes', 'marketing', 'reports', 'connect', 'feedworld', 'epm', 'epm-details', 'epm-gallery', 'epm-gallery-state', 'epm-gallery-district', 'epm-objective', 'epm-content-coverage', 'epm-benefits', 'epm-invitees', 'epm-register', 'epm-volunteer', 'safe-mission', 'yuva-krushi', 'feed-card', 'schemes', 'TradeFairs', 'loans-finance', 'kyj', 'ers', 'ers-assessment'].includes(currentPage) ? 'is-home' : ''}`}>
       {/* Search Blur Overlay */}
       {searchQuery && <div className="search-blur-overlay" onClick={() => setSearchQuery('')}></div>}
 
@@ -330,7 +332,8 @@ function App() {
               section={navState.section} sectionParams={navState} />
           )
         ) : currentPage === 'tools' ? (
-          <ToolsServices onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          // navState.screen is the open My Tools screen, e.g. 'farmer/weather-tools'; none shows the My Tools home.
+          <MyTools onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} screen={navState.screen} />
         ) : currentPage === 'mybusiness' ? (
           <MyBusiness onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'business-account' ? (
@@ -371,6 +374,10 @@ function App() {
           <EpmVolunteer onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} eventId={navState.eventId} />
         ) : currentPage === 'safe-mission' ? (
           <SafeMission onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'yuva-krushi' ? (
+          <YuvaKrushi onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        ) : currentPage === 'feed-card' ? (
+          <FeedCard onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'schemes' ? (
           <KnowYourSchemes onNavigate={handleNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         ) : currentPage === 'kyj' ? (

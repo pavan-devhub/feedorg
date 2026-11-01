@@ -1,0 +1,57 @@
+/* ==========================================================================
+   SAFE MISSION page: the site navbar and footer around the S.A.F.E. Mission
+   sections (pages/safe-mission, one stylesheet per section in components/).
+
+   Imported from the standalone SafeMission app. Every rule here and in the
+   section stylesheets is scoped to the .sm-page wrapper (SafeMission.jsx), so
+   nothing reaches the rest of the site:
+   - the app's html/body rules apply to .sm-page, its `*` reset and font
+     defaults only inside .sm-app (the app's own root), never to the site
+     navbar and footer;
+   - keyframes are sm-*;
+   - the classes the site's own CSS also defines are renamed sm-* here and in
+     the markup: app-container (sm-app), hero-container (sm-hero), active,
+     *-badge, *-glow, btn-*, icon-green / icon-orange, is-ok, testimonial-card;
+   - section ids are sm-* as well (sm-about, sm-objectives, sm-why, ...).
+   ========================================================================== */
+
+/* Was html, body in the app's index.css */
+.sm-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  overflow-x: clip;
+}
+
+/* Was the app's `* { ... }` reset. :where() keeps it below every section rule, as `*` was. */
+.sm-page :where(.sm-app *) {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* The site's global reset (src/index.css) gives every element the Outfit font. The app was built
+   on the browser defaults, where each section sets its font and everything inside inherits it
+   (and form controls keep the browser's own font unless a rule says otherwise), so put the
+   defaults back inside .sm-app. */
+.sm-page :where(.sm-app, .sm-app *) {
+  font-family: revert;
+  -webkit-font-smoothing: auto;
+}
+
+/* Was .app-container in the app's App.css */
+.sm-page .sm-app {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+/* Was .hero-container: the full-screen video with the section tabs over its bottom edge. The
+   site navbar (fixed, 10px from the top, 68px / 60px tall) floats over the top of the video;
+   the tabs sit 20-40px above the bottom, well clear of it. */
+.sm-page .sm-hero {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}

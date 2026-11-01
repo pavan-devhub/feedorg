@@ -1,0 +1,550 @@
+/* ========================================================
+   HowSection.css - "How S.A.F.E. Mission Works"
+   Serpentine journey board: 1 - 2 - 3 - 3 - 1 cards,
+   all 10 cards the same size, joined by one glowing wire.
+
+   Board sizes are written in board units (--u). The board
+   is 1500 units wide and --u = 1/1500 of its rendered
+   width, so the whole board scales as one piece.
+   ======================================================== */
+
+.sm-page .how-section {
+  width: 100%;
+  position: relative;
+  padding: 64px 20px 80px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255, 255, 255, 0.55) 0%, transparent 70%),
+    linear-gradient(180deg, #e2eef9 0%, #d9e8f5 55%, #dbe9f6 100%);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.sm-page .how-container {
+  max-width: 1540px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+}
+
+/* ========================================================
+   SECTION HEADER
+   ======================================================== */
+.sm-page .how-title-column {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.sm-page .how-main-heading {
+  margin: 0 0 12px;
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(34px, 4.6vw, 70px);
+  font-weight: 800;
+  color: #0c2a4d;
+  letter-spacing: -0.015em;
+  line-height: 1.06;
+}
+
+.sm-page .how-heading-safe {
+  background: linear-gradient(90deg, #1463d6 0%, #1f7ae8 55%, #2b8cf2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sm-page .how-subtitle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sm-page .how-sub-line {
+  height: 3px;
+  width: clamp(40px, 7vw, 100px);
+  border-radius: 2px;
+}
+
+.sm-page .how-line-left {
+  background: linear-gradient(90deg, #14b8a6 0%, #1d6fe0 100%);
+}
+
+.sm-page .how-line-right {
+  background: linear-gradient(90deg, #1d6fe0 0%, #3b8cf5 100%);
+}
+
+.sm-page .how-subtitle {
+  font-size: clamp(16px, 1.75vw, 26px);
+  font-weight: 500;
+  color: #17345a;
+  margin: 0;
+  line-height: 1.35;
+  word-spacing: 0.08em;
+}
+
+/* ========================================================
+   DESKTOP SERPENTINE BOARD
+   ======================================================== */
+.sm-page .how-board {
+  position: relative;
+  width: 100%;
+  max-width: 1200px; /* the whole board (cards and badges) scales down with this */
+  margin: 0 auto;
+  container-type: inline-size;
+  --u: calc(100cqw / 1500);
+}
+
+/* Arrows between the steps, drawn in board units in the gaps between cards */
+.sm-page .how-arrows-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Connector between steps (across a row, or elbow to the next row): line, start dot, arrowhead */
+.sm-page .how-arrow-link path,
+.sm-page .how-mobile-arrow path {
+  stroke: #7fa2d8;
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sm-page .how-arrow-link .how-arrow-head,
+.sm-page .how-mobile-arrow .how-arrow-head {
+  stroke: #1d5fd1;
+  stroke-width: 4;
+}
+
+.sm-page .how-arrow-link circle,
+.sm-page .how-mobile-arrow circle {
+  fill: #7fa2d8;
+}
+
+/* One step on the board. --x = card left, --y = card top (board units) */
+.sm-page .how-step {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(400 * var(--u));
+}
+
+/* Heading row inside the card: step number, then the heading */
+.sm-page .how-card-head {
+  display: flex;
+  align-items: center;
+  gap: calc(11 * var(--u));
+  margin-bottom: calc(7 * var(--u));
+}
+
+/* Circular step number */
+.sm-page .how-badge {
+  flex-shrink: 0;
+  width: calc(50 * var(--u));
+  height: calc(50 * var(--u));
+  border-radius: 50%;
+  border: calc(3.5 * var(--u)) solid #ffffff;
+  background: radial-gradient(
+    circle at 32% 28%,
+    color-mix(in srgb, var(--accent) 55%, #ffffff) 0%,
+    var(--accent) 55%,
+    color-mix(in srgb, var(--accent) 82%, #000000) 100%
+  );
+  box-shadow:
+    0 0 0 calc(2.5 * var(--u)) color-mix(in srgb, var(--accent) 55%, transparent),
+    0 calc(4 * var(--u)) calc(12 * var(--u)) color-mix(in srgb, var(--accent) 40%, transparent);
+  color: #ffffff;
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: max(15px, calc(21 * var(--u)));
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+/*
+  Card - all 10 cards share the same size while collapsed (--collapsed-min is measured
+  in JS: photo + heading + one line of text + Read more). An open card grows downward.
+*/
+.sm-page .how-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(400 * var(--u));
+  min-height: var(--collapsed-min, 0px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: calc(11 * var(--u));
+  background: linear-gradient(
+    140deg,
+    #ffffff 0%,
+    #ffffff 50%,
+    color-mix(in srgb, var(--accent) 7%, #ffffff) 100%
+  );
+  border: calc(2.5 * var(--u)) solid var(--border);
+  border-radius: calc(14 * var(--u));
+  box-shadow:
+    0 0 calc(14 * var(--u)) color-mix(in srgb, var(--accent) 28%, transparent),
+    0 calc(8 * var(--u)) calc(24 * var(--u)) rgba(15, 40, 80, 0.08);
+  z-index: 2;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sm-page .how-step:hover .how-card {
+  transform: translateY(calc(-5 * var(--u)));
+  box-shadow:
+    0 0 calc(20 * var(--u)) color-mix(in srgb, var(--accent) 40%, transparent),
+    0 calc(14 * var(--u)) calc(30 * var(--u)) rgba(15, 40, 80, 0.14);
+}
+
+.sm-page .how-step:hover .how-badge {
+  transform: scale(1.08);
+}
+
+/* One-time intro: each card lifts in turn, like a hover */
+.sm-page .how-step.is-pulse .how-card {
+  transform: translateY(calc(-6 * var(--u))) scale(1.03);
+  box-shadow:
+    0 0 calc(22 * var(--u)) color-mix(in srgb, var(--accent) 45%, transparent),
+    0 calc(16 * var(--u)) calc(32 * var(--u)) rgba(15, 40, 80, 0.16);
+}
+
+.sm-page .how-step.is-pulse .how-badge {
+  transform: scale(1.14);
+}
+
+/* Photo on top, shown whole at its own proportions (760 x 430) */
+.sm-page .how-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 760 / 430;
+  object-fit: cover;
+  border-radius: calc(9 * var(--u));
+  flex-shrink: 0;
+  box-shadow: 0 calc(2 * var(--u)) calc(6 * var(--u)) rgba(0, 0, 0, 0.12);
+}
+
+/* Heading and text below the photo */
+.sm-page .how-card-info {
+  flex: none;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: calc(13 * var(--u));
+  padding: 0 calc(8 * var(--u));
+}
+
+.sm-page .how-card-title {
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-size: max(17px, calc(23 * var(--u)));
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  color: var(--title);
+  margin: 0;
+  min-width: 0;
+  text-wrap: balance;
+}
+
+.sm-page .how-card-desc {
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-size: max(13px, calc(15.5 * var(--u)));
+  font-weight: 400;
+  line-height: 1.36;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Collapsed: only the first line of text, ending in … */
+.sm-page .how-card-desc.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+}
+
+/* Remaining text (bullets / chain): slides open inside the card */
+.sm-page .how-card-more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.sm-page .how-card-more-inner {
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+
+.sm-page .how-card[data-open] .how-card-more {
+  grid-template-rows: 1fr;
+}
+
+.sm-page .how-card[data-open] .how-card-more-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Read more / Read less, kept at the bottom of the card */
+.sm-page .how-card-toggle {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(5 * var(--u));
+  padding: calc(8 * var(--u)) calc(8 * var(--u)) calc(2 * var(--u));
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-size: max(12.5px, calc(15 * var(--u)));
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--title);
+}
+
+.sm-page .how-card-toggle:hover .how-toggle-label,
+.sm-page .how-card-toggle:focus-visible .how-toggle-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sm-page .how-card-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sm-page .how-toggle-icon {
+  width: 1em;
+  height: 1em;
+  transition: transform 0.3s ease;
+}
+
+.sm-page .how-card[data-open] .how-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Bullet points from the doc, with an accent-coloured dot */
+.sm-page .how-card-points {
+  list-style: none;
+  margin: calc(6 * var(--u)) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(2.5 * var(--u));
+}
+
+.sm-page .how-card-points li {
+  position: relative;
+  padding-left: calc(13 * var(--u));
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-size: max(12.5px, calc(15 * var(--u)));
+  font-weight: 500;
+  line-height: 1.3;
+  color: #334155;
+}
+
+.sm-page .how-card-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: calc(6 * var(--u));
+  height: calc(6 * var(--u));
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 calc(2 * var(--u)) color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* Step 7 infrastructure chain: Packhouse → CFC → ... */
+.sm-page .how-card-chain {
+  margin: calc(7 * var(--u)) 0 0;
+  font-family: 'Roboto Condensed', 'Plus Jakarta Sans', sans-serif;
+  font-size: max(12.5px, calc(15 * var(--u)));
+  font-weight: 500;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.sm-page .how-chain-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.sm-page .how-chain-item {
+  white-space: nowrap;
+}
+
+/* ========================================================
+   MOBILE / TABLET TIMELINE (< 1024px)
+   Same card and badge design; --u becomes a fixed px size.
+   ======================================================== */
+.sm-page .how-mobile-flow {
+  --u: 0.82px;
+  display: none;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  gap: 12px;
+}
+
+/* Phone: short vertical connector between cards, same style as the desktop ones */
+.sm-page .how-mobile-arrow {
+  justify-self: center;
+  display: block;
+  width: 22px;
+  height: 40px;
+  overflow: visible;
+}
+
+.sm-page .how-mobile-arrow path {
+  stroke-width: 2.6;
+}
+
+.sm-page .how-mobile-arrow .how-arrow-head {
+  stroke-width: 3;
+}
+
+.sm-page .how-mobile-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+/* Mobile card: same photo-on-top card with Read more */
+.sm-page .how-mobile-card {
+  position: relative;
+  left: auto;
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  padding: 10px;
+}
+
+.sm-page .how-mobile-card .how-card-info {
+  margin-top: 12px;
+  padding: 0 6px;
+}
+
+.sm-page .how-mobile-card .how-card-toggle {
+  padding: 8px 6px 4px;
+  font-size: 14px;
+}
+
+.sm-page .how-mobile-flow .how-card-title {
+  font-size: 18px;
+}
+
+.sm-page .how-mobile-flow .how-card-desc {
+  font-size: 14px;
+}
+
+.sm-page .how-mobile-flow .how-card-points li,
+.sm-page .how-mobile-flow .how-card-chain {
+  font-size: 13.5px;
+}
+
+.sm-page .how-mobile-step:hover .how-card {
+  transform: translateY(-3px);
+}
+
+.sm-page .how-mobile-step.is-pulse .how-card {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--accent) 45%, transparent),
+    0 12px 26px rgba(15, 40, 80, 0.14);
+}
+
+.sm-page .how-mobile-step.is-pulse .how-badge {
+  transform: scale(1.12);
+}
+
+/* Switch between desktop board and mobile flow */
+@media (max-width: 1023.98px) {
+  .sm-page .how-board {
+    display: none;
+  }
+
+  .sm-page .how-mobile-flow {
+    display: grid;
+  }
+
+  .sm-page .how-title-column {
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sm-page .how-section {
+    padding: 48px 14px 60px;
+  }
+
+  .sm-page .how-mobile-flow {
+    --u: 0.7px;
+    gap: 10px;
+  }
+
+  .sm-page .how-mobile-flow .how-card-title {
+    font-size: 17px;
+  }
+
+  .sm-page .how-mobile-flow .how-card-desc {
+    font-size: 13.5px;
+  }
+
+  .sm-page .how-mobile-flow .how-card-points li,
+  .sm-page .how-mobile-flow .how-card-chain {
+    font-size: 13px;
+  }
+
+  .sm-page .how-subtitle-wrap {
+    gap: 10px;
+  }
+
+  .sm-page .how-subtitle {
+    font-size: 15px;
+  }
+
+  .sm-page .how-sub-line {
+    width: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .sm-page .how-mobile-flow {
+    --u: 0.62px;
+  }
+
+  .sm-page .how-mobile-flow .how-card-title {
+    font-size: 16px;
+  }
+
+  .sm-page .how-mobile-flow .how-card-desc {
+    font-size: 13px;
+  }
+
+  .sm-page .how-mobile-flow .how-card-points li,
+  .sm-page .how-mobile-flow .how-card-chain {
+    font-size: 12.5px;
+  }
+}

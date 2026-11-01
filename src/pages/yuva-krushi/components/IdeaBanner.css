@@ -1,0 +1,170 @@
+/*
+ * "Your idea belongs here" banner. Full-width like the Discover section and
+ * sized in container units from its 2000px-wide design, drawn at 78% of the
+ * design's scale so it stays compact (1cqw = 25.6px of the design). Below
+ * 900px the text and artwork stack.
+ */
+
+.yk-page .idea-banner {
+  container-type: inline-size;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #00387a 0%, #003d84 55%, #003e88 100%);
+  color: #f4f8fc;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Overlapping light-blue shapes in the bottom-left corner. */
+.yk-page .idea-banner::before,
+.yk-page .idea-banner::after {
+  content: '';
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.yk-page .idea-banner::before {
+  bottom: -9.48cqw;
+  left: -14.04cqw;
+  width: 21.06cqw;
+  background: radial-gradient(circle at 75% 25%, #0d60bd 0%, #0a52aa 45%, #07479a 75%);
+}
+
+.yk-page .idea-banner::after {
+  bottom: -9.87cqw;
+  left: -10.92cqw;
+  width: 17.16cqw;
+  background: radial-gradient(circle at 70% 20%, #1b72d2 0%, #0f5fbe 40%, #0a4fa6 75%);
+}
+
+/* ---------- Text ---------- */
+
+/* Text is centred vertically beside the artwork, which sets the banner height. */
+.yk-page .idea-banner__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 46.02cqw;
+  min-height: 26.01cqw;
+  padding: 3cqw 0 3cqw 7.68cqw;
+}
+
+.yk-page .idea-banner__line {
+  display: block;
+}
+
+.yk-page .idea-banner__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.4cqw;
+  font-size: max(0.66cqw, 12px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #c6ec7e;
+}
+
+.yk-page .idea-banner__eyebrow::after {
+  content: '';
+  width: 1.56cqw;
+  height: max(0.1cqw, 2px);
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.yk-page .idea-banner__title {
+  margin-top: 0.94cqw;
+  font-size: 2.34cqw;
+  font-weight: 700;
+  line-height: 1.083;
+}
+
+.yk-page .idea-banner__title em {
+  font-style: normal;
+  color: #b7f57c;
+}
+
+.yk-page .idea-banner__text {
+  margin-top: 0.59cqw;
+  font-family: 'Albert Sans', sans-serif;
+  font-size: max(0.94cqw, 15px);
+  font-weight: 500;
+  line-height: 1.29;
+  color: #b7cfea;
+}
+
+/* ---------- Artwork ---------- */
+
+.yk-page .idea-banner__visual {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 31.98cqw;
+  height: 26.01cqw;
+}
+
+.yk-page .idea-banner__arc {
+  fill: none;
+  stroke: #36a372;
+  stroke-width: 3;
+}
+
+.yk-page .idea-banner__badge {
+  fill: #bef577;
+}
+
+.yk-page .idea-banner__badge-icon {
+  color: #0a5826;
+}
+
+/* ---------- Narrow screens: stack text and artwork ---------- */
+
+@container (max-width: 900px) {
+  .yk-page .idea-banner__content {
+    width: auto;
+    min-height: 0;
+    padding: 56px 24px 0;
+  }
+
+  .yk-page .idea-banner__line {
+    display: inline;
+  }
+
+  .yk-page .idea-banner__eyebrow {
+    gap: 16px;
+    font-size: 13px;
+  }
+
+  .yk-page .idea-banner__eyebrow::after {
+    width: 32px;
+  }
+
+  .yk-page .idea-banner__title {
+    margin-top: 14px;
+    font-size: clamp(30px, 7cqw, 46px);
+    line-height: 1.12;
+  }
+
+  .yk-page .idea-banner__text {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .yk-page .idea-banner__visual {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 820 / 667;
+  }
+}
+
+@container (max-width: 600px) {
+  .yk-page .idea-banner__content {
+    padding: 48px 16px 0;
+  }
+}

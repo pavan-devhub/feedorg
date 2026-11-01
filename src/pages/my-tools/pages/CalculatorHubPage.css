@@ -1,0 +1,384 @@
+/*
+ * Calculator pages (Financial, Crop & Yield, Land & Area, ...), laid out on the 1679 x 911
+ * reference design: a tall picture panel (title over a photo) beside the calculator cards.
+ * --cu is one design pixel: the page is shown at the largest size that fits both the width and
+ * the height of the window (so everything shows at once), capped so it never gets huge.
+ * On the site the page starts below the fixed navbar (--mt-nav), and the design fits the window
+ * below it.
+ */
+.mt-page .hub {
+  --cu: min(calc(100cqw / 1679), calc((100vh - var(--mt-nav)) / 911), 1.25px);
+  --bu: var(--cu);
+
+  min-height: 100vh;
+  background: #fefefe;
+}
+
+.mt-page .hub__inner {
+  display: flex;
+  gap: calc(15 * var(--cu));
+  width: calc(1679 * var(--cu));
+  margin: 0 auto;
+  padding: calc(var(--mt-nav) + 27 * var(--cu)) calc(22 * var(--cu)) calc(27 * var(--cu)) calc(24 * var(--cu));
+}
+
+/* ---------- Picture panel ---------- */
+
+.mt-page .hub-hero {
+  position: relative;
+  flex: 0 0 calc(650 * var(--cu));
+  min-height: calc(857 * var(--cu));
+  overflow: hidden;
+  border-radius: calc(16 * var(--cu));
+  background: #eef3ef;
+}
+
+.mt-page .hub-hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+/* haze over the sky so the title reads well: nearly white, or a light veil over a blue sky */
+.mt-page .hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mt-page .hub-hero--haze-strong::before {
+  background:
+    linear-gradient(90deg, rgba(244, 248, 246, 0.35) 0%, rgba(244, 248, 246, 0) 70%),
+    linear-gradient(180deg, rgba(244, 248, 246, 0.9) 0%, rgba(244, 248, 246, 0.78) 36%, rgba(244, 248, 246, 0.35) 52%, rgba(244, 248, 246, 0) 64%);
+}
+
+.mt-page .hub-hero--haze-soft::before {
+  background:
+    radial-gradient(ellipse 62% 24% at 30% 42%, rgba(240, 247, 250, 0.78) 0%, rgba(240, 247, 250, 0.5) 55%, rgba(240, 247, 250, 0) 100%),
+    linear-gradient(180deg, rgba(240, 247, 250, 0.42) 0%, rgba(240, 247, 250, 0.3) 38%, rgba(240, 247, 250, 0) 56%);
+}
+
+.mt-page .hub-hero__wave {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(160 * var(--cu));
+}
+
+.mt-page .hub-hero__text {
+  position: relative;
+  z-index: 2;
+}
+
+/* e.g. "Plan • Calculate • Grow" (sits a little lower than in the design, under the back button) */
+.mt-page .hub-hero__tag {
+  position: absolute;
+  left: calc(48 * var(--cu));
+  top: calc(66 * var(--cu));
+  display: flex;
+  align-items: center;
+  gap: calc(17 * var(--cu));
+  height: calc(57 * var(--cu));
+  margin: 0;
+  padding-right: calc(21 * var(--cu));
+  border-radius: 999px;
+  background: rgba(209, 228, 216, 0.72);
+  font-size: calc(18 * var(--cu));
+  font-weight: 500;
+  color: #183a28;
+  white-space: nowrap;
+}
+
+.mt-page .hub-hero__tag-icon {
+  display: grid;
+  place-items: center;
+  width: calc(57 * var(--cu));
+  height: calc(57 * var(--cu));
+  border-radius: 50%;
+  background: #0f4a35;
+  color: #fff;
+}
+
+.mt-page .hub-hero__tag-icon svg {
+  width: calc(30 * var(--cu));
+  height: calc(30 * var(--cu));
+}
+
+.mt-page .hub-hero__tag-words i {
+  margin: 0 calc(8 * var(--cu));
+  font-style: normal;
+}
+
+/* the title, with the subtitle following it (two title lines put the subtitle 330 down) */
+.mt-page .hub-hero__heading {
+  position: absolute;
+  left: calc(48 * var(--cu));
+  top: calc(154 * var(--cu));
+}
+
+.mt-page .hub-hero__title {
+  margin: 0;
+  font-size: calc(81 * var(--cu));
+  font-weight: 700;
+  line-height: calc(78 * var(--cu));
+  letter-spacing: -0.02em;
+  font-variation-settings: 'GRAD' 200;
+  color: #07402e;
+  white-space: nowrap;
+}
+
+.mt-page .hub-hero__subtitle {
+  width: calc(var(--subtitle-width, 440) * var(--cu)); /* a page can narrow it to set where lines wrap */
+  margin: calc(20 * var(--cu)) 0 0 calc(2 * var(--cu));
+  font-size: calc(22.2 * var(--cu));
+  line-height: calc(31.5 * var(--cu));
+  color: #3e4a4a;
+}
+
+/* ---------- Calculator cards ---------- */
+
+/*
+ * Any number of cards, all the same size: rows of three, and a shorter last row is centred (or
+ * starts at the left). Each card spans four rows of the grid (picture, title, text, button) so these line up
+ * across a row, and the pictures share whatever height is left.
+ */
+.mt-page .hub-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr)); /* three cards a row, two columns each */
+  grid-auto-rows: minmax(calc(110 * var(--cu)), 1fr) auto auto auto;
+  gap: calc(18 * var(--cu)) calc(16 * var(--cu));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mt-page .hcard {
+  grid-column: span 2;
+  grid-row: span 4;
+  display: grid;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  padding: calc(26 * var(--cu)) calc(14 * var(--cu)) calc(26 * var(--cu)) calc(28 * var(--cu));
+  border-radius: calc(15 * var(--cu));
+  background: var(--tint);
+  box-shadow: inset 0 0 0 1px rgba(16, 40, 60, 0.035);
+}
+
+/* a last row of two cards starts half a card in; a single last card sits in the middle */
+.mt-page :where(.hub-grid--centered) .hcard:where(:nth-child(3n + 1):nth-last-child(2)) {
+  grid-column: 2 / span 2;
+}
+
+.mt-page :where(.hub-grid--centered) .hcard:where(:nth-child(3n + 1):last-child) {
+  grid-column: 3 / span 2;
+}
+
+/* cards of a set height (pictures --art-height design px tall) at the top, instead of sharing the
+   panel's height */
+.mt-page .hub-grid--fixed-art {
+  grid-auto-rows: calc(var(--art-height) * var(--cu)) auto auto auto;
+  align-content: start;
+}
+
+.mt-page .hcard__art {
+  position: relative;
+  margin-bottom: calc(16 * var(--cu));
+}
+
+.mt-page .hcard__art svg,
+.mt-page .hcard__art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mt-page .hcard__title {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: calc(26.5 * var(--cu));
+  font-weight: 600;
+  line-height: calc(30 * var(--cu));
+  letter-spacing: -0.02em;
+  font-variation-settings: 'GRAD' 100;
+  color: #0b2130;
+}
+
+.mt-page .hcard__text {
+  max-width: calc(264 * var(--cu));
+  min-height: calc(3 * 23.5 * var(--cu)); /* room for three lines, so every card is the same height */
+  margin: calc(14 * var(--cu)) 0 0;
+  font-size: calc(17.5 * var(--cu));
+  line-height: calc(23.5 * var(--cu));
+  color: color-mix(in srgb, var(--accent) 18%, #4b5563);
+}
+
+.mt-page .hcard__btn {
+  justify-self: start;
+  align-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(22 * var(--cu));
+  height: calc(42 * var(--cu));
+  margin-top: calc(12 * var(--cu));
+  padding: 0 calc(20 * var(--cu)) 0 calc(22 * var(--cu));
+  border-radius: 999px;
+  background: var(--accent);
+  font-size: calc(17 * var(--cu));
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: filter 0.2s ease;
+}
+
+.mt-page .hcard__btn svg {
+  width: calc(18 * var(--cu));
+  height: calc(15 * var(--cu));
+  transition: transform 0.2s ease;
+}
+
+.mt-page a.hcard__btn:hover {
+  filter: brightness(1.1);
+}
+
+.mt-page a.hcard__btn:hover svg {
+  transform: translateX(calc(3 * var(--cu)));
+}
+
+.mt-page a.hcard__btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-page .hcard__btn,
+  .mt-page .hcard__btn svg {
+    transition: none;
+  }
+
+  .mt-page a.hcard__btn:hover svg {
+    transform: none;
+  }
+}
+
+/* ---------- Phones & portrait tablets ---------- */
+
+@media (max-width: 900px), (max-aspect-ratio: 5/4) {
+  .mt-page .hub__inner {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    padding: calc(var(--mt-nav) + 16px) 16px 40px;
+  }
+
+  .mt-page .hub-hero {
+    min-height: min(150vw, 700px);
+    padding: 62px 22px 0;
+    border-radius: 20px;
+  }
+
+  .mt-page .hub-hero__wave {
+    height: 22%;
+  }
+
+  .mt-page .hub-hero__tag,
+  .mt-page .hub-hero__heading {
+    position: static;
+  }
+
+  .mt-page .hub-hero__tag {
+    display: inline-flex;
+    gap: 10px;
+    height: 40px;
+    padding-right: 14px;
+    font-size: 14px;
+  }
+
+  .mt-page .hub-hero__tag-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mt-page .hub-hero__tag-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mt-page .hub-hero__tag-words i {
+    margin: 0 6px;
+  }
+
+  .mt-page .hub-hero__title {
+    margin-top: 18px;
+    font-size: clamp(38px, 11.5vw, 64px);
+    line-height: 0.95;
+    white-space: normal;
+  }
+
+  .mt-page .hub-hero__subtitle {
+    width: auto;
+    max-width: 440px;
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .mt-page .hub-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-auto-rows: auto;
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .mt-page .hcard {
+    grid-column: auto;
+    grid-row: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 22px;
+    border-radius: 16px;
+  }
+
+  .mt-page .hcard__art {
+    height: 150px;
+    margin-bottom: 16px;
+  }
+
+  .mt-page .hcard__title {
+    font-size: 21px;
+    line-height: 1.2;
+  }
+
+  .mt-page .hcard__text {
+    max-width: none;
+    min-height: 0;
+    margin: 8px 0 16px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  /* buttons line up at the bottom of cards that share a row */
+  .mt-page .hcard__btn {
+    align-self: flex-start;
+    gap: 16px;
+    height: 40px;
+    margin-top: auto;
+    padding: 0 18px 0 20px;
+    font-size: 15px;
+  }
+
+  .mt-page .hcard__btn svg {
+    width: 15px;
+    height: 13px;
+  }
+}

@@ -1,0 +1,315 @@
+/*
+ * Everything inside the card is sized in container units (1cqw = 1% of the
+ * card width), measured against the 1461px-wide card of the design mockup.
+ * The layout therefore scales as one piece and keeps the mockup's exact
+ * proportions at any desktop width; narrow screens get a stacked layout.
+ */
+
+/* Sections below the header sit apart, with the page background between them.
+   (The source styled the bare <main>; here it carries the .yk-main class.) */
+.yk-page .yk-main {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 44px);
+}
+
+.yk-page .yk-header {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  /* + the site navbar's height (see --yk-nav-offset in YuvaKrushi.css), so the card clears it. */
+  padding: calc(7.1vh + var(--yk-nav-offset)) 6.3vw 9.4vh;
+}
+
+.yk-page .yk-card {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, 1461px);
+  overflow: hidden;
+  border-radius: clamp(18px, 1.9vw, 30px);
+  background:
+    radial-gradient(16% 22% at 85% 8%, rgba(204, 207, 251, 0.75), transparent),
+    radial-gradient(22% 20% at 27% 84%, rgba(214, 216, 252, 0.7), transparent),
+    radial-gradient(24% 34% at 45% 33%, rgba(255, 255, 255, 0.35), transparent),
+    var(--card-bg);
+  box-shadow: 18px 6px 50px rgba(40, 70, 120, 0.3);
+}
+
+/* ---------- Hero ---------- */
+
+.yk-page .yk-hero {
+  display: grid;
+  grid-template-columns: 1fr 52.57cqw;
+  align-items: start;
+  height: 44.83cqw;
+  padding: 11.09cqw 5.95cqw 0 6.6cqw;
+}
+
+.yk-page .yk-hero__text {
+  margin-top: 4.22cqw;
+}
+
+.yk-page .yk-brand {
+  font-family: 'Poppins', sans-serif;
+  font-size: 5.77cqw;
+  font-weight: 800;
+  line-height: 0.815;
+  filter: drop-shadow(0 0 0.25cqw rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0.12cqw 0.2cqw rgba(0, 0, 0, 0.25));
+}
+
+.yk-page .yk-brand__word {
+  position: relative;
+  display: block;
+  width: fit-content;
+  background: linear-gradient(180deg, #2d2d2d 7%, #111 50%, #000 93%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.yk-page .yk-brand__word:first-child {
+  margin-left: 0.035em;
+  font-size: 1.084em;
+}
+
+.yk-page .yk-brand__leaves {
+  position: absolute;
+  top: -0.183em;
+  left: 2.718em;
+  width: 0.59em;
+}
+
+.yk-page .yk-tagline {
+  margin: 1.46cqw 0 0 -0.36cqw;
+  font-family: 'Yellowtail', cursive;
+  font-size: 2.6cqw;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.yk-page .yk-tagline__today {
+  color: var(--brand-green);
+}
+
+.yk-page .yk-tagline__tomorrow {
+  color: var(--gold);
+}
+
+.yk-page .yk-tagline__leaf {
+  display: inline-block;
+  width: 0.63em;
+  margin-left: 0.02em;
+  vertical-align: 0.42em;
+}
+
+.yk-page .yk-hero__subtitle {
+  margin: 1.77cqw 0 0 0.25cqw;
+  font-size: max(1.472cqw, 14px);
+  font-weight: 600;
+  line-height: 1.302;
+  color: var(--muted);
+}
+
+.yk-page .yk-hero__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 768 / 419.5;
+  overflow: hidden;
+  border-radius: 3.1cqw;
+  box-shadow: 0.4cqw 1cqw 2.4cqw rgba(84, 140, 240, 0.38);
+}
+
+/* Soft light rim around the photo, as in the mockup. */
+.yk-page .yk-hero__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 0.2cqw solid rgba(255, 255, 255, 0.55);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.yk-page .yk-hero__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keep the left of the photo (the farmer, drone and weather station) in view. */
+  object-position: 0% 50%;
+}
+
+/* ---------- Feature strip ---------- */
+
+.yk-page .yk-features {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 27.58cqw 31.35cqw 1fr;
+  align-items: center;
+  height: 6.2cqw;
+  padding: 0 0 0.34cqw 6.16cqw;
+  border-top: 1px solid rgba(203, 208, 240, 0.6);
+  background: linear-gradient(
+    90deg,
+    rgba(222, 224, 252, 0.45),
+    rgba(255, 255, 255, 0.3) 62%,
+    rgba(222, 224, 252, 0.45)
+  );
+}
+
+.yk-page .yk-feature {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5cqw;
+}
+
+.yk-page .yk-feature + .yk-feature {
+  padding-left: 3.2cqw;
+}
+
+.yk-page .yk-feature + .yk-feature::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 2.3cqw;
+  translate: 0 -50%;
+  background: #d1d4ee;
+}
+
+.yk-page .yk-feature__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.08cqw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.yk-page .yk-feature__icon svg {
+  width: var(--glyph-size);
+  height: var(--glyph-size);
+}
+
+.yk-page .yk-feature__icon--green {
+  --glyph-size: 1.65cqw;
+  color: #1b7d33;
+  background: radial-gradient(circle at 35% 30%, #e2f8ec, #cdefdd);
+}
+
+.yk-page .yk-feature__icon--amber {
+  --glyph-size: 2.1cqw;
+  color: #f0b030;
+  background: radial-gradient(circle at 35% 30%, #fff6dd, #fdecc2);
+}
+
+.yk-page .yk-feature__icon--violet {
+  --glyph-size: 1.96cqw;
+  color: #6347d9;
+  background: radial-gradient(circle at 35% 30%, #e6e3ff, #d4d0fc);
+}
+
+.yk-page .yk-feature__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2cqw;
+  line-height: 1.3;
+}
+
+.yk-page .yk-feature__title {
+  font-size: max(1.06cqw, 14px);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.yk-page .yk-feature__subtitle {
+  font-size: max(0.9cqw, 12.5px);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* ---------- Narrow screens: stack the layout ---------- */
+
+@media (max-width: 600px) {
+  .yk-page .yk-header {
+    padding: calc(24px + var(--yk-nav-offset)) 16px 24px;
+  }
+}
+
+@container (max-width: 760px) {
+  .yk-page .yk-hero {
+    grid-template-columns: 1fr;
+    gap: 10cqw;
+    height: auto;
+    padding: 11cqw 7cqw 12cqw;
+  }
+
+  .yk-page .yk-hero__text {
+    margin-top: 0;
+  }
+
+  .yk-page .yk-brand {
+    font-size: 14cqw;
+  }
+
+  .yk-page .yk-tagline {
+    margin: 3cqw 0 0 -0.8cqw;
+    font-size: 6.6cqw;
+  }
+
+  .yk-page .yk-hero__subtitle {
+    margin: 5cqw 0 0 0.5cqw;
+    font-size: 4.2cqw;
+  }
+
+  .yk-page .yk-hero__frame {
+    border-radius: 6cqw;
+    box-shadow: 1cqw 3cqw 6cqw rgba(84, 140, 240, 0.38);
+  }
+
+  .yk-page .yk-features {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 1cqw 7cqw;
+  }
+
+  .yk-page .yk-feature {
+    gap: 3.5cqw;
+    padding: 2.6cqw 0;
+  }
+
+  .yk-page .yk-feature + .yk-feature {
+    padding-left: 0;
+    border-top: 1px solid rgba(203, 208, 240, 0.6);
+  }
+
+  .yk-page .yk-feature + .yk-feature::before {
+    display: none;
+  }
+
+  .yk-page .yk-feature__icon {
+    width: 9.5cqw;
+  }
+
+  .yk-page .yk-feature__icon--green {
+    --glyph-size: 5.1cqw;
+  }
+
+  .yk-page .yk-feature__icon--amber {
+    --glyph-size: 6.5cqw;
+  }
+
+  .yk-page .yk-feature__icon--violet {
+    --glyph-size: 6.1cqw;
+  }
+
+  .yk-page .yk-feature__title {
+    font-size: 3.9cqw;
+  }
+
+  .yk-page .yk-feature__subtitle {
+    font-size: 3.3cqw;
+  }
+}

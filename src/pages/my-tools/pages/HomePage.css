@@ -1,0 +1,98 @@
+/*
+ * Home page, on the 1833 x 908 reference design: the header photo edge to edge from the very top,
+ * the heading centred below it, then the "Explore all tools" cards.
+ * --u is one design pixel: as large as the window's width and height allow, capped so it never
+ * gets huge. Spare width becomes even margins; the photo always runs edge to edge.
+ *
+ * On the site the fixed navbar covers the top --mt-nav px of the window: the photo runs on up
+ * underneath it (it grows by that much), and the 908 design px fit the window below it.
+ */
+.mt-page .mt-home {
+  --u: min(calc(100cqw / 1833), calc((100vh - var(--mt-nav)) / 908), 1.25px);
+  --col: calc(1833 * var(--u));
+  --navy: #070f20;
+  --green: #0e6632;
+
+  min-height: 100vh;
+  background: #fefefe;
+}
+
+/* ---------- Hero ---------- */
+
+/*
+ * The photo is 475 design px tall and the heading under it 84: with the cards' 349 that makes
+ * the 908. The photo is trimmed mostly from the empty sky at its top, so the tiles stay whole.
+ */
+.mt-page .home-hero__photo {
+  display: block;
+  width: 100%;
+  height: calc(475 * var(--u) + var(--mt-nav));
+  object-fit: cover;
+  object-position: 50% 80%;
+  /* below the navbar the same part of the picture as in the design (the 80% framing of a box
+     --mt-nav shorter, moved down by --mt-nav), running up under the navbar as far as the
+     picture reaches */
+  object-position: 50% min(0px, 80% + 0.2 * var(--mt-nav));
+  background: #6cc0f2;
+}
+
+/* the heading centred under the photo */
+.mt-page .home-hero__text {
+  padding-top: calc(20 * var(--u));
+  text-align: center;
+}
+
+.mt-page .home-hero__title {
+  margin: 0;
+  font-size: calc(52 * var(--u));
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'GRAD' 150;
+  color: #000;
+  white-space: nowrap;
+}
+
+.mt-page .home-hero__title span {
+  color: #05663a;
+}
+
+/* the short black rule under the heading */
+.mt-page .home-hero__rule {
+  display: block;
+  width: calc(40 * var(--u));
+  height: calc(3 * var(--u));
+  margin: calc(9 * var(--u)) auto 0;
+  border-radius: 2px;
+  background: #000;
+}
+
+/* ---------- Phones & portrait tablets ---------- */
+
+@media (max-width: 900px), (max-aspect-ratio: 5/4) {
+  /* the photo, at its own shape, starts below the site navbar */
+  .mt-page .mt-home {
+    --u: 1px;
+    --col: 100%;
+
+    padding-top: var(--mt-nav-clear);
+  }
+
+  .mt-page .home-hero__photo {
+    height: auto;
+  }
+
+  .mt-page .home-hero__text {
+    padding: 20px 16px 0;
+  }
+
+  .mt-page .home-hero__title {
+    font-size: clamp(32px, 9.5vw, 56px);
+    line-height: 1.1;
+    white-space: normal;
+  }
+
+  .mt-page .home-hero__rule {
+    margin-top: 12px;
+  }
+}

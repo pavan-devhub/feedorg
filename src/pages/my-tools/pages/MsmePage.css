@@ -1,0 +1,407 @@
+/*
+ * MSME Calculators page, from the 1448 x 1086 reference design: the agri-business photo across
+ * the top with the title on its left, then the calculator cards, three to a row.
+ * --mu is one design pixel: the page is as wide as the window allows, but no taller than shows
+ * the header and the first row of cards at once, and never larger than the design.
+ * On the site the header grows by the fixed navbar's height (--mt-nav): the photo runs on up
+ * underneath the navbar while the title and back button move down below it, and the design fits
+ * the window below the navbar.
+ */
+.mt-page .msme {
+  --mu: min(calc(100cqw / 1448), calc((100vh - var(--mt-nav)) / 800), 1px);
+  --bu: 1.12px; /* the same "Back to Home" size as on the Exporter, FPO and SHG pages */
+  --mt-back-top: var(--mt-nav); /* the back button sits below the site navbar */
+  --page: #fafcfe;
+
+  min-height: 100vh;
+  background: var(--page);
+}
+
+/* ---------- Header ---------- */
+
+.mt-page .msme-hero {
+  position: relative;
+  height: calc(422 * var(--mu) + var(--mt-nav));
+  overflow: hidden;
+}
+
+/* in the design the photo is 73% of its size, 68 px above the top: the same framing via cover */
+.mt-page .msme-hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 43.3%;
+  /* below the navbar the same part of the picture as in the design (the 43.3% framing of a box
+     --mt-nav shorter, moved down by --mt-nav), running up under the navbar as far as the
+     picture reaches */
+  object-position: 50% min(0px, 43.3% + 0.567 * var(--mt-nav));
+}
+
+/* a soft white haze over the sky and the left, behind the title, as in the design */
+.mt-page .msme-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(250, 252, 253, 0.72) 0%, rgba(250, 252, 253, 0.62) 42%, rgba(250, 252, 253, 0.2) 62%, rgba(250, 252, 253, 0) 72%),
+    linear-gradient(180deg, rgba(250, 252, 253, 0.42) 0%, rgba(250, 252, 253, 0) 34%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 68%, rgba(0, 0, 0, 0.25) 92%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 68%, rgba(0, 0, 0, 0.25) 92%);
+  pointer-events: none;
+}
+
+/* the text sits on the design's 1448 px column, centred in the window, below the navbar */
+.mt-page .msme-hero__text {
+  position: absolute;
+  top: var(--mt-nav);
+  left: 50%;
+  z-index: 2;
+  width: calc(1448 * var(--mu));
+  height: calc(100% - var(--mt-nav));
+  transform: translateX(-50%);
+}
+
+.mt-page .msme-hero__title {
+  position: absolute;
+  left: calc(79 * var(--mu));
+  top: calc(74 * var(--mu));
+  margin: 0;
+  font-size: calc(112 * var(--mu));
+  font-weight: 700;
+  line-height: calc(112 * var(--mu));
+  letter-spacing: -0.02em;
+  font-variation-settings: 'GRAD' 150;
+  background: linear-gradient(180deg, #04573f 0%, #053a3c 55%, #04213a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mt-page .msme-hero__leaf {
+  position: absolute;
+  left: calc(380 * var(--mu));
+  top: calc(46 * var(--mu));
+  width: calc(70 * var(--mu));
+  height: calc(68 * var(--mu));
+}
+
+.mt-page .msme-hero__subtitle {
+  position: absolute;
+  left: calc(84 * var(--mu));
+  top: calc(177 * var(--mu));
+  margin: 0;
+  font-size: calc(32 * var(--mu));
+  font-weight: 700;
+  line-height: calc(35 * var(--mu));
+  letter-spacing: -0.01em;
+  color: #0d101c;
+  white-space: nowrap;
+}
+
+/* orange, grey and green rule */
+.mt-page .msme-hero__stripe {
+  position: absolute;
+  left: calc(84 * var(--mu));
+  top: calc(260 * var(--mu));
+  width: calc(251 * var(--mu));
+  height: calc(5 * var(--mu));
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f96f08 0 33.3%, #b9bebf 33.3% 66.6%, #067b2d 66.6%);
+}
+
+.mt-page .msme-hero__note {
+  position: absolute;
+  left: calc(85 * var(--mu));
+  top: calc(284 * var(--mu));
+  margin: 0;
+  font-size: calc(20 * var(--mu));
+  line-height: calc(25 * var(--mu));
+  color: #464f55;
+  white-space: nowrap;
+}
+
+/* ---------- Calculator cards ---------- */
+
+/*
+ * Any number of cards, four to a row, every card the same width and height (the tallest one's);
+ * a shorter last row is centred. Each card spans two of the eight columns, so a last row of
+ * three, two or one starts half a card, a card or a card and a half in.
+ */
+.mt-page .msme-grid {
+  --gap: calc(22 * var(--mu));
+
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: var(--gap);
+  width: min(calc(1380 * var(--mu)), 100% - 48px);
+  margin: calc(30 * var(--mu)) auto 0;
+  padding: 0 0 calc(48 * var(--mu));
+  list-style: none;
+}
+
+/*
+ * The card is tinted in its colour: the picture sits on a slightly deeper band at the top, then
+ * the coloured title, the description and the "View Details" link. Cards in a row share the
+ * tallest one's height, so their links line up.
+ */
+.mt-page .mcard {
+  display: flex;
+  grid-column: span 2;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: calc(14 * var(--mu));
+  background: color-mix(in srgb, var(--soft) 75%, #ffffff);
+  box-shadow:
+    0 1px 2px rgba(16, 40, 70, 0.05),
+    0 calc(10 * var(--mu)) calc(24 * var(--mu)) calc(-12 * var(--mu)) rgba(20, 50, 90, 0.2);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.mt-page .mcard:nth-child(4n + 1):nth-last-child(3) {
+  grid-column: 2 / span 2;
+}
+
+.mt-page .mcard:nth-child(4n + 1):nth-last-child(2) {
+  grid-column: 3 / span 2;
+}
+
+.mt-page .mcard:nth-child(4n + 1):last-child {
+  grid-column: 4 / span 2;
+}
+
+.mt-page .mcard:hover {
+  transform: translateY(calc(-4 * var(--mu)));
+  box-shadow:
+    0 1px 2px rgba(16, 40, 70, 0.06),
+    0 calc(18 * var(--mu)) calc(32 * var(--mu)) calc(-14 * var(--mu)) rgba(20, 50, 90, 0.28);
+}
+
+/* the picture, centred on a pale oval, on the deeper band */
+.mt-page .mcard__art {
+  display: grid;
+  place-items: center;
+  height: calc(170 * var(--mu));
+  background:
+    radial-gradient(ellipse 42% 40% at 50% 52%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 100%),
+    color-mix(in srgb, var(--strong) 72%, #ffffff);
+}
+
+.mt-page .mcard__art svg {
+  display: block;
+  width: calc(150 * var(--mu));
+  height: calc(130 * var(--mu));
+}
+
+.mt-page .mcard__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: calc(22 * var(--mu)) calc(24 * var(--mu)) calc(24 * var(--mu)) calc(28 * var(--mu));
+}
+
+.mt-page .mcard__title {
+  margin: 0;
+  font-size: calc(22 * var(--mu));
+  font-weight: 700;
+  line-height: calc(28 * var(--mu));
+  font-variation-settings: 'GRAD' 100;
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+.mt-page .mcard__text {
+  margin: calc(8 * var(--mu)) 0 calc(20 * var(--mu));
+  font-size: calc(18 * var(--mu));
+  line-height: calc(26 * var(--mu));
+  color: #5f6577;
+  text-wrap: pretty; /* no single word left alone on the last line */
+}
+
+/* sits at the bottom of the card */
+.mt-page .mcard__link {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(14 * var(--mu));
+  margin-top: auto;
+  font-size: calc(19 * var(--mu));
+  font-weight: 500;
+  line-height: calc(24 * var(--mu));
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.mt-page .mcard__link svg {
+  width: calc(19 * var(--mu));
+  height: calc(16 * var(--mu));
+  transition: transform 0.2s ease;
+}
+
+.mt-page a.mcard__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mt-page a.mcard__link:hover svg {
+  transform: translateX(calc(3 * var(--mu)));
+}
+
+.mt-page a.mcard__link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-page .mcard,
+  .mt-page .mcard__link svg {
+    transition: none;
+  }
+
+  .mt-page .mcard:hover,
+  .mt-page a.mcard__link:hover svg {
+    transform: none;
+  }
+}
+
+/* ---------- Tablets and phones ---------- */
+
+/* the photo becomes a banner with the title under it, and cards fill as many columns as fit */
+@media (max-width: 900px), (max-aspect-ratio: 5/4) {
+  .mt-page .msme {
+    --mu: 0.8px;
+    --mt-back-top: var(--mt-nav-clear);
+  }
+
+  /* the banner starts below the site navbar */
+  .mt-page .msme-hero {
+    height: auto;
+    overflow: visible;
+    padding-top: var(--mt-nav-clear);
+  }
+
+  .mt-page .msme-hero__photo {
+    position: static;
+    height: clamp(180px, 46vw, 340px);
+    object-position: 75% 60%;
+  }
+
+  .mt-page .msme-hero::before {
+    display: none;
+  }
+
+  .mt-page .msme-hero__text {
+    position: relative;
+    top: auto;
+    width: auto;
+    height: auto;
+    padding: 18px 20px 6px;
+    transform: none;
+    left: auto;
+  }
+
+  .mt-page .msme-hero__title,
+  .mt-page .msme-hero__subtitle,
+  .mt-page .msme-hero__stripe,
+  .mt-page .msme-hero__note {
+    position: static;
+    white-space: normal;
+  }
+
+  .mt-page .msme-hero__title {
+    display: inline-block;
+    font-size: clamp(56px, 16vw, 88px);
+    line-height: 1;
+  }
+
+  .mt-page .msme-hero__leaf {
+    left: calc(20px + 2.65em);
+    top: 8px;
+    width: 46px;
+    height: 44px;
+    font-size: clamp(56px, 16vw, 88px);
+  }
+
+  .mt-page .msme-hero__subtitle {
+    margin-top: 10px;
+    font-size: clamp(19px, 5.2vw, 26px);
+    line-height: 1.25;
+  }
+
+  .mt-page .msme-hero__stripe {
+    display: block;
+    width: 180px;
+    height: 4px;
+    margin-top: 14px;
+  }
+
+  .mt-page .msme-hero__note {
+    margin-top: 12px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+
+  .mt-page .msme-hero__subtitle br,
+  .mt-page .msme-hero__note br {
+    display: none;
+  }
+
+  .mt-page .msme-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    width: auto;
+    margin: 20px 16px 0;
+    padding-bottom: 36px;
+    gap: 14px;
+  }
+
+  /* as many columns as fit; cards simply fill them in order */
+  .mt-page .msme-grid > .mcard:nth-child(n) {
+    grid-column: auto;
+  }
+
+  .mt-page .mcard {
+    border-radius: 14px;
+  }
+
+  .mt-page .mcard__art {
+    height: 150px;
+  }
+
+  .mt-page .mcard__art svg {
+    width: 132px;
+    height: 114px;
+  }
+
+  .mt-page .mcard__body {
+    padding: 16px 18px 18px;
+  }
+
+  .mt-page .mcard__title {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  .mt-page .mcard__text {
+    margin: 6px 0 14px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .mt-page .mcard__link {
+    gap: 10px;
+    font-size: 15.5px;
+    line-height: 1.4;
+  }
+
+  .mt-page .mcard__link svg {
+    width: 15px;
+    height: 13px;
+  }
+}

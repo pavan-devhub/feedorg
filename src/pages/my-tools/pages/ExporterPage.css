@@ -1,0 +1,226 @@
+/*
+ * Exporter Calculators page: a harbour picture across the whole window, with the title and the
+ * tool cards in the middle.
+ * --xu is one px on a 640 px tall window; the page grows a little on taller windows (up to
+ * 1.2x) and shrinks a little on shorter ones.
+ * On the site the picture runs on up under the fixed navbar, while the title, cards and back
+ * button start below it (--mt-nav) and size against the window height left below it.
+ */
+.mt-page .ex {
+  --xu: clamp(0.85px, calc((100vh - var(--mt-nav)) / 640), 1.2px);
+  --bu: calc(var(--xu) * 1.12); /* a larger "Back to Home" button than on the other pages */
+  --mt-back-top: var(--mt-nav); /* the back button sits below the site navbar */
+
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #eaf5fd;
+}
+
+/* the harbour: cranes on the left, the plane over the map at the top right, the ship on the right */
+.mt-page .ex__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 39%;
+}
+
+/* lighten the picture, most of all behind the title, as in the design */
+.mt-page .ex::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse 34% 34% at 50% 24%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 55%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.12) 55%, rgba(255, 255, 255, 0.55) 100%);
+  pointer-events: none;
+}
+
+.mt-page .ex__inner {
+  position: relative;
+  z-index: 2;
+  padding: calc(var(--mt-nav) + 64 * var(--xu)) 20px calc(24 * var(--xu));
+  text-align: center;
+}
+
+.mt-page .ex__title {
+  margin: 0;
+  font-size: calc(44 * var(--xu));
+  font-weight: 700;
+  line-height: calc(46 * var(--xu));
+  letter-spacing: -0.02em;
+  font-variation-settings: 'GRAD' 150;
+  color: #0b1b4d;
+}
+
+.mt-page .ex__title span {
+  background: linear-gradient(180deg, #ff6c16 0%, #f0480b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mt-page .ex__subtitle {
+  max-width: calc(320 * var(--xu));
+  margin: calc(10 * var(--xu)) auto 0;
+  font-size: calc(15 * var(--xu));
+  line-height: calc(22 * var(--xu));
+  color: #5d6880;
+  text-wrap: balance;
+}
+
+/* ---------- Tool cards ---------- */
+
+/* any number of cards, all the same size, centred; a row wraps when the next card doesn't fit */
+.mt-page .ex-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(20 * var(--xu));
+  max-width: calc(4 * 290 * var(--xu) + 3 * 20 * var(--xu));
+  margin: calc(24 * var(--xu)) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* the button sits at the bottom, so buttons line up when cards in a row differ in text */
+.mt-page .ex-card {
+  display: flex;
+  flex: 0 0 calc(290 * var(--xu));
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding: calc(14 * var(--xu)) calc(16 * var(--xu)) calc(16 * var(--xu));
+  border-radius: calc(20 * var(--xu));
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(16, 40, 80, 0.05),
+    0 calc(14 * var(--xu)) calc(32 * var(--xu)) calc(-14 * var(--xu)) rgba(30, 80, 140, 0.3);
+}
+
+.mt-page .ex-card__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--xu));
+  margin: 0;
+  font-size: calc(12 * var(--xu));
+  font-weight: 600;
+  line-height: calc(16 * var(--xu));
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #f2560f;
+}
+
+.mt-page .ex-card__label::before,
+.mt-page .ex-card__label::after {
+  content: '';
+  width: calc(32 * var(--xu));
+  height: 2px;
+  border-radius: 1px;
+  background: #f68a3c;
+}
+
+.mt-page .ex-card__art {
+  align-self: stretch;
+  height: calc(150 * var(--xu));
+  margin-top: calc(8 * var(--xu));
+}
+
+.mt-page .ex-card__art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mt-page .ex-card__title {
+  margin: calc(10 * var(--xu)) 0 0;
+  font-size: calc(20 * var(--xu));
+  font-weight: 700;
+  line-height: calc(26 * var(--xu));
+  font-variation-settings: 'GRAD' 100;
+  color: #0b1b4d;
+}
+
+.mt-page .ex-card__tools {
+  margin: calc(2 * var(--xu)) 0 0;
+  font-size: calc(13 * var(--xu));
+  font-weight: 600;
+  line-height: calc(18 * var(--xu));
+  color: #5d6a85;
+  text-wrap: balance;
+}
+
+.mt-page .ex-card__text {
+  margin: calc(4 * var(--xu)) 0 calc(12 * var(--xu));
+  font-size: calc(13 * var(--xu));
+  line-height: calc(18 * var(--xu));
+  color: #5e6a84;
+  text-wrap: balance; /* even lines, no single word left on its own */
+}
+
+.mt-page .ex-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--xu));
+  height: calc(38 * var(--xu));
+  margin-top: auto;
+  padding: 0 calc(28 * var(--xu));
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff6a12 0%, #f84b05 100%);
+  box-shadow: 0 calc(8 * var(--xu)) calc(18 * var(--xu)) calc(-8 * var(--xu)) rgba(248, 80, 10, 0.55);
+  font-size: calc(15 * var(--xu));
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  transition: filter 0.2s ease;
+}
+
+.mt-page .ex-card__btn svg {
+  width: calc(16 * var(--xu));
+  height: calc(13 * var(--xu));
+  transition: transform 0.2s ease;
+}
+
+.mt-page .ex-card__btn:hover {
+  filter: brightness(1.06);
+}
+
+.mt-page .ex-card__btn:hover svg {
+  transform: translateX(calc(3 * var(--xu)));
+}
+
+.mt-page .ex-card__btn:focus-visible {
+  outline: 3px solid #f2560f;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-page .ex-card__btn,
+  .mt-page .ex-card__btn svg {
+    transition: none;
+  }
+
+  .mt-page .ex-card__btn:hover svg {
+    transform: none;
+  }
+}
+
+/* phones: one card a row, up to the full width */
+@media (max-width: 640px) {
+  .mt-page .ex {
+    --xu: 1px;
+  }
+
+  .mt-page .ex__inner {
+    padding: calc(var(--mt-nav) + 64px) 16px 28px;
+  }
+
+  .mt-page .ex-card {
+    flex-basis: 100%;
+    max-width: 340px;
+  }
+}

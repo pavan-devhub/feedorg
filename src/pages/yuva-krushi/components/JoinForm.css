@@ -1,0 +1,314 @@
+/*
+ * "Join Yuva Krushi" registration section, the last section of the page.
+ * Layout follows the form design (photo on the left, white form panel
+ * with a curved left edge on the right) at a compact, capped size.
+ */
+
+.yk-page .join {
+  padding: 64px 6.3vw 80px;
+  background: linear-gradient(180deg, #f2f6fb 0%, #ffffff 100%);
+}
+
+.yk-page .join__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 49.1% 50.9%;
+  max-width: 1180px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow:
+    0 24px 60px rgba(15, 40, 80, 0.12),
+    0 4px 14px rgba(15, 40, 80, 0.05);
+}
+
+/*
+ * The photo extends a little under the form panel (so the panel's rounded
+ * top-left corner shows photo behind it) and is clipped to a sweeping curve
+ * at the bottom-right, traced from the design (see JoinForm.jsx).
+ */
+.yk-page .join__photo {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 52.2%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 42% 50%;
+  clip-path: url(#yk-join-photo-clip);
+}
+
+.yk-page .join__panel {
+  position: relative;
+  grid-column: 2;
+  padding: 36px 40px 28px 54px;
+  border-top-left-radius: 36px;
+  background: #fff;
+}
+
+.yk-page .join__title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+
+.yk-page .join__subtitle {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #5b6b82;
+}
+
+/* ---------- Fields ---------- */
+
+.yk-page .join__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 16px;
+  margin-top: 22px;
+}
+
+.yk-page .join__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yk-page .join__field--full {
+  grid-column: 1 / -1;
+}
+
+.yk-page .join__label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1f3556;
+}
+
+.yk-page .join__required {
+  margin-left: 2px;
+  color: #d14b4b;
+}
+
+.yk-page .join__input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #d5deea;
+  border-radius: 10px;
+  background: #fbfcfe;
+  font: inherit;
+  font-size: 14px;
+  color: #14243b;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.yk-page .join__input::placeholder {
+  color: #8c99ab;
+}
+
+.yk-page .join__input:hover {
+  border-color: #b9c7d9;
+}
+
+.yk-page .join__input:focus {
+  outline: none;
+  border-color: #0a5cff;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(10, 92, 255, 0.15);
+}
+
+.yk-page select.join__input {
+  appearance: none;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314243b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 14px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.yk-page .join__input[aria-invalid='true'] {
+  border-color: #d14b4b;
+  box-shadow: 0 0 0 3px rgba(209, 75, 75, 0.12);
+}
+
+.yk-page .join__error {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #c43c3c;
+}
+
+/* Word guidance and counter under the idea field. */
+.yk-page .join__count {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  color: #7a879a;
+}
+
+.yk-page .join__count-limit {
+  font-weight: 700;
+  color: #c43c3c;
+}
+
+/* Phone number: country code picker + number side by side. */
+.yk-page .join__phone {
+  display: flex;
+  gap: 8px;
+}
+
+.yk-page .join__phone .join__input {
+  min-width: 0;
+}
+
+.yk-page select.join__code {
+  flex: none;
+  width: 92px;
+  padding: 0 28px 0 12px;
+  background-position: right 10px center;
+  background-size: 14px;
+}
+
+.yk-page textarea.join__input {
+  height: 76px;
+  min-height: 76px;
+  padding: 11px 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* File upload input & hint */
+.yk-page .join__file-input {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.yk-page .join__file-input::file-selector-button {
+  margin-right: 12px;
+  padding: 6px 14px;
+  border: 1px solid #c8d4e4;
+  border-radius: 8px;
+  background: #eef4fc;
+  color: #1a3c6e;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.yk-page .join__file-input::file-selector-button:hover {
+  background: #dbe8fa;
+  border-color: #a8c0e2;
+}
+
+.yk-page .join__file-hint {
+  font-size: 12.5px;
+  color: #7a879a;
+}
+
+/* ---------- Submit ---------- */
+
+.yk-page .join__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  height: 50px;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #1667ff 0%, #0a55f0 100%);
+  box-shadow: 0 10px 22px rgba(10, 85, 240, 0.28);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.yk-page .join__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(10, 85, 240, 0.34);
+  filter: brightness(1.05);
+}
+
+.yk-page .join__submit:focus-visible {
+  outline: 3px solid #9ec0ff;
+  outline-offset: 3px;
+}
+
+.yk-page .join__submit-arrow {
+  width: 20px;
+}
+
+.yk-page .join__success {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #e9f8ec;
+  font-size: 14px;
+  color: #1d6b37;
+}
+
+/* ---------- Narrower screens: photo on top, form below ---------- */
+
+@media (max-width: 860px) {
+  .yk-page .join {
+    padding: 48px 24px 64px;
+  }
+
+  .yk-page .join__card {
+    grid-template-columns: 1fr;
+    border-radius: 24px;
+  }
+
+  .yk-page .join__photo {
+    position: static;
+    width: 100%;
+    height: 260px;
+    object-position: 45% 40%;
+    clip-path: none;
+  }
+
+  .yk-page .join__panel {
+    grid-column: 1;
+    margin-top: -32px;
+    padding: 30px 24px 24px;
+    border-radius: 28px 28px 0 0;
+  }
+
+  .yk-page .join__title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  .yk-page .join {
+    padding: 40px 16px 56px;
+  }
+
+  .yk-page .join__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yk-page .join__photo {
+    height: 210px;
+  }
+}

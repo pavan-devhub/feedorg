@@ -1,0 +1,66 @@
+/*
+ * My Tools page: the site navbar and footer around the screens of the standalone My Tools app
+ * (pages/my-tools). This file holds what the app's index.css did for the whole document.
+ *
+ * Every rule of the My Tools styles is scoped to the .mt-page wrapper (MyTools.jsx), so nothing
+ * reaches the rest of the site once this page has been visited: the app's :root / body / #root
+ * rules apply to .mt-screen (the screen, between the navbar and the footer), and the two classes
+ * the site's own CSS also defines (home, back-btn) are renamed mt-home and mt-back-btn here and
+ * in the markup.
+ */
+
+.mt-page {
+  /* The site navbar is fixed 10px from the top and 68px tall, so its bottom edge is 78px down;
+     a screen's content starts below that (a full-width header photo may run underneath). */
+  --mt-nav: 78px;
+  /* ... and the phone banners leave another 10px clear below it */
+  --mt-nav-clear: calc(var(--mt-nav) + 10px);
+}
+
+/* Matches the navbar's own breakpoint, where it drops to 60px tall (Navbar.css). */
+@media (max-width: 1200px) {
+  .mt-page {
+    --mt-nav: 70px;
+  }
+}
+
+/* What the app set on :root, body and #root. The container lets the layouts size against the
+   page width without the scrollbar (cqw units). It sits on .mt-screen rather than .mt-page so
+   the containment never touches the site's fixed navbar. */
+.mt-page .mt-screen {
+  container-type: inline-size;
+  min-height: 100vh;
+  color-scheme: light;
+  color: #3b404c;
+  background: #fdfbfc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * The base element rules sit in :where() so they weigh no more than a single class (the
+ * .mt-page prefix), as the app's bare element rules did: every component class still wins.
+ */
+.mt-page :where(.mt-screen) *,
+.mt-page :where(.mt-screen) *::before,
+.mt-page :where(.mt-screen) *::after {
+  box-sizing: border-box;
+}
+
+/* The site's reset gives every element the Outfit font, so inheriting from .mt-screen is not
+   enough: name the app's font on every element (SVG <text> included). Loaded from Google Fonts
+   in MyTools.jsx. */
+.mt-page .mt-screen,
+.mt-page :where(.mt-screen) * {
+  font-family: 'Google Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.mt-page :where(.mt-screen) :where(h1, p, figure) {
+  margin: 0;
+}
+
+.mt-page :where(.mt-screen) img {
+  display: block;
+  max-width: 100%;
+}

@@ -1,0 +1,277 @@
+/* ========================================================
+   TestimonialsSection.css - S.A.F.E. Mission Testimonials
+   Pixel-perfect match to reference graphic
+   ======================================================== */
+
+.sm-page .testimonials-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f4f8;
+  padding: 60px 24px;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Outer layout container */
+.sm-page .testimonials-container {
+  max-width: 1160px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Main white rounded canvas board */
+.sm-page .testimonials-board {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px 40px 42px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* "Testimonials" Main Title */
+.sm-page .testimonials-main-heading {
+  font-size: clamp(32px, 3.8vw, 42px);
+  font-weight: 900;
+  color: #083c28;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+/* Carousel wrapper holding Left Arrow, Cards Window, Right Arrow */
+.sm-page .testimonials-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  position: relative;
+}
+
+/* Navigation Sliding Arrows */
+.sm-page .testimonials-nav-arrow {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #d9e2ec;
+  color: #083c28;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 0;
+  outline: none;
+  flex-shrink: 0;
+  user-select: none;
+  z-index: 5;
+}
+
+.sm-page .testimonials-nav-arrow svg {
+  width: 22px;
+  height: 22px;
+  stroke: #083c28;
+  transition: stroke 0.2s ease, transform 0.2s ease;
+}
+
+.sm-page .testimonials-nav-arrow:hover {
+  background: #083c28;
+  border-color: #083c28;
+  box-shadow: 0 6px 20px rgba(8, 60, 40, 0.25);
+  transform: scale(1.08);
+}
+
+.sm-page .testimonials-nav-arrow:hover svg {
+  stroke: #ffffff;
+}
+
+.sm-page .testimonials-arrow-left:hover svg {
+  transform: translateX(-2px);
+}
+
+.sm-page .testimonials-arrow-right:hover svg {
+  transform: translateX(2px);
+}
+
+.sm-page .testimonials-nav-arrow:active {
+  transform: scale(0.95);
+}
+
+/* Viewport clipping the sliding cards */
+.sm-page .testimonials-slider-viewport {
+  overflow: hidden;
+  width: 100%;
+  padding: 8px 4px 14px;
+  margin: -8px -4px -14px;
+}
+
+/* Slider Track */
+.sm-page .testimonials-slider-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  width: 100%;
+}
+
+/* Individual Testimonial Card */
+.sm-page .testimonials-slider-track .sm-testimonial-card {
+  background: #0052cc;
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  flex: 0 0 calc((100% - (var(--visible-cards, 3) - 1) * 20px) / var(--visible-cards, 3));
+  min-width: calc((100% - (var(--visible-cards, 3) - 1) * 20px) / var(--visible-cards, 3));
+  max-width: calc((100% - (var(--visible-cards, 3) - 1) * 20px) / var(--visible-cards, 3));
+  min-height: 240px;
+  box-shadow: 0 8px 22px rgba(0, 82, 204, 0.2);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.sm-page .testimonials-slider-track .sm-testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 82, 204, 0.28);
+}
+
+/* Card Top Bar: Quote Icon + Avatar */
+.sm-page .card-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.sm-page .card-quote-icon {
+  width: 24px;
+  height: 24px;
+  fill: #f59e0b;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Circular Initials Badge */
+.sm-page .card-avatar-badge {
+  width: 32px;
+  height: 32px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  color: #083c28;
+  letter-spacing: -0.02em;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+/* Card Heading Text */
+.sm-page .card-title-text {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0 0 2px 0;
+  letter-spacing: -0.015em;
+  white-space: normal;
+}
+
+/* Domain / Focus Subtitle */
+.sm-page .card-subtitle-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #93c5fd;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+  display: block;
+}
+
+/* Quote Body Copy */
+.sm-page .card-quote-body {
+  font-size: 11.8px;
+  line-height: 1.48;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 450;
+  margin: 0 0 16px 0;
+  flex: 1;
+}
+
+/* Bottom Pill Tag */
+.sm-page .card-tag-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.sm-page .card-focus-pill {
+  background: #ffffff;
+  color: #083c28;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4.5px 14px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  letter-spacing: -0.01em;
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 960px) {
+  .sm-page .testimonials-board {
+    padding: 30px 24px 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sm-page .testimonials-section {
+    padding: 64px 16px 72px;
+  }
+
+  .sm-page .testimonials-board {
+    padding: 24px 14px 28px;
+    border-radius: 18px;
+  }
+
+  .sm-page .testimonials-main-heading {
+    font-size: 28px;
+    margin-bottom: 18px;
+  }
+
+  .sm-page .testimonials-carousel-wrapper {
+    gap: 8px;
+  }
+
+  .sm-page .testimonials-nav-arrow {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .sm-page .testimonials-nav-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+}

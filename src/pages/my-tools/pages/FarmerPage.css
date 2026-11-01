@@ -1,0 +1,398 @@
+/*
+ * Farmer page, laid out on the 1802 x 873 reference design: a header card (title, subtitle and
+ * the farmer photo fading in from the right) above an "Explore by tool type" grid of cards.
+ * --fu is one design pixel: the page is shown at the largest size that fits both the width and
+ * the height of the window (so header and cards show together), capped so it never gets huge.
+ * On the site the header card starts below the fixed navbar (--mt-nav), and the design fits the
+ * window below it.
+ */
+.mt-page .fp {
+  --fu: min(calc(100cqw / 1802), calc((100vh - var(--mt-nav)) / 873), 1.25px);
+  --bu: var(--fu);
+  --ink: #101828;
+  --hero-bg: #e8f6e8;
+
+  min-height: 100vh;
+  background: #e3f3e2;
+}
+
+.mt-page .fp__inner {
+  width: calc(1802 * var(--fu));
+  margin: 0 auto;
+  padding: calc(var(--mt-nav) + 45 * var(--fu)) 0 calc(66 * var(--fu));
+}
+
+/* ---------- Header card ---------- */
+
+.mt-page .fp-hero {
+  position: relative;
+  width: calc(1717 * var(--fu));
+  height: calc(289 * var(--fu));
+  margin-left: calc(43 * var(--fu));
+  overflow: hidden;
+  border: calc(4 * var(--fu)) solid #fff;
+  border-radius: calc(28 * var(--fu));
+  background: var(--hero-bg);
+  box-shadow: 0 calc(10 * var(--fu)) calc(30 * var(--fu)) calc(-18 * var(--fu)) rgba(20, 70, 30, 0.25);
+}
+
+/* runs to the header's right edge; the farmer's head sits near the top and he is cut off at
+   the bottom edge, as in the design */
+.mt-page .fp-hero__photo {
+  position: absolute;
+  right: 0;
+  top: calc(-10 * var(--fu));
+  height: calc(315 * var(--fu));
+  width: auto;
+  max-width: none;
+}
+
+/* the pale green fades into the photo from 45% to 58% across (the photo starts at ~44.7%) */
+.mt-page .fp-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, var(--hero-bg) 0%, var(--hero-bg) 45%, rgba(232, 246, 232, 0) 58%);
+  pointer-events: none;
+}
+
+.mt-page .fp-hero__text {
+  position: relative;
+  z-index: 2;
+}
+
+/* title and subtitle sit a little lower than in the design to leave room for the back button */
+.mt-page .fp-hero__title {
+  position: absolute;
+  left: calc(65 * var(--fu));
+  top: calc(55 * var(--fu));
+  margin: 0;
+  font-size: calc(95 * var(--fu));
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #0c3b25;
+}
+
+.mt-page .fp-hero__subtitle {
+  position: absolute;
+  left: calc(69 * var(--fu));
+  top: calc(154 * var(--fu));
+  width: calc(572 * var(--fu));
+  margin: 0;
+  font-size: calc(22 * var(--fu));
+  line-height: calc(34 * var(--fu));
+  color: #5b6f6c;
+}
+
+/* ---------- Tools ---------- */
+
+.mt-page .fp-tools__label {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--fu));
+  margin: calc(38 * var(--fu)) 0 0 calc(49 * var(--fu));
+  font-size: calc(14 * var(--fu));
+  font-weight: 600;
+  line-height: calc(18 * var(--fu));
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #5f7b80;
+}
+
+.mt-page .fp-tools__label::before {
+  content: '';
+  width: calc(40 * var(--fu));
+  height: calc(4 * var(--fu));
+  border-radius: 2px;
+  background: #22a04b;
+}
+
+/* any number of cards: rows of three (557 design px each), centred; extras wrap */
+.mt-page .fp-tools__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(28 * var(--fu)) calc(21 * var(--fu));
+  width: calc(1713 * var(--fu));
+  margin: calc(29 * var(--fu)) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mt-page .tcard {
+  position: relative;
+  width: calc(557 * var(--fu));
+  height: calc(179 * var(--fu));
+  overflow: hidden;
+  border: 1px solid rgba(16, 24, 40, 0.05);
+  border-radius: calc(22 * var(--fu));
+  background: linear-gradient(225deg, var(--tint) 0%, color-mix(in srgb, var(--tint) 28%, #fff) 62%);
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 calc(12 * var(--fu)) calc(26 * var(--fu)) calc(-16 * var(--fu)) rgba(16, 40, 24, 0.22);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.mt-page .tcard:hover {
+  transform: translateY(calc(-4 * var(--fu)));
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.05),
+    0 calc(20 * var(--fu)) calc(32 * var(--fu)) calc(-16 * var(--fu)) rgba(16, 40, 24, 0.28);
+}
+
+.mt-page .tcard__leaf {
+  position: absolute;
+  top: calc(-12 * var(--fu));
+  right: calc(-12 * var(--fu));
+  width: calc(96 * var(--fu));
+  height: calc(96 * var(--fu));
+  color: var(--tint);
+  pointer-events: none;
+}
+
+.mt-page .tcard__index {
+  position: absolute;
+  top: calc(16 * var(--fu));
+  left: calc(23 * var(--fu));
+  display: grid;
+  place-items: center;
+  width: calc(46 * var(--fu));
+  height: calc(46 * var(--fu));
+  border-radius: 50%;
+  background: var(--tint);
+  font-size: calc(19 * var(--fu));
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.mt-page .tcard__art {
+  position: absolute;
+  top: calc(31 * var(--fu));
+  left: calc(63 * var(--fu));
+  width: calc(165 * var(--fu));
+  height: calc(130 * var(--fu));
+}
+
+.mt-page .tcard__art svg,
+.mt-page .tcard__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* not positioned, so the title link's cover reaches the whole card */
+.mt-page .tcard__body {
+  width: calc(205 * var(--fu));
+  margin: calc(43 * var(--fu)) 0 0 calc(268 * var(--fu));
+}
+
+.mt-page .tcard__title {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: calc(20 * var(--fu));
+  font-weight: 600;
+  line-height: calc(26 * var(--fu));
+  color: var(--ink);
+}
+
+.mt-page .tcard__link {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* with a page to open, the whole card is the click target */
+.mt-page .tcard__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.mt-page .tcard__link:focus-visible {
+  outline: none;
+}
+
+.mt-page .tcard:has(.tcard__link:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.mt-page .tcard__text {
+  margin: calc(10 * var(--fu)) 0 0;
+  font-size: calc(15.5 * var(--fu));
+  line-height: calc(21 * var(--fu));
+  color: #5d7276;
+}
+
+.mt-page .tcard__arrow {
+  position: absolute;
+  right: calc(22 * var(--fu));
+  bottom: calc(18 * var(--fu));
+  display: grid;
+  place-items: center;
+  width: calc(50 * var(--fu));
+  height: calc(50 * var(--fu));
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.mt-page .tcard__arrow svg {
+  width: calc(20 * var(--fu));
+  height: calc(16 * var(--fu));
+}
+
+.mt-page .tcard:hover .tcard__arrow {
+  transform: translateX(calc(3 * var(--fu)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-page .tcard,
+  .mt-page .tcard__arrow {
+    transition: none;
+  }
+
+  .mt-page .tcard:hover,
+  .mt-page .tcard:hover .tcard__arrow {
+    transform: none;
+  }
+}
+
+/* ---------- Phones & portrait tablets: one column ---------- */
+
+@media (max-width: 900px), (max-aspect-ratio: 5/4) {
+  .mt-page .fp__inner {
+    width: 100%;
+    max-width: 720px;
+    padding: calc(var(--mt-nav) + 16px) 16px 40px;
+  }
+
+  .mt-page .fp-hero {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    margin: 0;
+    border-width: 3px;
+    border-radius: 22px;
+  }
+
+  .mt-page .fp-hero::before {
+    display: none;
+  }
+
+  .mt-page .fp-hero__text {
+    order: 2;
+    padding: 18px 20px 20px;
+  }
+
+  .mt-page .fp-hero__title,
+  .mt-page .fp-hero__subtitle,
+  .mt-page .fp-hero__photo {
+    position: static;
+  }
+
+  .mt-page .fp-hero__title {
+    font-size: clamp(40px, 12vw, 60px);
+  }
+
+  .mt-page .fp-hero__subtitle {
+    width: auto;
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .mt-page .fp-hero__photo {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    object-position: 64% 30%;
+  }
+
+  .mt-page .fp-tools__label {
+    gap: 12px;
+    margin: 26px 0 0 4px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .mt-page .fp-tools__label::before {
+    width: 30px;
+    height: 3px;
+  }
+
+  .mt-page .fp-tools__grid {
+    flex-direction: column;
+    gap: 14px;
+    width: auto;
+    margin-top: 16px;
+  }
+
+  .mt-page .tcard {
+    width: 100%;
+    height: auto;
+    min-height: 140px;
+    padding: 18px 68px 18px 132px;
+    border-radius: 18px;
+  }
+
+  .mt-page .tcard__leaf {
+    width: 70px;
+    height: 70px;
+  }
+
+  .mt-page .tcard__index {
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .mt-page .tcard__art {
+    top: 50%;
+    left: 18px;
+    width: 104px;
+    height: 82px;
+    transform: translateY(-50%);
+  }
+
+  .mt-page .tcard__body {
+    width: auto;
+    margin: 0;
+  }
+
+  .mt-page .tcard__title {
+    font-size: 17px;
+    line-height: 22px;
+  }
+
+  .mt-page .tcard__text {
+    margin-top: 6px;
+    font-size: 13.5px;
+    line-height: 19px;
+  }
+
+  .mt-page .tcard__arrow {
+    right: 14px;
+    bottom: 14px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .mt-page .tcard__arrow svg {
+    width: 16px;
+    height: 13px;
+  }
+}

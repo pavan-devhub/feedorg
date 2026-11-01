@@ -1,0 +1,403 @@
+/*
+ * SHG Calculators page, from the 1670 x 941 reference design: the women's photo across the top
+ * with a pale curved panel on its left holding the title, then a centred heading and the
+ * calculator cards, five to a row.
+ * --su is one design pixel: the page is shown at the largest size that fits both the width and
+ * the height of the window (so everything shows at once), never larger than the design.
+ * On the site the header grows by the fixed navbar's height (--mt-nav): the photo and the panel
+ * run on up underneath the navbar while the title and back button move down below it, and the
+ * design fits the window below the navbar.
+ */
+.mt-page .shg {
+  --su: min(calc(100cqw / 1670), calc((100vh - var(--mt-nav)) / 980), 1px);
+  --bu: 1.12px; /* the same "Back to Home" size as on the Exporter and FPO pages */
+  --mt-back-top: var(--mt-nav); /* the back button sits below the site navbar */
+  --col: calc(1670 * var(--su));
+  --col-left: calc(50% - var(--col) / 2);
+  --panel: #f4fcf7;
+
+  min-height: 100vh;
+  background: #fefefe;
+}
+
+/* ---------- Header ---------- */
+
+.mt-page .shg-hero {
+  position: relative;
+  height: calc(464 * var(--su) + var(--mt-nav));
+  overflow: hidden;
+}
+
+/* the photo runs to the window's right edge; the women sit where they do in the design */
+.mt-page .shg-hero__photo {
+  position: absolute;
+  top: calc(-147 * var(--su)); /* in the design */
+  top: min(0px, calc(var(--mt-nav) - 147 * var(--su))); /* moved down with the text, but still reaching the top */
+  right: 0;
+  width: max(calc(1303 * var(--su)), calc(100% - var(--col-left) - 680 * var(--su))); /* wider only on very wide windows, to reach under the panel */
+  max-width: none;
+  height: auto;
+}
+
+/* the pale panel: plain to the left of the design's column, curved at its right */
+.mt-page .shg-hero__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--col-left) + 1px);
+  background: var(--panel);
+}
+
+.mt-page .shg-hero__panel {
+  position: absolute;
+  top: 0;
+  left: var(--col-left);
+  width: calc(830 * var(--su));
+  height: 100%;
+}
+
+.mt-page .shg-hero__text {
+  position: absolute;
+  inset: var(--mt-nav) auto 0 var(--col-left); /* below the navbar */
+  z-index: 2;
+  width: calc(830 * var(--su));
+}
+
+/* "SHG" centred over an orange and a green rule */
+.mt-page .shg-hero__brand {
+  position: absolute;
+  left: calc(213 * var(--su));
+  top: calc(30 * var(--su));
+  width: calc(272 * var(--su));
+  text-align: center;
+}
+
+.mt-page .shg-hero__title {
+  margin: 0;
+  font-size: calc(78 * var(--su));
+  font-weight: 700;
+  line-height: calc(90 * var(--su));
+  letter-spacing: -0.01em;
+  font-variation-settings: 'GRAD' 150;
+  color: #0c4f49;
+}
+
+.mt-page .shg-hero__rules {
+  display: block;
+  height: calc(3 * var(--su));
+  margin-top: calc(6 * var(--su));
+  background:
+    linear-gradient(#e8862f, #e8862f) left / calc(100 * var(--su)) 100% no-repeat,
+    linear-gradient(#0a5a33, #0a5a33) right / calc(104 * var(--su)) 100% no-repeat;
+}
+
+.mt-page .shg-hero__subtitle {
+  position: absolute;
+  left: calc(145 * var(--su));
+  top: calc(164 * var(--su));
+  width: calc(492 * var(--su));
+  margin: 0;
+  font-size: calc(22.9 * var(--su));
+  line-height: calc(33.5 * var(--su));
+  color: #676d82;
+}
+
+/* ---------- Calculators ---------- */
+
+.mt-page .shg-tools {
+  width: calc(1570 * var(--su));
+  margin: 0 auto;
+  padding: calc(12 * var(--su)) 0 calc(32 * var(--su));
+  text-align: center;
+}
+
+/* the heading between two short orange rules */
+.mt-page .shg-tools__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(21 * var(--su));
+  margin: 0;
+  font-size: calc(48.8 * var(--su));
+  font-weight: 700;
+  line-height: calc(60 * var(--su));
+  letter-spacing: -0.01em;
+  font-variation-settings: 'GRAD' 120;
+  color: #0b4e40;
+}
+
+.mt-page .shg-tools__title-text span {
+  color: #0e1a3a;
+}
+
+.mt-page .shg-tools__title::before,
+.mt-page .shg-tools__title::after {
+  content: '';
+  width: calc(53 * var(--su));
+  height: 2px;
+  background: #e8763f;
+}
+
+.mt-page .shg-tools__sub {
+  margin: calc(2 * var(--su)) 0 0;
+  font-size: calc(17.9 * var(--su));
+  line-height: calc(24 * var(--su));
+  color: #6a7084;
+}
+
+/* any number of cards, five to a row, all the same size */
+.mt-page .shg-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: calc(22 * var(--su));
+  margin: calc(17 * var(--su)) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+/* tinted in the card's colour: the picture on a deeper band at the top, the text below */
+.mt-page .scard {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(368 * var(--su));
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: calc(12 * var(--su));
+  background: var(--soft);
+  box-shadow: 0 calc(8 * var(--su)) calc(20 * var(--su)) calc(-8 * var(--su)) rgba(20, 40, 70, 0.18);
+}
+
+.mt-page .scard__art {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: calc(158 * var(--su));
+  background: var(--band);
+}
+
+.mt-page .scard__art svg {
+  display: block;
+  width: calc(230 * var(--su));
+  height: calc(140 * var(--su));
+  margin-bottom: calc(2 * var(--su));
+}
+
+/* the button sits at the bottom, so the links line up across a row */
+.mt-page .scard__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: calc(14 * var(--su)) calc(14 * var(--su)) calc(24 * var(--su)) calc(29 * var(--su));
+}
+
+.mt-page .scard__title {
+  margin: 0;
+  font-size: calc(21.7 * var(--su));
+  font-weight: 700;
+  line-height: calc(26 * var(--su));
+  font-variation-settings: 'GRAD' 100;
+  color: var(--color);
+}
+
+.mt-page .scard__title span {
+  display: block;
+  white-space: nowrap;
+}
+
+.mt-page .scard__title .scard__line--small {
+  font-size: 0.9em;
+}
+
+.mt-page .scard__text {
+  max-width: calc(222 * var(--su)); /* descriptions wrap narrower than the titles, as in the design */
+  margin: calc(8 * var(--su)) 0 calc(14 * var(--su));
+  font-size: calc(19.5 * var(--su));
+  line-height: calc(24 * var(--su));
+  color: #5f6577;
+}
+
+.mt-page .scard__link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: calc(14 * var(--su));
+  margin-top: auto;
+  font-size: calc(18 * var(--su));
+  font-weight: 500;
+  line-height: calc(22 * var(--su));
+  color: var(--color);
+  text-decoration: none;
+}
+
+.mt-page .scard__link svg {
+  width: calc(18 * var(--su));
+  height: calc(15 * var(--su));
+  transition: transform 0.2s ease;
+}
+
+.mt-page a.scard__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mt-page a.scard__link:hover svg {
+  transform: translateX(calc(3 * var(--su)));
+}
+
+.mt-page a.scard__link:focus-visible {
+  outline: 3px solid var(--color);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-page .scard__link svg {
+    transition: none;
+  }
+
+  .mt-page a.scard__link:hover svg {
+    transform: none;
+  }
+}
+
+/* ---------- Tablets and phones ---------- */
+
+/* the photo becomes a banner with the title under it, and cards fill as many columns as fit */
+@media (max-width: 900px), (max-aspect-ratio: 5/4) {
+  .mt-page .shg {
+    --su: 0.8px;
+    --mt-back-top: var(--mt-nav-clear);
+  }
+
+  /* the banner starts below the site navbar */
+  .mt-page .shg-hero {
+    height: auto;
+    overflow: visible;
+    padding-top: var(--mt-nav-clear);
+    background: var(--panel);
+  }
+
+  .mt-page .shg-hero__photo {
+    position: static;
+    width: 100%;
+    height: clamp(190px, 50vw, 360px);
+    object-fit: cover;
+    object-position: 70% 40%;
+  }
+
+  .mt-page .shg-hero__fill,
+  .mt-page .shg-hero__panel {
+    display: none;
+  }
+
+  .mt-page .shg-hero__text {
+    position: static;
+    width: auto;
+    padding: 18px 20px 24px;
+  }
+
+  .mt-page .shg-hero__brand {
+    position: static;
+    width: max-content;
+    margin: 0 auto;
+  }
+
+  .mt-page .shg-hero__title {
+    font-size: clamp(48px, 13vw, 72px);
+    line-height: 1.15;
+  }
+
+  .mt-page .shg-hero__rules {
+    height: 3px;
+    margin-top: 4px;
+    background:
+      linear-gradient(#e8862f, #e8862f) left / 38% 100% no-repeat,
+      linear-gradient(#0a5a33, #0a5a33) right / 38% 100% no-repeat;
+  }
+
+  .mt-page .shg-hero__subtitle {
+    position: static;
+    width: auto;
+    max-width: 520px;
+    margin: 18px auto 0;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .mt-page .shg-tools {
+    width: auto;
+    padding: 24px 16px 40px;
+  }
+
+  .mt-page .shg-tools__title {
+    gap: 12px;
+    font-size: clamp(24px, 6.6vw, 40px);
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .mt-page .shg-tools__title::before,
+  .mt-page .shg-tools__title::after {
+    flex: none;
+    width: 28px;
+  }
+
+  .mt-page .shg-tools__sub {
+    margin-top: 6px;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+
+  .mt-page .shg-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .mt-page .scard {
+    min-height: 0;
+  }
+
+  .mt-page .scard__art {
+    height: auto;
+    padding-top: 10px;
+  }
+
+  .mt-page .scard__art svg {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    aspect-ratio: 230 / 140;
+  }
+
+  .mt-page .scard__body {
+    padding: 14px 18px 18px;
+  }
+
+  .mt-page .scard__title {
+    margin-top: 0;
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  .mt-page .scard__title span {
+    white-space: normal;
+  }
+
+  .mt-page .scard__text {
+    max-width: none;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .mt-page .scard__link {
+    gap: 10px;
+    font-size: 15.5px;
+    line-height: 1.4;
+  }
+
+  .mt-page .scard__link svg {
+    width: 15px;
+    height: 13px;
+  }
+}

@@ -1,0 +1,268 @@
+/* Every rule is scoped to .fc-page; FeedCard.css explains the scoping and renames. */
+
+.fc-page .info {
+  /* Dark charcoal section: light text on the background, white cards keep dark text. */
+  --info-bg: #414447;
+  --info-heading: #ffffff;
+  --info-body: #dde0e5;
+  --info-soft: #c4c8cf;
+  --info-accent: #8cc0ff;
+  --card-ink: #0a1430;
+  --card-muted: #4b5466;
+  --info-border: #e3e8f1;
+
+  padding: clamp(40px, 4.5vw, 64px) 0 clamp(44px, 5vw, 72px);
+  background: var(--info-bg);
+  color: var(--info-heading);
+  font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, sans-serif;
+}
+
+.fc-page .info__inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 40px);
+}
+
+.fc-page .info__panel:not([hidden]) {
+  animation: fc-info-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fc-page .info__panel:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 12px;
+  border-radius: 12px;
+}
+
+/* ---------- Shared headings ---------- */
+
+.fc-page .info__eyebrow {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: clamp(12px, 0.95vw, 14px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--info-accent);
+}
+
+.fc-page .info__heading {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(26px, 2.6vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--info-heading);
+}
+
+.fc-page .info__accent {
+  background: linear-gradient(90deg, #6aa8ff, #a6d0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fc-page .info__header {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.fc-page .info__subtitle {
+  margin: 10px auto 0;
+  max-width: 60em;
+  font-size: clamp(14px, 1vw, 15.5px);
+  line-height: 1.6;
+  color: var(--info-soft);
+}
+
+/* ---------- Overview ---------- */
+
+.fc-page .info__panel--what-is-feed-card .info__heading {
+  font-size: clamp(30px, 3.4vw, 50px);
+}
+
+.fc-page .overview__lead {
+  max-width: 34em;
+  margin: 14px 0 0;
+  font-size: clamp(15px, 1.25vw, 18px);
+  line-height: 1.5;
+  color: var(--info-body);
+}
+
+.fc-page .overview__lead strong {
+  font-weight: 800;
+  color: var(--info-accent);
+}
+
+.fc-page .overview__features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: clamp(28px, 3.2vw, 44px) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.fc-page .overview__icon {
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 5.5vw, 84px);
+  aspect-ratio: 1;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+}
+
+.fc-page .overview__icon svg {
+  width: 48%;
+  height: 48%;
+}
+
+.fc-page .overview__title {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(15.5px, 1.25vw, 18px);
+  letter-spacing: -0.01em;
+}
+
+.fc-page .overview__text {
+  max-width: 14em;
+  margin: 6px auto 0;
+  font-size: clamp(13.5px, 1.05vw, 15.5px);
+  line-height: 1.45;
+  color: var(--info-soft);
+}
+
+/* ---------- Card grid (Benefits + Beneficiaries) ---------- */
+
+.fc-page .info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: clamp(24px, 2.6vw, 32px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fc-page .info-grid--three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.fc-page .fc-info-card {
+  padding: 18px 18px 20px;
+  border: 1px solid var(--info-border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 10px 24px -14px rgba(16, 24, 40, 0.1);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.fc-page .fc-info-card:hover {
+  transform: translateY(-3px);
+  border-color: #cddbf5;
+  box-shadow: 0 18px 34px -18px rgba(21, 87, 214, 0.28);
+}
+
+.fc-page .fc-info-card__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  border-radius: 11px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.fc-page .fc-info-card__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.fc-page .fc-info-card__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15.5px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--card-ink);
+}
+
+.fc-page .fc-info-card__text {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--card-muted);
+}
+
+/* Pastel tiles behind the icons */
+.fc-page .fc-tone-blue {
+  background: #dde9fd;
+}
+
+.fc-page .fc-tone-orange {
+  background: #feeddb;
+}
+
+.fc-page .fc-tone-green {
+  background: #e3f7e8;
+}
+
+.fc-page .fc-tone-purple {
+  background: #ece4fd;
+}
+
+.fc-page .fc-tone-red {
+  background: #ffe5e9;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+  .fc-page .info-grid,
+  .fc-page .info-grid--three {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .fc-page .overview__features {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-page .info-grid,
+  .fc-page .info-grid--three {
+    grid-template-columns: 1fr;
+  }
+
+  .fc-page .overview__features {
+    gap: 32px 16px;
+  }
+}
+
+@keyframes fc-info-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-page .info__panel:not([hidden]) {
+    animation: none;
+  }
+
+  .fc-page .fc-info-card {
+    transition: none;
+  }
+}

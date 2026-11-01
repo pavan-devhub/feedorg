@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Yuva Krushi page: the site navbar and footer around the standalone
+   Yuva Krushi app (components/, data/, assets/ in this folder).
+
+   Every rule in this folder is scoped to .yk-page (YuvaKrushi.jsx) so nothing
+   here reaches the rest of the site - Vite keeps a page's CSS loaded once it
+   has been visited. The source app's global rules (its index.css: :root,
+   body, *, h1..ul, img) apply to .yk-app, the wrapper around the app's own
+   content, so the site navbar and footer - also inside .yk-page - keep their
+   look. Its keyframes are yk-*, its SVG ids yk-*, and its generic classes
+   (page, card, hero, brand, tagline, feature(s), is-active) are renamed yk-*
+   here and in the markup (page -> yk-header; the bare <main> is .yk-main).
+   ========================================================================== */
+
+.yk-page {
+  /* The site navbar is fixed 10px from the top and 68px tall; leave 10px clear below it. */
+  --yk-nav-offset: 88px;
+}
+
+/* Matches the navbar's own breakpoint, where it drops to 60px (Navbar.css). */
+@media (max-width: 1200px) {
+  .yk-page {
+    --yk-nav-offset: 80px;
+  }
+}
+
+/* ---------- The source app's index.css, scoped to .yk-app ---------- */
+
+/* The source's :root and body. */
+.yk-page .yk-app {
+  --page-bg: #9da8df;
+  --card-bg: #d8dcf8;
+  --ink: #1c1f2b;
+  --muted: #4f5263;
+  --brand-green: #177920;
+  --gold: #e4af2c;
+  --section-bg: #edf3f8;
+  --navy: #06307a;
+
+  font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  min-width: 320px;
+  background: var(--page-bg);
+}
+
+/* :where() keeps the element rules below at one class + one element of specificity, under every
+   component rule (two classes), as the source's bare element rules were under its class rules. */
+.yk-page :where(.yk-app) *,
+.yk-page :where(.yk-app) *::before,
+.yk-page :where(.yk-app) *::after {
+  box-sizing: border-box;
+}
+
+/* The site's global reset (src/index.css) gives every element the Outfit font and padding: 0.
+   The source inherited its fonts (Nunito Sans, or the Poppins / Montserrat / Albert Sans /
+   Yellowtail its components set) and kept the browser's default paddings, so put both back. */
+.yk-page :where(.yk-app) * {
+  font-family: inherit;
+  padding: revert;
+}
+
+.yk-page :where(.yk-app) h1,
+.yk-page :where(.yk-app) h2,
+.yk-page :where(.yk-app) h3,
+.yk-page :where(.yk-app) h4,
+.yk-page :where(.yk-app) p,
+.yk-page :where(.yk-app) figure,
+.yk-page :where(.yk-app) ul {
+  margin: 0;
+  padding: 0;
+}
+
+.yk-page :where(.yk-app) img {
+  display: block;
+  max-width: 100%;
+}

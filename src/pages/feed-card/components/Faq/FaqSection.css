@@ -1,0 +1,412 @@
+/* Every rule is scoped to .fc-page; FeedCard.css explains the scoping and renames. */
+
+.fc-page .faq {
+  --faq-bg: #fcf4ee;
+  --faq-panel: #fbebe0;
+  --faq-ink: #04251c;
+  --faq-text: #1d1d1f;
+  --faq-muted: #6b6560;
+  --faq-brown: #8f2f20;
+  --faq-chip: #fee1cb;
+
+  position: relative;
+  overflow: hidden;
+  padding: clamp(48px, 5.5vw, 80px) 0 clamp(56px, 6vw, 88px);
+  background: var(--faq-bg);
+  color: var(--faq-text);
+  font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, sans-serif;
+}
+
+/* Soft background arcs + a dot grid, as in the mockup */
+.fc-page .faq::before {
+  content: '';
+  position: absolute;
+  left: -420px;
+  top: 38%;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: rgba(250, 224, 206, 0.45);
+  pointer-events: none;
+}
+
+.fc-page .faq::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 6%;
+  width: 168px;
+  height: 48px;
+  background-image: radial-gradient(#f5d3bf 2.2px, transparent 2.8px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.fc-page .faq__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 40px);
+}
+
+.fc-page .faq__panel {
+  display: grid;
+  grid-template-columns: minmax(290px, 330px) 1fr;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fcece1, var(--faq-panel) 55%, #fce6d8);
+  box-shadow:
+    0 2px 6px rgba(198, 120, 76, 0.06),
+    0 30px 60px -36px rgba(198, 120, 76, 0.35);
+}
+
+/* ---------- Left card ---------- */
+
+.fc-page .faq__intro {
+  display: flex;
+  flex-direction: column;
+  padding: 34px 24px 24px;
+  border-radius: 28px;
+  background: linear-gradient(170deg, #fde6d6, #fbe1cf);
+  box-shadow: 0 18px 40px -28px rgba(198, 120, 76, 0.45);
+}
+
+.fc-page .faq__tag {
+  align-self: flex-start;
+  margin: 0;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: #ffd3b6;
+  color: #2a1d14;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.fc-page .faq__intro-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-page .faq__title {
+  margin: 20px 0 6px;
+  font-weight: 800;
+  font-size: clamp(40px, 3.6vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--faq-ink);
+}
+
+.fc-page .faq__subtitle {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.5;
+  color: var(--faq-muted);
+}
+
+.fc-page .faq__tools {
+  display: flex;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.fc-page .faq__search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 12px;
+  border-radius: 14px;
+  background: #fff;
+  color: #2a2a2a;
+  box-shadow: 0 6px 16px -10px rgba(198, 120, 76, 0.4);
+}
+
+.fc-page .faq__search svg {
+  flex: none;
+  width: 19px;
+  height: 19px;
+}
+
+.fc-page .faq__search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--faq-text);
+  font: inherit;
+  font-size: 15px;
+}
+
+.fc-page .faq__search input::placeholder {
+  color: #8d8782;
+}
+
+.fc-page .faq__search:focus-within {
+  box-shadow: 0 0 0 2px #f0a477;
+}
+
+.fc-page .faq__expand {
+  flex: none;
+  height: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #fde2d6;
+  color: var(--faq-brown);
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px -10px rgba(198, 120, 76, 0.45);
+  transition: background-color 0.2s ease;
+}
+
+.fc-page .faq__expand:hover {
+  background: #fcd4c2;
+}
+
+.fc-page .faq__expand:focus-visible,
+.fc-page .faq-item__toggle:focus-visible {
+  outline: 3px solid #f0a477;
+  outline-offset: 2px;
+}
+
+.fc-page .faq__expand:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.fc-page .faq__art {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 28px 0 0 -6px;
+}
+
+/* ---------- Question list ---------- */
+
+/* The left card sets the panel height; the question list fills the right side and scrolls. */
+.fc-page .faq__body {
+  position: relative;
+  min-height: 420px;
+}
+
+.fc-page .faq__scroll {
+  position: absolute;
+  inset: 24px 12px 24px 24px;
+  overflow-y: auto;
+  padding-right: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #eeb08a rgba(255, 255, 255, 0.5);
+  /* fade the bottom edge so it's clear there are more questions below */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+}
+
+.fc-page .faq__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.fc-page .faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 2px 0 36px;
+}
+
+.fc-page .faq-item {
+  border-radius: 14px;
+  background: rgba(255, 249, 245, 0.92);
+  box-shadow: 0 8px 18px -12px rgba(198, 120, 76, 0.4);
+  transition: box-shadow 0.25s ease;
+}
+
+.fc-page .faq-item.fc-is-open {
+  box-shadow: 0 14px 28px -16px rgba(198, 120, 76, 0.55);
+}
+
+.fc-page .faq-item__heading {
+  margin: 0;
+}
+
+.fc-page .faq-item__toggle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 18px 10px 10px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--faq-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fc-page .faq-item__num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--faq-chip);
+  color: var(--faq-brown);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.fc-page .faq-item__q {
+  flex: 1;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.fc-page .faq-item__chev {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: #2a2a2a;
+  transition: transform 0.3s ease;
+}
+
+.fc-page .faq-item__chev svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fc-page .faq-item.fc-is-open .faq-item__chev {
+  transform: rotate(180deg);
+}
+
+/* Smooth open/close without measuring heights */
+.fc-page .faq-item__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.fc-page .faq-item.fc-is-open .faq-item__answer {
+  grid-template-rows: 1fr;
+}
+
+.fc-page .faq-item__answer-inner {
+  overflow: hidden;
+}
+
+.fc-page .faq-item__answer p {
+  margin: 0;
+  padding: 0 20px 16px 64px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--faq-muted);
+}
+
+.fc-page .faq__empty {
+  margin: 0;
+  padding: 40px 20px;
+  border-radius: 14px;
+  background: rgba(255, 249, 245, 0.92);
+  text-align: center;
+  color: var(--faq-muted);
+  font-size: 15px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+  .fc-page .faq__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .fc-page .faq__intro {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .fc-page .faq__intro-text {
+    flex: 1;
+  }
+
+  .fc-page .faq__art {
+    width: 42%;
+    max-width: 260px;
+    margin: 0;
+  }
+
+  /* Stacked: no left card to size against, so give the list its own scroll height. */
+  .fc-page .faq__body {
+    min-height: 0;
+  }
+
+  .fc-page .faq__scroll {
+    position: static;
+    max-height: min(560px, 70vh);
+    margin: 20px 12px 20px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-page .faq__panel {
+    border-radius: 22px;
+  }
+
+  .fc-page .faq__intro {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 28px 20px 8px;
+    border-radius: 22px;
+  }
+
+  .fc-page .faq__art {
+    width: 70%;
+    max-width: 240px;
+    margin: 16px auto 0;
+  }
+
+  .fc-page .faq__scroll {
+    margin: 14px 6px 16px 12px;
+    padding-right: 8px;
+  }
+
+  .fc-page .faq__tools {
+    flex-wrap: wrap;
+  }
+
+  .fc-page .faq-item__toggle {
+    gap: 12px;
+    padding-right: 14px;
+  }
+
+  .fc-page .faq-item__q {
+    font-size: 15px;
+  }
+
+  .fc-page .faq-item__answer p {
+    padding: 0 16px 14px 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-page .faq-item__answer,
+  .fc-page .faq-item__chev,
+  .fc-page .faq-item {
+    transition: none;
+  }
+}

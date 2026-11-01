@@ -1,0 +1,62 @@
+/* ==========================================================================
+   FEED CARD page (FeedCard.jsx), imported from the standalone FeedCard app.
+
+   Scoping: the site keeps every page's CSS loaded, so every rule in this folder
+   starts with .fc-page (the page wrapper) and nothing here reaches another page.
+   Keyframes are fc-*, and the source classes the site's own CSS also defines
+   (hero / hero__*, info-card / info-card__*, tone-*, is-active, is-open) are
+   renamed fc-* here and in the markup.
+
+   The site navbar and footer render inside .fc-page as well, so the source's
+   page-level rules (its index.css body, * and img rules) are applied to .fc-app,
+   the wrapper around the FeedCard content, to leave the navbar and footer alone.
+   ========================================================================== */
+
+.fc-page {
+  /* Bottom edge of the fixed site navbar: 10px from the top, 68px tall (60px at
+     <=1200px, Navbar.css). The stacked hero (HeroHeader.css) starts below it; the
+     wide hero's text already sits lower than this. */
+  --fc-nav-bottom: 78px;
+
+  min-height: 100vh;
+  background: #fdf1e7;
+}
+
+@media (max-width: 1200px) {
+  .fc-page {
+    --fc-nav-bottom: 70px;
+  }
+}
+
+/* The source's body rule. */
+.fc-page .fc-app {
+  color: #1f2937;
+  font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The source's * and img rules. :where() keeps these at one class of specificity:
+   enough to beat the site's global reset (src/index.css), while every component
+   rule still beats them, as in the source. */
+.fc-page :where(.fc-app *),
+.fc-page :where(.fc-app *)::before,
+.fc-page :where(.fc-app *)::after {
+  box-sizing: border-box;
+}
+
+.fc-page :where(.fc-app img) {
+  max-width: 100%;
+}
+
+/* The site's reset gives every element the Outfit font, which would stop the fonts
+   set on a section or heading (Plus Jakarta Sans on the info and FAQ sections,
+   Montserrat on the hero title) from reaching the text inside. Inherit again. */
+.fc-page :where(.fc-app *) {
+  font-family: inherit;
+}
+
+/* The site's reset also zeroes all padding; the FAQ search field relied on the
+   browser's default input padding. */
+.fc-page :where(.fc-app input) {
+  padding: revert;
+}

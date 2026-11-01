@@ -47,6 +47,7 @@ export const servicesMegaMenu = [
 // Services Ecosystem grid shares it, so both menus always open the same pages.
 export const SERVICE_ROUTES = {
   'KRUSHI YEVA JAYATE': 'kyj',
+  'YUVA KRUSHI': 'yuva-krushi',
   'PRODUCT 360': 'product360',
   'MY EXPORTS': 'exports',
   'LOANS & FINANCE': 'loans-finance',
@@ -57,6 +58,7 @@ export const SERVICE_ROUTES = {
   'TRADE FAIRS':'TradeFairs',
   'SAFE MISSION': 'safe-mission',
   'KNOW YOUR SCHEMES': 'schemes',
+  'FEED CARD': 'feed-card',
 };
 
 // `route` links a nav item to the `currentPage` value that should light it up; items without

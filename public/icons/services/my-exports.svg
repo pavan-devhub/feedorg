@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect x="9" y="32" width="9" height="8" fill="#f28c28"/>
+  <rect x="18" y="32" width="9" height="8" fill="#2f7fd8"/>
+  <rect x="27" y="32" width="9" height="8" fill="#3a9d3a"/>
+  <rect x="36" y="32" width="9" height="8" fill="#e4473c"/>
+  <rect x="13" y="24" width="9" height="8" fill="#f7c331"/>
+  <rect x="22" y="24" width="9" height="8" fill="#e4473c"/>
+  <rect x="31" y="24" width="9" height="8" fill="#2f7fd8"/>
+  <path d="M18 32v8M27 32v8M36 32v8M22 24v8M31 24v8M9 32h36" stroke="#fff" stroke-width="1.2"/>
+  <rect x="47" y="22" width="9" height="18" fill="#fff" stroke="#1f2d4d" stroke-width="1.8"/>
+  <path d="M49.5 27h4M49.5 31h4" stroke="#1f2d4d" stroke-width="1.8" stroke-linecap="round"/>
+  <rect x="49.5" y="15" width="4" height="7" fill="#f28c28" stroke="#1f2d4d" stroke-width="1.6"/>
+  <path d="M3 40h58l-7 13H10z" fill="#1f2d4d"/>
+  <path d="M6.8 47h50.4l-3.2 6H10z" fill="#e4473c"/>
+  <path d="M2 58c3.5 0 3.5 2.5 7 2.5s3.5-2.5 7-2.5 3.5 2.5 7 2.5 3.5-2.5 7-2.5 3.5 2.5 7 2.5 3.5-2.5 7-2.5 3.5 2.5 7 2.5 3.5-2.5 7-2.5" stroke="#2f7fd8" stroke-width="2.2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,313 @@
+/*
+ * "Discover Yuva Krushi" section. Like the header card, it is sized in
+ * container units measured against its design mockup (2000px wide, so
+ * 1cqw = 20px of the mockup) and keeps the design's proportions on wide
+ * screens. Below 1300px it switches to a stacked layout with fixed sizes.
+ */
+
+.yk-page .discover {
+  container-type: inline-size;
+  background: var(--section-bg);
+}
+
+.yk-page .discover__inner {
+  display: grid;
+  grid-template-columns: 1fr 56cqw;
+  align-items: start;
+  padding: 4.9cqw 1.75cqw 5.375cqw 6.3cqw;
+}
+
+.yk-page .emoji {
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* ---------- Intro ---------- */
+
+.yk-page .discover__intro {
+  margin-top: 1.49cqw;
+}
+
+.yk-page .discover__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.45cqw;
+  font-size: 0.95cqw;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #6c87a4;
+}
+
+.yk-page .discover__eyebrow .emoji {
+  font-size: 1.3em;
+}
+
+.yk-page .discover__title {
+  margin-top: 1.74cqw;
+  font-size: 4.75cqw;
+  font-weight: 800;
+  line-height: 0.937;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+
+.yk-page .discover__lead {
+  max-width: 25.25cqw;
+  margin-top: 1.3cqw;
+  font-size: 1.09cqw;
+  font-weight: 300;
+  line-height: 1.514;
+  color: #7a8eab;
+}
+
+/* ---------- Topic cards ---------- */
+
+.yk-page .discover__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2cqw;
+}
+
+.yk-page .topic-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25cqw 1.45cqw 1.45cqw;
+  border-radius: 0.85cqw;
+  background: #f7fbfe;
+  box-shadow:
+    0 0.7cqw 2.2cqw rgba(60, 92, 135, 0.16),
+    0 0.1cqw 0.3cqw rgba(60, 92, 135, 0.05);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.yk-page .topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 1cqw 2.8cqw rgba(60, 92, 135, 0.2),
+    0 0.1cqw 0.3cqw rgba(60, 92, 135, 0.05);
+}
+
+.yk-page .topic-card__icon {
+  display: grid;
+  place-items: center;
+  width: 3.5cqw;
+  aspect-ratio: 1;
+  border: 1px solid rgba(221, 231, 240, 0.8);
+  border-radius: 0.7cqw;
+  background: #eaf2f8;
+  font-size: 1.8cqw;
+}
+
+.yk-page .topic-card__label {
+  margin-top: 1cqw;
+  font-size: 0.88cqw;
+  font-weight: 600;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: #7b95ae;
+}
+
+.yk-page .topic-card__title {
+  margin-top: 0.35cqw;
+  font-size: 1.42cqw;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+
+.yk-page .topic-card__text {
+  margin: 0.6cqw 0 1.6cqw;
+  font-size: 0.9cqw;
+  font-weight: 300;
+  line-height: 1.566;
+  color: #8797b0;
+}
+
+/* One line of design-locked text (see Lines.jsx). */
+.yk-page .locked-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.yk-page .topic-card__footer {
+  margin-top: auto;
+  padding-top: 1.15cqw;
+  border-top: 1px solid #e8eef4;
+}
+
+.yk-page .topic-card__action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 2.45cqw;
+  padding: 0 1cqw 0 1.15cqw;
+  border: 0;
+  border-radius: 999px;
+  background: #ebf3f9;
+  font: inherit;
+  font-size: 0.8cqw;
+  font-weight: 600;
+  color: #476684;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.yk-page .topic-card__action:hover {
+  background: #e0ebf5;
+  color: #2c4c6e;
+}
+
+.yk-page .topic-card__action:focus-visible {
+  outline: 2px solid #4d7cc9;
+  outline-offset: 2px;
+}
+
+.yk-page .topic-card__arrow {
+  width: 0.7cqw;
+  color: #597592;
+  transition: transform 0.2s ease;
+}
+
+.yk-page .topic-card__action:hover .topic-card__arrow {
+  transform: translateX(3px);
+}
+
+/* The card whose topic is open below: outlined, with the arrow pointing down. */
+.yk-page .topic-card.yk-is-active {
+  box-shadow:
+    0 0 0 2px rgba(6, 48, 122, 0.18),
+    0 0.7cqw 2.2cqw rgba(60, 92, 135, 0.16);
+}
+
+.yk-page .topic-card.yk-is-active .topic-card__action {
+  background: #dbe7f4;
+  color: var(--navy);
+}
+
+.yk-page .topic-card.yk-is-active .topic-card__arrow,
+.yk-page .topic-card.yk-is-active .topic-card__action:hover .topic-card__arrow {
+  transform: rotate(90deg);
+}
+
+/* Detail panel for the open topic: a full-width band closing the section. */
+.yk-page .discover__detail {
+  scroll-margin-top: 24px;
+}
+
+/* ---------- Narrower screens: intro on top, readable fixed sizes ---------- */
+
+@container (max-width: 1299px) {
+  .yk-page .discover__inner {
+    grid-template-columns: 1fr;
+    row-gap: 40px;
+    padding: 64px 32px 72px;
+  }
+
+  .yk-page .discover__intro {
+    margin-top: 0;
+  }
+
+  .yk-page .discover__eyebrow {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .yk-page .discover__title {
+    margin-top: 16px;
+    font-size: clamp(42px, 7cqw, 76px);
+  }
+
+  .yk-page .discover__lead {
+    max-width: 520px;
+    margin-top: 16px;
+    font-size: 17px;
+  }
+
+  .yk-page .discover__cards {
+    gap: 20px;
+  }
+
+  .yk-page .topic-card {
+    padding: 20px 20px 22px;
+    border-radius: 18px;
+    box-shadow:
+      0 12px 36px rgba(60, 92, 135, 0.16),
+      0 2px 6px rgba(60, 92, 135, 0.05);
+  }
+
+  .yk-page .topic-card:hover {
+    box-shadow:
+      0 16px 44px rgba(60, 92, 135, 0.2),
+      0 2px 6px rgba(60, 92, 135, 0.05);
+  }
+
+  .yk-page .topic-card__icon {
+    width: 58px;
+    border-radius: 14px;
+    font-size: 30px;
+  }
+
+  .yk-page .topic-card__label {
+    margin-top: 16px;
+    font-size: 14px;
+  }
+
+  .yk-page .topic-card__title {
+    margin-top: 4px;
+    font-size: 20px;
+  }
+
+  .yk-page .topic-card__text {
+    margin: 8px 0 20px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .yk-page .locked-line {
+    display: inline;
+    white-space: normal;
+  }
+
+  .yk-page .topic-card.yk-is-active,
+  .yk-page .topic-card.yk-is-active:hover {
+    box-shadow:
+      0 0 0 2px rgba(6, 48, 122, 0.18),
+      0 12px 36px rgba(60, 92, 135, 0.16);
+  }
+
+  .yk-page .topic-card__footer {
+    padding-top: 16px;
+  }
+
+  .yk-page .topic-card__action {
+    height: 44px;
+    padding: 0 18px 0 20px;
+    font-size: 15px;
+  }
+
+  .yk-page .topic-card__arrow {
+    width: 15px;
+  }
+}
+
+@container (max-width: 900px) {
+  .yk-page .discover__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@container (max-width: 600px) {
+  .yk-page .discover__inner {
+    padding: 48px 16px 56px;
+  }
+}

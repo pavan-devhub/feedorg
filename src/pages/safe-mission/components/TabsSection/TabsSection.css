@@ -1,0 +1,321 @@
+/* Tabs Navigation Section */
+.sm-page .tabs-nav-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px;
+  background: transparent;
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Outer Frosted Glass Capsule - Sleek, Slender & Extended Length */
+.sm-page .tabs-capsule-container {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 68px;
+  padding: 6px 48px 6px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  box-shadow: 
+    0 20px 40px -12px rgba(0, 0, 0, 0.75),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25);
+  max-width: 1080px;
+  width: auto;
+  user-select: none;
+}
+
+/* Base Tab Button */
+.sm-page .tab-btn {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  text-decoration: none;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Active State (Solid White Capsule) - Slim & Refined */
+.sm-page .tab-btn.sm-active {
+  background: #ffffff;
+  border-radius: 9999px;
+  height: 52px;
+  padding: 0 28px 0 14px;
+  gap: 12px;
+  box-shadow: 
+    0 0 26px rgba(255, 255, 255, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.22);
+  transform: translateY(0);
+}
+
+.sm-page .tab-btn.sm-active:hover {
+  box-shadow: 
+    0 0 32px rgba(255, 255, 255, 0.45),
+    0 5px 18px rgba(0, 0, 0, 0.28);
+}
+
+.sm-page .tab-btn.sm-active .tab-label-text {
+  color: #0b1727;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+/* Active Icon Wrapper */
+.sm-page .tab-active-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  position: relative;
+}
+
+/* Warm Radiant Glows for Active Icons */
+.sm-page .tab-active-icon-wrapper.sm-orange-glow {
+  filter: drop-shadow(0 0 12px rgba(255, 115, 0, 0.7));
+}
+
+.sm-page .tab-active-icon-wrapper.sm-green-glow {
+  filter: drop-shadow(0 0 12px rgba(34, 197, 94, 0.7));
+}
+
+.sm-page .tab-active-icon-wrapper.sm-blue-glow {
+  filter: drop-shadow(0 0 12px rgba(0, 162, 255, 0.7));
+}
+
+.sm-page .tab-active-icon-wrapper.sm-purple-glow {
+  filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7));
+}
+
+.sm-page .tab-crop-icon,
+.sm-page .tab-icon-svg {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.sm-page .tab-badge-circle .tab-icon-svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Inactive State - Slim & Elegant */
+.sm-page .tab-btn.inactive {
+  background: transparent;
+  border-radius: 9999px;
+  height: 52px;
+  padding: 0;
+  gap: 12px;
+  opacity: 0.95;
+}
+
+.sm-page .tab-btn.inactive:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.sm-page .tab-btn.inactive .tab-label-text {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  transition: all 0.2s ease;
+}
+
+.sm-page .tab-btn.inactive:hover .tab-label-text {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+}
+
+/* Circular Badges for Inactive Tabs - Slim 42px Profile */
+.sm-page .tab-badge-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.sm-page .tab-badge-crop-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.sm-page .tab-svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+}
+
+/* Inactive Badge Border & Glow Fallbacks */
+.sm-page .tab-badge-circle.sm-orange-badge {
+  background: rgba(255, 106, 0, 0.12);
+  border: 1px solid rgba(255, 106, 0, 0.3);
+  box-shadow: 0 0 14px rgba(255, 106, 0, 0.25);
+}
+
+.sm-page .tab-btn.inactive:hover .tab-badge-circle.sm-orange-badge {
+  box-shadow: 0 0 20px rgba(255, 106, 0, 0.45);
+}
+
+.sm-page .tab-badge-circle.sm-green-badge {
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.25);
+}
+
+.sm-page .tab-btn.inactive:hover .tab-badge-circle.sm-green-badge {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  transform: scale(1.05);
+}
+
+.sm-page .tab-badge-circle.sm-blue-badge {
+  box-shadow: 0 0 14px rgba(0, 162, 255, 0.25);
+}
+
+.sm-page .tab-btn.inactive:hover .tab-badge-circle.sm-blue-badge {
+  box-shadow: 0 0 20px rgba(0, 162, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.sm-page .tab-badge-circle.sm-purple-badge {
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.25);
+}
+
+.sm-page .tab-btn.inactive:hover .tab-badge-circle.sm-purple-badge {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .sm-page .tabs-capsule-container {
+    gap: 44px;
+    padding: 6px 36px 6px 6px;
+  }
+}
+
+@media (max-width: 860px) {
+  .sm-page .tabs-nav-section {
+    bottom: 28px;
+    padding: 0 16px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .sm-page .tabs-capsule-container {
+    padding: 6px 26px 6px 6px;
+    gap: 28px;
+    margin: 0 auto;
+  }
+
+  .sm-page .tab-btn.sm-active {
+    height: 48px;
+    padding: 0 22px 0 12px;
+    gap: 10px;
+  }
+
+  .sm-page .tab-btn.inactive {
+    height: 48px;
+    gap: 10px;
+  }
+
+  .sm-page .tab-badge-circle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .sm-page .tab-active-icon-wrapper {
+    width: 32px;
+    height: 32px;
+  }
+
+  .sm-page .tab-crop-icon,
+  .sm-page .tab-icon-svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .sm-page .tab-badge-circle .tab-icon-svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .sm-page .tab-btn.sm-active .tab-label-text,
+  .sm-page .tab-btn.inactive .tab-label-text {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sm-page .tabs-nav-section {
+    bottom: 20px;
+    padding: 0 12px;
+  }
+
+  .sm-page .tabs-capsule-container {
+    gap: 14px;
+    padding: 5px 16px 5px 5px;
+  }
+
+  .sm-page .tab-btn.sm-active {
+    height: 44px;
+    padding: 0 16px 0 8px;
+    gap: 8px;
+  }
+
+  .sm-page .tab-btn.inactive {
+    height: 44px;
+    gap: 8px;
+  }
+
+  .sm-page .tab-badge-circle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .sm-page .tab-active-icon-wrapper {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sm-page .tab-crop-icon,
+  .sm-page .tab-icon-svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .sm-page .tab-badge-circle .tab-icon-svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .sm-page .tab-btn.sm-active .tab-label-text,
+  .sm-page .tab-btn.inactive .tab-label-text {
+    font-size: 13px;
+  }
+}

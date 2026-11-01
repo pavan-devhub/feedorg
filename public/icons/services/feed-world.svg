@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs><clipPath id="globe"><circle cx="44" cy="43" r="13"/></clipPath></defs>
+  <rect x="5" y="7" width="36" height="46" rx="3" fill="#fff" stroke="#1f2d4d" stroke-width="1.8"/>
+  <rect x="9" y="11" width="28" height="7" rx="1" fill="#3a9d3a"/>
+  <path d="M9 23h28M9 27h28M9 31h17M24 38h5M24 42h5M9 48h18" stroke="#b8c2d0" stroke-width="2" stroke-linecap="round"/>
+  <rect x="9" y="35" width="12" height="9" rx="1" fill="#f28c28"/>
+  <circle cx="44" cy="43" r="13" fill="#2f7fd8"/>
+  <g clip-path="url(#globe)" fill="#6cc04a">
+    <ellipse cx="38" cy="37" rx="6" ry="4"/>
+    <ellipse cx="50" cy="47" rx="7" ry="5"/>
+    <ellipse cx="37" cy="51" rx="3" ry="2.5"/>
+  </g>
+  <path d="M31 43h26M44 30c-7 7-7 19 0 26M44 30c7 7 7 19 0 26" stroke="#d6ebfd" stroke-width="1"/>
+  <circle cx="44" cy="43" r="13" stroke="#1f2d4d" stroke-width="1.8"/>
+</svg>

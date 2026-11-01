@@ -1,0 +1,368 @@
+/*
+ * FPO Calculators page, from the 1463 x 1075 reference design: the farmers photo across the top
+ * with the title on its left, then the calculator cards, three to a row.
+ * --pu is one design pixel: the page is as wide as the window allows, but no taller than shows
+ * the header and two rows of cards at once, and never larger than the design.
+ * On the site the header grows by the fixed navbar's height (--mt-nav): the photo runs on up
+ * underneath the navbar while the title and back button move down below it, and the design fits
+ * the window below the navbar.
+ */
+.mt-page .fpo {
+  --pu: min(calc(100cqw / 1463), calc((100vh - var(--mt-nav)) / 830), 1px);
+  --bu: 1.12px; /* the same "Back to Home" size as on the Exporter page */
+  --mt-back-top: var(--mt-nav); /* the back button sits below the site navbar */
+  --page: #f2fbf7;
+
+  min-height: 100vh;
+  background: var(--page);
+}
+
+/* ---------- Header ---------- */
+
+/*
+ * In the design the photo is 79% of its size, its bottom (the white curve) 493 design px down,
+ * and the farmers start 575 px across; the cards overlap the bottom of the curve.
+ */
+.mt-page .fpo-hero {
+  position: relative;
+  height: calc(493 * var(--pu) + var(--mt-nav));
+  overflow: hidden;
+}
+
+.mt-page .fpo-hero__photo {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /* the design's framing from the bottom up; taller only if needed to reach the top */
+  height: max(calc(593 * var(--pu)), calc(493 * var(--pu) + var(--mt-nav)));
+  object-fit: cover;
+  object-position: 64.6% 100%;
+}
+
+/* a soft haze over the left of the photo, behind the title, as in the design */
+.mt-page .fpo-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(240, 248, 250, 0.84) 0%, rgba(240, 248, 250, 0.74) 28%, rgba(240, 248, 250, 0.45) 37%, rgba(240, 248, 250, 0) 46%);
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 32%, transparent 46%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 32%, transparent 46%);
+  pointer-events: none;
+}
+
+/* the photo's white curve melts into the page colour */
+.mt-page .fpo-hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: calc(90 * var(--pu));
+  background: linear-gradient(180deg, rgba(242, 251, 247, 0) 0%, var(--page) 85%);
+  pointer-events: none;
+}
+
+/* the text sits on the design's 1463 px column, centred in the window, below the navbar */
+.mt-page .fpo-hero__text {
+  position: absolute;
+  top: var(--mt-nav);
+  left: 50%;
+  z-index: 2;
+  width: calc(1463 * var(--pu));
+  height: calc(100% - var(--mt-nav));
+  transform: translateX(-50%);
+}
+
+.mt-page .fpo-hero__title {
+  position: absolute;
+  left: calc(103 * var(--pu));
+  top: calc(76 * var(--pu));
+  margin: 0;
+  font-size: calc(78 * var(--pu));
+  font-weight: 700;
+  line-height: calc(61 * var(--pu));
+  font-variation-settings: 'GRAD' 150;
+  color: #08190f;
+  white-space: nowrap;
+}
+
+.mt-page .fpo-hero__title span {
+  font-size: calc(72 * var(--pu));
+  color: #10733a;
+}
+
+.mt-page .fpo-hero__leaf {
+  position: absolute;
+  left: calc(181 * var(--pu));
+  top: calc(24 * var(--pu));
+  width: calc(30 * var(--pu));
+  height: calc(46 * var(--pu));
+}
+
+/* the short green rule under the title */
+.mt-page .fpo-hero__title::after {
+  content: '';
+  position: absolute;
+  left: calc(6 * var(--pu));
+  top: calc(134 * var(--pu));
+  width: calc(67 * var(--pu));
+  height: calc(3 * var(--pu));
+  border-radius: 2px;
+  background: #1f8a46;
+}
+
+.mt-page .fpo-hero__subtitle {
+  position: absolute;
+  left: calc(109 * var(--pu));
+  top: calc(226 * var(--pu));
+  width: calc(420 * var(--pu));
+  margin: 0;
+  font-size: calc(21.6 * var(--pu));
+  line-height: calc(26.5 * var(--pu));
+  color: #34363c;
+}
+
+/* ---------- Calculator cards ---------- */
+
+/* any number of cards, three to a row, all the same size */
+.mt-page .fpo-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(10 * var(--pu)) calc(12 * var(--pu));
+  width: calc(1346 * var(--pu));
+  margin: calc(-62 * var(--pu)) auto 0;
+  padding: 0 0 calc(57 * var(--pu));
+  list-style: none;
+}
+
+/* picture on the left, text on the right; the button sits at the bottom */
+.mt-page .fpcard {
+  display: grid;
+  grid-template-columns: calc(170 * var(--pu)) minmax(0, 1fr);
+  column-gap: calc(22 * var(--pu));
+  min-height: calc(186 * var(--pu));
+  padding: calc(12 * var(--pu)) calc(14 * var(--pu)) calc(12 * var(--pu)) calc(13 * var(--pu));
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: calc(16 * var(--pu));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--tint) 45%, #ffffff) 0%, var(--tint) 70%);
+  box-shadow:
+    0 1px 2px rgba(16, 40, 24, 0.04),
+    0 calc(10 * var(--pu)) calc(24 * var(--pu)) calc(-14 * var(--pu)) rgba(16, 60, 40, 0.2);
+}
+
+.mt-page .fpcard__art {
+  align-self: center;
+  height: calc(160 * var(--pu));
+}
+
+.mt-page .fpcard__art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mt-page .fpcard__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: calc(7 * var(--pu));
+}
+
+.mt-page .fpcard__title {
+  display: flex;
+  align-self: stretch; /* the full width of the text column, not just the button's */
+  gap: calc(5 * var(--pu));
+  margin: 0;
+  font-size: calc(20.5 * var(--pu));
+  font-weight: 700;
+  line-height: calc(25 * var(--pu));
+  letter-spacing: -0.01em;
+  font-variation-settings: 'GRAD' 100;
+  color: #0d0d0d;
+}
+
+.mt-page .fpcard__num {
+  flex: none;
+}
+
+/* each title line on its own line, lined up after the number */
+.mt-page .fpcard__name span {
+  display: block;
+}
+
+/* a long title line can be set smaller so it stays on one line */
+.mt-page .fpcard__name .fpcard__line--small {
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.mt-page .fpcard__text {
+  align-self: stretch;
+  margin: calc(6 * var(--pu)) 0 calc(8 * var(--pu));
+  font-size: calc(17.3 * var(--pu));
+  line-height: calc(21 * var(--pu));
+  color: #63676d;
+}
+
+.mt-page .fpcard__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(14 * var(--pu));
+  height: calc(37 * var(--pu));
+  margin-top: auto;
+  padding: 0 calc(22 * var(--pu)) 0 calc(24 * var(--pu));
+  border-radius: 999px;
+  background: var(--soft);
+  font-size: calc(16 * var(--pu));
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.mt-page .fpcard__btn svg {
+  width: calc(15 * var(--pu));
+  height: calc(12 * var(--pu));
+  transition: transform 0.2s ease;
+}
+
+.mt-page a.fpcard__btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.mt-page a.fpcard__btn:hover svg {
+  transform: translateX(calc(3 * var(--pu)));
+}
+
+.mt-page a.fpcard__btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* picture on the right of the text */
+.mt-page .fpcard--art-right {
+  grid-template-columns: minmax(0, 1fr) calc(212 * var(--pu));
+  column-gap: 0;
+  padding: calc(12 * var(--pu)) calc(8 * var(--pu)) calc(12 * var(--pu)) calc(20 * var(--pu));
+}
+
+.mt-page .fpcard--art-right .fpcard__art {
+  order: 2;
+  height: calc(170 * var(--pu));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-page .fpcard__btn,
+  .mt-page .fpcard__btn svg {
+    transition: none;
+  }
+
+  .mt-page a.fpcard__btn:hover svg {
+    transform: none;
+  }
+}
+
+/* ---------- Tablets and phones ---------- */
+
+/* the photo becomes a banner with the title under it, and cards fill as many columns as fit */
+@media (max-width: 1000px), (max-aspect-ratio: 5/4) {
+  .mt-page .fpo {
+    --pu: 0.85px;
+    --mt-back-top: var(--mt-nav-clear);
+  }
+
+  /* the banner starts below the site navbar */
+  .mt-page .fpo-hero {
+    height: auto;
+    overflow: visible;
+    padding-top: var(--mt-nav-clear);
+  }
+
+  .mt-page .fpo-hero__photo {
+    position: static;
+    height: clamp(180px, 42vw, 340px);
+    object-position: 72% 100%;
+  }
+
+  .mt-page .fpo-hero::before,
+  .mt-page .fpo-hero::after {
+    display: none;
+  }
+
+  .mt-page .fpo-hero__text {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 4px 20px 0;
+    transform: none;
+  }
+
+  .mt-page .fpo-hero__title,
+  .mt-page .fpo-hero__subtitle {
+    position: static;
+  }
+
+  .mt-page .fpo-hero__title {
+    display: inline-block;
+    position: relative;
+    left: auto;
+    top: auto;
+    font-size: clamp(40px, 11vw, 64px);
+    line-height: 1;
+  }
+
+  .mt-page .fpo-hero__leaf {
+    left: 2.6em;
+    top: -0.05em;
+    width: 0.42em;
+    height: 0.64em;
+  }
+
+  .mt-page .fpo-hero__title::after {
+    left: 0.06em;
+    top: auto;
+    bottom: -14px;
+    width: 56px;
+    height: 3px;
+  }
+
+  .mt-page .fpo-hero__subtitle {
+    width: auto;
+    max-width: 480px;
+    margin-top: 26px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .mt-page .fpo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 390px), 1fr));
+    gap: 14px;
+    width: auto;
+    margin: 24px 16px 0;
+    padding-bottom: 40px;
+  }
+}
+
+/* phones: every picture on the left, a little smaller, so the text has room */
+@media (max-width: 480px) {
+  .mt-page .fpcard,
+  .mt-page .fpcard--art-right {
+    grid-template-columns: 120px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 12px 12px 14px;
+  }
+
+  .mt-page .fpcard__art,
+  .mt-page .fpcard--art-right .fpcard__art {
+    order: 0;
+    height: 120px;
+  }
+}

@@ -1,0 +1,207 @@
+/* ========================================================
+   DistrictModelSection.css - Integrated District Model (20-Acre AEZ)
+   Pixel-perfect recreation matching reference graphic
+   ======================================================== */
+
+.sm-page .district-model-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdfae1;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
+  padding: 60px 32px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Container matching website's max width */
+.sm-page .district-model-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 52px;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+}
+
+/* ========================================================
+   LEFT COLUMN: TITLE, ACCENT BAR & EXPLANATORY TEXT
+   ======================================================== */
+.sm-page .district-model-content {
+  flex: 1 1 440px;
+  max-width: 490px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+/* Integrated District Model (20-Acre AEZ) */
+.sm-page .district-model-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  letter-spacing: -0.03em;
+  line-height: 1.03;
+}
+
+.sm-page .district-title-line {
+  display: block;
+  font-size: clamp(34px, 4vw, 54px);
+  font-weight: 900;
+}
+
+.sm-page .district-title-dark {
+  color: #0b1426;
+}
+
+.sm-page .district-title-gold {
+  color: #c88b1f;
+  margin-top: 4px;
+}
+
+/* Orange-to-Green Accent Divider Bar */
+.sm-page .district-accent-bar {
+  width: 74px;
+  height: 5.5px;
+  background: linear-gradient(90deg, #fd8804 0%, #fc9a08 30%, #cb9c17 48%, #388e2e 72%, #067430 100%);
+  border-radius: 9999px;
+  margin: 20px 0 24px 0;
+}
+
+/* Paragraphs */
+.sm-page .district-model-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 440px;
+}
+
+.sm-page .district-model-paragraph {
+  margin: 0;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.5;
+  color: #171d2b;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+}
+
+/* Green Highlighted Key Phrases */
+.sm-page .district-text-highlight {
+  color: #067430;
+  font-weight: 800;
+}
+
+/* ========================================================
+   RIGHT COLUMN: 20-ACRE AEZ PIE CHART VISUAL
+   ======================================================== */
+.sm-page .district-model-visual {
+  flex: 1.25 1 580px;
+  max-width: 660px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sm-page .district-model-visual-frame {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sm-page .district-model-pie-image {
+  width: 100%;
+  max-width: 650px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.05));
+}
+
+.sm-page .district-model-pie-image:hover {
+  transform: scale(1.02);
+}
+
+/* ========================================================
+   RESPONSIVE ADAPTATIONS
+   ======================================================== */
+@media (max-width: 1080px) {
+  .sm-page .district-model-section {
+    padding: 80px 24px 88px;
+  }
+
+  .sm-page .district-model-container {
+    gap: 36px;
+  }
+
+  .sm-page .district-title-line {
+    font-size: clamp(32px, 3.6vw, 44px);
+  }
+}
+
+@media (max-width: 880px) {
+  .sm-page .district-model-section {
+    padding: 72px 20px 80px;
+  }
+
+  .sm-page .district-model-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 36px;
+  }
+
+  .sm-page .district-model-content {
+    max-width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .sm-page .district-model-text {
+    max-width: 100%;
+  }
+
+  .sm-page .district-model-visual {
+    width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
+    flex: 1 1 auto;
+  }
+
+  .sm-page .district-title-line {
+    font-size: clamp(30px, 5.2vw, 40px);
+  }
+}
+
+@media (max-width: 540px) {
+  .sm-page .district-model-section {
+    padding: 64px 16px 72px;
+  }
+
+  .sm-page .district-model-container {
+    gap: 26px;
+  }
+
+  .sm-page .district-accent-bar {
+    margin: 16px 0 18px 0;
+  }
+
+  .sm-page .district-model-paragraph {
+    font-size: 14.8px;
+    line-height: 1.48;
+  }
+
+  .sm-page .district-title-line {
+    font-size: clamp(26px, 7vw, 34px);
+  }
+}

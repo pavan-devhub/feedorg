@@ -1,0 +1,473 @@
+/* ========================================================
+   WhySection.css - Full-bleed photo hero with comparison cards
+   ======================================================== */
+
+.sm-page .why-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
+  position: relative;
+  padding: 60px 24px;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+.sm-page .why-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+  box-sizing: border-box;
+}
+
+.sm-page .why-svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ========================================================
+   TOP-RIGHT FULL-BLEED FARM PHOTO
+   ======================================================== */
+.sm-page .why-media {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(calc(50% + 150px), calc(100% - 474px));
+  height: 480px;
+  z-index: 2;
+}
+
+/* Orange swoosh hugging the photo's curved left edge */
+.sm-page .why-media-swoosh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Photo masked to an organic curved shape (same 634x330 box as the swoosh) */
+.sm-page .why-media-photo {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 634 330' preserveAspectRatio='none'%3E%3Cpath d='M62 0H634V322C520 300 330 262 205 252C172 249 156 236 150 214C128 140 96 62 62 0Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 634 330' preserveAspectRatio='none'%3E%3Cpath d='M62 0H634V322C520 300 330 262 205 252C172 249 156 236 150 214C128 140 96 62 62 0Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.sm-page .why-farm-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 90.5%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 80% 20%;
+  display: block;
+}
+
+/* ========================================================
+   HERO ROW: HEADING & DESCRIPTION
+   ======================================================== */
+.sm-page .why-hero-row {
+  display: flex;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.sm-page .why-text-col {
+  flex: 0 1 540px;
+  max-width: 540px;
+  z-index: 6;
+}
+
+.sm-page .why-accent-bar {
+  width: 56px;
+  height: 5px;
+  background-color: #ea580c;
+  border-radius: 9999px;
+  margin-bottom: 18px;
+}
+
+.sm-page .why-main-title {
+  margin: 0 0 18px 0;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.sm-page .why-title-dark {
+  display: block;
+  font-size: clamp(34px, 4vw, 52px);
+  color: #0d2820;
+}
+
+.sm-page .why-title-highlight {
+  display: block;
+  font-size: clamp(34px, 4vw, 52px);
+  color: #ea580c;
+}
+
+.sm-page .why-desc-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+}
+
+.sm-page .why-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #334155;
+  max-width: 470px;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Dot Grid Matrix */
+.sm-page .why-dots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 5px);
+  gap: 8px;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.sm-page .why-dot {
+  width: 5px;
+  height: 5px;
+  background-color: #f97316;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.8;
+}
+
+/* ========================================================
+   BOTTOM ROW: TWO COMPARISON CARDS
+   ======================================================== */
+.sm-page .why-cards-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  position: relative;
+  z-index: 6;
+}
+
+.sm-page .why-card {
+  border-radius: 20px;
+  padding: 18px 12px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sm-page .why-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Card 1: Traditional Farming (Peach) */
+.sm-page .why-card-traditional {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(253, 213, 190, 0.6) 0%, rgba(253, 213, 190, 0) 55%),
+    linear-gradient(180deg, rgba(255, 244, 237, 0.95) 0%, rgba(255, 249, 245, 0.95) 100%);
+  box-shadow: 0 18px 40px rgba(234, 88, 12, 0.08);
+}
+
+.sm-page .why-card-traditional:hover {
+  box-shadow: 0 22px 44px rgba(234, 88, 12, 0.12);
+}
+
+/* Card 2: S.A.F.E. Mission Farming (Mint Green) */
+.sm-page .why-card-safe {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(187, 247, 208, 0.55) 0%, rgba(187, 247, 208, 0) 55%),
+    linear-gradient(180deg, rgba(234, 249, 239, 0.95) 0%, rgba(243, 252, 246, 0.95) 100%);
+  box-shadow: 0 18px 40px rgba(22, 163, 74, 0.08);
+}
+
+.sm-page .why-card-safe:hover {
+  box-shadow: 0 22px 44px rgba(22, 163, 74, 0.12);
+}
+
+/* Header Area Inside Cards */
+.sm-page .why-card-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 12px;
+  margin-bottom: 16px;
+}
+
+.sm-page .why-icon-bubble {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sm-page .bubble-peach {
+  background: radial-gradient(circle at 35% 30%, #fff1ea 0%, #fcd9c7 100%);
+  box-shadow: 0 6px 16px rgba(234, 88, 12, 0.12);
+}
+
+.sm-page .bubble-mint {
+  background: radial-gradient(circle at 35% 30%, #f0fdf4 0%, #c9f2d8 100%);
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.12);
+}
+
+.sm-page .why-card-icon-svg {
+  width: 40px;
+  height: 40px;
+}
+
+.sm-page .why-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.sm-page .why-card-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0d2820;
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.sm-page .why-card-line {
+  width: 38px;
+  height: 3px;
+  border-radius: 9999px;
+  margin-top: 8px;
+}
+
+.sm-page .line-orange {
+  background-color: #ea580c;
+}
+
+.sm-page .line-green {
+  background-color: #16a34a;
+}
+
+/* Inner White Box */
+.sm-page .why-card-inner {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 4px 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.035);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sm-page .why-points-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sm-page .why-point-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.sm-page .why-point-item:last-child {
+  border-bottom: none;
+}
+
+/* Badges: Cross & Checkmark */
+.sm-page .why-badge-pill {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sm-page .badge-cross {
+  background-color: #fde8de;
+}
+
+.sm-page .badge-check {
+  background-color: #dcf5e4;
+}
+
+.sm-page .why-symbol-svg {
+  width: 13px;
+  height: 13px;
+}
+
+.sm-page .stroke-cross {
+  color: #e4572e;
+}
+
+.sm-page .stroke-check {
+  color: #15803d;
+}
+
+.sm-page .why-point-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  line-height: 1.4;
+}
+
+/* ========================================================
+   RESPONSIVE MEDIA QUERIES
+   ======================================================== */
+@media (max-width: 1080px) {
+  .sm-page .why-text-col {
+    flex-basis: 460px;
+    max-width: 460px;
+  }
+
+  .sm-page .why-description {
+    max-width: 400px;
+  }
+
+  .sm-page .why-media {
+    width: calc(100% - 420px);
+  }
+}
+
+@media (max-width: 900px) {
+  /* Stack the photo above the content (as a row, the photo was squeezed to zero width) */
+  .sm-page .why-section {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 24px 72px;
+  }
+
+  .sm-page .why-media {
+    position: relative;
+    width: auto;
+    height: 300px;
+    margin: 0 -24px 28px;
+  }
+
+  .sm-page .why-media-swoosh {
+    display: none;
+  }
+
+  .sm-page .why-media-photo {
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-bottom-left-radius: 80px;
+    overflow: hidden;
+  }
+
+  .sm-page .why-farm-image {
+    width: 100%;
+  }
+
+  .sm-page .why-text-col {
+    flex-basis: auto;
+    max-width: 100%;
+  }
+
+  .sm-page .why-description {
+    max-width: 100%;
+  }
+
+  .sm-page .why-cards-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sm-page .why-section {
+    padding: 0 16px 64px;
+  }
+
+  .sm-page .why-media {
+    height: 220px;
+    margin: 0 -16px 24px;
+  }
+
+  .sm-page .why-media-photo {
+    border-bottom-left-radius: 56px;
+  }
+
+  .sm-page .why-main-title .why-title-dark,
+  .sm-page .why-main-title .why-title-highlight {
+    font-size: 30px;
+  }
+
+  .sm-page .why-description {
+    font-size: 14px;
+  }
+
+  .sm-page .why-dots-grid {
+    display: none;
+  }
+
+  .sm-page .why-card {
+    padding: 16px 10px 10px;
+    border-radius: 18px;
+  }
+
+  .sm-page .why-card-header {
+    gap: 12px;
+    padding: 0 8px;
+  }
+
+  .sm-page .why-icon-bubble {
+    width: 56px;
+    height: 56px;
+  }
+
+  .sm-page .why-card-icon-svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .sm-page .why-card-heading {
+    font-size: 19px;
+  }
+
+  .sm-page .why-card-inner {
+    padding: 4px 12px;
+  }
+
+  .sm-page .why-point-item {
+    gap: 10px;
+    padding: 9px 0;
+  }
+
+  .sm-page .why-badge-pill {
+    width: 24px;
+    height: 24px;
+  }
+
+  .sm-page .why-symbol-svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .sm-page .why-point-text {
+    font-size: 13px;
+  }
+}

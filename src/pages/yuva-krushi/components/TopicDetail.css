@@ -1,0 +1,270 @@
+/*
+ * Detail panel opened from a topic card, styled after the dark "What is Yuva
+ * Krushi?" design: a full-width dark band holding a header and two cards,
+ * with its content aligned to the section content above. It lives
+ * inside the Discover section (the size container), so cqw sizes scale with
+ * the page like the cards above; small text has px floors for readability.
+ */
+
+.yk-page .topic-detail {
+  padding: 3.4cqw 1.75cqw 3.6cqw 6.3cqw;
+  background: #202425;
+  color: #e3e7eb;
+}
+
+/* Fade the content in (not the band, so no light gap shows under it). */
+.yk-page .topic-detail > * {
+  animation: yk-topic-detail-in 0.4s ease both;
+}
+
+@keyframes yk-topic-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yk-page .topic-detail > * {
+    animation: none;
+  }
+}
+
+/* ---------- Header ---------- */
+
+.yk-page .topic-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 1.21cqw;
+  margin-bottom: 1.69cqw;
+}
+
+.yk-page .topic-detail__badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.86cqw;
+  aspect-ratio: 1;
+  border-radius: 0.97cqw;
+  background: linear-gradient(160deg, #f1fcf0, #dcf6d8);
+  font-size: 2.17cqw;
+}
+
+.yk-page .topic-detail__title {
+  font-size: 2.54cqw;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.yk-page .topic-detail__subtitle {
+  margin-top: 0.36cqw;
+  font-size: max(1.087cqw, 15px);
+  line-height: 1.4;
+  color: #d3d8de;
+}
+
+/* ---------- Cards ---------- */
+
+.yk-page .topic-detail__body {
+  display: grid;
+  grid-template-columns: 1007fr 637fr;
+  gap: 1.21cqw;
+}
+
+.yk-page .topic-detail__card {
+  padding: 1.69cqw 1.81cqw;
+  border-radius: 1.09cqw;
+  background: #2c343a;
+}
+
+.yk-page .topic-detail__heading {
+  display: flex;
+  align-items: center;
+  gap: 1.09cqw;
+  font-size: max(1.33cqw, 18px);
+  font-weight: 800;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.yk-page .topic-detail__card--main .topic-detail__heading {
+  font-size: max(1.45cqw, 19px);
+}
+
+.yk-page .topic-detail__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.14cqw;
+  aspect-ratio: 1;
+  border-radius: 0.79cqw;
+  background: linear-gradient(160deg, #d6fbd0, #b9f0ae);
+  color: #229a2c;
+}
+
+.yk-page .topic-detail__icon svg {
+  width: 1.81cqw;
+  height: 1.81cqw;
+}
+
+.yk-page .topic-detail__text {
+  max-width: 66ch;
+  margin-top: 0.97cqw;
+  font-size: max(1.027cqw, 15px);
+  line-height: 1.6;
+}
+
+.yk-page .topic-detail__heading + .topic-detail__text {
+  margin-top: 1.09cqw;
+}
+
+.yk-page .topic-detail__intro {
+  margin-top: 0.85cqw;
+  font-size: max(0.936cqw, 14px);
+  line-height: 1.65;
+  color: #dfe4e9;
+}
+
+.yk-page .topic-detail__list {
+  list-style: none;
+  margin-top: 0.72cqw;
+}
+
+.yk-page .topic-detail__list li {
+  display: flex;
+  align-items: center;
+  gap: 0.97cqw;
+  min-height: 2.66cqw;
+  font-size: max(0.936cqw, 14px);
+  color: #eef1f4;
+}
+
+.yk-page .topic-detail__check {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.69cqw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #6edb6b;
+  color: #17561c;
+}
+
+.yk-page .topic-detail__check svg {
+  width: 0.97cqw;
+  height: 0.97cqw;
+}
+
+/* ---------- Narrower screens ---------- */
+
+@container (max-width: 1299px) {
+  .yk-page .topic-detail {
+    padding: 48px 32px 56px;
+  }
+
+  .yk-page .topic-detail__header {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .yk-page .topic-detail__badge {
+    width: 56px;
+    border-radius: 14px;
+    font-size: 30px;
+  }
+
+  .yk-page .topic-detail__title {
+    font-size: clamp(26px, 4cqw, 36px);
+  }
+
+  .yk-page .topic-detail__subtitle {
+    margin-top: 4px;
+    font-size: 16px;
+  }
+
+  .yk-page .topic-detail__body {
+    grid-template-columns: 1.6fr 1fr;
+    gap: 16px;
+  }
+
+  .yk-page .topic-detail__card {
+    padding: 22px 24px;
+    border-radius: 16px;
+  }
+
+  .yk-page .topic-detail__heading {
+    gap: 14px;
+  }
+
+  .yk-page .topic-detail__icon {
+    width: 44px;
+    border-radius: 12px;
+  }
+
+  .yk-page .topic-detail__icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .yk-page .topic-detail__text {
+    margin-top: 12px;
+    font-size: 15.5px;
+  }
+
+  .yk-page .topic-detail__heading + .topic-detail__text {
+    margin-top: 14px;
+  }
+
+  .yk-page .topic-detail__intro {
+    margin-top: 12px;
+    font-size: 14.5px;
+  }
+
+  .yk-page .topic-detail__list {
+    margin-top: 10px;
+  }
+
+  .yk-page .topic-detail__list li {
+    gap: 12px;
+    min-height: 40px;
+    font-size: 14.5px;
+  }
+
+  .yk-page .topic-detail__check {
+    width: 24px;
+  }
+
+  .yk-page .topic-detail__check svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@container (max-width: 900px) {
+  .yk-page .topic-detail__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@container (max-width: 600px) {
+  .yk-page .topic-detail {
+    padding: 40px 16px 48px;
+  }
+
+  .yk-page .topic-detail__header {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .yk-page .topic-detail__badge {
+    width: 48px;
+    border-radius: 12px;
+    font-size: 26px;
+  }
+
+  .yk-page .topic-detail__card {
+    padding: 18px 20px;
+  }
+}
