@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+/* The four opening tiles under the home hero, as on the FEED website's home page. Behaviour: HomeTiles.jsx */
+
+.hc-tiles {
+  --hc-green: #488f1e;
+  --hc-green-dark: #2f6f12;
+  --hc-btn: #008c44;
+  --hc-text: #333333;
+  display: flex;
+  background: #fff;
+  color: var(--hc-text);
+}
+
+/* Roboto for the text, Poppins for the headings, as on the website */
+.hc-tiles,
+.hc-tiles * { font-family: 'Roboto', sans-serif; }
+.hc-tiles :is(.hc-tile-title, .hc-acc-head span) { font-family: 'Poppins', sans-serif; }
+
+.hc-tile {
+  position: relative;
+  width: 25%;
+  height: max(560px, calc(100vh - 113px));
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: width .5s ease;
+  outline: none;
+}
+/* A white line between tiles */
+.hc-tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: #fff;
+}
+.hc-tile-body {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  right: 4%;
+  max-height: 88%;
+  overflow: auto;
+  transition: top .7s ease;
+}
+.hc-tile-title {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 20px;
+  color: #fff;
+  font-size: 2.125rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
+}
+/* A yellow underline that draws in as the tile opens */
+.hc-tile-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 5px;
+  background: #ffea00;
+  transition: width .5s ease;
+}
+.hc-tile-text { margin: 0 0 20px; color: var(--hc-text); font-size: 1rem; line-height: 1.6; }
+.hc-tile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--hc-btn);
+  color: #fff;
+  font-size: .8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.hc-tile-btn:hover { background: var(--hc-green-dark); color: #fff; }
+.hc-tile-text,
+.hc-tile .hc-acc,
+.hc-tile-btn { opacity: 0; transition: opacity .1s ease, background .2s ease; }
+
+.hc-tile:hover,
+.hc-tile.is-open { width: 50%; }
+.hc-tile:hover .hc-tile-body,
+.hc-tile.is-open .hc-tile-body { top: 7%; right: 10%; }
+.hc-tile:hover .hc-tile-title::after,
+.hc-tile.is-open .hc-tile-title::after { width: 100%; }
+.hc-tile:hover :is(.hc-tile-text, .hc-acc, .hc-tile-btn),
+.hc-tile.is-open :is(.hc-tile-text, .hc-acc, .hc-tile-btn) { opacity: 1; transition: opacity 1s ease, background .2s ease; }
+/* Only one tile widens at a time: a tile opened by a tap closes when the pointer is on another */
+.hc-tiles:hover .hc-tile.is-open:not(:hover) { width: 25%; }
+.hc-tiles:hover .hc-tile.is-open:not(:hover) :is(.hc-tile-text, .hc-acc, .hc-tile-btn) { opacity: 0; }
+
+/* Tiles with art (FEED Services, KYJ project): a picture in the tile rather than a background photo.
+   A sheet's box takes the room left under the text and the picture sits centred in it, as large as fits */
+.hc-tile--art {
+  --tile-h: max(560px, calc(100vh - 113px));
+  display: flex;
+  flex-direction: column;
+}
+.hc-tile-art {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  min-height: 0;
+}
+.hc-tile-art img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* A sheet (FEED Services) is artwork drawn on white, so the tile is light and its title dark; multiply
+   lets the artwork's white take on the tile's tint */
+.hc-tile--sheet { background: linear-gradient(180deg, #eef7e6 0%, #fff 45%); }
+.hc-tile--sheet .hc-tile-title { color: #0b1a3b; text-shadow: none; }
+.hc-tile--sheet .hc-tile-title::after { background: #fad901; }
+.hc-tile--sheet .hc-tile-art img { mix-blend-mode: multiply; }
+
+/* A poster (KYJ project) is a picture alone, filling the tile. It always keeps the tile's full width and
+   sits on its foot, so the people along the bottom are never cropped: a short window loses sky from the
+   top, and a tall one gets more sky above, painted in the picture's own blues and faded into it. With
+   nothing to uncover, it keeps its width when pointed at */
+.hc-tile--poster {
+  justify-content: flex-end;
+  background: linear-gradient(90deg, #168df8, #2290f8 30%, #1f8df7 50%, #0983f5 75%, #0782f4);
+}
+.hc-tile--poster:is(:hover, .is-open) { width: 25%; }
+.hc-tile--poster::before { z-index: 2; } /* the white line between tiles stays over the poster */
+.hc-tile--poster .hc-tile-art { display: block; flex: none; }
+.hc-tile--poster .hc-tile-art img {
+  width: 100%;
+  max-height: none;
+  -webkit-mask-image: linear-gradient(transparent, #000 8%);
+  mask-image: linear-gradient(transparent, #000 8%);
+  transform-origin: center bottom;
+  transition: transform .8s cubic-bezier(.22, 1, .36, 1);
+}
+.hc-tile--poster:hover .hc-tile-art img { transform: scale(1.03); }
+.hc-tile-link { position: absolute; inset: 0; z-index: 1; padding: 0; border: 0; background: none; cursor: pointer; }
+.hc-tile-link:focus-visible { outline: 3px solid #fad901; outline-offset: -3px; }
+
+/* About FEED (first tile). Closed: the farm scene fills the tile under its title. Open: the photo rises
+   to a curved edge over three question cards, as in the design.
+   --u is 1% of the design's width. The open tile is 40% of the window (flex shrinks the four tiles' 125%
+   to fit), and the design is 3:4, so on short windows the height decides. It depends only on the window,
+   so nothing inside reflows while the tile widens */
+.hc-tile--about { --tile-h: max(560px, calc(100vh - 113px)); --u: min(.4vw, calc(var(--tile-h) * .0075)); background: #fff; }
+.hc-tile--about::before { z-index: 1; }
+.hc-tile--about .hc-tile-body { pointer-events: none; }
+.hc-tile--about .hc-tile-title { transition: opacity .25s ease; }
+.hc-tile--about .hc-tile-title::after { width: 100%; background: #fad901; }
+
+.hc-about { display: flex; flex-direction: column; isolation: isolate; }
+.hc-about-photo {
+  position: relative;
+  z-index: 1; /* the leaf hangs over the panel below */
+  flex: none;
+  aspect-ratio: 1086 / 613;
+  background: url('/images/home-tiles/about-scene.jpg') 50% 88% / cover no-repeat;
+}
+.hc-about-curve { position: absolute; left: 0; bottom: -1px; display: block; width: 100%; height: auto; overflow: visible; }
+.hc-about-panel {
+  padding: 0 4.8% calc(var(--u) * 16);
+  background: #fff url('/images/home-tiles/about-foot.png') center bottom / 100% auto no-repeat;
+}
+
+.hc-acc { display: flex; flex-direction: column; }
+/* The space above each card: the first thing to give way to an open question */
+.hc-acc-gap { flex: 0 100000 calc(var(--u) * 4.6); min-height: calc(var(--u) * 1.7); }
+.hc-acc-gap:first-child { flex-basis: calc(var(--u) * 5.8); min-height: calc(var(--u) * 3.4); }
+.hc-acc-item {
+  --tone: #107ed1;
+  --tone-soft: #edf3fc;
+  --tone-shadow: rgba(16, 126, 209, .2);
+  padding-left: calc(var(--u) * 1.3);
+  border-radius: calc(var(--u) * 2.2);
+  background: var(--tone);
+  box-shadow: 0 calc(var(--u) * .9) calc(var(--u) * 2.8) var(--tone-shadow);
+}
+.hc-acc-item.is-orange { --tone: #fe9105; --tone-soft: #f3f3f3; --tone-shadow: rgba(254, 145, 5, .14); }
+.hc-acc-item.is-green { --tone: #3fa73b; --tone-soft: #f0f6ef; --tone-shadow: rgba(63, 167, 59, .16); }
+.hc-acc-card { border-radius: calc(var(--u) * 2); background: #fff; overflow: hidden; }
+.hc-acc-head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: calc(var(--u) * 13.4);
+  padding: 0 calc(var(--u) * 2.6) 0 calc(var(--u) * 4.1);
+  border: 0;
+  background: none;
+  color: #0b1a3b;
+  text-align: left;
+  cursor: pointer;
+}
+.hc-acc-head:focus-visible { outline: 2px solid var(--tone); outline-offset: -3px; border-radius: calc(var(--u) * 2); }
+/* The artwork carries a sliver of margin round its disc */
+.hc-acc-head img { flex: none; width: calc(var(--u) * 12.15); height: calc(var(--u) * 12.15); }
+.hc-acc-rule { flex: none; width: 1px; height: calc(var(--u) * 5.3); margin: 0 calc(var(--u) * 3) 0 calc(var(--u) * 3.5); background: #d2d6db; }
+.hc-acc-title { flex: 1; min-width: 0; font-size: max(15px, calc(var(--u) * 3.7)); font-weight: 700; line-height: 1.2; }
+.hc-acc-chevron {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: calc(var(--u) * 5.7);
+  height: calc(var(--u) * 5.7);
+  margin-left: calc(var(--u) * 1.5);
+  border-radius: 50%;
+  background: var(--tone-soft);
+  transition: transform .2s ease;
+}
+.hc-acc-chevron svg { width: 56%; height: 56%; }
+.hc-acc-item.is-open .hc-acc-chevron { transform: rotate(180deg); }
+/* Its row grows from nothing, so the cards around it glide into place rather than jump */
+.hc-acc-body { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .3s ease, visibility 0s .3s; }
+.hc-acc-item.is-open .hc-acc-body { grid-template-rows: 1fr; visibility: visible; box-shadow: inset 0 1px #eef0f3; transition: grid-template-rows .3s ease; }
+.hc-acc-text { min-height: 0; overflow: hidden; }
+/* Held back until the card has opened, which also hides any scrollbar it has for that moment */
+.hc-acc-item.is-open .hc-acc-text { animation: hc-acc-reveal .45s ease both; }
+@keyframes hc-acc-reveal { 0%, 55% { opacity: 0; } 100% { opacity: 1; } }
+.hc-acc-text p {
+  margin: 0;
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 3) calc(var(--u) * 1.8) calc(var(--u) * 3.4);
+  color: var(--hc-text);
+  font-size: max(13.5px, calc(var(--u) * 2.1));
+  line-height: 1.55;
+}
+
+/* Side by side, the photo fills the closed tile and rises as it opens. An opened tile counts while it's
+   hovered, or holds focus or a tap with the pointer off the tiles */
+@media (min-width: 992px) {
+  .hc-about { position: absolute; inset: 0; }
+  .hc-about-photo {
+    flex: 0 0 100%;
+    aspect-ratio: auto;
+    background-position: 25% 100%;
+    transition: flex-basis .5s ease, background-position .5s ease;
+  }
+  .hc-about-curve { opacity: 0; transition: opacity .15s ease; }
+  /* Already its final height while the tile is closed, so the cards rise with the photo without reflowing */
+  .hc-about-panel {
+    flex: none;
+    height: calc(var(--tile-h) * .56);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: calc(var(--u) * 1.6);
+    overflow: hidden;
+  }
+
+  /* The photo never moves for a question: its text takes the free space under the cards, down to the foot
+     of the tile. Only if that runs out does anything give way, and only as far as this question needs: the
+     spaces first, then the closed cards, then the open card's head, and last its text, which then scrolls.
+     The flex-shrink values are that order */
+  .hc-acc { flex: 0 1 auto; min-height: 0; }
+  .hc-acc-item { flex: 0 1000 auto; min-height: calc(var(--u) * 8.6); display: flex; }
+  .hc-acc-item.is-open { flex-shrink: 1; min-height: 0; }
+  .hc-acc-card { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+  .hc-acc-head { flex: 0 1000 calc(var(--u) * 13.4); min-height: calc(var(--u) * 8.6); }
+  .hc-acc-head img { width: auto; height: min(calc(var(--u) * 12.15), 92%); aspect-ratio: 1; }
+  .hc-acc-body { flex: 0 1 auto; min-height: 0; }
+  .hc-acc-item.is-open .hc-acc-text { overflow-y: auto; scrollbar-width: thin; }
+
+  :is(.hc-tile--about:hover, .hc-tiles:not(:hover) .hc-tile--about.is-open) .hc-about-photo { flex-basis: 44%; background-position: 50% 87.5%; }
+  :is(.hc-tile--about:hover, .hc-tiles:not(:hover) .hc-tile--about.is-open) .hc-about-curve { opacity: 1; transition: opacity .4s ease .15s; }
+  :is(.hc-tile--about:hover, .hc-tiles:not(:hover) .hc-tile--about.is-open) .hc-tile-title { opacity: 0; }
+
+  /* The sheet tile's text is in the flow, with the picture taking whatever height is left under it. Closed,
+     only the title shows and the text folds away, so the picture rises into its room; opening unfolds the
+     text and the picture shrinks to make way */
+  .hc-tile--sheet .hc-tile-body {
+    position: static;
+    flex: none;
+    max-height: none;
+    overflow: visible;
+    padding: calc(var(--tile-h) * .15) 4% 0 10%;
+    transition: padding .7s ease;
+  }
+  .hc-tile--sheet .hc-tile-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s ease; }
+  .hc-tile--sheet .hc-tile-more > div { min-height: 0; overflow: hidden; }
+  :is(.hc-tile--sheet:hover, .hc-tile--sheet.is-open) .hc-tile-body { padding-top: calc(var(--tile-h) * .07); padding-right: 10%; }
+  :is(.hc-tile--sheet:hover, .hc-tile--sheet.is-open) .hc-tile-more { grid-template-rows: 1fr; }
+  .hc-tiles:hover .hc-tile--sheet.is-open:not(:hover) .hc-tile-body { padding-top: calc(var(--tile-h) * .15); padding-right: 4%; }
+  .hc-tiles:hover .hc-tile--sheet.is-open:not(:hover) .hc-tile-more { grid-template-rows: 0fr; }
+  .hc-tile--sheet .hc-tile-art { flex: 1 1 0; padding: calc(var(--tile-h) * .03) 8% calc(var(--tile-h) * .04); }
+}
+
+/* Tablets: two tiles a row, every tile open */
+@media (max-width: 991px) {
+  .hc-tiles { flex-wrap: wrap; }
+  .hc-tile,
+  .hc-tile:hover,
+  .hc-tile.is-open { width: 50%; height: auto; min-height: 340px; }
+  .hc-tiles:hover .hc-tile.is-open:not(:hover) { width: 50%; }
+  /* In the flow now, so the desktop offsets would only push it sideways out of the tile */
+  .hc-tile-body { position: relative; top: auto !important; right: auto !important; left: auto; width: auto; max-height: none; padding: 40px 24px; }
+  .hc-tile-text, .hc-tile .hc-acc, .hc-tile-btn,
+  .hc-tiles:hover .hc-tile.is-open:not(:hover) :is(.hc-tile-text, .hc-acc, .hc-tile-btn) { opacity: 1; }
+  .hc-tile-text { color: #222; background: rgba(255, 255, 255, .85); padding: 10px 12px; border-radius: 6px; }
+  .hc-tile-title::after { width: 100%; }
+  /* Always open here, so its title has no closed state to live in and sits on the sky instead */
+  .hc-tile--about { --u: max(.5vw, 4.2px); }
+  .hc-tile--about .hc-tile-body { position: absolute; top: 0 !important; left: 0; right: 0 !important; padding: calc(var(--u) * 4) 4.8%; text-align: right; }
+  /* The sheet under its text, as tall as it needs up to a cap; the poster keeps its full width and shape */
+  .hc-tile--sheet .hc-tile-art { display: flex; justify-content: center; padding: 0 24px 32px; }
+  .hc-tile--sheet .hc-tile-art img { max-height: 560px; }
+}
+
+/* Phones: one tile a row */
+@media (max-width: 767px) {
+  .hc-tile,
+  .hc-tile:hover,
+  .hc-tile.is-open,
+  .hc-tiles:hover .hc-tile.is-open:not(:hover) { width: 100%; min-height: 0; }
+  .hc-tile-title { font-size: 1.6rem; }
+  .hc-tile--about { --u: max(1vw, 4.2px); }
+}

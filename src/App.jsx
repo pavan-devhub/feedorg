@@ -37,6 +37,7 @@ import AdminPortal from './pages/admin/AdminPortal';
 import ErsAssessment from './pages/ErsAssessment';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
+import scrollToSection from './utils/scrollToSection';
 import { API_BASE_URL } from './api/config';
 import { syncLiveLogin } from './api/liveUpdates';
 import { takeReturnTo } from './utils/publicationLinks';
@@ -277,7 +278,24 @@ function App() {
     }
   }, [currentPage, isLoggedIn, user, isAdmin]);
 
+  // The Footer's links arrive this way, since most pages mount it without an onNavigate prop.
+  const pendingSection = React.useRef(null);
+  React.useEffect(() => {
+    const handleFooterNavigate = (event) => {
+      pendingSection.current = event.detail.section;
+      handleNavigate(event.detail.page);
+    };
+    window.addEventListener('feed:navigate', handleFooterNavigate);
+    return () => window.removeEventListener('feed:navigate', handleFooterNavigate);
+  });
+
   useScrollToTop(currentPage);
+
+  // Must stay below useScrollToTop: the new page is mounted by now and its scroll position already reset.
+  React.useEffect(() => {
+    if (pendingSection.current) scrollToSection(pendingSection.current);
+    pendingSection.current = null;
+  }, [currentPage]);
 
   // Never render a public page for an admin, even for the one render before the guard above runs.
   if (isAdmin && !ADMIN_PAGES.includes(currentPage)) {

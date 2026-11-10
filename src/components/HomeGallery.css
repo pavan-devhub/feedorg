@@ -1,0 +1,572 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+/* The Photos & Videos block between the statistics and the Testimonials. Behaviour: HomeGallery.jsx */
+
+/* A faint blue towards the sides, gone again at the top and bottom so it meets the white blocks without a seam */
+.home-gallery {
+  container: home-gallery / inline-size;
+  background:
+    linear-gradient(180deg, #fff, transparent 14%, transparent 86%, #fff),
+    radial-gradient(ellipse 72% 180% at 50% 50%, #fff 58%, #f3f7fe 100%);
+}
+
+/* Sizes are in --u, the design's pixels (it is 1671 wide) scaled to the block's width. It stops growing once
+   the card is as wide as the statistics above */
+.home-gallery-inner {
+  --u: clamp(0.56px, 100cqw / 1671, 0.942px);
+  width: min(calc(1486 * var(--u)), 100% - 32px);
+  margin: 0 auto;
+  padding: calc(10 * var(--u)) 0 calc(75 * var(--u));
+}
+
+/* Named on every element, since the site's global rule gives each one Outfit */
+.home-gallery-inner,
+.home-gallery-inner * {
+  font-family: 'Poppins', sans-serif;
+}
+
+.home-gallery-rule {
+  flex: none;
+  width: calc(86 * var(--u));
+  height: max(1.5px, calc(2.5 * var(--u)));
+  background: linear-gradient(90deg, rgba(232, 138, 31, 0.15) 0%, #e88a1f 30%, #e88a1f 100%);
+}
+
+.home-gallery-rule--end {
+  background: linear-gradient(270deg, rgba(232, 138, 31, 0.15) 0%, #e88a1f 30%, #e88a1f 100%);
+}
+
+.home-gallery-titleIcon {
+  flex: none;
+  width: calc(73 * var(--u));
+  height: calc(51 * var(--u));
+}
+
+/* One row: a rule, Photos, the camera in place of the "and", Videos, a rule */
+.home-gallery-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(21 * var(--u));
+  font-size: calc(62 * var(--u));
+  line-height: 1.2;
+  font-weight: 700;
+  color: #0a2f7a;
+}
+
+.home-gallery-title span {
+  font-family: inherit;
+  color: #fa8403;
+}
+
+/* Read out but not shown, so it takes no part in the row */
+.home-gallery-titleAnd {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.home-gallery-subtitle {
+  margin-top: calc(-8 * var(--u));
+  font-size: max(14px, calc(20.7 * var(--u)));
+  line-height: 1.3;
+  font-weight: 500;
+  text-align: center;
+  color: #16264f;
+}
+
+.home-gallery-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: calc(32 * var(--u));
+  padding: 0 calc(33 * var(--u));
+}
+
+.home-gallery-tab {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  min-width: calc(170 * var(--u));
+  height: max(34px, calc(44 * var(--u)));
+  padding: 0 calc(29 * var(--u));
+  font-size: max(13px, calc(19.5 * var(--u)));
+  font-weight: 500;
+  white-space: nowrap;
+  color: #16264f;
+  background: #f4f6f8;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 calc(3 * var(--u)) calc(9 * var(--u)) rgba(20, 35, 75, 0.16);
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.home-gallery-tab svg {
+  flex: none;
+  width: max(17px, calc(31 * var(--u)));
+  height: max(17px, calc(31 * var(--u)));
+  color: var(--tone);
+}
+
+.home-gallery-tab:hover {
+  background: #e9eef6;
+}
+
+.home-gallery-tab[aria-pressed='true'] {
+  color: #fff;
+  background: linear-gradient(180deg, #033c91 0%, #021e54 100%);
+}
+
+.home-gallery-tab[aria-pressed='true'] svg {
+  color: #fff;
+}
+
+.home-gallery-tab:focus-visible,
+.home-gallery-tile:focus-visible,
+.home-gallery-videoButton:focus-visible,
+.home-gallery-arrow:focus-visible,
+.home-gallery-dot:focus-visible {
+  outline: 3px solid #fa8403;
+  outline-offset: 2px;
+}
+
+/* The arrows ride on the card's edges, half on it and half off */
+.home-gallery-stage {
+  position: relative;
+  margin-top: calc(14 * var(--u));
+}
+
+.home-gallery-card {
+  padding: calc(14 * var(--u)) calc(21 * var(--u)) 0 calc(20 * var(--u));
+  background: #fff;
+  border-radius: calc(22 * var(--u));
+  box-shadow: 0 calc(8 * var(--u)) calc(30 * var(--u)) rgba(25, 45, 95, 0.11);
+}
+
+/* The lead photo fills the left; the rest sit in two rows on the right, each row's photos their own widths */
+.home-gallery-mosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 479fr) minmax(0, 957fr);
+  gap: calc(9 * var(--u));
+  height: calc(322 * var(--u));
+  touch-action: pan-y;
+  animation: home-gallery-in 0.45s ease both;
+}
+
+@keyframes home-gallery-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.home-gallery-rows {
+  display: grid;
+  grid-template-rows: minmax(0, 162fr) minmax(0, 151fr);
+  gap: calc(9 * var(--u));
+  min-height: 0;
+}
+
+.home-gallery-row {
+  display: flex;
+  gap: calc(9 * var(--u));
+  min-height: 0;
+}
+
+.home-gallery-tile {
+  flex: 1 1 0;
+  display: block;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #e9eef5;
+  border: none;
+  border-radius: calc(10 * var(--u));
+  cursor: pointer;
+}
+
+.home-gallery-row:first-child .home-gallery-tile:nth-child(1) { flex-grow: 374; }
+.home-gallery-row:first-child .home-gallery-tile:nth-child(2) { flex-grow: 214; }
+.home-gallery-row:first-child .home-gallery-tile:nth-child(3) { flex-grow: 351; }
+.home-gallery-row:last-child .home-gallery-tile:nth-child(1) { flex-grow: 324; }
+.home-gallery-row:last-child .home-gallery-tile:nth-child(2) { flex-grow: 309; }
+.home-gallery-row:last-child .home-gallery-tile:nth-child(3) { flex-grow: 306; }
+
+.home-gallery-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.home-gallery-tile:hover img {
+  transform: scale(1.05);
+}
+
+.home-gallery-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(10 * var(--u));
+  height: calc(34 * var(--u));
+}
+
+.home-gallery-dot {
+  position: relative;
+  flex: none;
+  width: max(9px, calc(14 * var(--u)));
+  height: max(9px, calc(14 * var(--u)));
+  padding: 0;
+  background: #c9c9cd;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* A dot is too small to tap comfortably, so its target reaches past it */
+.home-gallery-dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px -4px;
+}
+
+.home-gallery-dot[aria-current='true'] {
+  background: #042d7f;
+}
+
+.home-gallery-arrow {
+  --size: max(40px, calc(55 * var(--u)));
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  padding: 0;
+  color: #0a2f7a;
+  background: #fff;
+  border: max(1.5px, calc(2 * var(--u))) solid #f6a23c;
+  border-radius: 50%;
+  box-shadow: 0 calc(4 * var(--u)) calc(12 * var(--u)) rgba(20, 35, 75, 0.14);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.home-gallery-arrow svg {
+  width: 56%;
+  height: 56%;
+}
+
+.home-gallery-arrow:hover:not(:disabled) {
+  background: #fff4e6;
+}
+
+/* A tab with only one page of photos keeps its arrows in place, at rest */
+.home-gallery-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.home-gallery-stage > .home-gallery-arrow {
+  top: calc(179 * var(--u));
+  transform: translateY(-50%);
+}
+
+.home-gallery-stage > .home-gallery-arrow--prev { left: calc(var(--size) / -2); }
+.home-gallery-stage > .home-gallery-arrow--next { right: calc(var(--size) / -2); }
+
+/* The video cards sit slightly inside the photo card's width, their arrows just past its edges */
+.home-gallery-videos {
+  --per-view: 3;
+  --gap: calc(13 * var(--u));
+  --bleed: calc(12 * var(--u));
+  position: relative;
+  margin-top: calc(72 * var(--u));
+  padding: 0 calc(22 * var(--u));
+}
+
+.home-gallery-videos > .home-gallery-arrow {
+  --size: max(36px, calc(48 * var(--u)));
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.home-gallery-videos > .home-gallery-arrow--prev { left: calc(-32 * var(--u)); }
+.home-gallery-videos > .home-gallery-arrow--next { right: calc(-32 * var(--u)); }
+
+/* Clipped rather than hidden, which can't be scrolled out of line, with room left for the cards' shadows */
+.home-gallery-rail {
+  margin: calc(-1 * var(--bleed));
+  padding: var(--bleed);
+  overflow: hidden;
+  overflow: clip;
+  touch-action: pan-y;
+}
+
+/* --spot is the card at the left of the view. One card's step is a --per-view share of the window, plus a gap */
+.home-gallery-track {
+  display: flex;
+  gap: var(--gap);
+  list-style: none;
+  transform: translateX(calc(var(--spot) * (100% + var(--gap)) / var(--per-view) * -1));
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.home-gallery-track--few {
+  justify-content: center;
+}
+
+.home-gallery-video {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  min-width: 0;
+}
+
+.home-gallery-videoButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: calc(5.5 * var(--u));
+  background: #fff;
+  border: none;
+  border-radius: calc(14 * var(--u));
+  box-shadow: 0 calc(4 * var(--u)) calc(14 * var(--u)) rgba(25, 45, 95, 0.16);
+  cursor: pointer;
+}
+
+.home-gallery-videoButton img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 458 / 182;
+  object-fit: cover;
+  background: #0f1d3a;
+  border-radius: calc(10 * var(--u));
+}
+
+.home-gallery-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: max(46px, calc(70 * var(--u)));
+  height: max(46px, calc(70 * var(--u)));
+  color: #fff;
+  background: rgba(12, 16, 28, 0.62);
+  border: max(2.5px, calc(4 * var(--u))) solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 calc(3 * var(--u)) calc(10 * var(--u)) rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.home-gallery-play svg {
+  width: 52%;
+  height: 52%;
+  margin-left: 6%;
+}
+
+.home-gallery-videoButton:hover .home-gallery-play {
+  background: #fa8403;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* The site's global reset takes away a dialog's centring, so it is set again here */
+.home-gallery-viewer {
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  overflow: visible;
+  background: none;
+  border: none;
+}
+
+.home-gallery-viewer::backdrop {
+  background: rgba(7, 14, 32, 0.84);
+}
+
+.home-gallery-photo {
+  display: block;
+  max-width: min(92vw, 1280px);
+  max-height: 86svh;
+  border-radius: 12px;
+}
+
+/* The player takes the Short's own shape, as large as the window allows */
+.home-gallery-player {
+  height: min(82svh, 92vw * 16 / 9);
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: #000;
+  border-radius: 14px;
+}
+
+.home-gallery-player--square {
+  height: min(82svh, 92vw);
+  aspect-ratio: 1;
+}
+
+.home-gallery-player iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.home-gallery-watch {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.home-gallery-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: #0a2f7a;
+  background: #fff;
+  border: 2px solid #f6a23c;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.home-gallery-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Tablets: the tabs wrap, the mosaic grows taller for its narrower width, and two videos are in view */
+@media (max-width: 1099px) {
+  .home-gallery-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 12px;
+    padding: 0;
+  }
+
+  .home-gallery-tab {
+    height: 38px;
+  }
+
+  .home-gallery-mosaic {
+    height: auto;
+    aspect-ratio: 1445 / 470;
+  }
+
+  .home-gallery-stage > .home-gallery-arrow {
+    top: 45%;
+  }
+
+  .home-gallery-stage > .home-gallery-arrow--prev { left: -12px; }
+  .home-gallery-stage > .home-gallery-arrow--next { right: -12px; }
+
+  .home-gallery-videos {
+    --per-view: 2;
+  }
+
+  .home-gallery-videos > .home-gallery-arrow--prev { left: -12px; }
+  .home-gallery-videos > .home-gallery-arrow--next { right: -12px; }
+}
+
+/* Phones: the tabs scroll sideways. The lead photo takes the full width over two columns of the rest, one video
+   is in view, and the arrows drop to the card's foot and the video's sides */
+@media (max-width: 599px) {
+  /* The heading fills the width here, leaving no room for its rules, and eases down on the narrowest phones */
+  .home-gallery-rule {
+    display: none;
+  }
+
+  .home-gallery-title {
+    font-size: min(calc(62 * var(--u)), 9.6cqw);
+  }
+
+  .home-gallery-tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    margin-inline: -16px;
+    padding: 6px 16px 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .home-gallery-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-gallery-card {
+    padding: 8px 8px 0;
+    border-radius: 16px;
+  }
+
+  .home-gallery-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    aspect-ratio: auto;
+  }
+
+  .home-gallery-rows,
+  .home-gallery-row {
+    display: contents;
+  }
+
+  .home-gallery-tile {
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+  }
+
+  .home-gallery-mosaic > .home-gallery-tile {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+
+  .home-gallery-dots {
+    height: 56px;
+  }
+
+  .home-gallery-stage > .home-gallery-arrow {
+    top: auto;
+    bottom: 8px;
+    transform: none;
+  }
+
+  .home-gallery-stage > .home-gallery-arrow--prev { left: 8px; }
+  .home-gallery-stage > .home-gallery-arrow--next { right: 8px; }
+
+  .home-gallery-videos {
+    --per-view: 1;
+    --gap: 12px;
+    margin-top: 28px;
+    padding: 0;
+  }
+
+  .home-gallery-videos > .home-gallery-arrow--prev { left: 6px; }
+  .home-gallery-videos > .home-gallery-arrow--next { right: 6px; }
+
+  .home-gallery-videoButton img {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* For visitors who prefer reduced motion, nothing fades or slides */
+@media (prefers-reduced-motion: reduce) {
+  .home-gallery-mosaic {
+    animation: none;
+  }
+
+  .home-gallery-track,
+  .home-gallery-tile img {
+    transition: none;
+  }
+}

@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&family=Noto+Sans:wght@400;700&display=swap');
+
+/* The Testimonials block between the statistics and Our Partners. Behaviour: HomeTestimonials.jsx */
+
+.home-testimonials {
+  container: home-testimonials / inline-size;
+  background: #fff;
+}
+
+/* Sizes are in --u, the design's pixels scaled to the block's width. It stops growing once the cards are as
+   wide as the statistics above, and stops shrinking so the text stays readable on small screens */
+.home-testimonials-inner {
+  --u: clamp(0.55px, 100cqw / 2000, 0.78px);
+  --gap: calc(33 * var(--u));
+  --arrow: max(44px, calc(70 * var(--u)));
+  /* Room around the scrolling cards, so their shadows are not cut off */
+  --bleed: 24px;
+  padding: calc(16 * var(--u)) 0 calc(72 * var(--u));
+}
+
+/* Named on every element, since the site's global rule gives each one Outfit */
+.home-testimonials-inner,
+.home-testimonials-inner * {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.home-testimonials-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(26 * var(--u));
+}
+
+.home-testimonials-rule {
+  width: calc(146 * var(--u));
+  height: max(1px, calc(2 * var(--u)));
+  background: linear-gradient(90deg, #b9b4ee 0%, #6f67e4 100%);
+}
+
+.home-testimonials-rule--end {
+  background: linear-gradient(90deg, #4b45f2 0%, #8c85d9 100%);
+}
+
+.home-testimonials-markIcon {
+  flex: none;
+  width: calc(46 * var(--u));
+  height: calc(46 * var(--u));
+  color: #413cff;
+}
+
+.home-testimonials-title {
+  margin-top: calc(6 * var(--u));
+  font-family: 'Montserrat', sans-serif;
+  font-size: calc(72 * var(--u));
+  line-height: 1.2;
+  font-weight: 800;
+  text-align: center;
+  color: #413bfc;
+}
+
+.home-testimonials-subtitle {
+  margin-top: calc(10 * var(--u));
+  padding: 0 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: max(14px, calc(27 * var(--u)));
+  line-height: 1.4;
+  font-weight: 500;
+  text-align: center;
+  color: #3a4060;
+}
+
+.home-testimonials-carousel {
+  --per-view: 3;
+  display: grid;
+  grid-template-columns: var(--arrow) minmax(0, 1fr) var(--arrow);
+  grid-template-areas:
+    'prev rail next'
+    '.    dots .';
+  column-gap: calc(10 * var(--u));
+  align-items: center;
+  max-width: calc(1400px + 2 * var(--arrow));
+  margin: calc(58 * var(--u)) auto 0;
+  padding: 0 12px;
+}
+
+/* The window onto the sliding cards. Clipped rather than hidden, which can't be scrolled out of line. The ends
+   fade so the shadow of the next card out of view doesn't show as a strip. Sideways swipes are left to the
+   component; up and down stay with the page */
+.home-testimonials-rail {
+  grid-area: rail;
+  min-width: 0;
+  margin: calc(-1 * var(--bleed));
+  padding: var(--bleed);
+  overflow: hidden;
+  overflow: clip;
+  touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--bleed), #000 calc(100% - var(--bleed)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--bleed), #000 calc(100% - var(--bleed)), transparent 100%);
+}
+
+/* --spot is the card at the left of the view, counted across all the copies. One card's step is a --per-view
+   share of the window, plus a gap */
+.home-testimonials-track {
+  display: flex;
+  /* Not stretched, so opening one review leaves the cards beside it as they are */
+  align-items: flex-start;
+  gap: var(--gap);
+  list-style: none;
+  transform: translateX(calc(var(--spot) * (100% + var(--gap)) / var(--per-view) * -1));
+  transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Everything in a card runs down its middle. The wave sits in the room left at the foot */
+.home-testimonial {
+  position: relative;
+  display: flex;
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: calc(38 * var(--u)) calc(46 * var(--u)) calc(92 * var(--u));
+  overflow: hidden;
+  text-align: center;
+  background: #fff;
+  border: max(1px, calc(3 * var(--u))) solid #fff;
+  border-radius: calc(34 * var(--u));
+  box-shadow: 0 calc(6 * var(--u)) calc(26 * var(--u)) rgba(50, 44, 130, 0.12);
+}
+
+.home-testimonial::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: calc(66 * var(--u));
+  background: url('/images/home-testimonials/card-wave.svg') center / 100% 100% no-repeat;
+}
+
+/* Takes the place of the design's profile photo, with the same ring */
+.home-testimonial-circle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: max(68px, calc(112 * var(--u)));
+  height: max(68px, calc(112 * var(--u)));
+  color: #6a54f0;
+  background: #f3eefd;
+  border: max(2px, calc(3 * var(--u))) solid #a594f0;
+  border-radius: 50%;
+}
+
+.home-testimonial-circle svg {
+  width: 48%;
+  height: 48%;
+}
+
+.home-testimonial-who {
+  margin-top: calc(18 * var(--u));
+  font-size: max(18px, calc(31 * var(--u)));
+  line-height: 1.3;
+  font-weight: 700;
+  color: #0b1340;
+}
+
+.home-testimonial-stars {
+  display: flex;
+  justify-content: center;
+  gap: calc(5 * var(--u));
+  margin-top: calc(10 * var(--u));
+  font-size: max(16px, calc(29 * var(--u)));
+  color: #ffb503;
+}
+
+.home-testimonial-badge {
+  position: absolute;
+  top: calc(26 * var(--u));
+  right: calc(30 * var(--u));
+  display: grid;
+  place-items: center;
+  width: max(40px, calc(70 * var(--u)));
+  height: max(40px, calc(70 * var(--u)));
+  font-size: max(22px, calc(40 * var(--u)));
+  color: #8268f9;
+  background: #f3eefd;
+  border-radius: 50%;
+}
+
+/* Cut to --lines lines until opened. A shorter review still fills them, so the cards stay level */
+.home-testimonial-text {
+  --lines: 4;
+  display: -webkit-box;
+  width: 100%;
+  min-height: calc(var(--lines) * 1.55em);
+  margin-top: calc(22 * var(--u));
+  overflow: hidden;
+  font-size: max(15px, calc(23 * var(--u)));
+  line-height: 1.55;
+  color: #161c3d;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--lines);
+  line-clamp: var(--lines);
+}
+
+.home-testimonial-text--open {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+}
+
+.home-testimonial-more {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  margin-top: calc(12 * var(--u));
+  padding: 4px 8px;
+  font-size: max(14px, calc(22 * var(--u)));
+  line-height: 1.4;
+  font-weight: 700;
+  color: #413bfc;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.home-testimonial-more:hover {
+  text-decoration: underline;
+}
+
+.home-testimonial-more--idle {
+  visibility: hidden;
+}
+
+.home-testimonials-arrow {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--arrow);
+  height: var(--arrow);
+  color: #3d32f5;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 calc(4 * var(--u)) calc(18 * var(--u)) rgba(40, 36, 110, 0.16);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.home-testimonials-arrow:hover {
+  background: #f3eefd;
+}
+
+.home-testimonials-arrow--prev {
+  grid-area: prev;
+}
+
+.home-testimonials-arrow--next {
+  grid-area: next;
+}
+
+.home-testimonials-dots {
+  grid-area: dots;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: max(14px, calc(26 * var(--u)));
+  margin-top: calc(46 * var(--u));
+}
+
+.home-testimonials-dot {
+  position: relative;
+  flex: none;
+  width: max(9px, calc(13 * var(--u)));
+  height: max(9px, calc(13 * var(--u)));
+  padding: 0;
+  background: #adadbd;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* A dot is too small to tap comfortably, so its target reaches past it */
+.home-testimonials-dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
+.home-testimonials-dot[aria-current='true'] {
+  background: #5044ff;
+  transform: scale(1.55);
+}
+
+/* Tablets: two cards in view */
+@media (max-width: 1099px) {
+  .home-testimonials-carousel {
+    --per-view: 2;
+  }
+}
+
+/* Phones: one card in view, with the arrows moved beside the dots to leave the card its full width */
+@media (max-width: 599px) {
+  .home-testimonials-inner {
+    --gap: 14px;
+    --bleed: 12px;
+  }
+
+  .home-testimonials-carousel {
+    --per-view: 1;
+    grid-template-areas:
+      'rail rail rail'
+      'prev dots next';
+    margin-top: 24px;
+  }
+
+  .home-testimonials-arrow,
+  .home-testimonials-dots {
+    margin-top: 20px;
+  }
+}
+
+/* For visitors who prefer reduced motion, the cards only move when asked to, and without sliding */
+@media (prefers-reduced-motion: reduce) {
+  .home-testimonials-track {
+    transition: none;
+  }
+}

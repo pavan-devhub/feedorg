@@ -1,0 +1,117 @@
+/*
+ * The sailing ship and waves from the navbar project, drawn above the FEED Services block.
+ * Everything is sized in sea units (--v): the sea is 124 tall and the ship 391 x 118, the ship
+ * poking 66 above the sea. --v grows with the window, between a phone and a wide desktop.
+ */
+
+.sailing-ship {
+  --v: clamp(0.45px, 0.05vw, 0.8px);
+  --sail-time: 30s;
+  --ship-w: calc(391 * var(--v));
+  --ship-h: calc(118 * var(--v));
+
+  /* Room for the ship above the sea, plus a clear gap below the tiles so the two don't run together */
+  padding-top: calc(var(--ship-h) - 52 * var(--v) + clamp(28px, 4vw, 64px));
+  background: #fff;
+}
+
+/*
+ * Three wave layers drift behind the ship, and the water in front is the deep blue front wave.
+ * Each layer is a seamless tile; the tiles end above their bottom edge, because an opaque bottom
+ * row bleeds into the top row as a hairline when the browser repeats the tile.
+ */
+.sailing-ship-sea {
+  position: relative;
+  container-type: inline-size;
+  display: grid;
+  height: calc(124 * var(--v));
+  background:
+    url('../assets/sea/wave-front.svg') repeat-x 0 0 /
+      calc(1100 * var(--v)) calc(124 * var(--v)),
+    url('../assets/sea/wave-middle.svg') repeat-x calc(257 * var(--v)) 0 /
+      calc(1375 * var(--v)) calc(124 * var(--v)),
+    url('../assets/sea/wave-back.svg') repeat-x calc(147 * var(--v)) 0 /
+      calc(1475 * var(--v)) calc(124 * var(--v));
+  animation: sailing-ship-waves 18s linear infinite;
+}
+
+/* Every layer moves by whole tiles, so the loop has no visible jump */
+@keyframes sailing-ship-waves {
+  to {
+    background-position-x:
+      calc(1100 * var(--v)),
+      calc(257 * var(--v) - 1375 * var(--v)),
+      calc(147 * var(--v) - 1475 * var(--v));
+  }
+}
+
+/* The ship is drawn squashed (391x118); its hull bottom sits 52v below the top of the sea */
+.sailing-ship-boat {
+  position: absolute;
+  top: calc(52 * var(--v) - var(--ship-h));
+  left: 0;
+  width: var(--ship-w);
+  height: var(--ship-h);
+  pointer-events: none;
+  animation:
+    sailing-ship-sail var(--sail-time) linear infinite,
+    sailing-ship-bob 2.4s ease-in-out infinite alternate;
+}
+
+/* Sails from the left edge to the right, fading out there and back in on the left */
+@keyframes sailing-ship-sail {
+  0% {
+    opacity: 0;
+  }
+
+  4%,
+  96% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    translate: calc(100cqw - var(--ship-w));
+  }
+}
+
+@keyframes sailing-ship-bob {
+  to {
+    transform: translateY(calc(-4 * var(--v)));
+  }
+}
+
+/* Painted after the ship, so its crest covers the hull */
+.sailing-ship-water {
+  position: relative;
+  background:
+    url('../assets/sea/band.svg') repeat-x 0 0 / calc(900 * var(--v))
+      calc(82 * var(--v)),
+    linear-gradient(
+        #178cdc,
+        #1587d9 calc(7.4 * var(--v)),
+        #086fc9 calc(26.7 * var(--v)),
+        #0560c0 calc(46 * var(--v))
+      )
+      0 calc(78 * var(--v)) / 100% 100% no-repeat;
+  animation: sailing-ship-band 9s linear infinite;
+}
+
+@keyframes sailing-ship-band {
+  to {
+    background-position-x: calc(-900 * var(--v)), 0;
+  }
+}
+
+/* Ship stays parked a third of the way across and the waves stay still */
+@media (prefers-reduced-motion: reduce) {
+  .sailing-ship-sea,
+  .sailing-ship-water {
+    animation: none;
+  }
+
+  .sailing-ship-boat {
+    translate: 32cqw;
+    animation: none;
+  }
+}

@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+/* The statistics strip under Events & Updates, as in the FEED design: four white cards, each with its
+   icon, a thin grey rule, then the figure over its label. Behaviour: HomeStats.jsx */
+
+.home-stats {
+  /* Generous room above and below, so the strip stands clear of Events & Updates and Photos & Videos */
+  padding: clamp(44px, 6.5vw, 96px) 20px;
+  background: #fff;
+}
+.home-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.1vw, 18px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Everything in a card is sized in u, 1/412 of its width (the design's card is 412 x 189), so a card
+   looks the same at any size */
+.home-stat { container-type: inline-size; }
+.home-stat-card {
+  --u: calc(100cqw / 412);
+  aspect-ratio: 412 / 189;
+  display: flex;
+  align-items: center;
+  padding-left: calc(26 * var(--u));
+  background: #fff;
+  border-radius: calc(20 * var(--u));
+  box-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) rgba(15, 23, 42, 0.07), 0 calc(5 * var(--u)) calc(16 * var(--u)) rgba(15, 23, 42, 0.1);
+}
+
+/* The icons differ in size, so each sits centred in a slot of one width and the rules line up */
+.home-stat-iconSlot {
+  flex: none;
+  width: calc(146 * var(--u));
+  display: grid;
+  place-items: center;
+}
+.home-stat-icon {
+  display: block;
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+  /* Drops the cut-out's own white backdrop into the card */
+  mix-blend-mode: multiply;
+}
+.home-stat-rule {
+  flex: none;
+  width: max(1px, calc(2 * var(--u)));
+  height: calc(115 * var(--u));
+  margin: 0 calc(20 * var(--u)) 0 calc(4 * var(--u));
+  background: #b9babc;
+}
+
+.home-stat-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+}
+/* Named on every element, since the site's global rule gives each one Outfit */
+.home-stat-text,
+.home-stat-text * { font-family: 'Poppins', sans-serif; }
+/* The design's figures are Poppins narrowed to 82% of its width */
+.home-stat-num {
+  display: grid;
+  justify-items: start;
+  font-size: calc(66 * var(--u));
+  line-height: 1;
+  transform: scaleX(0.82);
+  transform-origin: left;
+}
+.home-stat-num > span { grid-area: 1 / 1; }
+.home-stat-final { opacity: 0; }
+/* Deep green, a shade darker towards its foot */
+.home-stat-count {
+  background: linear-gradient(180deg, #2c8416 20%, #17650f 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* A label too long for its card is narrowed (--squeeze) to fit, as the design does */
+.home-stat-label {
+  font-size: calc(29 * var(--u));
+  line-height: calc(32 * var(--u));
+  text-transform: uppercase;
+  color: #0c173c;
+  transform: scaleX(var(--squeeze, 1));
+  transform-origin: left;
+}
+.home-stat-label > span { display: block; white-space: nowrap; }
+
+/* Tablets: two cards a row */
+@media (max-width: 1099px) {
+  .home-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 900px; }
+}
+/* Phones: one card a row */
+@media (max-width: 599px) {
+  .home-stats-grid { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
+}

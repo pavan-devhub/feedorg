@@ -1,252 +1,226 @@
 import React from 'react';
+import { ChevronRight, Headset, Layers, Link as LinkIcon, Phone, Send } from 'lucide-react';
+import { FaEnvelope, FaFacebookF, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaYoutube } from 'react-icons/fa';
+import { SERVICE_ROUTES } from './Navbar';
+import scrollToSection from '../utils/scrollToSection';
 import './Footer.css';
-import { 
-  ChevronRight, 
-  Link as LinkIcon, 
-  Briefcase, 
-  BarChart2, 
-  Headphones, 
-  Users,
-  ShieldCheck,
-  FileText,
-  Lock,
-  ArrowUp,
-  Mail,
-  Send
-} from 'lucide-react';
-import logo from '../assets/logo.avif';
 
-const FacebookIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-  </svg>
-);
+// `section` is a block on the home page, `page` a page of its own
+const QUICK_LINKS = [
+  { label: 'About Us', section: 'about-us' },
+  { label: 'Services', section: 'services-block' },
+  { label: 'Contact Us', page: 'contact' },
+];
 
-const TwitterIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-  </svg>
-);
+// Same destinations as the navbar's services menu, so entries it leaves inert are plain text here too.
+// Shown as two lists side by side
+const SERVICES_LEFT = [
+  { label: 'MY ORG' },
+  { label: 'MY BUSINESS', page: SERVICE_ROUTES['MY BUSINESS'] },
+  { label: 'MY EXPORTS', page: SERVICE_ROUTES['MY EXPORTS'] },
+  { label: 'KRUSHI YEVA JAYATE', page: SERVICE_ROUTES['KRUSHI YEVA JAYATE'], compact: true },
+  { label: 'PRODUCT 360', page: SERVICE_ROUTES['PRODUCT 360'] },
+  { label: 'SAFE MISSION', page: SERVICE_ROUTES['SAFE MISSION'] },
+  { label: 'MY MARKET' },
+];
 
-const LinkedinIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
-  </svg>
-);
+const SERVICES_RIGHT = [
+  { label: 'EPM', page: SERVICE_ROUTES.EPM },
+  { label: 'TRADE FAIRS', page: SERVICE_ROUTES['TRADE FAIRS'] },
+  { label: 'MY EDUCATION' },
+  { label: 'FEED WORLD', page: SERVICE_ROUTES['FEED WORLD'] },
+  { label: 'FEED CARD', page: SERVICE_ROUTES['FEED CARD'] },
+  { label: 'MY TOOLS', page: SERVICE_ROUTES['MY TOOLS'] },
+  { label: 'KNOW YOUR SCHEMES', page: SERVICE_ROUTES['KNOW YOUR SCHEMES'], compact: true },
+  { label: 'LOANS & FINANCE', page: SERVICE_ROUTES['LOANS & FINANCE'] },
+  { label: 'YUVA KRISHI', page: SERVICE_ROUTES['YUVA KRUSHI'] },
+];
 
-const InstagramIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-);
+// None of these have a page in the app yet
+const HELP_LINKS = [
+  { label: "FAQ's" },
+  { label: 'Reporting' },
+  { label: 'Documentation' },
+  { label: 'Support Policy' },
+  { label: 'Terms & Conditions' },
+  { label: 'Disclaimer' },
+];
 
-const YoutubeIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-  </svg>
-);
-const FooterBackground = () => (
-  <div className="footer-premium-bg" aria-hidden="true">
-    <div className="f-mesh-1" />
-    <div className="f-mesh-2" />
-    <div className="f-mesh-3" />
+// Fill in each `href` once FEED's profile addresses are known; until then the icon is not a link
+const SOCIAL_LINKS = [
+  { label: 'Facebook', icon: FaFacebookF, href: '' },
+  { label: 'LinkedIn', icon: FaLinkedinIn, href: '' },
+  { label: 'Instagram', icon: FaInstagram, href: '' },
+  { label: 'YouTube', icon: FaYoutube, href: '' },
+];
 
-    <div className="f-ambient-glow" />
-    <div className="f-newsletter-glow" />
-
-    <div className="f-world-map" />
-
-    <div className="f-planet-green">
-      <div className="f-planet-core" />
-      <div className="f-planet-ring f-planet-ring-1" />
-      <div className="f-planet-ring f-planet-ring-2" />
-    </div>
-
-    <div className="f-planet-orange" />
-
-    <svg className="f-leaf-tl" viewBox="0 0 100 100">
-      <path d="M0,0 C50,0 100,50 100,100 C50,100 0,50 0,0 Z" fill="rgba(34,197,94,0.04)" />
-    </svg>
-    <svg className="f-leaf-br" viewBox="0 0 100 100">
-      <path d="M100,100 C50,100 0,50 0,0 C50,0 100,50 100,100 Z" fill="rgba(34,197,94,0.04)" />
-    </svg>
-
-    <div className="f-stars">
-      <div className="f-star f-star-1" />
-      <div className="f-star f-star-2" />
-      <div className="f-star f-star-3" />
-      <div className="f-star f-star-4" />
-      <div className="f-star f-star-5" />
-      <div className="f-star f-star-6" />
-      <div className="f-star f-star-7" />
-      <div className="f-star f-star-8" />
-    </div>
-
-    <div className="f-vignette" />
-    
-    <svg width="0" height="0">
-      <defs>
-        <linearGradient id="f-wave-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#2563eb" />
-          <stop offset="100%" stopColor="#16a34a" />
-        </linearGradient>
-        <linearGradient id="f-line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="transparent" />
-          <stop offset="50%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="transparent" />
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
-);
-const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  return (
-    <footer className="new-footer">
-      <FooterBackground />
-      <div className="footer-container">
-        
-        {/* Top Banner */}
-        <div className="footer-top-banner">
-          <div className="banner-left">
-            <div className="banner-logo-placeholder">
-              <img src={logo} alt="FEED Logo" className="banner-logo" />
-            </div>
-            <div className="banner-text-content">
-              <h2>Together We Empower.<br/><span className="text-green">Together We Grow.</span></h2>
-              <p>FEED is a multi-state cooperative society working for the uplift of exports from all corners of <span className="text-green">India</span>.</p>
-            </div>
-          </div>
-          <div className="banner-right">
-            <div className="subscribe-card">
-              <h3>Stay updated with<br/><span className="text-green">latest insights</span> & opportunities</h3>
-              <div className="subscribe-input-group">
-                <Mail className="input-icon" size={16} />
-                <input type="email" placeholder="Enter your email address" />
-                <button className="subscribe-btn">Subscribe <Send size={12} /></button>
-              </div>
-              <p className="privacy-note"><Lock size={10} /> We respect your privacy. Unsubscribe at any time.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Footer Links */}
-        <div className="footer-links-section">
-          {/* Quick Links */}
-          <div className="footer-column">
-            <h4 className="column-title"><div className="icon-bg green-bg"><LinkIcon size={14} /></div> Quick Links</h4>
-            <ul className="footer-list">
-              <li><a href="#"><ChevronRight size={12} /> Sitemap</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Pricing</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Join us</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Contact us</a></li>
-            </ul>
-            <div className="info-card light-green-card">
-              <p>Empowering<br/>Communities.<br/>Strengthening<br/>Exports.</p>
-              <div className="card-icon-placeholder globe-sprout"></div>
-            </div>
-          </div>
-
-          {/* Services */}
-          <div className="footer-column">
-            <h4 className="column-title"><div className="icon-bg purple-bg"><Briefcase size={14} /></div> Services</h4>
-            <ul className="footer-list">
-              <li><a href="#"><ChevronRight size={12} /> My Fpo</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Farm</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Business</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Products</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Exports</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Market</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Education</a></li>
-              <li><a href="#"><ChevronRight size={12} /> My Tools</a></li>
-            </ul>
-          </div>
-
-          {/* FEED Insights */}
-          <div className="footer-column">
-            <h4 className="column-title"><div className="icon-bg blue-bg"><BarChart2 size={14} /></div> FEED Insights</h4>
-            <ul className="footer-list">
-              <li><a href="#"><ChevronRight size={12} /> Suggestions</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Sample works</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Queries</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Complaints</a></li>
-            </ul>
-            <div className="info-card light-blue-card">
-              <div className="card-content-flex">
-                 <div className="doc-icon-wrapper"><FileText size={18} /></div>
-                 <div>
-                   <p>Insights that inspire.<br/>Knowledge that<br/>creates impact.</p>
-                 </div>
-              </div>
-              <a href="#" className="explore-link">Explore Insights &rarr;</a>
-            </div>
-          </div>
-
-          {/* Help */}
-          <div className="footer-column">
-            <h4 className="column-title"><div className="icon-bg orange-bg"><Headphones size={14} /></div> Help</h4>
-            <ul className="footer-list">
-              <li><a href="#"><ChevronRight size={12} /> FAQs</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Reporting</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Documentation</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Support Policy</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Terms & conditions</a></li>
-              <li><a href="#" className="text-orange"><ChevronRight size={12} /> Privacy Policy</a></li>
-              <li><a href="#"><ChevronRight size={12} /> Disclaimer</a></li>
-            </ul>
-          </div>
-
-          {/* Connect with us */}
-          <div className="footer-column">
-            <h4 className="column-title"><div className="icon-bg pink-bg"><Users size={14} /></div> Connect with us</h4>
-            <p className="connect-text">Stay connected with our latest insights, services, and opportunities.</p>
-            <div className="social-icons-row">
-              <a href="#" className="social-circle fb"><FacebookIcon /></a>
-              <a href="#" className="social-circle tw"><TwitterIcon /></a>
-              <a href="#" className="social-circle li"><LinkedinIcon /></a>
-              <a href="#" className="social-circle ig"><InstagramIcon /></a>
-              <a href="#" className="social-circle yt"><YoutubeIcon /></a>
-            </div>
-            <div className="info-card green-gradient-card">
-              <p><strong>Let's build a<br/>stronger tomorrow,<br/>together.</strong></p>
-              <button className="join-btn">Join FEED Community &rarr;</button>
-              <div className="card-bg-image"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="footer-bottom-bar">
-        <div className="footer-bottom-container">
-          <div className="bottom-left">
-            <img src={logo} alt="Company Logo" className="bottom-logo" />
-            <div className="copyright-text">
-              <p>&copy; 2026 FEED Organization.</p>
-              <p>All rights reserved.</p>
-            </div>
-          </div>
-          
-          <div className="bottom-right">
-            <a href="#" className="bottom-link"><ShieldCheck size={14} /> Privacy Policy</a>
-            <span className="divider">|</span>
-            <a href="#" className="bottom-link"><FileText size={14} /> Terms & Conditions</a>
-            <span className="divider">|</span>
-            <a href="#" className="bottom-link"><Lock size={14} /> Disclaimer</a>
-            
-            <button className="scroll-top-btn" onClick={scrollToTop}>
-              <ArrowUp size={16} color="#0f2b3e" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
+// The footer is mounted by every page, most of them without an onNavigate prop, so it asks App directly.
+// `section` is a block for App to scroll to once that page is showing
+const openPage = (page, section) => {
+  window.dispatchEvent(new CustomEvent('feed:navigate', { detail: { page, section } }));
 };
+
+const openSection = (id) => {
+  if (document.getElementById(id)) scrollToSection(id);
+  else openPage('home', id);
+};
+
+const LinkList = ({ links }) => (
+  <ul className="footer-links">
+    {links.map(({ label, page, section, compact }) => (
+      <li key={label}>
+        <ChevronRight className="footer-chevron" strokeWidth={3} aria-hidden="true" />
+        {page || section ? (
+          <button
+            type="button"
+            className={`footer-link${compact ? ' footer-link--compact' : ''}`}
+            onClick={() => (page ? openPage(page) : openSection(section))}
+          >
+            {label}
+          </button>
+        ) : (
+          <span className="footer-link-text">{label}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+);
+
+const ColumnTitle = ({ icon: Icon, children }) => (
+  <h4 className="footer-title">
+    <span className="footer-title-icon"><Icon aria-hidden="true" /></span>
+    <span className="footer-title-text">{children}</span>
+  </h4>
+);
+
+// The plane along the top of the footer, in the strip of sky above the panel. It flies left to right on a
+// loop; the motion itself is in Footer.css
+const FooterFlight = () => (
+  <svg className="footer-flight" viewBox="-108 -42 170 84" aria-hidden="true">
+    <defs>
+      <linearGradient id="footer-plane-body" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#ffffff" />
+        <stop offset="0.6" stopColor="#f1f5fa" />
+        <stop offset="1" stopColor="#bccbdd" />
+      </linearGradient>
+      <linearGradient id="footer-plane-wing" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#5db4f5" />
+        <stop offset="1" stopColor="#1a7fe0" />
+      </linearGradient>
+      <linearGradient id="footer-plane-fin" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#e4effa" />
+        <stop offset="1" stopColor="#8fc3ef" />
+      </linearGradient>
+      <linearGradient id="footer-plane-trail" x1="1" y1="0" x2="0" y2="0">
+        <stop offset="0" stopColor="#3f9b2c" />
+        <stop offset="0.45" stopColor="#8cc56f" stopOpacity="0.75" />
+        <stop offset="1" stopColor="#c9e4b4" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+
+    <g transform="rotate(-6)">
+      <g className="footer-plane-art">
+        {/* Green swoosh */}
+        <path d="M -4 29 C -24 41 -54 37 -78 22 C -88 15 -96 8 -102 1 C -84 17 -58 27 -34 25 C -24 24.5 -15 23 -9 21 Z" fill="url(#footer-plane-trail)" />
+        {/* Far wing */}
+        <path d="M 20 -8 L -3 -9 L -24 -28 C -25.5 -29.5 -24 -31 -22 -30.5 L -11 -29 Z" fill="url(#footer-plane-wing)" />
+        {/* Tail fin */}
+        <path d="M -41 -4 L -50 -29 C -50.5 -31.5 -47 -33 -44.5 -31 L -24 -9 Z" fill="url(#footer-plane-fin)" />
+        {/* Fuselage */}
+        <path d="M -47 -2 C -32 -8 -6 -10 20 -10 C 35 -10 47 -7 52 -2 C 55 1 53 4 47 5.5 C 31 9.5 -8 10.5 -27 8.5 C -37 7.5 -44 3 -47 -2 Z" fill="url(#footer-plane-body)" />
+        {/* Belly stripe */}
+        <path d="M 52 -2.2 C 56 2 52 6 46 7.4 C 35 10 20 10.8 5 11 L 7 7.2 C 22 6.8 36 5.4 44 3 C 48 1.8 50.5 0.2 52 -2.2 Z" fill="#1a7fe0" />
+        {/* Windows */}
+        <g fill="#1a7fe0">
+          <rect x="-31" y="-1.5" width="4.6" height="6" rx="1.4" />
+          <rect x="-19" y="-2.2" width="4.6" height="6" rx="1.4" />
+          <rect x="-7" y="-2.8" width="4.6" height="6" rx="1.4" />
+          <rect x="5" y="-3.2" width="4.6" height="6" rx="1.4" />
+          <rect x="29" y="-7" width="4" height="3.8" rx="1.1" />
+          <rect x="34.5" y="-6.7" width="4" height="3.8" rx="1.1" />
+          <rect x="40" y="-6" width="4" height="3.8" rx="1.1" />
+        </g>
+        {/* Tailplane */}
+        <path d="M -54 8.5 C -47 2.5 -38 -0.5 -28 1 C -30 5.5 -42 10.5 -51 10.5 C -53 10.5 -55 9.5 -54 8.5 Z" fill="#64b5f6" />
+        {/* Near wing, green along its trailing edge */}
+        <path d="M 23 3 C 18 13 7 24 -5 31 C -11 34 -19 34 -24 31 C -14 32 -6 28 0 23 Z" fill="#3f9b2c" />
+        <path d="M 23 3 C 12 3 -2 4.5 -8 7.5 C -12 15 -18 25 -24 31 C -17 32.5 -10 31 -5 28 C 7 22 17 12 23 3 Z" fill="url(#footer-plane-wing)" />
+      </g>
+    </g>
+  </svg>
+);
+
+const Footer = () => (
+  <footer className="new-footer">
+    <img src="/images/footer/footer-farm.webp" alt="" className="footer-banner-img" />
+    <div className="footer-panel" aria-hidden="true" />
+    <img src="/images/footer/footer-front.webp" alt="" className="footer-front" />
+
+    <div className="footer-content">
+      <FooterFlight />
+      <div className="footer-main">
+        <div className="footer-brand">
+          <img src="/images/footer/feed-logo.png" alt="" className="footer-logo" />
+          <p className="footer-brand-name">FEED</p>
+          <p className="footer-about">
+            FEED is a multi-state cooperative society working for the uplift of exports from all corners of India.
+          </p>
+          <p className="footer-subscribe-title">Stay updated with latest insights &amp; opportunities</p>
+          <form className="footer-subscribe" onSubmit={(event) => event.preventDefault()}>
+            <input type="email" placeholder="Your e-mail address" aria-label="Your e-mail address" required />
+            <button type="submit" aria-label="Subscribe">
+              <Send aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+
+        <div className="footer-col footer-col--quick">
+          <ColumnTitle icon={LinkIcon}>Quick Links</ColumnTitle>
+          <LinkList links={QUICK_LINKS} />
+        </div>
+
+        <div className="footer-col footer-col--help">
+          <ColumnTitle icon={Headset}>FEED Help</ColumnTitle>
+          <LinkList links={HELP_LINKS} />
+        </div>
+
+        <div className="footer-col footer-col--services">
+          <ColumnTitle icon={Layers}>FEED Services</ColumnTitle>
+          <div className="footer-services-lists">
+            <LinkList links={SERVICES_LEFT} />
+            <LinkList links={SERVICES_RIGHT} />
+          </div>
+        </div>
+
+        <div className="footer-col footer-col--contact">
+          <ColumnTitle icon={Phone}>Get In Touch with Us</ColumnTitle>
+          <ul className="footer-contact">
+            <li><FaMapMarkerAlt aria-hidden="true" />Vijayawada</li>
+            <li><Phone aria-hidden="true" /><a href="tel:+919293858689">+91 9293858689</a></li>
+            <li><FaEnvelope aria-hidden="true" /><a href="mailto:feedstartup2021@gmail.com">feedstartup2021@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        <p className="footer-copyright"><strong>&copy; 2026 FEED Organization.</strong> All Rights Reserved.</p>
+        <div className="footer-follow">
+          <span className="footer-follow-label">Follow Us:</span>
+          <span className="footer-follow-divider" aria-hidden="true" />
+          {SOCIAL_LINKS.map(({ label, icon: Icon, href }) => (
+            <a
+              key={label}
+              className={`footer-social footer-social--${label.toLowerCase()}`}
+              aria-label={label}
+              {...(href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              <Icon aria-hidden="true" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;

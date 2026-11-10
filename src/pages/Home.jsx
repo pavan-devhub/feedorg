@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, Users, Settings, Calendar, Map, Activity, Users2, Globe2, PhoneCall, Trophy, BadgeCheck, ShieldCheck, Star, User, UserPlus, ChevronDown, ChevronRight, ChevronLeft, ArrowRight, Sprout, Building2, Ship, Package, TrendingUp, GraduationCap, ClipboardList, Store, HeartHandshake, Wrench, Lightbulb, ShoppingBag, CreditCard, Target, Eye, Rocket, Search, Leaf, Landmark, PieChart, BarChart3, MoreHorizontal, Cloud, Sun } from 'lucide-react';
+import { Phone, Mail, Download, PlayCircle, FileText, Shield, Home as HomeIcon, Users, Settings, Calendar, Map, Activity, Users2, Globe2, PhoneCall, Trophy, BadgeCheck, ShieldCheck, Star, User, UserPlus, ChevronDown, ChevronRight, ChevronLeft, ArrowRight, Sprout, Building2, Ship, Package, TrendingUp, GraduationCap, ClipboardList, Store, HeartHandshake, Wrench, Lightbulb, ShoppingBag, CreditCard, Target, Eye, Rocket, Search, Landmark, PieChart, BarChart3, Cloud, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Footer from '../components/Footer';
-import AboutUs from './AboutUs';
-import Navbar, { SERVICE_ROUTES } from '../components/Navbar';
+import HomeTiles from '../components/HomeTiles';
+import HomeStats from '../components/HomeStats';
+import HomeGallery from '../components/HomeGallery';
+import HomeTestimonials from '../components/HomeTestimonials';
+import HomePartner from '../components/HomePartner';
+import SailingShip from '../components/SailingShip';
+import HomeServices from '../components/HomeServices';
+import Navbar from '../components/Navbar';
 import '../components/Navbar.css';
 import agriExportImg from '../assets/about_hero_gen.avif';
 // --- Events & Updates Static Data ---
@@ -30,37 +36,6 @@ const feedServicesList = [
   { id: 6, title: 'My Market', desc: 'FEED is a multi-state co-operative society working for the uplift.', icon: Store, color: '#ef4444', bg: '#fef2f2' },
 ];
 
-// Home "FEED Services" cards. `menuName` (where the label differs) keys into SERVICE_ROUTES so a
-// card opens the same page as its mega-menu twin; `desc` replaces the icon and name on hover;
-// `wide` gives a landscape logo a wider icon slot.
-const homeServiceIcons = [
-  { name: 'MY ORG', icon: '/icons/services/my-org.webp', desc: 'Complete organizational management covering accounts, compliance, reports, and more' },
-  { name: 'MY BUSINESS', icon: '/icons/services/my-business.webp', desc: 'Manage business operations, track performance, and identify growth opportunities' },
-  { name: 'MY EXPORTS', icon: '/icons/services/my-exports.webp', desc: 'Step-by-step guidance through the complete export process' },
-  { name: 'KRUSHI YEVA JAYATE', icon: '/icons/services/krushi-yeva-jayate.webp', desc: 'Practical, step-by-step export execution with simplified options and real-time notifications' },
-  { name: 'PRODUCT 360', icon: '/icons/services/product-360.webp', desc: 'Comprehensive guide of a product—from seed selection to export quality compliance' },
-  { name: 'SAFE MISSION', icon: '/icons/services/safe-mission.webp', desc: 'A structured pathway to sustainable farming, quality production, export readiness, and market access' },
-  { name: 'MY MARKET', icon: '/icons/services/my-market.webp', wide: true, desc: 'A B2B marketplace that connects businesses with buyers and expands access to new markets' },
-  { name: 'EPM', icon: '/icons/services/epm.webp', desc: 'A district-level institutional platform that builds export awareness and activates the district’s pathway to global markets' },
-  { name: 'TRADE FAIRS', icon: '/icons/services/trade-fairs.webp', desc: 'Discover domestic and international trade fairs, buyer–seller meets, and reverse buyer–seller meets worldwide' },
-  { name: 'MY EDUCATION', icon: '/icons/services/my-education.webp', desc: 'Practical skill oriented courses to make you market-ready entrepreneurs' },
-  { name: 'FEED WORLD', icon: '/icons/services/feed-world.webp', desc: 'A monthly publication covering Indian and international markets, trends, innovations, initiatives, opportunities, and success stories' },
-  { name: 'FEED CARD', icon: '/icons/services/feed-card.webp', desc: 'A reward-based discount card offering benefits across multiple categories through Krishi Coins' },
-  { name: 'MY TOOLS', icon: '/icons/services/my-tools.webp', desc: 'Handy tools for quick and easy access to essential resources' },
-  { name: 'KNOW YOUR SCHEMES', icon: '/icons/services/know-your-schemes.webp', desc: 'Access Central and State Government schemes through one unified platform' },
-  { name: 'LOANS & FINANCE', icon: '/icons/services/loans-finance.webp', desc: 'Connect with trusted financial partners and access tailored solutions for every financial need' },
-  { name: 'YUVA KRISHI', menuName: 'YUVA KRUSHI', icon: '/icons/services/yuva-krishi.webp', desc: 'A pathway for young professionals to become agripreneurs' },
-];
-
-// Rows of four: a hovered card comes forward within its own row while its row-mates shrink back
-const homeServiceRows = Array.from({ length: Math.ceil(homeServiceIcons.length / 4) }, (_, r) => homeServiceIcons.slice(r * 4, r * 4 + 4));
-
-// The services ant is drawn twice from its one image (1271 x 1237): the body, and the raised forearm and
-// hand, which turn about the elbow to wave. ANT_ARM_PATH runs round the forearm and hand through empty
-// space; the body keeps a disc at the elbow so the joint stays whole whichever way the forearm turns
-const ANT_ELBOW = { x: 781, y: 620, r: 23 };
-const ANT_ARM_PATH = 'M748 597L760 560L788 470L788 330L1060 330L1060 580L872 590L814 643Z';
-
 const featureTags = [
   { id: 1, title: 'Pan India Presence', desc: 'Multiple states, one mission', icon: Globe2, color: '#8b5cf6' },
   { id: 2, title: 'Farmer First Approach', desc: 'Empowering rural communities', icon: Users, color: '#22c55e' },
@@ -83,6 +58,9 @@ const EVENTS_VIEW_COUNT = eventsImages.length + 1; // the mosaic, then each imag
 const EVENTS_MOSAIC_MS = 5000;
 const EVENTS_IMAGE_MS = 4000;
 
+// Hero slider: the photo, then the video. Named for the dots' labels
+const HERO_SLIDES = ['photo', 'video'];
+
 const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
   const { t, i18n } = useTranslation();
 
@@ -99,140 +77,8 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
   const showEventsView = (at, dir) => setEventsView((v) => (v.at === at ? v : { at, from: v.at, dir }));
   const stepEventsView = (dir) => setEventsView((v) => ({ at: (v.at + dir + EVENTS_VIEW_COUNT) % EVENTS_VIEW_COUNT, from: v.at, dir }));
 
-  const servicesBlockRef = useRef(null);
-  const [isServicesVisible, setIsServicesVisible] = useState(false);
-  
   const aboutUsBlockRef = useRef(null);
   const [isAboutUsVisible, setIsAboutUsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsServicesVisible(entry.isIntersecting);
-      },
-      { threshold: 0.2 }
-    );
-
-    if (servicesBlockRef.current) {
-      observer.observe(servicesBlockRef.current);
-    }
-    return () => observer.disconnect();
-  }, []);
-
-  // The services ant starts at the top of its column and, as the page scrolls through the block, drops
-  // down it to the foot. It tumbles while it falls (or flies back up when scrolling up); once the page
-  // stops it lands, stands up and waves hello
-  const antTrackRef = useRef(null);
-  const antRef = useRef(null);
-
-  useEffect(() => {
-    const track = antTrackRef.current;
-    const ant = antRef.current;
-    if (!track || !ant) return;
-    const sideBySide = window.matchMedia('(min-width: 1200px)');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const GRAVITY = 3600; // px/s²
-    const MAX_FALL = 2600; // px/s
-    let y = null;
-    let vy = 0;
-    let frame = 0;
-    let running = false;
-    let last = 0;
-    let prevTarget = 0;
-    let targetMovedAt = 0;
-    let landedAt = 0;
-
-    // Restarting a pose replays its animations, so the ant waves and says hello again
-    const setPose = (pose, restart) => {
-      if (restart) {
-        ant.dataset.pose = '';
-        void ant.offsetWidth;
-      }
-      ant.dataset.pose = pose;
-    };
-
-    // Its place follows how far the page has scrolled through the block: the top of its column while the
-    // block's top edge is near the top of the window, the foot once the block's bottom edge reaches the
-    // bottom of the window. Stacked layouts have no column, so the ant stays put there
-    const targetY = () => {
-      if (!sideBySide.matches) return 0;
-      const travel = Math.max(track.clientHeight - ant.offsetHeight, 0);
-      const { top, height } = track.getBoundingClientRect();
-      const start = window.innerHeight * 0.15;
-      const range = Math.max(height - window.innerHeight * 0.85, window.innerHeight * 0.3);
-      return Math.min(Math.max((start - top) / range, 0), 1) * travel;
-    };
-
-    const tick = (now) => {
-      frame = requestAnimationFrame(tick);
-      const dt = Math.min(Math.max((now - last) / 1000, 0), 0.05);
-      last = now;
-      const target = targetY();
-      if (y === null) y = prevTarget = target;
-      if (Math.abs(target - prevTarget) > 0.5) {
-        prevTarget = target;
-        targetMovedAt = now;
-      }
-      const pose = ant.dataset.pose;
-
-      if (reducedMotion.matches) {
-        y = target;
-      } else if (pose === 'air') {
-        if (target > y) {
-          // Falling: gravity speeds it up until it catches its place, then it rides along with it
-          vy = Math.min(vy + GRAVITY * dt, MAX_FALL);
-          y = Math.min(y + vy * dt, target);
-        } else if (target < y) {
-          // Scrolled back up: it flies up to its place
-          vy = 0;
-          y += (target - y) * (1 - Math.exp(-8 * dt));
-          if (y - target < 1) y = target;
-        }
-        if (Math.abs(target - y) > 1) {
-          const dir = target > y ? 'down' : 'up';
-          if (ant.dataset.dir !== dir) ant.dataset.dir = dir;
-        }
-        // Touches down once it has caught up and the page has stopped moving
-        if (y === target && now - targetMovedAt > 180) {
-          vy = 0;
-          landedAt = now;
-          setPose('land');
-        }
-      } else if (Math.abs(target - y) > 6) {
-        vy = 0;
-        ant.dataset.dir = target > y ? 'down' : 'up';
-        setPose('air');
-      } else {
-        if (now - targetMovedAt > 180) y = target;
-        if (pose === 'land' && now - landedAt > 500) setPose('stand');
-      }
-      ant.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
-    };
-
-    // Runs only while the block is on screen, picking up wherever the page now is
-    const trackObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !running) {
-        running = true;
-        y = null;
-        last = performance.now();
-        frame = requestAnimationFrame(tick);
-      } else if (!entry.isIntersecting && running) {
-        running = false;
-        cancelAnimationFrame(frame);
-      }
-    });
-    // Says hello whenever it comes into view
-    const antObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && ant.dataset.pose === 'stand') setPose('stand', true);
-    }, { threshold: 0.6 });
-    trackObserver.observe(track);
-    antObserver.observe(ant);
-    return () => {
-      trackObserver.disconnect();
-      antObserver.disconnect();
-      cancelAnimationFrame(frame);
-    };
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -265,6 +111,8 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
   useEffect(() => {
     let timer;
     if (currentSlide === 0) {
+      // Leaving the video early (from its dot) stops it, so it doesn't keep playing out of sight
+      videoRef.current?.pause();
       timer = setTimeout(() => {
         setCurrentSlide(1);
       }, 4000); // 4 seconds on image
@@ -425,487 +273,68 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
           </div>
         </div>
 
-      </div>
-
-      {/* 6. About Us Section */}
-      <AboutUs />
-
-      {/* Services Block: the ant artwork on the left, the heading and service cards on its right */}
-      <section id="services-block" ref={servicesBlockRef} className={`home-services${isServicesVisible ? ' is-visible' : ''}`}>
-        <div className="home-services-stage">
-          <div ref={antTrackRef} className="home-services-antTrack" aria-hidden="true">
-            <div ref={antRef} className="home-ant" data-pose="stand">
-              <span className="home-ant-shadow" />
-              <span className="home-ant-trail"><i /><i /><i /></span>
-              <span className="home-ant-body">
-                {/* Cropped to the mascot; the waving hand may reach past the crop */}
-                <svg className="home-ant-art" viewBox="258 0 755 1237">
-                  <defs>
-                    <clipPath id="home-ant-body-clip">
-                      <path clipRule="evenodd" d={`M0 0H1271V1237H0Z${ANT_ARM_PATH}`} />
-                      <circle cx={ANT_ELBOW.x} cy={ANT_ELBOW.y} r={ANT_ELBOW.r} />
-                    </clipPath>
-                    <clipPath id="home-ant-arm-clip">
-                      <path d={ANT_ARM_PATH} />
-                    </clipPath>
-                  </defs>
-                  <image href="/services-ant.webp" width="1271" height="1237" clipPath="url(#home-ant-body-clip)" />
-                  <g className="home-ant-arm" style={{ transformOrigin: `${ANT_ELBOW.x}px ${ANT_ELBOW.y}px` }}>
-                    <image href="/services-ant.webp" width="1271" height="1237" clipPath="url(#home-ant-arm-clip)" />
-                  </g>
-                </svg>
-              </span>
-              <span className="home-ant-dust" />
-              <span className="home-ant-hello">Hello!</span>
-            </div>
-          </div>
-          <div className="home-services-main">
-            <div className="home-services-head">
-              <div className="home-services-titlebar">
-                <span className="home-services-rule" />
-                <h2 className="home-services-title"><span>FEED</span> Services</h2>
-                <span className="home-services-rule" />
-              </div>
-            </div>
-            <div className="home-services-grid">
-              {homeServiceRows.map((row, r) => (
-                <div key={r} className="home-services-row">
-                  {row.map((service, c) => {
-                    const target = SERVICE_ROUTES[service.menuName || service.name];
-                    // Services without a page yet render as plain boxes, matching the mega menu's inert tiles
-                    const Card = target ? 'button' : 'div';
-                    return (
-                      <Card
-                        key={service.name}
-                        {...(target ? { type: 'button', onClick: () => onNavigate(target) } : {})}
-                        className="home-service-card"
-                        style={{ '--i': r * 4 + c }}
-                      >
-                        <span className="home-service-box">
-                          <span className="home-service-face">
-                            <span className="home-service-name">{service.name}</span>
-                            <span className="home-service-divider" />
-                            <span className="home-service-body">
-                              <img src={service.icon} alt="" className={`home-service-icon${service.wide ? ' is-wide' : ''}`} loading="lazy" decoding="async" />
-                              <span className="home-service-desc">{service.desc}</span>
-                            </span>
-                          </span>
-                        </span>
-                      </Card>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Slide dots: one per slide, tapping one jumps straight to it */}
+        <div className="hero-dots">
+          {HERO_SLIDES.map((label, i) => (
+            <button
+              key={label}
+              type="button"
+              className={`hero-dot${currentSlide === i ? ' is-on' : ''}`}
+              aria-label={`Show ${label}`}
+              aria-current={currentSlide === i}
+              onClick={() => setCurrentSlide(i)}
+            />
+          ))}
         </div>
 
         <style>{`
-          .home-services {
-            /* Each size takes the smaller of a width-based and a height-based value, so on a short
-               desktop window the spacing tightens along with the cards */
-            --pad: clamp(20px, min(3.5vw, 4svh), 72px);
-            --title: clamp(28px, min(3.4vw, 6svh), 64px);
-            --head-gap: clamp(14px, min(3.2vw, 3.5svh), 60px);
-            --gap-x: clamp(12px, 1.1vw, 22px);
-            --gap-y: clamp(12px, min(1.6vw, 2.4svh), 32px);
-            width: 100%;
-            padding-block: var(--pad);
-            /* The design's farmland backdrop. Anchored to the bottom so the fields, the gold swoosh and
-               the hills always show in full; any crop comes off the sky */
-            background: #faf9f1 url('/services-bg.webp') center bottom / cover no-repeat;
-          }
-          /* The ant has a narrow left column (a fifth of the width); the heading and cards share the rest */
-          .home-services-stage {
-            max-width: 1880px;
-            margin: 0 auto;
-            padding-inline: 2% 2.5%;
-            display: grid;
-            grid-template-columns: 20fr 80fr;
-            column-gap: 2%;
-          }
-          /* The ant's lane: the full height of the left column, reaching down into the bottom padding so
-             the ant ends with its feet on the gold swoosh. Above the cards, but never in the pointer's way */
-          .home-services-antTrack {
-            position: relative;
-            z-index: 1;
-            align-self: stretch;
-            margin-bottom: calc(14px - var(--pad));
-            pointer-events: none;
-          }
-          .home-ant {
+          /* Centred in the contact bar's row, above it so the bar doesn't catch the taps */
+          .hero-dots {
             position: absolute;
-            top: 0;
-            left: 0;
-            /* Never taller than about two thirds of the window */
-            width: min(62%, calc(0.61 * 0.64 * (100svh - 2 * var(--pad))));
-            /* The mascot only spans the middle ~58% of its artwork; the SVG's viewBox trims the transparent sides */
-            aspect-ratio: 0.61;
-            will-change: transform;
-          }
-          .home-ant-body {
-            position: absolute;
-            inset: 0;
-            transform-origin: 50% 97%;
-          }
-          .home-ant-art { display: block; width: 100%; height: 100%; overflow: visible; }
-          /* Turns about the elbow (its origin, set inline, is in image pixels) */
-          .home-ant-arm { transform-box: fill-box; }
-
-          /* A soft shadow under its feet while it stands */
-          .home-ant-shadow {
-            position: absolute;
-            left: 14%;
-            right: 16%;
-            bottom: -1%;
-            height: 5%;
-            border-radius: 50%;
-            background: radial-gradient(closest-side, rgba(70, 45, 10, 0.3), transparent);
-            transition: opacity 0.25s ease, transform 0.25s ease;
-          }
-          /* Speed lines streaming behind it while it falls (above) or flies back up (below) */
-          .home-ant-trail {
-            position: absolute;
-            left: 28%;
-            right: 28%;
-            bottom: 100%;
-            height: 24%;
+            left: 50%;
+            bottom: 23px;
+            z-index: 25;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: space-between;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-          }
-          .home-ant-trail i {
-            width: 3px;
-            border-radius: 2px;
-            background: linear-gradient(to bottom, transparent, rgba(201, 162, 75, 0.9));
-          }
-          .home-ant-trail i:nth-child(1) { height: 70%; margin-top: 20%; }
-          .home-ant-trail i:nth-child(2) { height: 100%; }
-          .home-ant-trail i:nth-child(3) { height: 60%; margin-top: 30%; }
-          .home-ant[data-dir='up'] .home-ant-trail { bottom: auto; top: 96%; transform: scaleY(-1); }
-          /* Puffs of dust kicked out either side as it lands */
-          .home-ant-dust { position: absolute; left: 10%; right: 10%; bottom: 0; height: 9%; }
-          .home-ant-dust::before,
-          .home-ant-dust::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 38%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(closest-side, rgba(214, 186, 128, 0.85), transparent);
-            opacity: 0;
-          }
-          .home-ant-dust::before { left: 0; --dust-x: -45%; }
-          .home-ant-dust::after { right: 0; --dust-x: 45%; }
-          /* The speech bubble, its tail pointing down at the waving hand */
-          .home-ant-hello {
-            position: absolute;
-            left: 82%;
-            top: 12%;
-            padding: 0.4em 0.85em;
-            border: 2px solid #c9a24b;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
             border-radius: 999px;
-            background: #ffffff;
-            box-shadow: 0 10px 20px -12px rgba(15, 23, 42, 0.5);
-            font-size: clamp(13px, 1vw, 17px);
-            font-weight: 800;
-            letter-spacing: 0.3px;
-            color: #1a8f2e;
-            white-space: nowrap;
-            opacity: 0;
-            transform-origin: 12% 100%;
+            background: rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(6px);
           }
-          .home-ant-hello::after {
-            content: '';
-            position: absolute;
-            left: 0.9em;
-            bottom: -6px;
-            width: 9px;
-            height: 9px;
-            background: #ffffff;
-            border-right: 2px solid #c9a24b;
-            border-bottom: 2px solid #c9a24b;
-            transform: rotate(45deg);
-          }
-
-          /* Standing: a gentle breath, a wave straight away and every few seconds after, and a hello */
-          .home-ant[data-pose='stand'] .home-ant-body { animation: antBreathe 3s ease-in-out infinite; }
-          .home-ant[data-pose='stand'] .home-ant-arm { animation: antWave 5s ease-in-out infinite; }
-          .home-ant[data-pose='stand'] .home-ant-hello { animation: antHello 2.6s ease both; }
-          /* In the air: stretched out, wobbling, the hand flapping */
-          .home-ant[data-pose='air'] .home-ant-body { transform-origin: 50% 50%; animation: antTumble 0.45s ease-in-out infinite alternate; }
-          .home-ant[data-pose='air'] .home-ant-arm { animation: antFlap 0.22s ease-in-out infinite alternate; }
-          .home-ant[data-pose='air'] .home-ant-trail { opacity: 1; }
-          .home-ant[data-pose='air'] .home-ant-shadow { opacity: 0; transform: scale(0.4); }
-          /* Touching down: squashed flat, springing back up, dust flying */
-          .home-ant[data-pose='land'] .home-ant-body { animation: antLand 0.5s ease-out both; }
-          .home-ant[data-pose='land'] .home-ant-dust::before,
-          .home-ant[data-pose='land'] .home-ant-dust::after { animation: antDust 0.6s ease-out both; }
-
-          @keyframes antBreathe { 50% { transform: scale(1.012, 0.99); } }
-          @keyframes antWave {
-            0%, 36%, 100% { transform: rotate(0deg); }
-            6%, 18% { transform: rotate(16deg); }
-            12%, 24% { transform: rotate(-6deg); }
-            30% { transform: rotate(12deg); }
-          }
-          @keyframes antHello {
-            0% { opacity: 0; transform: translateY(8px) scale(0.6); }
-            12% { opacity: 1; transform: scale(1.06); }
-            18%, 80% { opacity: 1; transform: none; }
-            100% { opacity: 0; transform: translateY(-4px) scale(0.95); }
-          }
-          @keyframes antTumble {
-            from { transform: rotate(-6deg) scale(0.95, 1.06); }
-            to { transform: rotate(6deg) scale(0.95, 1.06); }
-          }
-          @keyframes antFlap {
-            from { transform: rotate(-8deg); }
-            to { transform: rotate(22deg); }
-          }
-          @keyframes antLand {
-            0% { transform: scale(1.14, 0.8); }
-            40% { transform: scale(0.94, 1.07); }
-            70% { transform: scale(1.03, 0.98); }
-            100% { transform: none; }
-          }
-          @keyframes antDust {
-            0% { opacity: 0.9; transform: translateX(0) scale(0.4); }
-            100% { opacity: 0; transform: translateX(var(--dust-x)) scale(1.3); }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .home-ant *, .home-ant *::before, .home-ant *::after { animation: none !important; }
-          }
-          .home-services-main {
-            min-width: 0;
-            align-self: center;
-            /* Nudged left towards the ant. A relative offset, so the grid keeps its width and the cards their size */
+          .hero-dot {
             position: relative;
-            left: -4%;
-            /* Square cards make four rows taller than most windows, so the block simply scrolls with
-               the page. Capped so the squares stay a comfortable size on very wide screens */
-            justify-self: center;
-            width: 100%;
-            max-width: 1120px;
-          }
-          .home-services-head { margin-bottom: var(--head-gap); text-align: center; }
-          .home-services-titlebar { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 1.4vw, 28px); }
-          .home-services-title {
-            font-size: var(--title);
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: 0.5px;
-            color: #0f1d3a;
-            text-transform: uppercase;
-          }
-          .home-services-title span { color: #1a8f2e; }
-          /* Gold rules either side of the title, each ending in a dot next to it */
-          .home-services-rule {
-            position: relative;
-            width: clamp(60px, 7.5vw, 150px);
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #c9a24b);
-          }
-          .home-services-rule:last-child { background: linear-gradient(270deg, transparent, #c9a24b); }
-          .home-services-rule::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: -4px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #c9a24b;
-            transform: translateY(-50%);
-          }
-          .home-services-rule:last-child::after { right: auto; left: -4px; }
-
-          .home-services-grid {
-            display: flex;
-            flex-direction: column;
-            gap: var(--gap-y);
-          }
-          .home-services-row {
-            display: flex;
-            align-items: center;
-            /* The cards' side padding stands in for a gap, so the pointer never drops into dead space
-               between two cards (which would reset the row mid-hover) */
-            margin-inline: calc(var(--gap-x) / -2);
-          }
-          .home-service-card {
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
-            position: relative;
-            flex: 1 1 0;
-            min-width: 0;
-            display: flex;
-            /* A sliver of room above and below the box, so with the row gap the space between rows
-               roughly matches the space between columns */
-            padding: clamp(4px, 0.35vw, 7px) calc(var(--gap-x) / 2);
+            width: 10px;
+            height: 10px;
+            padding: 0;
             border: 0;
-            background: none;
-            text-align: left;
-            font: inherit;
-            color: inherit;
-            opacity: 0;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.55);
+            cursor: pointer;
+            transition: width 0.3s ease, background-color 0.3s ease;
           }
-          button.home-service-card { cursor: pointer; }
-          .home-services.is-visible .home-service-card {
-            opacity: 1;
-            animation: homeServiceIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 40ms) backwards;
-          }
-          @keyframes homeServiceIn {
-            from { opacity: 0; transform: translateY(24px) scale(0.94); }
-            to { opacity: 1; transform: none; }
-          }
-          /* A square: the name across the top, a short gold rule, then the icon below. Everything
-             inside is sized in cqw (percent of the card's width), so a card keeps the same look at
-             any size. The box fills 98% of its slot, the rest becoming gap */
-          .home-service-box {
-            position: relative;
-            flex: none;
-            width: 98%;
-            min-width: 0;
-            margin-inline: auto;
-            aspect-ratio: 1;
-            display: grid;
-            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
-            background: #ffffff;
-            border: 1px solid #e9ebef;
-            border-radius: 12px;
-            box-shadow: 0 10px 26px -16px rgba(15, 23, 42, 0.28);
-            container-type: inline-size;
-            transition: transform 0.35s var(--ease), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-          }
-          .home-service-card:hover .home-service-box,
-          .home-service-card:focus-visible .home-service-box {
-            background: #f3fbf1;
-            border-color: #9ad89a;
-            box-shadow: 0 18px 34px -16px rgba(22, 163, 74, 0.45);
-          }
-          .home-service-card:focus-visible { outline: none; }
-          .home-service-card:focus-visible .home-service-box { outline: 2px solid #16a34a; outline-offset: 3px; }
-          .home-service-face {
-            grid-area: 1 / 1;
-            min-width: 0;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 8cqw 7cqw;
-            text-align: center;
-          }
-          /* Always two lines tall, so the rules and icons line up across a row whether a name wraps or not */
-          .home-service-name {
-            flex: none;
-            display: grid;
-            place-items: center;
-            width: 100%;
-            min-height: 2.5em;
-            overflow-wrap: break-word;
-            font-size: clamp(12px, 6.4cqw, 19px);
-            font-weight: 800;
-            line-height: 1.25;
-            letter-spacing: 0.3px;
-            color: #0f1d3a;
-          }
-          .home-service-divider {
-            flex: none;
-            width: 18cqw;
-            height: 2px;
-            margin-block: 4cqw;
-            border-radius: 1px;
-            background: linear-gradient(90deg, transparent, #c9a24b, transparent);
-          }
-          /* The space under the rule, shared by the icon and the description: opening a card swaps one
-             for the other, while the name and rule stay put above */
-          .home-service-body {
-            flex: 1 1 auto;
-            width: 100%;
-            min-height: 0;
-            display: grid;
-            grid-template: minmax(0, 1fr) / minmax(0, 1fr);
-            place-items: center;
-          }
-          /* Cover crops the wider artwork to its centred circle; multiply drops the white backdrop into
-             the box's tint */
-          .home-service-icon {
-            grid-area: 1 / 1;
-            width: 56cqw;
-            max-height: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            mix-blend-mode: multiply;
-            transition: transform 0.35s var(--ease), opacity 0.2s ease;
-          }
-          /* A landscape logo keeps its own shape, using the card's full width instead */
-          .home-service-icon.is-wide { width: 84cqw; max-width: 100%; aspect-ratio: auto; object-fit: contain; }
-          .home-service-card:hover .home-service-icon { transform: scale(1.05); }
-          .home-service-desc {
-            grid-area: 1 / 1;
-            min-width: 0;
-            max-height: 100%;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 6;
-            overflow: hidden;
-            padding-inline: 2cqw;
-            opacity: 0;
-            transform: translateY(6px);
-            font-size: clamp(13px, 6cqw, 17.5px);
-            font-weight: 600;
-            line-height: 1.45;
-            color: #14532d;
-            text-align: center;
-            transition: opacity 0.12s ease, transform 0.3s ease;
-          }
-
-          /* Pointing at a card brings it forward and enlarges it, while its row-mates shrink back to
-             give it their room; its icon gives way to the description, under its name */
-          @media (hover: hover) and (min-width: 1200px) {
-            .home-services-row:has(.home-service-card:hover, .home-service-card:focus-visible) .home-service-box { transform: scale(0.92); }
-            .home-services-row .home-service-card:hover,
-            .home-services-row .home-service-card:focus-visible { z-index: 1; }
-            .home-services-row .home-service-card:hover .home-service-box,
-            .home-services-row .home-service-card:focus-visible .home-service-box { transform: scale(1.12); }
-            .home-service-card:hover .home-service-icon,
-            .home-service-card:focus-visible .home-service-icon { opacity: 0; }
-            .home-service-card:hover .home-service-desc,
-            .home-service-card:focus-visible .home-service-desc {
-              opacity: 1;
-              transform: none;
-              transition: opacity 0.3s ease 0.12s, transform 0.4s var(--ease) 0.12s;
-            }
-          }
-          /* Smaller and touch screens keep the face; the description has no room there */
-          @media (hover: none), (max-width: 1199px) {
-            .home-service-desc { display: none; }
-          }
-
-          /* Narrower screens: heading first, then the ant centred, then as many columns of cards as fit */
-          @media (max-width: 1199px) {
-            .home-services-stage { display: flex; flex-direction: column; padding-inline: 16px; }
-            .home-services-main { display: contents; }
-            .home-services-head { order: 0; margin-bottom: 16px; }
-            .home-services-antTrack { order: 1; align-self: center; height: clamp(200px, 40vw, 340px); aspect-ratio: 0.61; margin: 0 0 20px; }
-            .home-ant { width: 100%; }
-            .home-services-grid { order: 2; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
-            .home-services-row { display: contents; }
-            .home-service-card { padding: 0; }
-            .home-service-card:hover .home-service-box { transform: translateY(-3px); }
-          }
-          /* Phones: two square cards a row */
-          @media (max-width: 559px) {
-            /* Shorter rules and title, so "FEED SERVICES" stays on one line */
-            .home-services-title { font-size: 26px; }
-            .home-services-rule { width: 28px; }
-            .home-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-            .home-service-box { width: 100%; margin: 0; }
-            .home-service-face { padding: 7cqw 6cqw; }
+          /* A bigger target than the dot itself, for fingers */
+          .hero-dot::before { content: ''; position: absolute; inset: -8px -5px; }
+          .hero-dot:hover { background: rgba(255, 255, 255, 0.85); }
+          .hero-dot.is-on { width: 28px; background: #ffffff; }
+          .hero-dot:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; }
+          /* Narrower screens have no room in the bar's row, so the dots sit just above it */
+          @media (max-width: 1023px) {
+            .hero-dots { bottom: 88px; }
           }
         `}</style>
-      </section>
+
+      </div>
+
+      {/* The four opening tiles: About FEED, FEED Services, KYJ project, Benefits of becoming a member */}
+      <HomeTiles onNavigate={onNavigate} />
+
+      {/* The navbar project's ship, sailing over its waves above the services block */}
+      <SailingShip />
+
+      {/* Services Block: the ant artwork on the left, the heading and service cards on its right */}
+      <HomeServices id="services-block" onNavigate={onNavigate} />
 
       <style>{`
         .events-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1400px; width: 100%; margin-bottom: 32px; }
@@ -914,18 +343,6 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
         }
         @media (min-width: 1280px) {
           .events-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr); gap: 14px; }
-        }
-
-        /* Dot grids round the edges of the section */
-        .events-decor {
-          position: absolute;
-          z-index: 1;
-          pointer-events: none;
-          background-image: radial-gradient(rgba(100, 116, 139, 0.3) 1.6px, transparent 2px);
-          background-size: 18px 18px;
-        }
-        @media (max-width: 1023px) {
-          .events-decor { display: none; }
         }
 
         /* Middle block: a white frame round a stage the views slide across */
@@ -1044,8 +461,36 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          height: 100%;
+          flex: 1 1 0;
+          min-height: 0;
         }
+        /* The View All strip under each side card's list: a short pill in the card's own colour */
+        .events-viewall-bar {
+          flex: none;
+          display: flex;
+          justify-content: center;
+          padding: 12px 16px 16px;
+          border-top: 1px solid rgba(15, 23, 42, 0.06);
+        }
+        .events-viewall {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 18px;
+          border: 0;
+          border-radius: 999px;
+          background: var(--tone);
+          color: #ffffff;
+          font: inherit;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          cursor: pointer;
+          box-shadow: 0 6px 14px -6px var(--tone);
+          transition: transform 0.2s ease, filter 0.2s ease;
+        }
+        .events-viewall:hover { transform: translateY(-1px); filter: brightness(1.12); }
+        .events-viewall:focus-visible { outline: 2px solid var(--tone); outline-offset: 3px; }
         
         .slider-btn {
           background: rgba(255,255,255,0.9);
@@ -1091,10 +536,6 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
 
       {/* Events & Updates Section */}
       <div id="events-updates" style={{ position: 'relative', width: '100%', padding: '32px 20px 40px', backgroundColor: '#f8fafc', backgroundImage: 'radial-gradient(at 0% 0%, rgba(191, 219, 254, 0.45) 0px, transparent 45%), radial-gradient(at 100% 0%, rgba(253, 186, 116, 0.35) 0px, transparent 45%), radial-gradient(at 0% 100%, rgba(253, 186, 116, 0.3) 0px, transparent 45%), radial-gradient(at 100% 100%, rgba(251, 207, 232, 0.3) 0px, transparent 45%)', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
-        <div className="events-decor" style={{ top: '24px', left: '3%', width: '126px', height: '72px' }}></div>
-        <div className="events-decor" style={{ top: '84px', right: '2%', width: '72px', height: '72px' }}></div>
-        <div className="events-decor" style={{ bottom: '40px', right: '1%', width: '54px', height: '126px' }}></div>
-
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '24px', position: 'relative', zIndex: 2 }}>
           <h2 style={{ fontSize: '48px', fontWeight: '900', color: '#0f2a5c', margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>
@@ -1102,7 +543,6 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginTop: '12px' }}>
             <div style={{ width: '100px', height: '3px', background: 'linear-gradient(90deg, transparent, #ea580c)' }}></div>
-            <Leaf size={28} color="#16a34a" fill="#16a34a" />
             <div style={{ width: '100px', height: '3px', background: 'linear-gradient(270deg, transparent, #ea580c)' }}></div>
           </div>
         </div>
@@ -1119,7 +559,6 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
                 </div>
                 <h3 style={{ color: '#fff', fontSize: '19px', fontWeight: '700', margin: 0, letterSpacing: '0.5px' }}>Central / State Updates</h3>
               </div>
-              <MoreHorizontal color="rgba(255,255,255,0.6)" />
             </div>
             <div className="marquee-container" style={{ padding: '12px 0', position: 'relative' }}>
               <div className="marquee-vertical">
@@ -1139,6 +578,11 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
                   </div>
                 ))}
               </div>
+            </div>
+            <div className="events-viewall-bar">
+              <button type="button" className="events-viewall" style={{ '--tone': '#1e40af' }}>
+                View All <ArrowRight size={14} />
+              </button>
             </div>
           </div>
 
@@ -1200,12 +644,12 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
           <div style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.8)', borderRadius: '28px', boxShadow: '0 20px 40px -10px rgba(15, 23, 42, 0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '600px' }}>
             <div style={{ background: 'linear-gradient(135deg, #15803d 0%, #16a34a 100%)', padding: '22px 18px 22px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', borderBottom: '4px solid #22c55e' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(5px)' }}>
-                  <Leaf size={22} color="#fff" />
+                {/* The navbar's FEED logo, on the same white badge so it reads against the green */}
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '5px', boxSizing: 'border-box' }}>
+                  <img src="/dashboard-logo.avif" alt="FEED MSCS LTD" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
                 <h3 style={{ color: '#fff', fontSize: '19px', fontWeight: '700', margin: 0, letterSpacing: '0.5px' }}>FEED Services</h3>
               </div>
-              <MoreHorizontal color="rgba(255,255,255,0.6)" />
             </div>
             <div className="marquee-container" style={{ padding: '12px 0', position: 'relative' }}>
               <div className="marquee-vertical">
@@ -1235,9 +679,26 @@ const Home = ({ onNavigate, searchQuery, isLoggedIn, user, onLogout }) => {
                 ))}
               </div>
             </div>
+            <div className="events-viewall-bar">
+              {/* Every service is laid out in the Services block further up the page */}
+              <button type="button" className="events-viewall" style={{ '--tone': '#15803d' }}
+                onClick={() => document.getElementById('services-block')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+                View All <ArrowRight size={14} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* FEED in numbers: four figures that count up when they come into view */}
+      <HomeStats />
+
+      {/* Photos from across the site and the channel's Shorts, narrowed by initiative */}
+      <HomeGallery />
+
+      <HomeTestimonials />
+
+      <HomePartner />
 
       <Footer />
     </div>
