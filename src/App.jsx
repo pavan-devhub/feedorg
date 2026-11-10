@@ -38,6 +38,8 @@ import ErsAssessment from './pages/ErsAssessment';
 import MyBusinessLayout from './components/MyBusinessLayout';
 import useScrollToTop from './hooks/useScrollToTop';
 import scrollToSection from './utils/scrollToSection';
+import { takePageFromLocation } from './utils/pageLinks';
+import { SERVICE_ROUTES } from './components/Navbar';
 import { API_BASE_URL } from './api/config';
 import { syncLiveLogin } from './api/liveUpdates';
 import { takeReturnTo } from './utils/publicationLinks';
@@ -95,6 +97,14 @@ const OPENED_FROM_TOPIC_PAGE = (() => {
   return true;
 })();
 
+// A FEED service opened in a new tab from the dashboard arrives as /?page=<id> (see
+// utils/pageLinks.js). Only service pages are honoured, so a mistyped link is ignored rather than
+// opening a blank page.
+const PAGE_FROM_URL = (() => {
+  const page = takePageFromLocation();
+  return page && Object.values(SERVICE_ROUTES).includes(page) ? page : null;
+})();
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(() => {
@@ -105,6 +115,7 @@ function App() {
       // sessionStorage unavailable (e.g. private mode) - start from home
     }
     if (OPENED_FROM_TOPIC_PAGE) page = 'exports';
+    if (PAGE_FROM_URL) page = PAGE_FROM_URL;
     return roleFromStoredToken() === 'ADMIN' && !ADMIN_PAGES.includes(page) ? 'admin-dashboard' : page;
   });
 

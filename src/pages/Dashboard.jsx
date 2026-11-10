@@ -166,6 +166,13 @@ const feedUpdates = [
   { id: 'feedworld', icon: Globe, tone: 'purple', title: 'FEED World – Nov Edition', sub: 'Now Available', page: 'feedworld' },
 ];
 
+// The FEED Updates card shows this many at a time while the list rolls upwards. The list is repeated
+// enough times that, after moving up by one full pass, the window is still full - even when there
+// are fewer updates than it shows.
+const UPDATES_VISIBLE = 5;
+const updateCopies = Math.max(2, 1 + Math.ceil(UPDATES_VISIBLE / feedUpdates.length));
+const rollingUpdates = Array.from({ length: updateCopies }, () => feedUpdates).flat();
+
 // `crop` picks the commodity's drawing and tile colour (see CommodityIcon in WidgetArt).
 const marketItems = [
   { id: 5, name: 'Sugarcane', price: '₹3,150', trend: 'up', percent: '+0.5%', crop: 'sugarcane' },
@@ -420,93 +427,94 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout, navState }) => {
       <Navbar onNavigate={onNavigate} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} currentPage="dashboard" />
       <div className="db-layout">
       
-      {/* 1. LEFT COLUMN: the sidebar card, then the ERS / Krishi Coins / Plan cards stacked under it */}
+      {/* 1. LEFT COLUMN: the FEED Updates card, the navigation card, then the ERS / Krishi Coins / Plan
+          cards stacked under them */}
       <div className="db-left-col">
+        {/* FEED Updates: a card of its own above the navigation */}
+        <section className="db-updates">
+          <div className="db-updates-head">
+            {/* blue swoosh: drops from the right edge to the bottom-left, light band under it, sunrise glow top-right */}
+            <svg className="db-updates-wave" viewBox="0 0 340 112" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="dbUpdBlue" x1="0" y1="0.3" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#1d4ed8" />
+                  <stop offset="45%" stopColor="#1f5ae0" />
+                  <stop offset="80%" stopColor="#2563eb" />
+                  <stop offset="100%" stopColor="#3b82f6" />
+                </linearGradient>
+                <linearGradient id="dbUpdSheen" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.75" />
+                  <stop offset="60%" stopColor="#60a5fa" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor="#93c5fd" stopOpacity="0.35" />
+                </linearGradient>
+                <linearGradient id="dbUpdUnder" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#93c5fd" stopOpacity="0.75" />
+                  <stop offset="55%" stopColor="#bfdbfe" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#dbeafe" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="dbUpdSun" x1="1" y1="0.4" x2="0.55" y2="0">
+                  <stop offset="0%" stopColor="#f97316" />
+                  <stop offset="40%" stopColor="#fb923c" stopOpacity="0.95" />
+                  <stop offset="75%" stopColor="#fed7aa" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                </linearGradient>
+                <filter id="dbUpdSoft" x="-30%" y="-60%" width="160%" height="220%">
+                  <feGaussianBlur stdDeviation="5" />
+                </filter>
+                <filter id="dbUpdSoftSm" x="-20%" y="-100%" width="140%" height="300%">
+                  <feGaussianBlur stdDeviation="1.2" />
+                </filter>
+                <clipPath id="dbUpdClip">
+                  <path d="M0 0 H340 V31 C 316 37, 274 50, 232 56 C 180 63, 90 66, 0 66 Z" />
+                </clipPath>
+              </defs>
+              {/* pale wave peeking out under the left half of the edge */}
+              <path d="M0 66 C 90 66, 180 63, 232 56 L 236 59 C 182 68, 92 74, 0 76 Z" fill="url(#dbUpdUnder)" />
+              {/* main blue: flat on the left, sweeping up to the right edge */}
+              <path d="M0 0 H340 V31 C 316 37, 274 50, 232 56 C 180 63, 90 66, 0 66 Z" fill="url(#dbUpdBlue)" />
+              {/* lighter blue swoosh riding just above the edge */}
+              <path d="M0 50 C 90 50, 182 46, 238 37 C 280 30, 314 18, 340 8 V 31 C 316 37, 274 50, 232 56 C 180 63, 90 66, 0 66 Z" fill="url(#dbUpdSheen)" />
+              {/* sunrise stripe across the top-right corner */}
+              <g clipPath="url(#dbUpdClip)">
+                <path d="M204 -12 H356 V50 C 320 30, 274 4, 204 -12 Z" fill="url(#dbUpdSun)" filter="url(#dbUpdSoft)" />
+              </g>
+              <path d="M314 41 C 324 38, 332 35, 340 31 V 35 C 332 38, 324 41, 316 44 Z" fill="#22c55e" opacity="0.85" filter="url(#dbUpdSoftSm)" />
+            </svg>
+            <span className="db-updates-head-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                <path d="M3.2 9.2 H6.4 L14.6 4.6 V19.4 L6.4 14.8 H3.2 A1.2 1.2 0 0 1 2 13.6 V10.4 A1.2 1.2 0 0 1 3.2 9.2 Z" fill="currentColor" />
+                <path d="M6.6 15.2 L7.9 19.2 A1 1 0 0 0 8.85 19.9 H9.9 A0.8 0.8 0 0 0 10.65 18.85 L9.6 15.9 Z" fill="currentColor" />
+                <path d="M17.6 8.6 L20.2 7.2 M18.1 12 H21.2 M17.6 15.4 L20.2 16.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+              </svg>
+            </span>
+            <h2 className="db-updates-title">FEED Updates</h2>
+            <button type="button" className="db-updates-see-all" onClick={showAllUpdates}>
+              See All <ArrowRight size={13} strokeWidth={2.6} />
+            </button>
+          </div>
+          {/* The updates roll upwards endlessly: the list is repeated so the loop is seamless, and
+              the copies are hidden from screen readers and the keyboard. Pauses under the pointer. */}
+          <div className="db-updates-window">
+            <ul className="db-updates-list" style={{ '--upd-copies': updateCopies, '--upd-count': feedUpdates.length }}>
+              {rollingUpdates.map((u, idx) => {
+                const isCopy = idx >= feedUpdates.length;
+                return (
+                  <li key={`${u.id}-${idx}`} aria-hidden={isCopy || undefined}>
+                    <button type="button" className="db-update-item" onClick={() => onNavigate(u.page)} tabIndex={isCopy ? -1 : undefined}>
+                      <span className={`db-update-icon is-${u.tone}`}><u.icon size={18} strokeWidth={2.2} /></span>
+                      <span className="db-update-text">{u.title}<br />{u.sub}</span>
+                      <ChevronRight size={20} strokeWidth={2.4} className="db-update-arrow" />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* Navigation card: Home onwards, with the farm scene at its foot */}
         <aside className="db-sidebar">
           <div className="db-sidebar-content">
-            {/* FEED Updates */}
-            <div className="db-updates">
-              <div className="db-updates-head">
-                {/* blue swoosh: drops from the right edge to the bottom-left, light band under it, sunrise glow top-right */}
-                <svg className="db-updates-wave" viewBox="0 0 340 112" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                  <defs>
-                    <linearGradient id="dbUpdBlue" x1="0" y1="0.3" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#1d4ed8" />
-                      <stop offset="45%" stopColor="#1f5ae0" />
-                      <stop offset="80%" stopColor="#2563eb" />
-                      <stop offset="100%" stopColor="#3b82f6" />
-                    </linearGradient>
-                    <linearGradient id="dbUpdSheen" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.75" />
-                      <stop offset="60%" stopColor="#60a5fa" stopOpacity="0.55" />
-                      <stop offset="100%" stopColor="#93c5fd" stopOpacity="0.35" />
-                    </linearGradient>
-                    <linearGradient id="dbUpdUnder" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#93c5fd" stopOpacity="0.75" />
-                      <stop offset="55%" stopColor="#bfdbfe" stopOpacity="0.35" />
-                      <stop offset="100%" stopColor="#dbeafe" stopOpacity="0" />
-                    </linearGradient>
-                    <linearGradient id="dbUpdSun" x1="1" y1="0.4" x2="0.55" y2="0">
-                      <stop offset="0%" stopColor="#f97316" />
-                      <stop offset="40%" stopColor="#fb923c" stopOpacity="0.95" />
-                      <stop offset="75%" stopColor="#fed7aa" stopOpacity="0.55" />
-                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-                    </linearGradient>
-                    <filter id="dbUpdSoft" x="-30%" y="-60%" width="160%" height="220%">
-                      <feGaussianBlur stdDeviation="5" />
-                    </filter>
-                    <filter id="dbUpdSoftSm" x="-20%" y="-100%" width="140%" height="300%">
-                      <feGaussianBlur stdDeviation="1.2" />
-                    </filter>
-                    <clipPath id="dbUpdClip">
-                      <path d="M0 0 H340 V31 C 316 37, 274 50, 232 56 C 180 63, 90 66, 0 66 Z" />
-                    </clipPath>
-                  </defs>
-                  {/* pale wave peeking out under the left half of the edge */}
-                  <path d="M0 66 C 90 66, 180 63, 232 56 L 236 59 C 182 68, 92 74, 0 76 Z" fill="url(#dbUpdUnder)" />
-                  {/* main blue: flat on the left, sweeping up to the right edge */}
-                  <path d="M0 0 H340 V31 C 316 37, 274 50, 232 56 C 180 63, 90 66, 0 66 Z" fill="url(#dbUpdBlue)" />
-                  {/* lighter blue swoosh riding just above the edge */}
-                  <path d="M0 50 C 90 50, 182 46, 238 37 C 280 30, 314 18, 340 8 V 31 C 316 37, 274 50, 232 56 C 180 63, 90 66, 0 66 Z" fill="url(#dbUpdSheen)" />
-                  {/* sunrise stripe across the top-right corner */}
-                  <g clipPath="url(#dbUpdClip)">
-                    <path d="M204 -12 H356 V50 C 320 30, 274 4, 204 -12 Z" fill="url(#dbUpdSun)" filter="url(#dbUpdSoft)" />
-                  </g>
-                  <path d="M314 41 C 324 38, 332 35, 340 31 V 35 C 332 38, 324 41, 316 44 Z" fill="#22c55e" opacity="0.85" filter="url(#dbUpdSoftSm)" />
-                </svg>
-                <span className="db-updates-head-icon">
-                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-                    <path d="M3.2 9.2 H6.4 L14.6 4.6 V19.4 L6.4 14.8 H3.2 A1.2 1.2 0 0 1 2 13.6 V10.4 A1.2 1.2 0 0 1 3.2 9.2 Z" fill="currentColor" />
-                    <path d="M6.6 15.2 L7.9 19.2 A1 1 0 0 0 8.85 19.9 H9.9 A0.8 0.8 0 0 0 10.65 18.85 L9.6 15.9 Z" fill="currentColor" />
-                    <path d="M17.6 8.6 L20.2 7.2 M18.1 12 H21.2 M17.6 15.4 L20.2 16.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-                  </svg>
-                </span>
-                <h2 className="db-updates-title">FEED Updates</h2>
-                <button type="button" className="db-updates-see-all" onClick={showAllUpdates}>
-                  See All <ArrowRight size={13} strokeWidth={2.6} />
-                </button>
-              </div>
-              {/* The updates roll upwards endlessly: the list is doubled so the loop is seamless, and
-                  the copy is hidden from screen readers and the keyboard. Pauses under the pointer. */}
-              <div className="db-updates-window">
-                <ul className="db-updates-list">
-                  {[...feedUpdates, ...feedUpdates].map((u, idx) => {
-                    const isCopy = idx >= feedUpdates.length;
-                    return (
-                      <li key={`${u.id}-${idx}`} aria-hidden={isCopy || undefined}>
-                        <button type="button" className="db-update-item" onClick={() => onNavigate(u.page)} tabIndex={isCopy ? -1 : undefined}>
-                          <span className={`db-update-icon is-${u.tone}`}><u.icon size={18} strokeWidth={2.2} /></span>
-                          <span className="db-update-text">{u.title}<br />{u.sub}</span>
-                          <ChevronRight size={20} strokeWidth={2.4} className="db-update-arrow" />
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-
-            {/* Navigation */}
             <nav className="db-nav">
               {sidebarMenu.map((group, gIdx) => (
                 <div key={gIdx} className="db-nav-group">
@@ -847,8 +855,8 @@ const Dashboard = ({ onNavigate, isLoggedIn, user, onLogout, navState }) => {
               {/* Hero Banner */}
           <WelcomeHero name={welcomeName} updates={personalUpdates} onOpen={openPersonalUpdate} />
 
-          {/* FEED Services: the home page's services block, without its ant */}
-          <HomeServices id="db-services" onNavigate={onNavigate} showAnt={false} className="db-services" />
+          {/* FEED Services: the home page's services block, without its ant; each service opens in a new tab */}
+          <HomeServices id="db-services" onNavigate={onNavigate} showAnt={false} className="db-services" openInNewTab />
 
           {/* Quick Access - Frequently Used */}
           <section className="db-quick-actions">

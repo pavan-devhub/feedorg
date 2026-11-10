@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SERVICE_ROUTES } from './Navbar';
+import { openAppPageInNewTab } from '../utils/pageLinks';
 import './HomeServices.css';
 
 // Home "FEED Services" cards. `menuName` (where the label differs) keys into SERVICE_ROUTES so a
@@ -34,8 +35,9 @@ const ANT_ELBOW = { x: 781, y: 620, r: 23 };
 const ANT_ARM_PATH = 'M748 597L760 560L788 470L788 330L1060 330L1060 580L872 590L814 643Z';
 
 // The FEED Services block: the heading and the service cards, with the waving ant in a narrow column on
-// their left. `showAnt={false}` leaves the ant out, so the heading and cards take the full width
-const HomeServices = ({ onNavigate, id, showAnt = true, className = '' }) => {
+// their left. `showAnt={false}` leaves the ant out, so the heading and cards take the full width.
+// `openInNewTab` opens each service in its own browser tab instead of in place (the dashboard's use)
+const HomeServices = ({ onNavigate, id, showAnt = true, className = '', openInNewTab = false }) => {
   const servicesBlockRef = useRef(null);
   const [isServicesVisible, setIsServicesVisible] = useState(false);
 
@@ -220,7 +222,10 @@ const HomeServices = ({ onNavigate, id, showAnt = true, className = '' }) => {
                   return (
                     <Card
                       key={service.name}
-                      {...(target ? { type: 'button', onClick: () => onNavigate(target) } : {})}
+                      {...(target ? {
+                        type: 'button',
+                        onClick: () => (openInNewTab ? openAppPageInNewTab(target) : onNavigate(target)),
+                      } : {})}
                       className="home-service-card"
                       style={{ '--i': r * 4 + c }}
                     >

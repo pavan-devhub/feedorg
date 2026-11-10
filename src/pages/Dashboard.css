@@ -10,7 +10,8 @@
   box-sizing: border-box;
 }
 
-/* 1. LEFT COLUMN - the sidebar card, then the ERS / Krishi Coins / Plan cards stacked under it */
+/* 1. LEFT COLUMN - the FEED Updates card, the navigation card, then the ERS / Krishi Coins / Plan
+   cards stacked under them */
 .db-left-col {
   width: 336px;
   flex-shrink: 0;
@@ -20,7 +21,7 @@
   gap: 24px;
 }
 
-/* LEFT SIDEBAR - white floating card: FEED Updates, nav list, farm scene */
+/* LEFT SIDEBAR - white floating card from Home onwards: nav list, farm scene */
 .db-sidebar {
   position: relative;
   display: flex;
@@ -32,7 +33,6 @@
 
   /* Floating card properties */
   height: max-content; /* Allow sidebar to grow as long as its content */
-  min-height: calc(100vh - 80px - 48px);
   border-radius: 26px;
   overflow: hidden;
   background: #ffffff;
@@ -48,10 +48,18 @@
   min-height: inherit;
 }
 
-/* --- FEED Updates --- */
+/* --- FEED Updates: its own white card above the navigation card --- */
 .db-updates {
   position: relative;
-  padding-bottom: 6px;
+  flex-shrink: 0;
+  padding-bottom: 12px;
+  color: #1e293b;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08), 0 3px 10px rgba(15, 23, 42, 0.04);
 }
 
 .db-updates-head {
@@ -125,21 +133,22 @@
   transform: translateX(2px);
 }
 
-/* The window shows three updates at a time while the list rolls upwards through it, fading in and out
-   at its edges */
+/* The window shows five updates at a time (UPDATES_VISIBLE in Dashboard.jsx) while the list rolls
+   upwards through it, fading in and out at its edges */
 .db-updates-window {
   --upd-row: 54px;
   --upd-gap: 8px;
   position: relative;
   z-index: 1;
-  height: calc(var(--upd-row) * 3 + var(--upd-gap) * 2);
+  height: calc(var(--upd-row) * 5 + var(--upd-gap) * 4);
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 9%, black 91%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 9%, black 91%, transparent 100%);
 }
 
-/* The list is doubled; the padding under it matches the gap, so moving up by half lands the copy
-   exactly where the first update started */
+/* The list is repeated --upd-copies times; the padding under it matches the gap, so moving up by one
+   copy lands the next copy exactly where the first update started. Each update takes the same time to
+   pass, however many there are */
 .db-updates-list {
   list-style: none;
   margin: 0;
@@ -147,7 +156,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--upd-gap);
-  animation: db-list-scroll 10s linear infinite;
+  animation: db-updates-roll calc(var(--upd-count, 3) * 3.4s) linear infinite;
+}
+@keyframes db-updates-roll {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% / var(--upd-copies, 2))); }
 }
 .db-updates-list:hover,
 .db-updates-list:focus-within {
